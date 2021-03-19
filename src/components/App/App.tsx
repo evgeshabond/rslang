@@ -7,7 +7,7 @@ import styles from './App.module.css';
 const App: React.FC = () => (
   <Router basename="/travel-app">
     <div className={styles.App}>
-      <h1 className={styles.App__title}>Travel-app</h1>
+      <h1 className={styles.App__title}>Rs Lang!</h1>
       <Switch>
         <Route path="/" component={MainPage} exact />
         <Route path="/game" component={GamePage} />
