@@ -3,6 +3,7 @@ import styles from './Footer.module.css';
 
 export const Footer: React.FC = () => (
   <footer>
+    <div className={styles.wrapper__circle} />
     <div className={styles.wrapper}>
       <button
         type="button"

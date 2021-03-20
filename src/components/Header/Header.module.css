@@ -2,8 +2,7 @@
   height: 60px;
 }
 
-.wrapper::before {
-  content: '';
+.wrapper__circle {
   position: absolute;
   width: 1280px;
   height: 1254px;

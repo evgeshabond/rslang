@@ -3,6 +3,7 @@ import styles from './Header.module.css';
 
 export const Header: React.FC = () => (
   <header>
+    <div className={styles.wrapper__circle} />
     <div className={styles.wrapper}>
       <button
         type="button"

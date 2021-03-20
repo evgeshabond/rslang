@@ -14,7 +14,7 @@ export const mainPath = {
 };
 
 const App: React.FC = () => (
-  <Router basename="/rslang">
+  <Router basename="/">
     <div className={styles.App}>
       <div className={styles.container}>
         <Header />
