@@ -4,6 +4,8 @@ import GamePage from '../../pages/Game-page';
 import MainPage from '../../pages/Main-page';
 import WordsList from '../words-list';
 import styles from './App.module.css';
+import { Header } from '../Header/Header';
+import { Footer } from '../Footer/Footer';
 
 export const mainPath = {
   main: '/',
@@ -12,14 +14,19 @@ export const mainPath = {
 };
 
 const App: React.FC = () => (
-  <Router basename="/travel-app">
+  <Router basename="/">
     <div className={styles.App}>
-      <h1 className={styles.App__title}>Rs Lang!</h1>
-      <Switch>
-        <Route path={mainPath.main} component={MainPage} exact />
-        <Route path={mainPath.game} component={GamePage} />
-        <Route path={mainPath.wordList} component={WordsList} />
-      </Switch>
+      <div className={styles.container}>
+        <Header />
+        <main className={styles.main}>
+          <Switch>
+            <Route path={mainPath.main} component={MainPage} exact />
+            <Route path={mainPath.game} component={GamePage} />
+            <Route path={mainPath.wordList} component={WordsList} />
+          </Switch>
+        </main>
+        <Footer />
+      </div>
     </div>
   </Router>
 );

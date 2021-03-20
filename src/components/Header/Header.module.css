@@ -1,0 +1,45 @@
+.wrapper {
+  height: 60px;
+}
+
+.wrapper__circle {
+  position: absolute;
+  width: 1280px;
+  height: 1254px;
+  top: -1194px;
+  border-radius: 50%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: -5;
+
+  background: #fdebff;
+  box-shadow: inset -3px -3px 6px rgba(0, 0, 0, 0.25);
+}
+
+.menu-btn {
+  width: 40px;
+  height: 40px;
+  margin: 10px 0;
+
+  background: #fdebff;
+  box-shadow: -5px -5px 10px rgba(255, 255, 255, 0.9), 5px 5px 10px #dfc5e2,
+    inset -4px -4px 8px #ffffff, inset 4px 4px 8px #f7d2fb;
+  border: none;
+  border-radius: 10px;
+  border-color: #fff;
+  outline-color: #da8bed;
+}
+
+.menu-btn__inner {
+  width: 28px;
+  height: 28px;
+  margin: auto;
+
+  background: #fdebff;
+  background-image: url('../../assets/images/logo-min.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+
+  box-shadow: -4px -4px 8px #ffffff, 4px 4px 8px #d3a9d8;
+  border-radius: 10px;
+}
