@@ -3,7 +3,6 @@
   height: 100%;
   text-align: center;
   overflow: auto;
-  position: relative;
 }
 .App::before {
   content: '';
@@ -19,18 +18,24 @@
   background-size: cover;
   width: 110%;
   height: 110%;
-  filter: blur(200px);
+  filter: blur(150px);
 }
 
 .container {
   height: 100%;
+  min-height: 720px;
   display: flex;
   flex-direction: column;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 25px;
+  position: relative;
+  overflow-x: hidden;
 }
 
 .main {
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
