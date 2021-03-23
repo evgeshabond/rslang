@@ -1,5 +1,6 @@
 import React from 'react';
+import { MyGame } from '../components/My-game/My-game';
 
-const GamePage: React.FC = () => <div>Game Page</div>;
+const GamePage: React.FC = () => <MyGame />;
 
 export default GamePage;
