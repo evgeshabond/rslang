@@ -1,8 +1,3 @@
-.footer {
-  overflow: hidden;
-  position: relative;
-}
-
 .wrapper {
   height: 60px;
   position: relative;
@@ -12,10 +7,11 @@
   position: absolute;
   width: 1280px;
   height: 1254px;
+  bottom: -1194px;
   border-radius: 50%;
   left: 50%;
   transform: translate(-50%, 0);
-  z-index: -5;
+  z-index: 1;
 
   background: #fdebff;
   box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.25);
@@ -25,7 +21,8 @@
   width: 40px;
   height: 40px;
   margin: 10px 0;
-
+  position: relative;
+  z-index: 5;
   background: #fdebff;
   box-shadow: -5px -5px 10px rgba(255, 255, 255, 0.9), 5px 5px 10px #dfc5e2,
     inset -4px -4px 8px #ffffff, inset 4px 4px 8px #f7d2fb;
