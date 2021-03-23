@@ -6,7 +6,7 @@ import {
 
 export type MenuState = {
   topMenuIsOpen: boolean;
-  bottomMenuIsOpen: false;
+  bottomMenuIsOpen: boolean;
 };
 
 const initialState: MenuState = {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import GamePage from '../../pages/Game-page';
-import { MainPage } from '../../pages/main-page/Main-page';
+import { MainPage } from '../../pages/main-page/main-page';
 import WordsList from '../word-list/words-list';
 import styles from './App.module.css';
 import Header from '../Header/Header';
