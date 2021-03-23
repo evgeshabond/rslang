@@ -1,6 +1,40 @@
 .play__button{
+    margin-top: 32px;
   background-color: transparent;
     border: none;
     outline: none;
     cursor: pointer;
+}
+.start__game{
+    min-width: 1022px;
+    min-height: 440px;
+    height: 100%;
+    width: 100%;
+    background-color: #FDEBFF;
+    font-family: 'Roboto';
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    color: #733999;
+    position: relative;
+
+    
+}
+
+h2{
+
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+p{
+    font-size: 18px;
+
+}
+
+.cat__img{
+    position: absolute;
+    right: -100px
 }
