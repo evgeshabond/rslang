@@ -8,6 +8,8 @@ export const loadState = () => {
     }
     return JSON.parse(serializedState);
   } catch (err) {
+    console.log('cannot load state from localStore');
+
     return undefined;
   }
 };
@@ -17,6 +19,7 @@ export const saveState = (state: RootStateType) => {
     const serializedState = JSON.stringify(state);
     localStorage.setItem('state', serializedState);
   } catch (err) {
-    console.log(err);
+    console.log('can not save state to localStore', err);
+
   }
 };
