@@ -3,6 +3,7 @@ export const mainPath = {
   game: '/game',
   wordList: '/wordlist',
   auth: '/user',
+  sprint: '/sprint',
 };
 
 export const authErrorPath = {
