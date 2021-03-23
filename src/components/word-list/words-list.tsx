@@ -5,11 +5,11 @@ import {
   CurrentWordListType,
   fetchWordsList,
   wordListLoaded,
-} from '../actions/word-actions';
-import { RootStateType } from '../reducer/root-reducer';
-import { WordStateType } from '../reducer/word-reducer';
-import Spinner from './Spinner/Spinner';
-import { WordItem } from './word-item/word-item';
+} from '../../actions/word-actions';
+import { RootStateType } from '../../reducer/root-reducer';
+import { WordStateType } from '../../reducer/word-reducer';
+import Spinner from '../Spinner/Spinner';
+import { WordItem } from '../word-item/word-item';
 
 type Props = WordStateType & ReturnType<typeof mapDispatchToProps>;
 
