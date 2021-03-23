@@ -1,0 +1,19 @@
+.main-button {
+  width: 225px;
+  height: 50px;
+  border-radius: 30px;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 2.4rem;
+  line-height: 2.8rem;
+  text-align: center;
+  color: #5b2467;
+  background: #fdebff;
+  box-shadow: -5px -5px 10px #ffffff, 5px 5px 10px #b4c1d5;
+  margin: 0 15px;
+  padding-top: 10px;
+}
+
+.main-button:active {
+  box-shadow: inset -5px -5px 10px #ffffff, inset 5px 5px 10px #b4c1d5;
+}
