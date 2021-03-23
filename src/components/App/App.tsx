@@ -4,8 +4,8 @@ import GamePage from '../../pages/Game-page';
 import { MainPage } from '../../pages/main-page/Main-page';
 import WordsList from '../word-list/words-list';
 import styles from './App.module.css';
-import { Header } from '../Header/Header';
-import { Footer } from '../Footer/Footer';
+import Header from '../Header/Header';
+import Footer from '../Footer/Footer';
 import UserPage from '../../pages/auth-page/User-page';
 import { mainPath } from '../../utils/constants';
 
