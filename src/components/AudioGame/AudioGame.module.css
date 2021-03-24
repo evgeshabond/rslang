@@ -58,3 +58,10 @@
     background-size: contain;
   
 }
+
+.word__list{
+    display: flex;
+    flex-direction: wrap;
+    justify-content: center;
+    align-items: center;
+}

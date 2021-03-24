@@ -21,8 +21,8 @@ const App: React.FC = () => (
             <div className={styles.container}>
                 <Header />
                 <main className={styles.main}>
-                    {/* <AudioGame /> */}
-                    <SavannaGame />
+                    <AudioGame />
+                    {/* <SavannaGame /> */}
                     <Switch>
                         <Route path={mainPath.main} component={MainPage} exact />
                         <Route path={mainPath.game} component={GamePage} />
