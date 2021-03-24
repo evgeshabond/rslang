@@ -43,18 +43,15 @@ const SprintGame: React.FC<Props> = ({
     </div>
   );
 
-  useEffect(() => {
-    startTimer > 0 && setTimeout(() => setStartTimer(startTimer - 1), 1000);
-  }, [startTimer]);
 
   const renderTimerPage = () => (
     <div className={styles.game__wrapper}>
-      <div className={styles.timer}> {startTimer > 0 ? startTimer : 'GO'}</div>
+      <div className={styles.timer}> { startTimer >0 &&setTimeout(() => setStartTimer(startTimer - 1), 1000) ? startTimer : sprintGameStatusChange('play')}</div>
       <p>Приготовьтесь!</p>
     </div>
   );
 
-  const renderGamePage = () => null;
+  const renderGamePage = () => <h1>hello</h1>;
 
   return (
     <div className={styles.sprint__game}>
