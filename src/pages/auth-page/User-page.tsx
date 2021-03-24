@@ -13,7 +13,7 @@ const UserPage: React.FC<Props> = ({ isLogin, isLoaded }) => {
     if (isLoaded) {
       return <Spinner />;
     }
-    return isLogin ? null : <Auth />;
+    return <Auth />;
   };
 
   return <div className={styles['auth-container']}>{renderContent()}</div>;
