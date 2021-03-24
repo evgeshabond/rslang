@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import styles from './My-game.module.css';
@@ -16,27 +16,49 @@ type MapDispatchToProps = {
 
 type Props = MapDispatchToProps & MyGameStartState & WordStateType;
 
-const shuffle = (array: Array<string>) => array.sort(() => Math.random() - 0.5);
+const shuffle = (array: Array<string>) => {
+  const arrCopy = [...array];
+  for (let i = arrCopy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arrCopy[i], arrCopy[j]] = [arrCopy[j], arrCopy[i]];
+  }
+  return arrCopy;
+};
+const getRandomWord = (items: any) =>
+  items[Math.floor(Math.random() * items.length)];
 
 type WordObjectType = { [key: string]: string };
 
-const MyGame: React.FC<Props> = ({ myGameStart, myGameIsStarted }) => {
-  const word = 'planet';
-  const wordArray = word.split('');
+const MyGame: React.FC<Props> = ({
+  myGameStart,
+  myGameIsStarted,
+  currentWordList,
+}) => {
+  const [word, setWord] = useState('');
 
-  const shuffledWordArray = shuffle(wordArray);
+  useEffect(() => {
+    const currentWords = currentWordList.map((item) => item.word);
+    setWord(getRandomWord(currentWords));
+  }, [currentWordList]);
 
-  const wordObject: WordObjectType = {};
-  shuffledWordArray.forEach((char, index) => {
-    wordObject[index.toString()] = char;
-  });
+  useEffect(() => {
+    const wordArray = word.split('');
 
-  const charArray = Object.entries(wordObject);
+    const shuffledWordArray = shuffle(wordArray);
 
-  const [chars, updateCharsPosition] = useState(charArray);
+    const wordObject: WordObjectType = {};
+    shuffledWordArray.forEach((char, index) => {
+      wordObject[index.toString()] = char;
+    });
+
+    const charArray = Object.entries(wordObject);
+
+    updateCharsPosition(charArray);
+  }, [word]);
+
+  const [chars, updateCharsPosition] = useState([['', '']]);
 
   function updateCharsPositionHandler(result: any) {
-    console.log(`update before ${chars}`);
     if (!result.destination) {
       return;
     }
@@ -45,14 +67,13 @@ const MyGame: React.FC<Props> = ({ myGameStart, myGameIsStarted }) => {
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
 
-    console.log(`update after ${items}`);
     updateCharsPosition(items);
   }
 
   return myGameIsStarted ? (
     <div className={styles['my-game']}>
       <div className={styles.word__container}>
-        <p className={`${styles.text} ${styles.word}`}>Планета</p>
+        <p className={`${styles.text} ${styles.word}`}>{word}</p>
       </div>
 
       <h3 className={`${styles.text} ${styles.description}`}>
@@ -65,35 +86,36 @@ const MyGame: React.FC<Props> = ({ myGameStart, myGameIsStarted }) => {
       >
         <ExitButton />
       </button>
-      <DragDropContext onDragEnd={updateCharsPositionHandler}>
-        <Droppable droppableId="chars" direction="horizontal">
-          {(provided: any) => (
-            <ul
-              className={`${styles.word__wrapper} chars`}
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
-              {console.log(`Render array${chars}`)}
-              {chars.map((char, index) => (
-                <Draggable key={char[0]} draggableId={char[0]} index={index}>
-                  {(providedInner: any) => (
-                    <li
-                      key={char[0]}
-                      className={styles.word__char}
-                      ref={providedInner.innerRef}
-                      {...providedInner.draggableProps}
-                      {...providedInner.dragHandleProps}
-                    >
-                      {char[1]}
-                    </li>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </ul>
-          )}
-        </Droppable>
-      </DragDropContext>
+      {chars.length > 1 ? (
+        <DragDropContext onDragEnd={updateCharsPositionHandler}>
+          <Droppable droppableId="chars" direction="horizontal">
+            {(provided: any) => (
+              <ul
+                className={`${styles.word__wrapper} chars`}
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+              >
+                {chars.map((char, index) => (
+                  <Draggable key={char[0]} draggableId={char[0]} index={index}>
+                    {(providedInner: any) => (
+                      <li
+                        key={char[0]}
+                        className={styles.word__char}
+                        ref={providedInner.innerRef}
+                        {...providedInner.draggableProps}
+                        {...providedInner.dragHandleProps}
+                      >
+                        {char[1]}
+                      </li>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </ul>
+            )}
+          </Droppable>
+        </DragDropContext>
+      ) : null}
     </div>
   ) : (
     <div className={styles['my-game']}>
