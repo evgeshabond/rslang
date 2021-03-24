@@ -1,6 +1,6 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import classes from './My-game.module.css';
+import styles from './My-game.module.css';
 import { ReactComponent as Play } from '../../assets/images/video-player-mini.svg';
 import { ReactComponent as CatSleeping } from '../../assets/images/cat-sleeping.svg';
 import { RootStateType } from '../../reducer/root-reducer';
@@ -17,26 +17,26 @@ const MyGame: React.FC<Props> = ({ myGameStart, myGameIsStarted }) => {
   console.log(myGameIsStarted);
 
   return myGameIsStarted ? (
-    <div className={classes['my-game']}>
+    <div className={styles['my-game']}>
       <p>Playing</p>
     </div>
   ) : (
-    <div className={classes['my-game']}>
-      <h2 className={classes.title}>cвоя игра</h2>
-      <p className={classes.text}>
+    <div className={styles['my-game']}>
+      <h2 className={styles.title}>cвоя игра</h2>
+      <p className={styles.text}>
         Это тренировка для повторения заученных слов из вашего словаря.
       </p>
-      <p className={classes.text}>
+      <p className={styles.text}>
         Выберите соответствует ли перевод предложенному слову.
       </p>
       <button
         type="button"
-        className={classes['play-button']}
+        className={styles['play-button']}
         onClick={() => myGameStart(true)}
       >
-        <Play className={classes.play} />
+        <Play className={styles.play} />
       </button>
-      <CatSleeping className={classes.cat_sleeping} />
+      <CatSleeping className={styles.cat_sleeping} />
     </div>
   );
 };
