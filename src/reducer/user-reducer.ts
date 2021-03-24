@@ -1,4 +1,5 @@
 import {
+  ERROR_MESSAGE_CLEAR,
   INPUT_EMAIL_CHANGE,
   INPUT_NAME_CHANGE,
   INPUT_PASSWORD_CHANGE,
@@ -9,6 +10,7 @@ import {
   USER_CREATED,
   USER_CREATE_ERROR,
   USER_CREATE_LOAD,
+  USER_LOGOUT,
 } from '../actions/user-actions';
 
 export type UserState = typeof initialState;
@@ -20,6 +22,7 @@ const initialState = {
     refreshToken: '',
     userId: '',
     name: '',
+    email: '',
   },
   inputName: '',
   inputEmail: '',
@@ -66,6 +69,10 @@ const userReducer = (
       return { ...state, loginPage: action.payload };
     case USER_CREATE_LOAD:
       return { ...state, isLoaded: action.payload };
+    case USER_LOGOUT:
+      return initialState;
+    case ERROR_MESSAGE_CLEAR:
+      return { ...state, authError: {}, error: [] };
     default:
       return state;
   }
