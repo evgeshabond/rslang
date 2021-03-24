@@ -24,12 +24,10 @@
   color: #733999;
 }
 
-div .word {
+div .word__container {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.4rem;
-  font-weight: 900;
   background: #fdebff;
   box-shadow: inset -8px -8px 16px #ffffff, inset 8px 8px 16px #f7d2fb;
   border-radius: 30px;
@@ -38,8 +36,15 @@ div .word {
   height: 50px;
 }
 
+div .word {
+  font-size: 2.4rem;
+  font-weight: 900;
+}
+
 .description {
   margin: 20px 0;
+  font-size: 2.4rem;
+  font-weight: 900;
 }
 
 .text {
