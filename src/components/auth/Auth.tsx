@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import {
   inputEmailChange,
   createUser,
@@ -9,14 +10,17 @@ import {
   UserAuthErrType,
   logIn,
   loginPageChange,
+  errorMessageClear,
 } from '../../actions/user-actions';
 import { MainCat } from '../cats-img/main-cat/Main-cat';
 import { RootStateType } from '../../reducer/root-reducer';
 import { UserState } from '../../reducer/user-reducer';
 import styles from './auth.module.css';
-import { authErrorPath } from '../../utils/constants';
+import { authErrorPath, mainPath } from '../../utils/constants';
 
-type Props = UserState & ReturnType<typeof mapDispatchToProps>;
+type Props = UserState &
+  ReturnType<typeof mapDispatchToProps> &
+  RouteComponentProps;
 
 const Auth: React.FC<Props> = ({
   user,
@@ -25,6 +29,7 @@ const Auth: React.FC<Props> = ({
   inputEmail,
   isLogin,
   error,
+  authError,
   loginPage,
   createUserFetch,
   userLogin,
@@ -32,7 +37,15 @@ const Auth: React.FC<Props> = ({
   nameInputChange,
   emailInputChange,
   loginPageChanged,
+  errorClear,
+  history,
 }) => {
+  useEffect(() => {
+    if (isLogin) {
+      history.push(mainPath.ebookPage);
+    }
+  }, [history, isLogin]);
+
   const handleSubmit = (event: React.SyntheticEvent) => {
     event.preventDefault();
     if (loginPage) {
@@ -44,6 +57,16 @@ const Auth: React.FC<Props> = ({
         password: inputPassword,
       });
     }
+  };
+
+  const toSignIn = () => {
+    errorClear();
+    loginPageChanged(true);
+  };
+
+  const toSignUp = () => {
+    errorClear();
+    loginPageChanged(false);
   };
 
   const errMsg = (text: string) => (
@@ -77,6 +100,9 @@ const Auth: React.FC<Props> = ({
         {error.map((item: UserAuthErrType) =>
           item.path === authErrorPath.email ? errMsg(item.message) : null
         )}
+        {authError.path === authErrorPath.email
+          ? errMsg(authError.message)
+          : null}
         <input
           className={`${styles['auth-input']} ${styles['email-icon']}`}
           type="email"
@@ -87,6 +113,9 @@ const Auth: React.FC<Props> = ({
         {error.map((item: UserAuthErrType) =>
           item.path === authErrorPath.password ? errMsg(item.message) : null
         )}
+        {authError.path === authErrorPath.password
+          ? errMsg(authError.message)
+          : null}
         <input
           className={`${styles['auth-input']} ${styles['password-icon']}`}
           type="password"
@@ -95,11 +124,19 @@ const Auth: React.FC<Props> = ({
           required
         />
         {loginPage ? (
-          <input
-            type="submit"
-            value="Войти"
-            className={styles['auth-button']}
-          />
+          <>
+            <input
+              type="submit"
+              value="Войти"
+              className={styles['auth-button']}
+            />
+            <Link
+              to={mainPath.ebookPage}
+              className={`${styles['auth-button']} ${styles['margin-top__0']}`}
+            >
+              Пропустить
+            </Link>
+          </>
         ) : (
           <input
             type="submit"
@@ -113,7 +150,7 @@ const Auth: React.FC<Props> = ({
           <span className={styles['auth-text']}>нет акаунта?&nbsp;</span>
           <span
             className={styles['auth-text-link']}
-            onClick={() => loginPageChanged(false)}
+            onClick={toSignUp}
             aria-hidden="true"
           >
             Регистрация
@@ -124,7 +161,7 @@ const Auth: React.FC<Props> = ({
           <span className={styles['auth-text']}>Уже есть акаунт?&nbsp;</span>
           <span
             className={styles['auth-text-link']}
-            onClick={() => loginPageChanged(true)}
+            onClick={toSignIn}
             aria-hidden="true"
           >
             Войти
@@ -147,8 +184,9 @@ const mapDispatchToProps = (dispatch: any) =>
       nameInputChange: inputNameChange,
       emailInputChange: inputEmailChange,
       loginPageChanged: loginPageChange,
+      errorClear: errorMessageClear,
     },
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(Auth);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Auth));
