@@ -6,8 +6,9 @@ import { RootStateType } from '../../reducer/root-reducer';
 import { SprintGameStateType } from '../../reducer/sprint-game-reducer';
 import { SprintGameStatusChangeActionType } from '../../actions/sprint-game-action';
 import { WordStateType } from '../../reducer/word-reducer';
-import cat from '../../assets/images/happy.svg';
-import play from '../../assets/images/video-player 1.svg';
+
+import { ReactComponent as PlayButton } from '../../assets/images/play.svg';
+import { ReactComponent as Cat } from '../../assets/images/happy.svg';
 
 type MapDispatchToProps = {
   sprintGameStatusChange: (value: string) => SprintGameStatusChangeActionType;
@@ -20,29 +21,48 @@ const SprintGame: React.FC<Props> = ({
   gameStatus,
   sprintGameStatusChange,
 }) => {
-  // const [gamePage, setGamePage] = useState(null);
+  const [startTimer, setStartTimer] = useState(5);
+
   useEffect(() => {
     console.log(currentWordList);
   }, [currentWordList]);
 
-  const renderGame = () => {
-    if (gameStatus === 'start') {
-      return (
-        <div className={styles.start__game}>
-          <h2>СПРИНТ </h2>
-          <p>Это тренировка для повторения заученных слов из вашего словаря.</p>
-          <p> Выберите соответствует ли перевод предложенному слову.</p>
-          <img src={cat} alt="Happy cat" className={styles.cat__img} />
-          <button type="button" className={styles.play__button}>
-            <img src={play} alt="play button" />
-          </button>
-        </div>
-      );
-    }
-    return null;
-  };
+  const renderStartGamePage = () => (
+    <div className={styles.game__wrapper}>
+      <h2>СПРИНТ </h2>
+      <p>Это тренировка для повторения заученных слов из вашего словаря.</p>
+      <p> Выберите соответствует ли перевод предложенному слову.</p>
+      <Cat className={styles.cat__img} />
+      <button
+        type="button"
+        className={styles.play__button}
+        onClick={() => sprintGameStatusChange('timer')}
+      >
+        <PlayButton />
+      </button>
+    </div>
+  );
 
-  return <div className={styles.sprint__game}>{renderGame()}</div>;
+  useEffect(() => {
+    startTimer > 0 && setTimeout(() => setStartTimer(startTimer - 1), 1000);
+  }, [startTimer]);
+
+  const renderTimerPage = () => (
+    <div className={styles.game__wrapper}>
+      <div className={styles.timer}> {startTimer > 0 ? startTimer : 'GO'}</div>
+      <p>Приготовьтесь!</p>
+    </div>
+  );
+
+  const renderGamePage = () => null;
+
+  return (
+    <div className={styles.sprint__game}>
+      {gameStatus === 'start' ? <div>{renderStartGamePage()}</div> : null}
+      {gameStatus === 'timer' ? <div>{renderTimerPage()}</div> : null}
+      {gameStatus === 'play' ? <div>{renderGamePage()}</div> : null}{' '}
+    </div>
+  );
 };
 
 const mapStateToProps = (state: RootStateType) => ({
