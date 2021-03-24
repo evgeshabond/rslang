@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { ActionCreatorsMapObject, bindActionCreators } from 'redux';
 import {
   CurrentWordListType,
   fetchWordsList,
@@ -11,12 +11,16 @@ import { WordStateType } from '../../reducer/word-reducer';
 import Spinner from '../Spinner/Spinner';
 import { WordItem } from '../word-item/word-item-game';
 import classes from './AudioGame.module.css';
-import WordList from '../words-list'
+import WordList from '../words-list';
+import *as actions from '../../actions/audioGame-actions';
+import { AudioGameStartState } from '../../reducer/audio-game-reducer'
 
-
+type MapDispatchToProps = {
+  audioGameStart: (value: boolean) => actions.AudioGameStartActionType;
+}
 type Props = WordStateType & ReturnType<typeof mapDispatchToProps>;
 
-const AudioGame: React.FC<Props> = ({ currentWordList,
+const AudioGame: React.FC<Props> = ({ audioGameStart, currentWordList,
   loading,
   fetchErr,
   pageNumber,
