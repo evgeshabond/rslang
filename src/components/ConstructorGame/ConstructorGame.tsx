@@ -116,6 +116,7 @@ const MyGame: React.FC<Props> = ({
   const startGameHandler = () => {
     myGameStart(true);
     setLearnCount(0);
+    setRoundEnd(false);
   };
 
   const removeTagsFromString = (originalString: string) =>
