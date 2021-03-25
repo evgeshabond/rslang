@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import {
   inputEmailChange,
@@ -12,34 +12,29 @@ import {
   loginPageChange,
   errorMessageClear,
 } from '../../actions/user-actions';
+import { ImageLoader } from '../image-loader/Image-loader';
 import { MainCat } from '../cats-img/main-cat/Main-cat';
 import { RootStateType } from '../../reducer/root-reducer';
-import { UserState } from '../../reducer/user-reducer';
 import styles from './auth.module.css';
 import { authErrorPath, mainPath } from '../../utils/constants';
+import { ErrorMessage } from '../error-message/error-message';
 
-type Props = UserState &
-  ReturnType<typeof mapDispatchToProps> &
-  RouteComponentProps;
+type Props = RouteComponentProps;
 
-const Auth: React.FC<Props> = ({
-  user,
-  inputName,
-  inputPassword,
-  inputEmail,
-  isLogin,
-  error,
-  authError,
-  loginPage,
-  createUserFetch,
-  userLogin,
-  passwordInputChange,
-  nameInputChange,
-  emailInputChange,
-  loginPageChanged,
-  errorClear,
-  history,
-}) => {
+const Auth: React.FC<Props> = ({ history }) => {
+  const auth = useSelector((state: RootStateType) => state.userState);
+  const {
+    user,
+    inputName,
+    inputPassword,
+    inputEmail,
+    isLogin,
+    error,
+    authError,
+    loginPage,
+  } = auth;
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (isLogin) {
       history.push(mainPath.ebookPage);
@@ -49,35 +44,39 @@ const Auth: React.FC<Props> = ({
   const handleSubmit = (event: React.SyntheticEvent) => {
     event.preventDefault();
     if (loginPage) {
-      userLogin({ email: inputEmail, password: inputPassword });
+      dispatch(logIn({ email: inputEmail, password: inputPassword }));
     } else {
-      createUserFetch({
-        name: inputName,
-        email: inputEmail,
-        password: inputPassword,
-      });
+      dispatch(
+        createUser({
+          name: inputName,
+          email: inputEmail,
+          password: inputPassword,
+          foto64: user.foto64,
+        })
+      );
     }
   };
 
   const toSignIn = () => {
-    errorClear();
-    loginPageChanged(true);
+    dispatch(errorMessageClear());
+    dispatch(loginPageChange(true));
   };
 
   const toSignUp = () => {
-    errorClear();
-    loginPageChanged(false);
+    dispatch(errorMessageClear());
+    dispatch(loginPageChange(false));
   };
-
-  const errMsg = (text: string) => (
-    <div className={styles['auth-err-msg']}>*{text}</div>
-  );
 
   return (
     <>
       <h3 className={styles['auth-header']}>
         {loginPage ? 'Авторизация' : 'Регистрация'}
       </h3>
+      {loginPage ? null : (
+        <div className={styles['profile-img-wrapper']}>
+          <ImageLoader />
+        </div>
+      )}
       <form
         className={styles['auth-form']}
         action="submit"
@@ -86,41 +85,51 @@ const Auth: React.FC<Props> = ({
         {loginPage ? null : (
           <>
             {error.map((item: UserAuthErrType) =>
-              item.path === authErrorPath.name ? errMsg(item.message) : null
+              item.path === authErrorPath.name ? (
+                <ErrorMessage text={item.message} key={`key${item.path}`} />
+              ) : null
             )}
             <input
               className={`${styles['auth-input']} ${styles['login-icon']}`}
               type="text"
               value={inputName}
-              onChange={(event) => nameInputChange(event.target.value)}
+              onChange={(event) =>
+                dispatch(inputNameChange(event.target.value))
+              }
               required
             />
           </>
         )}
         {error.map((item: UserAuthErrType) =>
-          item.path === authErrorPath.email ? errMsg(item.message) : null
+          item.path === authErrorPath.email ? (
+            <ErrorMessage text={item.message} key={`key${item.path}`} />
+          ) : null
         )}
-        {authError.path === authErrorPath.email
-          ? errMsg(authError.message)
-          : null}
+        {authError.path === authErrorPath.email ? (
+          <ErrorMessage text={authError.message} />
+        ) : null}
         <input
           className={`${styles['auth-input']} ${styles['email-icon']}`}
           type="email"
           value={inputEmail}
-          onChange={(event) => emailInputChange(event.target.value)}
+          onChange={(event) => dispatch(inputEmailChange(event.target.value))}
           required
         />
         {error.map((item: UserAuthErrType) =>
-          item.path === authErrorPath.password ? errMsg(item.message) : null
+          item.path === authErrorPath.password ? (
+            <ErrorMessage text={item.message} key={`key${item.path}`} />
+          ) : null
         )}
-        {authError.path === authErrorPath.password
-          ? errMsg(authError.message)
-          : null}
+        {authError.path === authErrorPath.password ? (
+          <ErrorMessage text={authError.message} />
+        ) : null}
         <input
           className={`${styles['auth-input']} ${styles['password-icon']}`}
           type="password"
           value={inputPassword}
-          onChange={(event) => passwordInputChange(event.target.value)}
+          onChange={(event) =>
+            dispatch(inputPasswordChange(event.target.value))
+          }
           required
         />
         {loginPage ? (
@@ -173,20 +182,4 @@ const Auth: React.FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: RootStateType) => state.userState;
-
-const mapDispatchToProps = (dispatch: any) =>
-  bindActionCreators<any, any>(
-    {
-      createUserFetch: createUser,
-      userLogin: logIn,
-      passwordInputChange: inputPasswordChange,
-      nameInputChange: inputNameChange,
-      emailInputChange: inputEmailChange,
-      loginPageChanged: loginPageChange,
-      errorClear: errorMessageClear,
-    },
-    dispatch
-  );
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Auth));
+export default withRouter(Auth);
