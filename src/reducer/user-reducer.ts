@@ -11,6 +11,8 @@ import {
   USER_CREATE_ERROR,
   USER_CREATE_LOAD,
   USER_LOGOUT,
+  USER_FOTO_UPLOAD,
+  USER_FOTO_UPDATE,
 } from '../actions/user-actions';
 
 export type UserState = typeof initialState;
@@ -23,13 +25,18 @@ const initialState = {
     userId: '',
     name: '',
     email: '',
+    foto64: '',
   },
+  uploadFoto64: '',
   inputName: '',
   inputEmail: '',
   inputPassword: '',
   isLogin: false,
   error: [],
-  authError: {},
+  authError: {
+    path: '',
+    message: '',
+  },
   loginPage: true,
   isLoaded: false,
 };
@@ -61,7 +68,10 @@ const userReducer = (
         ...state,
         user: action.payload,
         isLogin: true,
-        authError: {},
+        authError: {
+          path: '',
+          message: '',
+        },
       };
     case USER_AUTH_ERROR:
       return { ...state, authError: action.payload };
@@ -72,7 +82,26 @@ const userReducer = (
     case USER_LOGOUT:
       return initialState;
     case ERROR_MESSAGE_CLEAR:
-      return { ...state, authError: {}, error: [] };
+      return {
+        ...state,
+        authError: {
+          path: '',
+          message: '',
+        },
+        error: [],
+        user: { ...state.user, foto64: '' },
+      };
+    case USER_FOTO_UPLOAD:
+      return {
+        ...state,
+        user: { ...state.user, foto64: action.payload },
+        uploadFoto64: action.payload,
+      };
+    case USER_FOTO_UPDATE:
+      return {
+        ...state,
+        user: { ...state.user, foto64: action.payload },
+      };
     default:
       return state;
   }
