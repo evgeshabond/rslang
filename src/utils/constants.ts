@@ -1,8 +1,10 @@
 export const mainPath = {
   main: '/',
-  game: '/game',
+  gamePage: '/gamepage',
   wordList: '/wordlist',
   auth: '/user',
+  ebookPage: '/ebookpage',
+  profilePAge: '/profile',
 };
 
 export const authErrorPath = {

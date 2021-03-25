@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { RootStateType } from '../../reducer/root-reducer';
 import styles from './Footer.module.css';
 import * as actions from '../../actions/menu-actions';
@@ -7,6 +8,7 @@ import { MenuState } from '../../reducer/menu-reducer';
 import gamesImg from '../../assets/images/games.svg';
 import ebookImg from '../../assets/images/e-book.svg';
 import statisticImg from '../../assets/images/statistic.svg';
+import { mainPath } from '../../utils/constants';
 
 type MapDispatchToProps = {
   bottomMenuOpen: (value: boolean) => actions.MenuOpenActionType;
@@ -43,20 +45,28 @@ const Footer: React.FC<Props> = ({ bottomMenuIsOpen, bottomMenuOpen }) => {
           <div
             className={`${styles['bottom-button']} ${styles['button_margin-small']}`}
           >
-            <img src={gamesImg} alt="profile" />
+            <Link to={mainPath.gamePage}>
+              <img src={gamesImg} alt="games" />
+            </Link>
           </div>
           <div
             className={`${styles['up-button']} ${styles['button_margin-big']}`}
           >
-            <img src={ebookImg} alt="about team" />
+            <Link to={mainPath.ebookPage}>
+              <img src={ebookImg} alt="ebook" />
+            </Link>
           </div>
           <div
             className={`${styles['up-button']} ${styles['button_margin-small']}`}
           >
-            <img src={ebookImg} alt="info" />
+            <Link to={mainPath.main}>
+              <img src={ebookImg} alt="main" />
+            </Link>
           </div>
           <div className={styles['bottom-button']}>
-            <img src={statisticImg} alt="settings" />
+            <Link to={mainPath.main}>
+              <img src={statisticImg} alt="statistic" />
+            </Link>
           </div>
         </div>
       </div>

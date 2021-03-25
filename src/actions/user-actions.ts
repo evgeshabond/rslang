@@ -11,6 +11,8 @@ export const USER_CREATE_ERROR = 'USER_CREATE_ERROR';
 export const USER_AUTH_ERROR = 'AUTH_ERROR';
 export const USER_AUTH_OK = 'USER_AUTH_OK';
 export const LOGIN_PAGE_CHANGE = 'LOGIN_PAGE_CHANGE';
+export const USER_LOGOUT = 'USER_LOGOUT';
+export const ERROR_MESSAGE_CLEAR = 'ERROR_MESSAGE_CLEAR';
 
 export type UserType = {
   message: string;
@@ -49,6 +51,10 @@ export type UserAuthActionType = {
 export type UserAuthErrorActionType = {
   type: string;
   payload: UserAuthErrType;
+};
+
+export type UserLogOutActionType = {
+  type: string;
 };
 
 type SaveFromBackDataActions =
@@ -99,6 +105,14 @@ export const loginPageChange = (value: boolean) => ({
 export const userDataLoading = (value: boolean) => ({
   type: USER_CREATE_LOAD,
   payload: value,
+});
+
+export const userLogOut = () => ({
+  type: USER_LOGOUT,
+});
+
+export const errorMessageClear = () => ({
+  type: ERROR_MESSAGE_CLEAR,
 });
 
 const wordService = new LangService();
@@ -162,8 +176,9 @@ const logIn = (params: { email: string; password: string }) => (
     .then((data) => {
       if (data.error) {
         dispatch(userAuthErr(data.error));
+      } else {
+        dispatch(userAuthOk(data));
       }
-      dispatch(userAuthOk(data));
     })
     .catch((err) => console.error('fetch err action user', err));
 };
