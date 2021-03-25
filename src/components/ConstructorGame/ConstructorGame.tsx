@@ -42,6 +42,8 @@ const MyGame: React.FC<Props> = ({
 
   const [isRoundEnd, setRoundEnd] = useState(false);
 
+  const [learned, setLearnCount] = useState(0);
+
   const [chars, updateCharsPosition] = useState([['', '']]);
 
   useEffect(() => {
@@ -83,6 +85,13 @@ const MyGame: React.FC<Props> = ({
     }
   }, [wordObj.word, chars]);
 
+  useEffect(() => {
+    const currentChars = chars.map((char) => char[1]).join('');
+    if (wordObj.word === currentChars && isRoundEnd) {
+      setLearnCount(learned + 1);
+    }
+  }, [isRoundEnd]);
+
   function updateCharsPositionHandler(result: any) {
     if (!result.destination) {
       return;
@@ -96,8 +105,17 @@ const MyGame: React.FC<Props> = ({
   }
 
   const nextRoundHandler = () => {
+    if (learned === 10) {
+      myGameStart(false);
+      setLearnCount(0);
+    }
     setWord(getRandomWord(currentWordList));
     setRoundEnd(false);
+  };
+
+  const startGameHandler = () => {
+    myGameStart(true);
+    setLearnCount(0);
   };
 
   const removeTagsFromString = (originalString: string) =>
@@ -109,16 +127,21 @@ const MyGame: React.FC<Props> = ({
   return myGameIsStarted ? (
     <div className={styles['my-game']}>
       <div className={styles.word__container}>
-        <p className={`${styles.text} ${styles.word}`}>
-          {wordObj.wordTranslate}
-        </p>
+        <div className={styles.word__empty} />
+        <div className={styles.word__inner}>
+          <p className={`${styles.text} ${styles.word}`}>
+            {wordObj.wordTranslate}
+          </p>
+          {isRoundEnd ? (
+            <p className={styles.word__transcription}>
+              {wordObj.transcription}
+            </p>
+          ) : (
+            <p className={styles.description}>Собери слово из букв.</p>
+          )}
+        </div>
+        <div className={styles.counter}>{`${learned}/10`}</div>
       </div>
-
-      {isRoundEnd ? (
-        <p className={styles.word__transcription}>{wordObj.transcription}</p>
-      ) : (
-        <p className={styles.description}>Собери слово из букв.</p>
-      )}
 
       <button
         type="button"
@@ -158,23 +181,23 @@ const MyGame: React.FC<Props> = ({
         </DragDropContext>
       ) : null}
 
-      <img src={`${mainPath.langUrl}${wordObj.image}`} alt={wordObj.word} />
+      <img
+        className={styles.picture}
+        src={`${mainPath.langUrl}${wordObj.image}`}
+        alt={wordObj.word}
+      />
       {isRoundEnd ? (
         <>
-          <p className={styles.description}>Контекст</p>
+          <p className={styles.description}>Пример</p>
           <p className={styles.word__transcription}>{`${
-            wordObj.textMeaning
-              ? `${removeTagsFromString(wordObj.textMeaning)} ${
-                  wordObj.textExample
-                }`
-              : ''
+            wordObj.textExample ? removeTagsFromString(wordObj.textExample) : ''
           }`}</p>
           <button
             className={styles['btn-next']}
             type="button"
             onClick={() => nextRoundHandler()}
           >
-            Далее
+            {learned === 10 ? `Выйти` : `Далее`}
           </button>
         </>
       ) : (
@@ -207,7 +230,7 @@ const MyGame: React.FC<Props> = ({
       <button
         type="button"
         className={styles['play-button']}
-        onClick={() => myGameStart(true)}
+        onClick={() => startGameHandler()}
       >
         <Play className={styles.play} />
       </button>

@@ -28,6 +28,12 @@ div .word {
   margin: 0;
   font-size: 3.6rem;
   line-height: 4.2rem;
+  position: relative;
+  z-index: 20;
+}
+
+.word__inner {
+  margin: 0 auto;
 }
 
 .description {
@@ -87,6 +93,22 @@ div .word {
 .word__wrapper {
   display: flex;
   list-style-type: none;
+  justify-content: center;
+
+  margin: 1rem 0;
+  width: 100%;
+}
+
+.word__container {
+  display: flex;
+  justify-content: center;
+
+  margin-top: 50px;
+  width: 100%;
+}
+
+.word__empty {
+  margin-left: 130px;
 }
 
 .word__char {
@@ -94,7 +116,7 @@ div .word {
   align-items: center;
   justify-content: center;
 
-  margin: 1rem;
+  margin: 0 1rem;
   height: 50px;
   width: 60px;
 
@@ -133,4 +155,57 @@ div .word {
   color: #733999;
 
   filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.25));
+}
+
+.picture {
+  max-width: 75%;
+}
+
+.counter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-right: 60px;
+
+  width: 70px;
+  height: 70px;
+
+  background: linear-gradient(180deg, #ebf3ff 0%, #f7d2fb 100%);
+  border: 5px solid #45f9a3;
+  border-radius: 50px;
+  box-sizing: border-box;
+
+  font-weight: 900;
+  font-size: 1.8rem;
+  line-height: 2.1rem;
+
+  text-align: center;
+  text-transform: capitalize;
+
+  color: #733999;
+}
+
+@media screen and (max-width: 800px) {
+  .word__char {
+    margin: 0 0.4rem;
+  }
+}
+
+@media screen and (max-width: 680px) {
+  .cat_sleeping {
+    right: -67px;
+  }
+  .word__char {
+    margin: 0 0.2rem;
+  }
+}
+@media screen and (max-width: 500px) {
+  .cat_sleeping {
+    right: -100px;
+  }
+
+  .word__char {
+    margin: 0 0.1rem;
+  }
 }
