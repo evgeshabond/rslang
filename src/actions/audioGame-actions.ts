@@ -6,12 +6,10 @@ const audioGameStart = (value: boolean) => ({
 })
 
 
-export type WordListLoadedAType = {
+export type AudioGameStartActionType = {
   type: string;
   payload: boolean;
 };
-
-
 
 
 export { audioGameStart, AUDIO_GAME_STATUS }

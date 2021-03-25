@@ -4,12 +4,14 @@ import styles from './main-page.module.css';
 import buttonStyles from '../../components/button-main/button-main.module.css';
 import { mainPath } from '../../utils/constants';
 import { MainCat } from '../../components/cats-img/main-cat/Main-cat';
+import AudioGame from '../../components/AudioGame/AudioGame';
 
 const MainPage: React.FC = () => {
   console.log('main');
   return (
+
     <div className={styles['main-wrapper']}>
-      <div className={styles['main-header']}>
+      {/* <div className={styles['main-header']}>
         Самый быстрый способ
         <br /> выучить английский язык
       </div>
@@ -25,7 +27,8 @@ const MainPage: React.FC = () => {
           Узнать больше
         </Link>
       </div>
-      <MainCat />
+        <MainCat /> */}
+      {/* <AudioGame /> */}
     </div>
   );
 };

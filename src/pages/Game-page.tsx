@@ -1,5 +1,6 @@
 import React from 'react';
+import AudioGame from '../components/AudioGame/AudioGame';
 
-const GamePage: React.FC = () => <div>Game Page</div>;
+const GamePage: React.FC = () => <AudioGame />;
 
 export default GamePage;

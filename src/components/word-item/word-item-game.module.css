@@ -1,0 +1,19 @@
+.word__item{
+  user-select: none;
+  width: 200px;
+  height: 50px;
+  border-radius: 30px;
+  color: #5b2467;
+  background-color: #FDEBFF;
+  box-shadow:  -12px -12px 24px #FFF,  12px 12px 24px #B4C1D5;
+  font-family: Roboto;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 50px;
+  letter-spacing: 0em;
+  text-align: center;
+  vertical-align: middle;
+  margin: 10px;
+
+}
