@@ -12,6 +12,7 @@ import { PauseButton } from '../../components/button-icons/pause-button/pause-bu
 import { QuestionButton } from '../../components/button-icons/question-button/question-button';
 import { RefreshButton } from '../../components/button-icons/refresh-button.tsx/refresh-button';
 import { SettingsButton } from '../../components/button-icons/settings-button/settings-button';
+import { PlayButton } from '../../components/button-icons/playBig-button/playBig-button';
 
 const MainPage: React.FC = () => {
   console.log('main');
@@ -33,18 +34,25 @@ const MainPage: React.FC = () => {
           Узнать больше
         </Link>
       </div>
-      <CloseButton buttonClick={() => console.log('click')} />
+      <div className={styles['main-button-container']}>
+        <CloseButton buttonClick={() => console.log('click')} />
 
-      <PauseButton buttonClick={() => console.log('click')} />
-      <AudioOnButton buttonClick={() => console.log('click')} />
-      <QuestionButton buttonClick={() => console.log('click')} />
-      <RefreshButton buttonClick={() => console.log('click')} />
-      <SettingsButton buttonClick={() => console.log('click')} />
-      <QuestionButton buttonClick={() => console.log('click')} />
-      <HeardIcon type={0} buttonClick={() => console.log('click')} />
-      <HeardIcon type={1} />
-      <LevelIcon type={0} number={1} buttonClick={() => console.log('click')} />
-      <LevelIcon type={1} number={2} />
+        <PauseButton buttonClick={() => console.log('click')} />
+        <AudioOnButton buttonClick={() => console.log('click')} />
+        <QuestionButton buttonClick={() => console.log('click')} />
+        <RefreshButton buttonClick={() => console.log('click')} />
+        <SettingsButton buttonClick={() => console.log('click')} />
+        <QuestionButton buttonClick={() => console.log('click')} />
+        <PlayButton buttonClick={() => console.log('click')} />
+        <HeardIcon type={0} buttonClick={() => console.log('click')} />
+        <HeardIcon type={1} />
+        <LevelIcon
+          type={0}
+          number={1}
+          buttonClick={() => console.log('click')}
+        />
+        <LevelIcon type={1} number={2} />
+      </div>
       <MainCat />
     </div>
   );
