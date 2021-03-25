@@ -11,7 +11,7 @@ const EbookPage: React.FC = () => (
       <LinkButton link={mainPath.ebookPage} buttonName="Словарь" />
     </div>
     <div className={styles['ebook-buttons-container']}>
-      <LinkButton link={mainPath.ebookPage} buttonName="Определеить уровень" />
+      <LinkButton link={mainPath.ebookPage} buttonName="Определить уровень" />
       <LinkButton link={mainPath.gamePage} buttonName="Мини игры" />
     </div>
     <MainCat />
