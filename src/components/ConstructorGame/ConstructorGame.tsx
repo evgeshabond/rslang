@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import styles from './My-game.module.css';
+import styles from './ConstructorGame.module.css';
 import { ReactComponent as Play } from '../../assets/images/video-player-mini.svg';
 import { ReactComponent as CatSleeping } from '../../assets/images/cat-sleeping.svg';
 import { ReactComponent as ExitButton } from '../../assets/images/exit-button-mini.svg';
@@ -9,6 +9,8 @@ import { RootStateType } from '../../reducer/root-reducer';
 import * as actions from '../../actions/my-game-actions';
 import { MyGameStartState } from '../../reducer/my-game-reducer';
 import { WordStateType } from '../../reducer/word-reducer';
+import { CurrentWordListType } from '../../actions/word-actions';
+import { mainPath } from '../../utils/constants';
 
 type MapDispatchToProps = {
   myGameStart: (value: boolean) => actions.MyGameStartActionType;
@@ -34,15 +36,23 @@ const MyGame: React.FC<Props> = ({
   myGameIsStarted,
   currentWordList,
 }) => {
-  const [word, setWord] = useState('');
+  const [wordObj, setWord] = useState<CurrentWordListType>(
+    {} as CurrentWordListType
+  );
+
+  const [isRoundEnd, setRoundEnd] = useState(false);
+
+  const [chars, updateCharsPosition] = useState([['', '']]);
 
   useEffect(() => {
-    const currentWords = currentWordList.map((item) => item.word);
-    setWord(getRandomWord(currentWords));
+    setWord(getRandomWord(currentWordList));
   }, [currentWordList]);
 
   useEffect(() => {
-    const wordArray = word.split('');
+    if (wordObj.word === undefined) {
+      return;
+    }
+    const wordArray = wordObj.word.split('');
 
     const shuffledWordArray = shuffle(wordArray);
 
@@ -54,9 +64,24 @@ const MyGame: React.FC<Props> = ({
     const charArray = Object.entries(wordObject);
 
     updateCharsPosition(charArray);
-  }, [word]);
 
-  const [chars, updateCharsPosition] = useState([['', '']]);
+    if (isRoundEnd) {
+      const startWordObject: WordObjectType = {};
+      wordArray.forEach((char, index) => {
+        startWordObject[index.toString()] = char;
+      });
+
+      const resultArray = Object.entries(startWordObject);
+      updateCharsPosition(resultArray);
+    }
+  }, [wordObj, isRoundEnd, wordObj.word]);
+
+  useEffect(() => {
+    const currentChars = chars.map((char) => char[1]).join('');
+    if (wordObj.word === currentChars) {
+      setRoundEnd(true);
+    }
+  }, [wordObj.word, chars]);
 
   function updateCharsPositionHandler(result: any) {
     if (!result.destination) {
@@ -70,15 +95,31 @@ const MyGame: React.FC<Props> = ({
     updateCharsPosition(items);
   }
 
+  const nextRoundHandler = () => {
+    setWord(getRandomWord(currentWordList));
+    setRoundEnd(false);
+  };
+
+  const removeTagsFromString = (originalString: string) =>
+    originalString.replace(/(<([^>]+)>)/gi, '');
+
+  const removeTagsAndContextWord = (originalString: string) =>
+    originalString.replace(/<([^>]+?)([^>]*?)>(.*?)<\/\1>/gi, '...');
+
   return myGameIsStarted ? (
     <div className={styles['my-game']}>
       <div className={styles.word__container}>
-        <p className={`${styles.text} ${styles.word}`}>{word}</p>
+        <p className={`${styles.text} ${styles.word}`}>
+          {wordObj.wordTranslate}
+        </p>
       </div>
 
-      <h3 className={`${styles.text} ${styles.description}`}>
-        Собери слово из букв.
-      </h3>
+      {isRoundEnd ? (
+        <p className={styles.word__transcription}>{wordObj.transcription}</p>
+      ) : (
+        <p className={styles.description}>Собери слово из букв.</p>
+      )}
+
       <button
         type="button"
         className={styles['exit-button']}
@@ -116,15 +157,52 @@ const MyGame: React.FC<Props> = ({
           </Droppable>
         </DragDropContext>
       ) : null}
+
+      <img src={`${mainPath.langUrl}${wordObj.image}`} alt={wordObj.word} />
+      {isRoundEnd ? (
+        <>
+          <p className={styles.description}>Контекст</p>
+          <p className={styles.word__transcription}>{`${
+            wordObj.textMeaning
+              ? `${removeTagsFromString(wordObj.textMeaning)} ${
+                  wordObj.textExample
+                }`
+              : ''
+          }`}</p>
+          <button
+            className={styles['btn-next']}
+            type="button"
+            onClick={() => nextRoundHandler()}
+          >
+            Далее
+          </button>
+        </>
+      ) : (
+        <>
+          <p className={styles.description}>Контекст</p>
+          <p className={styles.word__transcription}>
+            {`${
+              wordObj.textMeaning
+                ? removeTagsAndContextWord(wordObj.textMeaning)
+                : ''
+            }`}
+          </p>
+          <button
+            className={styles['btn-next']}
+            type="button"
+            onClick={() => setRoundEnd(true)}
+          >
+            Не знаю
+          </button>
+        </>
+      )}
+      <CatSleeping className={styles.cat_sleeping} />
     </div>
   ) : (
     <div className={styles['my-game']}>
-      <h2 className={styles.title}>cвоя игра</h2>
+      <h2 className={styles.title}>конструктор слов</h2>
       <p className={styles.text}>
-        Это тренировка для повторения заученных слов из вашего словаря.
-      </p>
-      <p className={styles.text}>
-        Выберите соответствует ли перевод предложенному слову.
+        Составление оригинального слова по переводу.
       </p>
       <button
         type="button"
@@ -133,6 +211,7 @@ const MyGame: React.FC<Props> = ({
       >
         <Play className={styles.play} />
       </button>
+
       <CatSleeping className={styles.cat_sleeping} />
     </div>
   );
