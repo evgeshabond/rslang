@@ -4,6 +4,14 @@ import styles from './main-page.module.css';
 import buttonStyles from '../../components/button-main/button-main.module.css';
 import { mainPath } from '../../utils/constants';
 import { MainCat } from '../../components/cats-img/main-cat/Main-cat';
+import { AudioOnButton } from '../../components/button-icons/audiOn-button/audioOn-button';
+import { CloseButton } from '../../components/button-icons/close-button/close-button';
+import { HeardIcon } from '../../components/button-icons/heard-icon/heard-icon';
+import { LevelIcon } from '../../components/button-icons/level-icons/level-icons';
+import { PauseButton } from '../../components/button-icons/pause-button/pause-button';
+import { QuestionButton } from '../../components/button-icons/question-button/question-button';
+import { RefreshButton } from '../../components/button-icons/refresh-button.tsx/refresh-button';
+import { SettingsButton } from '../../components/button-icons/settings-button/settings-button';
 
 const MainPage: React.FC = () => {
   console.log('main');
@@ -25,6 +33,18 @@ const MainPage: React.FC = () => {
           Узнать больше
         </Link>
       </div>
+      <CloseButton buttonClick={() => console.log('click')} />
+
+      <PauseButton buttonClick={() => console.log('click')} />
+      <AudioOnButton buttonClick={() => console.log('click')} />
+      <QuestionButton buttonClick={() => console.log('click')} />
+      <RefreshButton buttonClick={() => console.log('click')} />
+      <SettingsButton buttonClick={() => console.log('click')} />
+      <QuestionButton buttonClick={() => console.log('click')} />
+      <HeardIcon type={0} buttonClick={() => console.log('click')} />
+      <HeardIcon type={1} />
+      <LevelIcon type={0} number={1} buttonClick={() => console.log('click')} />
+      <LevelIcon type={1} number={2} />
       <MainCat />
     </div>
   );
