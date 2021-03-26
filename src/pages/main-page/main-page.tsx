@@ -4,9 +4,6 @@ import styles from './main-page.module.css';
 import buttonStyles from '../../components/button-main/button-main.module.css';
 import { mainPath } from '../../utils/constants';
 import { MainCat } from '../../components/cats-img/main-cat/Main-cat';
-<<<<<<< HEAD
-import AudioGame from '../../components/AudioGame/AudioGame';
-=======
 import { AudioOnButton } from '../../components/button-icons/audiOn-button/audioOn-button';
 import { CloseButton } from '../../components/button-icons/close-button/close-button';
 import { HeardIcon } from '../../components/button-icons/heard-icon/heard-icon';
@@ -16,14 +13,13 @@ import { QuestionButton } from '../../components/button-icons/question-button/qu
 import { RefreshButton } from '../../components/button-icons/refresh-button.tsx/refresh-button';
 import { SettingsButton } from '../../components/button-icons/settings-button/settings-button';
 import { PlayButton } from '../../components/button-icons/playBig-button/playBig-button';
->>>>>>> c1e5fab9dee2dd277d23be00bab9b65c7931c814
 
 const MainPage: React.FC = () => {
   console.log('main');
   return (
 
     <div className={styles['main-wrapper']}>
-      {/* <div className={styles['main-header']}>
+      <div className={styles['main-header']}>
         Самый быстрый способ
         <br /> выучить английский язык
       </div>
@@ -39,13 +35,8 @@ const MainPage: React.FC = () => {
           Узнать больше
         </Link>
       </div>
-<<<<<<< HEAD
-        <MainCat /> */}
-      {/* <AudioGame /> */}
-=======
       <div className={styles['main-button-container']}>
         <CloseButton buttonClick={() => console.log('click')} />
-
         <PauseButton buttonClick={() => console.log('click')} />
         <AudioOnButton buttonClick={() => console.log('click')} />
         <QuestionButton buttonClick={() => console.log('click')} />
@@ -63,7 +54,6 @@ const MainPage: React.FC = () => {
         <LevelIcon type={1} number={2} />
       </div>
       <MainCat />
->>>>>>> c1e5fab9dee2dd277d23be00bab9b65c7931c814
     </div>
   );
 };
