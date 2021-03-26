@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import GamePage from '../../pages/game-page/Game-page';
 import { MainPage } from '../../pages/main-page/main-page';
 import WordsList from '../word-list/words-list';
