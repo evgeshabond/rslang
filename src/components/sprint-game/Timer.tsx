@@ -12,18 +12,13 @@ export const Timer: React.FC<Props> = ({ initialTimer, nextPage }) => {
   const [startTimer, setStartTimer] = useState(initialTimer);
   const dispatch = useDispatch();
 
-  useEffect(() =>{
-    if(startTimer > 0 ){
-        setTimeout(() => setStartTimer(startTimer - 1), 1000)
-    }
-    else{
-    dispatch(sprintGameStatusChange(nextPage));
+  useEffect(() => {
+    if (startTimer > 0) {
+      setTimeout(() => setStartTimer(startTimer - 1), 1000);
+    } else {
+      dispatch(sprintGameStatusChange(nextPage));
     }
   }, [startTimer]);
 
-  return (
-    <div className={styles.timer}>
-        {startTimer}
-    </div>
-  );
+  return <div className={styles.timer}>{startTimer}</div>;
 };

@@ -1,0 +1,16 @@
+.game__wrapper {
+  min-height: 440px;
+  /* height: 80%; */
+  min-width: 1022px;
+  width: 100%;
+  background-color: #fdebff;
+  font-family: 'Roboto';
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  color: #733999;
+  position: relative;
+  font-size: 1.8rem;
+}

@@ -7,8 +7,8 @@ img{
 }
 .game__wrapper {
   min-height: 440px;
-  /* height: 80%; */
-  min-width: 1022px;
+  height: 80%;
+  max-width: 1022px;
   width: 100%;
   background-color: #fdebff;
   font-family: 'Roboto';
