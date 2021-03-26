@@ -6,9 +6,13 @@ import { RootStateType } from '../../reducer/root-reducer';
 import { SprintGameStateType } from '../../reducer/sprint-game-reducer';
 import { SprintGameStatusChangeActionType } from '../../actions/sprint-game-action';
 import { WordStateType } from '../../reducer/word-reducer';
-
-import { ReactComponent as PlayButton } from '../../assets/images/play.svg';
 import { ReactComponent as Cat } from '../../assets/images/happy.svg';
+import { RefreshButton } from '../button-icons/refresh-button.tsx/refresh-button';
+import { QuestionButton } from '../button-icons/question-button/question-button';
+import { CloseButton } from '../button-icons/close-button/close-button';
+import { PlayButton } from '../button-icons/playBig-button/playBig-button';
+import { LevelIcon } from '../button-icons/level-icons/level-icons';
+import { Timer } from './Timer';
 
 type MapDispatchToProps = {
   sprintGameStatusChange: (value: string) => SprintGameStatusChangeActionType;
@@ -19,9 +23,10 @@ type Props = SprintGameStateType & MapDispatchToProps & WordStateType;
 const SprintGame: React.FC<Props> = ({
   currentWordList,
   gameStatus,
+
   sprintGameStatusChange,
 }) => {
-  const [startTimer, setStartTimer] = useState(5);
+  // const [startTimer, setStartTimer] = useState(5);
 
   useEffect(() => {
     console.log(currentWordList);
@@ -33,25 +38,66 @@ const SprintGame: React.FC<Props> = ({
       <p>Это тренировка для повторения заученных слов из вашего словаря.</p>
       <p> Выберите соответствует ли перевод предложенному слову.</p>
       <Cat className={styles.cat__img} />
-      <button
-        type="button"
-        className={styles.play__button}
-        onClick={() => sprintGameStatusChange('timer')}
-      >
-        <PlayButton />
-      </button>
+
+      <PlayButton buttonClick={() => sprintGameStatusChange('timer')} />
     </div>
   );
 
-
   const renderTimerPage = () => (
     <div className={styles.game__wrapper}>
-      <div className={styles.timer}> { startTimer >0 &&setTimeout(() => setStartTimer(startTimer - 1), 1000) ? startTimer : sprintGameStatusChange('play')}</div>
+      <Timer initialTimer={5} nextPage='play'/>
+      {/* <div className={styles.timer}>
+        {' '}
+        {startTimer > 0 && setTimeout(() => setStartTimer(startTimer - 1), 1000)
+          ? startTimer
+          : sprintGameStatusChange('play')}
+      </div> */}
       <p>Приготовьтесь!</p>
     </div>
   );
 
-  const renderGamePage = () => <h1>hello</h1>;
+  const renderGamePage = () => (
+    <div className={`${styles.game__wrapper} ${styles.play}`}>
+      <div className={styles.sidebar}>
+        <LevelIcon
+          buttonClick={() => console.log('level')}
+          type={0}
+          number={1}
+        />
+        <LevelIcon
+          buttonClick={() => console.log('level')}
+          type={0}
+          number={2}
+        />
+            <LevelIcon
+          buttonClick={() => console.log('level')}
+          type={0}
+          number={3}
+        />
+            <LevelIcon
+          buttonClick={() => console.log('level')}
+          type={0}
+          number={4}
+        />
+            <LevelIcon
+          buttonClick={() => console.log('level')}
+          type={0}
+          number={5}
+        />
+            <LevelIcon
+          buttonClick={() => console.log('level')}
+          type={0}
+          number={6}
+        />
+      </div>
+      <div className={styles.game__field}>cards</div>
+      <div className={styles.side__buttons}>
+        <RefreshButton buttonClick={() => console.log('click')} />
+        <QuestionButton buttonClick={() => console.log('click')} />
+        <CloseButton buttonClick={() => console.log('click')} />
+      </div>
+    </div>
+  );
 
   return (
     <div className={styles.sprint__game}>
