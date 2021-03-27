@@ -7,6 +7,7 @@ import ControlledSelect from '../../components/ControlledSelect/ControlledSelect
 
 const GamePage: React.FC = () => (
   <div className={rootStyles['ebook-container']}>
+    <h2 className={rootStyles.title}>Мини-игры</h2>
     <div className={rootStyles['ebook-buttons-container']}>
       <LinkButton link={mainPath.gamePage} buttonName="Саванна" />
       <LinkButton link={mainPath.gamePage} buttonName="Аудиовызов" />
