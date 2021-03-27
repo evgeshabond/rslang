@@ -20,7 +20,7 @@ type MapDispatchToProps = {
 
 type Props = MapDispatchToProps & MyGameStartState & WordStateType;
 
-const shuffle = (array: Array<string>) => {
+const shuffle = (array: any) => {
   const arrCopy = [...array];
   for (let i = arrCopy.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -28,8 +28,6 @@ const shuffle = (array: Array<string>) => {
   }
   return arrCopy;
 };
-const getRandomWord = (items: any) =>
-  items[Math.floor(Math.random() * items.length)];
 
 type WordObjectType = { [key: string]: string };
 
@@ -38,12 +36,11 @@ const MyGame: React.FC<Props> = ({
   myGameIsStarted,
   currentWordList,
 }) => {
-  const [wordObj, setWord] = useState<CurrentWordListType>(
+  const [wordObj, setWordObj] = useState<CurrentWordListType>(
     {} as CurrentWordListType
   );
 
   const [isRoundEnd, setRoundEnd] = useState(false);
-  // const [isAudioPlay, setAudioPlay] = useState(false);
 
   const [learned, setLearnCount] = useState(0);
   const [roundCount, setRoundCount] = useState(0);
@@ -54,9 +51,13 @@ const MyGame: React.FC<Props> = ({
     interrupt: true,
   });
 
+  const [shuffledWordList, setShuffledWordList] = useState(
+    shuffle(currentWordList)
+  );
+
   useEffect(() => {
-    setWord(getRandomWord(currentWordList));
-  }, [currentWordList]);
+    setWordObj(shuffledWordList[roundCount]);
+  }, [shuffledWordList, roundCount]);
 
   useEffect(() => {
     if (wordObj.word === undefined) {
@@ -120,11 +121,11 @@ const MyGame: React.FC<Props> = ({
     }
 
     setRoundCount(roundCount + 1);
-    setWord(getRandomWord(currentWordList));
     setRoundEnd(false);
   };
 
   const startGameHandler = () => {
+    setShuffledWordList(shuffle(currentWordList));
     myGameStart(true);
     setLearnCount(0);
     setRoundCount(0);
