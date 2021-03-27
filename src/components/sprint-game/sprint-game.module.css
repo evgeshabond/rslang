@@ -7,8 +7,8 @@ img{
 }
 .game__wrapper {
   min-height: 440px;
-  height: 80%;
-  max-width: 1022px;
+  /* height: 80%; */
+  min-width: 1022px;
   width: 100%;
   background-color: #fdebff;
   font-family: 'Roboto';
@@ -30,9 +30,10 @@ h2 {
 
 p {
   font-size: 1.8rem;
+  max-width: 60rem;
 }
 
-.cat__img {
+svg {
   position: absolute;
   right: -100px;
 }
@@ -54,4 +55,20 @@ p {
 .game__wrapper.play {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  min-height: 570px;
+  min-width: 1022px;
+}
+
+.game__field{
+  max-width: 710px;
+  width: 100%;
+  min-height: 460px;
+  height: 100%;
+  background-color: #ffff;
+  border-radius: 30px;
+}
+
+.side__buttons{
+
 }

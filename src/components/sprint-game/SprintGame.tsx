@@ -3,7 +3,6 @@ import { connect, useDispatch } from 'react-redux';
 import * as actions from '../../actions/sprint-game-action';
 import styles from './sprint-game.module.css';
 import { RootStateType } from '../../reducer/root-reducer';
-// import { SprintGameStateType } from '../../reducer/sprint-game-reducer';
 import { SprintGameStatusChangeActionType } from '../../actions/sprint-game-action';
 import { RefreshButton } from '../button-icons/refresh-button.tsx/refresh-button';
 import { QuestionButton } from '../button-icons/question-button/question-button';
@@ -11,6 +10,7 @@ import { CloseButton } from '../button-icons/close-button/close-button';
 import { LevelIcon } from '../button-icons/level-icons/level-icons';
 import { Timer } from './Timer';
 import { TitleGamePage } from '../title-game-page/TitleGamePage';
+import {ReactComponent as Cat } from '../../assets/images/cat2.svg';
 
 type Props = {
   currentWordList: {};
@@ -36,13 +36,14 @@ const SprintGame: React.FC<Props> = ({
     <div className={styles.game__wrapper}>
       <Timer initialTimer={5} nextPage="play" />
       <p>Приготовьтесь!</p>
+      <Cat className={styles.cat__img}/>
     </div>
   );
 
   const renderGamePage = () => (
     <div className={`${styles.game__wrapper} ${styles.play}`}>
       <div className={styles.sidebar}>
-        <Timer initialTimer={60} nextPage="finish" />
+        <Timer initialTimer={600} nextPage="finish" />
         <LevelIcon
           buttonClick={() => console.log('level')}
           type={0}
