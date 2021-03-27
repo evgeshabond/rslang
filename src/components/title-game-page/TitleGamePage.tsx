@@ -1,4 +1,4 @@
-import React, { ReactComponentElement } from 'react';
+import React from 'react';
 import { PlayButton } from '../button-icons/playBig-button/playBig-button';
 
 import { ReactComponent as Cat1 } from '../../assets/images/cat1.svg';
@@ -13,7 +13,7 @@ type Props = {
   buttonClick: () => void;
 };
 
-export const RenderStartGamePage: React.FC<Props> = ({
+export const TitleGamePage: React.FC<Props> = ({
   gameTitle,
   gameDescription,
   buttonClick,
@@ -36,9 +36,7 @@ export const RenderStartGamePage: React.FC<Props> = ({
     <div className={styles.game__wrapper}>
       <h2>{gameTitle}</h2>
       <p>{gameDescription}</p>
-
       {renderCat()}
-
       <PlayButton buttonClick={buttonClick} />
     </div>
   );

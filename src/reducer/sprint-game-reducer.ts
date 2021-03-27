@@ -15,6 +15,8 @@ export type SprintGameStateType = {
 };
 
 const initialState = {
+  gameTitle: 'СПРИНТ',
+  gameDescription: `Это тренировка для повторения заученных слов из вашего словаря. Выберите соответствует ли перевод предложенному слову.`,
   gameStatus: 'start',
   points: 0,
   level: 0,
