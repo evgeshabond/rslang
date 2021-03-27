@@ -81,11 +81,25 @@ div .word {
 }
 
 .exit-button {
-  width: 30px;
-  height: 30px;
+  display: flex;
+  align-items: center;
   position: absolute;
   top: 20px;
   right: 26px;
+  width: 30px;
+  height: 30px;
+  background-color: inherit;
+  border: none;
+}
+
+.audio-button {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 20px;
+  right: 66px;
+  width: 30px;
+  height: 30px;
   background-color: inherit;
   border: none;
 }

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import useSound from 'use-sound';
 import styles from './ConstructorGame.module.css';
 import { ReactComponent as Play } from '../../assets/images/video-player-mini.svg';
 import { ReactComponent as CatSleeping } from '../../assets/images/cat-sleeping.svg';
 import { ReactComponent as ExitButton } from '../../assets/images/exit-button-mini.svg';
+import { ReactComponent as AudioOn } from '../../assets/images/audioOn.svg';
 import { RootStateType } from '../../reducer/root-reducer';
 import * as actions from '../../actions/my-game-actions';
 import { MyGameStartState } from '../../reducer/my-game-reducer';
@@ -41,11 +43,16 @@ const MyGame: React.FC<Props> = ({
   );
 
   const [isRoundEnd, setRoundEnd] = useState(false);
+  // const [isAudioPlay, setAudioPlay] = useState(false);
 
   const [learned, setLearnCount] = useState(0);
   const [roundCount, setRoundCount] = useState(0);
 
   const [chars, updateCharsPosition] = useState([['', '']]);
+
+  const [wordSound] = useSound(`${mainPath.langUrl}${wordObj.audio}`, {
+    interrupt: true,
+  });
 
   useEffect(() => {
     setWord(getRandomWord(currentWordList));
@@ -83,6 +90,7 @@ const MyGame: React.FC<Props> = ({
     const currentChars = chars.map((char) => char[1]).join('');
     if (wordObj.word === currentChars) {
       setRoundEnd(true);
+      wordSound();
     }
   }, [wordObj.word, chars]);
 
@@ -106,7 +114,7 @@ const MyGame: React.FC<Props> = ({
   }
 
   const nextRoundHandler = () => {
-    if (learned === 10) {
+    if (roundCount === 10) {
       myGameStart(false);
       setLearnCount(0);
     }
@@ -119,6 +127,7 @@ const MyGame: React.FC<Props> = ({
   const startGameHandler = () => {
     myGameStart(true);
     setLearnCount(0);
+    setRoundCount(0);
     setRoundEnd(false);
   };
 
@@ -146,6 +155,13 @@ const MyGame: React.FC<Props> = ({
         </div>
         <div className={styles.counter}>{`${roundCount}/10`}</div>
       </div>
+      <button
+        type="button"
+        className={styles['audio-button']}
+        onClick={() => (isRoundEnd ? wordSound() : null)}
+      >
+        <AudioOn />
+      </button>
       <button
         type="button"
         className={styles['exit-button']}
