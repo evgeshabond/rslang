@@ -4,7 +4,6 @@ import { LinkButton } from '../../components/link-button/Link-button';
 import { mainPath } from '../../utils/constants';
 import rootStyles from '../e-book-page/e-book-page.module.css';
 import ControlledSelect from '../../components/ControlledSelect/ControlledSelect';
-import SimpleMenu from '../../components/SimpleMenu/SimpleMenu';
 
 const GamePage: React.FC = () => (
   <div className={rootStyles['ebook-container']}>
@@ -20,7 +19,6 @@ const GamePage: React.FC = () => (
       />
     </div>
     <ControlledSelect />
-    <SimpleMenu />
     <MainCat />
   </div>
 );
