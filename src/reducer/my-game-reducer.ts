@@ -10,6 +10,7 @@ export type MyGameStartState = {
 const initialState: MyGameStartState = {
   myGameIsStarted: false,
 };
+
 const myGameReducer = (state = initialState, action: MyGameStartActionType) => {
   switch (action.type) {
     case MY_GAME_PLAY_STATUS:

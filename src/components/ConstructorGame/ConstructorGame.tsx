@@ -43,6 +43,7 @@ const MyGame: React.FC<Props> = ({
   const [isRoundEnd, setRoundEnd] = useState(false);
 
   const [learned, setLearnCount] = useState(0);
+  const [roundCount, setRoundCount] = useState(0);
 
   const [chars, updateCharsPosition] = useState([['', '']]);
 
@@ -109,6 +110,8 @@ const MyGame: React.FC<Props> = ({
       myGameStart(false);
       setLearnCount(0);
     }
+
+    setRoundCount(roundCount + 1);
     setWord(getRandomWord(currentWordList));
     setRoundEnd(false);
   };
@@ -141,9 +144,8 @@ const MyGame: React.FC<Props> = ({
             <p className={styles.description}>Собери слово из букв.</p>
           )}
         </div>
-        <div className={styles.counter}>{`${learned}/10`}</div>
+        <div className={styles.counter}>{`${roundCount}/10`}</div>
       </div>
-
       <button
         type="button"
         className={styles['exit-button']}
@@ -181,7 +183,6 @@ const MyGame: React.FC<Props> = ({
           </Droppable>
         </DragDropContext>
       ) : null}
-
       <img
         className={styles.picture}
         src={`${mainPath.langUrl}${wordObj.image}`}
@@ -198,7 +199,7 @@ const MyGame: React.FC<Props> = ({
             type="button"
             onClick={() => nextRoundHandler()}
           >
-            {learned === 10 ? `Выйти` : `Далее`}
+            {roundCount === 10 ? `Выйти` : `Далее`}
           </button>
         </>
       ) : (
