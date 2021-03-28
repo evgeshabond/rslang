@@ -1,56 +1,116 @@
 import React, { useEffect, useState } from 'react';
-import { connect, useDispatch } from 'react-redux';
-import * as actions from '../../actions/sprint-game-action';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './sprint-game.module.css';
 import { RootStateType } from '../../reducer/root-reducer';
-import { SprintGameStatusChangeActionType } from '../../actions/sprint-game-action';
+import { sprintGameStatusChange } from '../../actions/sprint-game-action';
 import { RefreshButton } from '../button-icons/refresh-button.tsx/refresh-button';
 import { QuestionButton } from '../button-icons/question-button/question-button';
 import { CloseButton } from '../button-icons/close-button/close-button';
 import { LevelIcon } from '../button-icons/level-icons/level-icons';
 import { Timer } from './Timer';
 import { TitleGamePage } from '../title-game-page/TitleGamePage';
-import {ReactComponent as Cat } from '../../assets/images/cat2.svg';
+import { ReactComponent as Cat } from '../../assets/images/cat2.svg';
+import { ReactComponent as Timer1 } from '../../assets/images/timer1.svg';
+import { ReactComponent as Timer2 } from '../../assets/images/timer2.svg';
+import banner from '../../assets/images/sprint-top.png';
 
-type Props = {
-  currentWordList: {};
-  gameStatus: string;
-  gameTitle: string;
-  gameDescription: string;
-  sprintGameStatusChange: (value: string) => SprintGameStatusChangeActionType;
-};
-const SprintGame: React.FC<Props> = ({
-  currentWordList,
-  gameStatus,
-  gameTitle,
-  gameDescription,
-  sprintGameStatusChange,
-}) => {
+const SprintGame: React.FC = () => {
   const dispatch = useDispatch();
 
+  const wordList = useSelector(
+    (state: RootStateType) => state.wordState.currentWordList
+  );
+  const gameStatuses = useSelector(
+    (state: RootStateType) => state.sprintGameState
+  );
+  const { gameTitle, gameDescription, gameStatus } = gameStatuses;
+
+  console.log(wordList);
+const [wordCounter, setWordCounter] = useState(0);
+const [points, setPoints] = useState(0);
+
+const doubleArray = wordList.slice();
+  const shuffledArray = doubleArray.sort(() => Math.random() - 0.5);//  создала свой ээрей и перемешала его
+  const translationArray = wordList.map((elem) => elem.wordTranslate).sort(() => Math.random() - 0.5); // массив с переводом
+  console.log(translationArray, 'translation')
+  console.log(shuffledArray, 'shuffled')
+  console.log(wordList, 'wordlist')
+
   useEffect(() => {
-    console.log(currentWordList);
-  }, [currentWordList]);
+  }, [wordList]);
 
   const renderTimerPage = () => (
-    <div className={styles.game__wrapper}>
-      <Timer initialTimer={5} nextPage="play" />
+    <div className={`${styles.game__wrapper} ${styles.timer__page}`}>
+      <div className={styles.firstWatch__wrapper}>
+        <Timer initialTimer={5} nextPage="play" timerFontSize="6.4rem" />
+        <Timer1 className={styles.first__timer} />
+      </div>
       <p>Приготовьтесь!</p>
-      <Cat className={styles.cat__img}/>
+      <Cat className={styles.cat__img} />
     </div>
   );
+
+  const checkTheWordRight =() =>{
+    if (shuffledArray[wordCounter].wordTranslate === translationArray[wordCounter]){
+      setPoints(+50);
+    }
+    setWordCounter(+1);
+
+  }
+
+
+
+  const checkTheWordWrong =() =>{
+    if (shuffledArray[wordCounter].wordTranslate !==translationArray[wordCounter]){
+      setPoints(+50);
+    }
+    setWordCounter(+1);
+  }
 
   const renderGamePage = () => (
     <div className={`${styles.game__wrapper} ${styles.play}`}>
       <div className={styles.sidebar}>
-        <Timer initialTimer={600} nextPage="finish" />
+        <div className={styles.watch__wrapper}>
+          <Timer
+            initialTimer={60000}
+            nextPage="finish"
+            timerFontSize="1.8rem"
+          />
+          <Timer2 className={styles.timer2} />
+        </div>
         <LevelIcon
           buttonClick={() => console.log('level')}
           type={0}
           number={1}
         />
       </div>
-      <div className={styles.game__field}>cards</div>
+      <div
+        className={styles.game__field}
+        style={{
+          backgroundImage: `url(${banner})`,
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
+        <div className={styles.total__points} style={{color: 'white'}}>{points}</div>
+        <div className={styles.current__points}>очков за слово</div>
+        <div className={styles.check__points}>circles</div>
+        <div className={styles.balls}> total 4 balls</div>
+        <div className={styles.guess__word}>
+          <div className={styles.the__word}>{shuffledArray[wordCounter].word} </div> - 
+          <div className={styles.translation}>{translationArray[wordCounter]} </div>
+        </div>
+
+        <div className={styles.guess_not}> check</div>
+        <div className={styles.button__toguess}>
+          <button type="button" className={styles.green__button} onClick={checkTheWordRight}>
+            Верно
+          </button>
+          <button type="button" className={styles.red__button} onClick={checkTheWordWrong}>
+            Неверно
+          </button>
+        </div>
+      </div>
+
       <div className={styles.side__buttons}>
         <RefreshButton buttonClick={() => console.log('click')} />
         <QuestionButton buttonClick={() => console.log('click')} />
@@ -77,9 +137,4 @@ const SprintGame: React.FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: RootStateType) => ({
-  ...state.sprintGameState,
-  ...state.wordState,
-});
-
-export default connect(mapStateToProps, actions)(SprintGame);
+export default SprintGame;

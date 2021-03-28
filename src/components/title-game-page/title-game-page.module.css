@@ -14,3 +14,7 @@
   position: relative;
   font-size: 1.8rem;
 }
+.cat__img1 {
+  position: absolute;
+  right: -100px;
+} 

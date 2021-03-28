@@ -4,6 +4,8 @@ import {
 } from '../actions/sprint-game-action';
 
 export type SprintGameStateType = {
+  gameDescription: string;
+  gameTitle: string;
   gameStatus: string;
   points: number;
   level: number;

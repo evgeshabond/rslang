@@ -36,7 +36,7 @@ export const TitleGamePage: React.FC<Props> = ({
     <div className={styles.game__wrapper}>
       <h2>{gameTitle}</h2>
       <p>{gameDescription}</p>
-      {renderCat()}
+      <div className={styles.cat__img1}>{renderCat()}</div>
       <PlayButton buttonClick={buttonClick} />
     </div>
   );
