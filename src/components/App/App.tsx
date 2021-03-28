@@ -10,6 +10,7 @@ import UserPage from '../../pages/auth-page/User-page';
 import { mainPath } from '../../utils/constants';
 import EbookPage from '../../pages/e-book-page/E-book-page';
 import ProfilePage from '../../pages/profile-page/Profile-page';
+import { QuestionPage } from '../../pages/question-page/Question-page';
 
 const App: React.FC = () => (
   <Router basename="/">
@@ -24,6 +25,7 @@ const App: React.FC = () => (
             <Route path={mainPath.auth} component={UserPage} />
             <Route path={mainPath.ebookPage} component={EbookPage} />
             <Route path={mainPath.profilePAge} component={ProfilePage} />
+            <Route path={mainPath.questionPage} component={QuestionPage} />
           </Switch>
         </main>
         <Footer />

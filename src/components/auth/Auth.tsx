@@ -37,7 +37,7 @@ const Auth: React.FC<Props> = ({ history }) => {
 
   useEffect(() => {
     if (isLogin) {
-      history.push(mainPath.ebookPage);
+      history.goBack();
     }
   }, [history, isLogin]);
 
