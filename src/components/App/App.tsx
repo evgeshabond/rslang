@@ -11,6 +11,7 @@ import { mainPath } from '../../utils/constants';
 import EbookPage from '../../pages/e-book-page/E-book-page';
 import ProfilePage from '../../pages/profile-page/Profile-page';
 import ConstructorGame from '../ConstructorGame/ConstructorGame';
+import GitLinks from '../GitLinks/GitLinks';
 
 const App: React.FC = () => (
   <Router basename="/">
@@ -18,6 +19,7 @@ const App: React.FC = () => (
       <div className={styles.container}>
         <Header />
         <main className={styles.main}>
+          <GitLinks />
           <Switch>
             <Route path={mainPath.main} component={MainPage} exact />
             <Route path={mainPath.gamePage} component={GamePage} />
