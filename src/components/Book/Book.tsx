@@ -51,7 +51,7 @@ const useStyles = makeStyles({
   }
 })
 
-const Dictionary:React.FC = () => {
+const Book:React.FC = () => {
   const classes = useStyles()
   return (
     <Paper className={classes.root}>
@@ -59,11 +59,11 @@ const Dictionary:React.FC = () => {
         Электронный учебник
       </Typography>
       <Box className={classes.container}>
-        <RouterLink to="/dictionary/learn" className={classes.button}>Изучение</RouterLink>
-        <RouterLink to="/dictionary/dict" className={classes.button}>Словарь</RouterLink>
+        <RouterLink to="/book/learn" className={classes.button}>Изучение</RouterLink>
+        <RouterLink to="/book/dict" className={classes.button}>Словарь</RouterLink>
       </Box>
     </Paper>
   )
 }
 
-export default Dictionary
+export default Book
