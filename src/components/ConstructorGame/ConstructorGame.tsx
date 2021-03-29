@@ -13,6 +13,7 @@ import { mainPath } from '../../utils/constants';
 import {
   constructorGameStart,
   setRoundEnd,
+  setRoundCount,
   setShuffledWordList,
   updateCharsPosition,
 } from '../../actions/constructor-game-actions';
@@ -48,12 +49,14 @@ const ConstructorGame: React.FC = () => {
   );
 
   const [learned, setLearnCount] = useState(0);
-  const [roundCount, setRoundCount] = useState(0);
+
+  const roundCount = useSelector(
+    (state: RootStateType) => state.constructorGameState.roundCount
+  );
 
   const chars = useSelector(
     (state: RootStateType) => state.constructorGameState.chars
   );
-  // const [chars, updateCharsPosition] = useState([['', '']]);
 
   useEffect(() => {
     setWordObj(shuffledWordList[roundCount]);
@@ -143,7 +146,7 @@ const ConstructorGame: React.FC = () => {
       setLearnCount(0);
     }
 
-    setRoundCount(roundCount + 1);
+    dispatch(setRoundCount(roundCount + 1));
     dispatch(setRoundEnd(false));
   };
 
@@ -151,7 +154,7 @@ const ConstructorGame: React.FC = () => {
     dispatch(setShuffledWordList(shuffle(currentWordList)));
     dispatch(constructorGameStart(true));
     setLearnCount(0);
-    setRoundCount(0);
+    dispatch(setRoundCount(0));
     dispatch(setRoundEnd(false));
   };
 

@@ -4,6 +4,7 @@ import {
   CONSTRUCTOR_SHUFFLED_LIST,
   CONSTRUCTOR_ROUND_STATUS,
   UPDATE_CHARS_POSITION,
+  UPDATE_ROUND_COUNT,
 } from '../actions/constructor-game-actions';
 import { CurrentWordListType } from '../actions/word-actions';
 
@@ -36,6 +37,8 @@ const constructorGameReducer = (
       return { ...state, constructorRoundStatus: action.payload };
     case UPDATE_CHARS_POSITION:
       return { ...state, chars: action.payload };
+    case UPDATE_ROUND_COUNT:
+      return { ...state, roundCount: action.payload };
     default:
       return state;
   }
