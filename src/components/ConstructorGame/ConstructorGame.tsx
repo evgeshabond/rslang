@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import useSound from 'use-sound';
 import styles from './ConstructorGame.module.css';
@@ -8,17 +8,14 @@ import { ReactComponent as CatSleeping } from '../../assets/images/cat-sleeping.
 import { ReactComponent as ExitButton } from '../../assets/images/exit-button-mini.svg';
 import { ReactComponent as AudioOn } from '../../assets/images/audioOn.svg';
 import { RootStateType } from '../../reducer/root-reducer';
-import * as actions from '../../actions/my-game-actions';
-import { MyGameStartState } from '../../reducer/my-game-reducer';
-import { WordStateType } from '../../reducer/word-reducer';
 import { CurrentWordListType } from '../../actions/word-actions';
 import { mainPath } from '../../utils/constants';
-
-type MapDispatchToProps = {
-  myGameStart: (value: boolean) => actions.MyGameStartActionType;
-};
-
-type Props = MapDispatchToProps & MyGameStartState & WordStateType;
+import {
+  constructorGameStart,
+  setRoundEnd,
+  setShuffledWordList,
+  updateCharsPosition,
+} from '../../actions/constructor-game-actions';
 
 const shuffle = (array: any) => {
   const arrCopy = [...array];
@@ -31,35 +28,53 @@ const shuffle = (array: any) => {
 
 type WordObjectType = { [key: string]: string };
 
-const MyGame: React.FC<Props> = ({
-  myGameStart,
-  myGameIsStarted,
-  currentWordList,
-}) => {
-  const [wordObj, setWordObj] = useState<CurrentWordListType>(
-    {} as CurrentWordListType
+const ConstructorGame: React.FC = () => {
+  const dispatch = useDispatch();
+
+  const currentWordList = useSelector(
+    (state: RootStateType) => state.wordState.currentWordList
   );
 
-  const [isRoundEnd, setRoundEnd] = useState(false);
+  const shuffledWordList = useSelector(
+    (state: RootStateType) => state.constructorGameState.shuffledWordList
+  );
+
+  const [wordObj, setWordObj] = useState<CurrentWordListType>(
+    currentWordList[0]
+  );
+
+  const isRoundEnd = useSelector(
+    (state: RootStateType) => state.constructorGameState.constructorRoundStatus
+  );
 
   const [learned, setLearnCount] = useState(0);
   const [roundCount, setRoundCount] = useState(0);
 
-  const [chars, updateCharsPosition] = useState([['', '']]);
-
-  const [wordSound] = useSound(`${mainPath.langUrl}${wordObj.audio}`, {
-    interrupt: true,
-  });
-
-  const [shuffledWordList, setShuffledWordList] = useState(
-    shuffle(currentWordList)
+  const chars = useSelector(
+    (state: RootStateType) => state.constructorGameState.chars
   );
+  // const [chars, updateCharsPosition] = useState([['', '']]);
 
   useEffect(() => {
     setWordObj(shuffledWordList[roundCount]);
   }, [shuffledWordList, roundCount]);
 
+  const [wordSound] = useSound(
+    `${mainPath.langUrl}${wordObj === undefined ? '' : wordObj.audio}`,
+    {
+      interrupt: true,
+    }
+  );
+
+  const constructorGameIsStarted = useSelector(
+    (state: RootStateType) =>
+      state.constructorGameState.constructorGameIsStarted
+  );
+
   useEffect(() => {
+    if (wordObj === undefined) {
+      return;
+    }
     if (wordObj.word === undefined) {
       return;
     }
@@ -74,7 +89,7 @@ const MyGame: React.FC<Props> = ({
 
     const charArray = Object.entries(wordObject);
 
-    updateCharsPosition(charArray);
+    dispatch(updateCharsPosition(charArray));
 
     if (isRoundEnd) {
       const startWordObject: WordObjectType = {};
@@ -83,19 +98,27 @@ const MyGame: React.FC<Props> = ({
       });
 
       const resultArray = Object.entries(startWordObject);
-      updateCharsPosition(resultArray);
+      dispatch(updateCharsPosition(resultArray));
     }
-  }, [wordObj, isRoundEnd, wordObj.word]);
+  }, [wordObj, isRoundEnd]);
 
   useEffect(() => {
+    if (chars === undefined || wordObj === undefined) {
+      return;
+    }
     const currentChars = chars.map((char) => char[1]).join('');
+
     if (wordObj.word === currentChars) {
-      setRoundEnd(true);
+      dispatch(setRoundEnd(true));
       wordSound();
     }
-  }, [wordObj.word, chars]);
+  }, [wordObj, chars]);
 
   useEffect(() => {
+    if (chars === undefined) {
+      return;
+    }
+
     const currentChars = chars.map((char) => char[1]).join('');
     if (wordObj.word === currentChars && isRoundEnd) {
       setLearnCount(learned + 1);
@@ -111,25 +134,29 @@ const MyGame: React.FC<Props> = ({
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
 
-    updateCharsPosition(items);
+    dispatch(updateCharsPosition(items));
   }
 
   const nextRoundHandler = () => {
     if (roundCount === 10) {
-      myGameStart(false);
+      dispatch(constructorGameStart(false));
       setLearnCount(0);
     }
 
     setRoundCount(roundCount + 1);
-    setRoundEnd(false);
+    dispatch(setRoundEnd(false));
   };
 
   const startGameHandler = () => {
-    setShuffledWordList(shuffle(currentWordList));
-    myGameStart(true);
+    dispatch(setShuffledWordList(shuffle(currentWordList)));
+    dispatch(constructorGameStart(true));
     setLearnCount(0);
     setRoundCount(0);
-    setRoundEnd(false);
+    dispatch(setRoundEnd(false));
+  };
+
+  const endGameHandler = () => {
+    dispatch(constructorGameStart(false));
   };
 
   const removeTagsFromString = (originalString: string) =>
@@ -138,7 +165,7 @@ const MyGame: React.FC<Props> = ({
   const removeTagsAndContextWord = (originalString: string) =>
     originalString.replace(/<([^>]+?)([^>]*?)>(.*?)<\/\1>/gi, '...');
 
-  return myGameIsStarted ? (
+  return constructorGameIsStarted ? (
     <div className={styles['my-game']}>
       <div className={styles.word__container}>
         <div className={styles.word__empty} />
@@ -166,11 +193,11 @@ const MyGame: React.FC<Props> = ({
       <button
         type="button"
         className={styles['exit-button']}
-        onClick={() => myGameStart(false)}
+        onClick={endGameHandler}
       >
         <ExitButton />
       </button>
-      {chars.length > 1 ? (
+      {chars !== undefined ? (
         <DragDropContext onDragEnd={updateCharsPositionHandler}>
           <Droppable droppableId="chars" direction="horizontal">
             {(provided: any) => (
@@ -232,7 +259,7 @@ const MyGame: React.FC<Props> = ({
           <button
             className={styles['btn-next']}
             type="button"
-            onClick={() => setRoundEnd(true)}
+            onClick={() => dispatch(setRoundEnd(true))}
           >
             Не знаю
           </button>
@@ -249,7 +276,7 @@ const MyGame: React.FC<Props> = ({
       <button
         type="button"
         className={styles['play-button']}
-        onClick={() => startGameHandler()}
+        onClick={startGameHandler}
       >
         <Play className={styles.play} />
       </button>
@@ -259,9 +286,4 @@ const MyGame: React.FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: RootStateType) => ({
-  ...state.myGameState,
-  ...state.wordState,
-});
-
-export default connect(mapStateToProps, actions)(MyGame);
+export default ConstructorGame;
