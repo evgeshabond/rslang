@@ -13,17 +13,6 @@
   padding: 5px;
 }
 
-.title {
-  font-weight: 900;
-  font-size: 4.8rem;
-  line-height: 5.6rem;
-  text-align: center;
-  text-transform: uppercase;
-  margin-bottom: 0.2rem;
-
-  color: #733999;
-}
-
 div .word {
   margin: 0;
   font-size: 3.6rem;
@@ -52,33 +41,6 @@ div .word {
   text-align: center;
 
   color: rgba(115, 57, 153, 0.8);
-}
-
-.play {
-  width: 60px;
-  height: 60px;
-}
-
-.play-button {
-  display: flex;
-  margin-top: 3.2rem;
-  margin-bottom: 20px;
-  width: 60px;
-  height: 60px;
-  background-color: inherit;
-  border: none;
-}
-
-.play-button:hover {
-  cursor: pointer;
-}
-
-.cat_sleeping {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 210px;
-  height: 142px;
 }
 
 .exit-button {
@@ -199,6 +161,14 @@ div .word {
   text-transform: capitalize;
 
   color: #733999;
+}
+
+.cat_sleeping {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 210px;
+  height: 142px;
 }
 
 @media screen and (max-width: 800px) {

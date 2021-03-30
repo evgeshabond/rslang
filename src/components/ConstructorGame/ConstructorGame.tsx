@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import useSound from 'use-sound';
 import styles from './ConstructorGame.module.css';
-import { ReactComponent as Play } from '../../assets/images/video-player-mini.svg';
 import { ReactComponent as CatSleeping } from '../../assets/images/cat-sleeping.svg';
 import { ReactComponent as ExitButton } from '../../assets/images/exit-button-mini.svg';
 import { ReactComponent as AudioOn } from '../../assets/images/audioOn.svg';
@@ -20,15 +19,17 @@ import {
   setLearnCount,
 } from '../../actions/constructor-game-actions';
 import ControlledSelect from '../ControlledSelect/ControlledSelect';
+import { shuffle } from '../../utils/shuffle';
+import { StartScreen } from './Start-screen/Start-screen';
 
-const shuffle = (array: any) => {
-  const arrCopy = [...array];
-  for (let i = arrCopy.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arrCopy[i], arrCopy[j]] = [arrCopy[j], arrCopy[i]];
-  }
-  return arrCopy;
-};
+// const shuffle = (array: any) => {
+//   const arrCopy = [...array];
+//   for (let i = arrCopy.length - 1; i > 0; i--) {
+//     const j = Math.floor(Math.random() * (i + 1));
+//     [arrCopy[i], arrCopy[j]] = [arrCopy[j], arrCopy[i]];
+//   }
+//   return arrCopy;
+// };
 
 type WordObjectType = { [key: string]: string };
 
@@ -157,14 +158,6 @@ const ConstructorGame: React.FC = () => {
     dispatch(setRoundEnd(false));
   };
 
-  const startGameHandler = () => {
-    dispatch(setShuffledWordList(shuffle(currentWordList)));
-    dispatch(constructorGameStart(true));
-    dispatch(setLearnCount(0));
-    dispatch(setRoundCount(0));
-    dispatch(setRoundEnd(false));
-  };
-
   const endGameHandler = () => {
     dispatch(constructorGameStart(false));
   };
@@ -278,23 +271,7 @@ const ConstructorGame: React.FC = () => {
       <CatSleeping className={styles.cat_sleeping} />
     </div>
   ) : (
-    <div className={styles['my-game']}>
-      <h2 className={styles.title}>конструктор слов</h2>
-      <p className={styles.text}>
-        Составление оригинального слова по переводу.
-      </p>
-      <button
-        type="button"
-        className={styles['play-button']}
-        onClick={startGameHandler}
-      >
-        <Play className={styles.play} />
-      </button>
-
-      <ControlledSelect />
-
-      <CatSleeping className={styles.cat_sleeping} />
-    </div>
+    <StartScreen />
   );
 };
 
