@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import useSound from 'use-sound';
@@ -19,6 +19,7 @@ import {
   setWordObj,
   setLearnCount,
 } from '../../actions/constructor-game-actions';
+import ControlledSelect from '../ControlledSelect/ControlledSelect';
 
 const shuffle = (array: any) => {
   const arrCopy = [...array];
@@ -289,6 +290,8 @@ const ConstructorGame: React.FC = () => {
       >
         <Play className={styles.play} />
       </button>
+
+      <ControlledSelect />
 
       <CatSleeping className={styles.cat_sleeping} />
     </div>

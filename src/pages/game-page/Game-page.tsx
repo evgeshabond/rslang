@@ -3,7 +3,6 @@ import { MainCat } from '../../components/cats-img/main-cat/Main-cat';
 import { LinkButton } from '../../components/link-button/Link-button';
 import { mainPath } from '../../utils/constants';
 import rootStyles from '../e-book-page/e-book-page.module.css';
-import ControlledSelect from '../../components/ControlledSelect/ControlledSelect';
 
 const GamePage: React.FC = () => (
   <div className={rootStyles['ebook-container']}>
@@ -19,7 +18,6 @@ const GamePage: React.FC = () => (
         buttonName="Конструктор слов"
       />
     </div>
-    <ControlledSelect />
     <MainCat />
   </div>
 );

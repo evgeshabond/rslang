@@ -62,6 +62,7 @@ div .word {
 .play-button {
   display: flex;
   margin-top: 3.2rem;
+  margin-bottom: 10px;
   width: 60px;
   height: 60px;
   background-color: inherit;
