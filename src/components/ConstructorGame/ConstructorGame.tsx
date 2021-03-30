@@ -1,44 +1,28 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import useSound from 'use-sound';
 import styles from './ConstructorGame.module.css';
 import { ReactComponent as CatSleeping } from '../../assets/images/cat-sleeping.svg';
 import { ReactComponent as ExitButton } from '../../assets/images/exit-button-mini.svg';
 import { ReactComponent as AudioOn } from '../../assets/images/audioOn.svg';
 import { RootStateType } from '../../reducer/root-reducer';
-// import { CurrentWordListType } from '../../actions/word-actions';
 import { mainPath } from '../../utils/constants';
 import {
   constructorGameStart,
   setRoundEnd,
   setRoundCount,
-  setShuffledWordList,
   updateCharsPosition,
   setWordObj,
   setLearnCount,
 } from '../../actions/constructor-game-actions';
-import ControlledSelect from '../ControlledSelect/ControlledSelect';
 import { shuffle } from '../../utils/shuffle';
 import { StartScreen } from './Start-screen/Start-screen';
-
-// const shuffle = (array: any) => {
-//   const arrCopy = [...array];
-//   for (let i = arrCopy.length - 1; i > 0; i--) {
-//     const j = Math.floor(Math.random() * (i + 1));
-//     [arrCopy[i], arrCopy[j]] = [arrCopy[j], arrCopy[i]];
-//   }
-//   return arrCopy;
-// };
+import { DragEndDrop } from './DragEndDrop/DragEndDrop';
 
 type WordObjectType = { [key: string]: string };
 
 const ConstructorGame: React.FC = () => {
   const dispatch = useDispatch();
-
-  const currentWordList = useSelector(
-    (state: RootStateType) => state.wordState.currentWordList
-  );
 
   const shuffledWordList = useSelector(
     (state: RootStateType) => state.constructorGameState.shuffledWordList
@@ -55,8 +39,6 @@ const ConstructorGame: React.FC = () => {
   const learned = useSelector(
     (state: RootStateType) => state.constructorGameState.learned
   );
-
-  // const [learned, setLearnCount] = useState(0);
 
   const roundCount = useSelector(
     (state: RootStateType) => state.constructorGameState.roundCount
@@ -136,18 +118,6 @@ const ConstructorGame: React.FC = () => {
     }
   }, [isRoundEnd]);
 
-  function updateCharsPositionHandler(result: any) {
-    if (!result.destination) {
-      return;
-    }
-
-    const items = Array.from(chars);
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
-
-    dispatch(updateCharsPosition(items));
-  }
-
   const nextRoundHandler = () => {
     if (roundCount === 10) {
       dispatch(constructorGameStart(false));
@@ -200,36 +170,7 @@ const ConstructorGame: React.FC = () => {
       >
         <ExitButton />
       </button>
-      {chars !== undefined ? (
-        <DragDropContext onDragEnd={updateCharsPositionHandler}>
-          <Droppable droppableId="chars" direction="horizontal">
-            {(provided: any) => (
-              <ul
-                className={`${styles.word__wrapper} chars`}
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-              >
-                {chars.map((char, index) => (
-                  <Draggable key={char[0]} draggableId={char[0]} index={index}>
-                    {(providedInner: any) => (
-                      <li
-                        key={char[0]}
-                        className={styles.word__char}
-                        ref={providedInner.innerRef}
-                        {...providedInner.draggableProps}
-                        {...providedInner.dragHandleProps}
-                      >
-                        {char[1]}
-                      </li>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </ul>
-            )}
-          </Droppable>
-        </DragDropContext>
-      ) : null}
+      <DragEndDrop />
       <img
         className={styles.picture}
         src={`${mainPath.langUrl}${wordObj.image}`}

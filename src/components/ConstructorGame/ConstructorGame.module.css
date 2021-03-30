@@ -67,14 +67,14 @@ div .word {
   border: none;
 }
 
-.word__wrapper {
+/* .word__wrapper {
   display: flex;
   list-style-type: none;
   justify-content: center;
 
   margin: 1rem 0;
   width: 100%;
-}
+} */
 
 .word__container {
   display: flex;
@@ -88,7 +88,7 @@ div .word {
   margin-left: 130px;
 }
 
-.word__char {
+/* .word__char {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -105,7 +105,7 @@ div .word {
   line-height: 2.8rem;
   text-decoration: none;
   cursor: pointer;
-}
+} */
 
 .word__transcription {
   margin: 5px 0;
