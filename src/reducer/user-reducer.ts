@@ -13,6 +13,7 @@ import {
   USER_LOGOUT,
   USER_FOTO_UPLOAD,
   USER_FOTO_UPDATE,
+  USER_LEVEL_UPDATE,
 } from '../actions/user-actions';
 
 export type UserState = typeof initialState;
@@ -26,6 +27,7 @@ const initialState = {
     name: '',
     email: '',
     foto64: '',
+    level: '',
   },
   uploadFoto64: '',
   inputName: '',
@@ -96,6 +98,11 @@ const userReducer = (
         ...state,
         user: { ...state.user, foto64: action.payload },
         uploadFoto64: action.payload,
+      };
+    case USER_LEVEL_UPDATE:
+      return {
+        ...state,
+        user: { ...state.user, level: action.payload },
       };
     case USER_FOTO_UPDATE:
       return {

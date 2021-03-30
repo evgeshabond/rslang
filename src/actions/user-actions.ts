@@ -15,6 +15,7 @@ export const USER_LOGOUT = 'USER_LOGOUT';
 export const ERROR_MESSAGE_CLEAR = 'ERROR_MESSAGE_CLEAR';
 export const USER_FOTO_UPLOAD = 'USER_FOTO_UPLOAD';
 export const USER_FOTO_UPDATE = 'USER_FOTO_UPDATE';
+export const USER_LEVEL_UPDATE = 'USER_LEVEL_UPDATE';
 
 export type UserType = {
   message: string;
@@ -127,6 +128,11 @@ export const userFotoUpdate = (value: string) => ({
   payload: value,
 });
 
+export const userLevelUpdate = (value: string) => ({
+  type: USER_LEVEL_UPDATE,
+  payload: value,
+});
+
 const usersService = new UserService();
 
 const createUser = (params: {
@@ -207,6 +213,7 @@ export const updateUser = (params: {
   token: string;
   body: {
     foto64?: string;
+    level?: string;
   };
 }) => (dispatch: Dispatch<SaveFromBackDataActions>) => {
   dispatch(userDataLoading(true));
