@@ -11,10 +11,6 @@ export default class LangService {
       }
     );
     const data = await res.json();
-    if (!res.ok) {
-      throw new Error(`could not fetch `);
-    }
-    console.log('res data', data);
     return data;
   }
 }
