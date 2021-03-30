@@ -18,6 +18,7 @@ import {
 import { shuffle } from '../../utils/shuffle';
 import { StartScreen } from './Start-screen/Start-screen';
 import { DragEndDrop } from './DragEndDrop/DragEndDrop';
+import { BottomBlock } from './BottomBlock/BottomBlock';
 
 type WordObjectType = { [key: string]: string };
 
@@ -118,25 +119,9 @@ const ConstructorGame: React.FC = () => {
     }
   }, [isRoundEnd]);
 
-  const nextRoundHandler = () => {
-    if (roundCount === 10) {
-      dispatch(constructorGameStart(false));
-      dispatch(setLearnCount(0));
-    }
-
-    dispatch(setRoundCount(roundCount + 1));
-    dispatch(setRoundEnd(false));
-  };
-
   const endGameHandler = () => {
     dispatch(constructorGameStart(false));
   };
-
-  const removeTagsFromString = (originalString: string) =>
-    originalString.replace(/(<([^>]+)>)/gi, '');
-
-  const removeTagsAndContextWord = (originalString: string) =>
-    originalString.replace(/<([^>]+?)([^>]*?)>(.*?)<\/\1>/gi, '...');
 
   return constructorGameIsStarted ? (
     <div className={styles['my-game']}>
@@ -176,39 +161,7 @@ const ConstructorGame: React.FC = () => {
         src={`${mainPath.langUrl}${wordObj.image}`}
         alt={wordObj.word}
       />
-      {isRoundEnd ? (
-        <>
-          <p className={styles.description}>Пример</p>
-          <p className={styles.word__transcription}>{`${
-            wordObj.textExample ? removeTagsFromString(wordObj.textExample) : ''
-          }`}</p>
-          <button
-            className={styles['btn-next']}
-            type="button"
-            onClick={() => nextRoundHandler()}
-          >
-            {roundCount === 10 ? `Выйти` : `Далее`}
-          </button>
-        </>
-      ) : (
-        <>
-          <p className={styles.description}>Контекст</p>
-          <p className={styles.word__transcription}>
-            {`${
-              wordObj.textMeaning
-                ? removeTagsAndContextWord(wordObj.textMeaning)
-                : ''
-            }`}
-          </p>
-          <button
-            className={styles['btn-next']}
-            type="button"
-            onClick={() => dispatch(setRoundEnd(true))}
-          >
-            Не знаю
-          </button>
-        </>
-      )}
+      <BottomBlock />
       <CatSleeping className={styles.cat_sleeping} />
     </div>
   ) : (

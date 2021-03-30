@@ -1,0 +1,35 @@
+.description {
+  margin: 5px 0;
+  font-size: 1.4rem;
+  line-height: 1.6rem;
+  text-align: center;
+
+  color: rgba(115, 57, 153, 0.8);
+}
+
+.word__transcription {
+  margin: 5px 0;
+  font-size: 1.4rem;
+  line-height: 1.6rem;
+  text-align: center;
+
+  color: rgba(115, 57, 153, 0.8);
+}
+
+.btn-next {
+  margin: 25px 0 35px;
+  width: 200px;
+  height: 50px;
+
+  background: #ebf3ff;
+  box-shadow: inset -8px -8px 16px #ffffff, inset 8px 8px 16px #f7d2fb;
+  border-radius: 30px;
+  border: none;
+
+  font-weight: bold;
+  font-size: 2.4rem;
+  line-height: 2.8rem;
+  color: #733999;
+
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.25));
+}
