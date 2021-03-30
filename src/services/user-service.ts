@@ -67,6 +67,7 @@ export default class UserService {
     token: string;
     body: {
       foto64?: string;
+      level?: string;
     };
   }) => {
     const rawResponse = await fetch(`${this.langUrl}users/${params.userId}`, {

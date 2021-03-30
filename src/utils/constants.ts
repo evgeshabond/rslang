@@ -5,6 +5,7 @@ export const mainPath = {
   auth: '/user',
   ebookPage: '/ebookpage',
   profilePAge: '/profile',
+  questionPage: '/quiz',
 };
 
 export const authErrorPath = {
@@ -12,3 +13,5 @@ export const authErrorPath = {
   email: 'email',
   password: 'password',
 };
+
+export const serverUrl = 'https://rslang-app.herokuapp.com/';

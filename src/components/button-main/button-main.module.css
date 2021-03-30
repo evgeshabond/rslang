@@ -1,5 +1,5 @@
 .main-button {
-  width: 225px;
+  min-width: 225px;
   height: 50px;
   border-radius: 30px;
   font-style: normal;
@@ -11,7 +11,11 @@
   background: #fdebff;
   box-shadow: -5px -5px 10px #ffffff, 5px 5px 10px #b4c1d5;
   margin: 0 15px;
-  padding-top: 10px;
+  outline: none;
+  border: none;
+  padding-left: 10px;
+  padding-right: 10px;
+  cursor: pointer;
 }
 
 .main-button:active {
