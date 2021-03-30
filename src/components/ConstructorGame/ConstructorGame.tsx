@@ -8,7 +8,7 @@ import { ReactComponent as CatSleeping } from '../../assets/images/cat-sleeping.
 import { ReactComponent as ExitButton } from '../../assets/images/exit-button-mini.svg';
 import { ReactComponent as AudioOn } from '../../assets/images/audioOn.svg';
 import { RootStateType } from '../../reducer/root-reducer';
-import { CurrentWordListType } from '../../actions/word-actions';
+// import { CurrentWordListType } from '../../actions/word-actions';
 import { mainPath } from '../../utils/constants';
 import {
   constructorGameStart,
@@ -16,6 +16,8 @@ import {
   setRoundCount,
   setShuffledWordList,
   updateCharsPosition,
+  setWordObj,
+  setLearnCount,
 } from '../../actions/constructor-game-actions';
 
 const shuffle = (array: any) => {
@@ -40,15 +42,19 @@ const ConstructorGame: React.FC = () => {
     (state: RootStateType) => state.constructorGameState.shuffledWordList
   );
 
-  const [wordObj, setWordObj] = useState<CurrentWordListType>(
-    currentWordList[0]
+  const wordObj = useSelector(
+    (state: RootStateType) => state.constructorGameState.wordObj
   );
 
   const isRoundEnd = useSelector(
     (state: RootStateType) => state.constructorGameState.constructorRoundStatus
   );
 
-  const [learned, setLearnCount] = useState(0);
+  const learned = useSelector(
+    (state: RootStateType) => state.constructorGameState.learned
+  );
+
+  // const [learned, setLearnCount] = useState(0);
 
   const roundCount = useSelector(
     (state: RootStateType) => state.constructorGameState.roundCount
@@ -59,7 +65,7 @@ const ConstructorGame: React.FC = () => {
   );
 
   useEffect(() => {
-    setWordObj(shuffledWordList[roundCount]);
+    dispatch(setWordObj(shuffledWordList[roundCount]));
   }, [shuffledWordList, roundCount]);
 
   const [wordSound] = useSound(
@@ -124,7 +130,7 @@ const ConstructorGame: React.FC = () => {
 
     const currentChars = chars.map((char) => char[1]).join('');
     if (wordObj.word === currentChars && isRoundEnd) {
-      setLearnCount(learned + 1);
+      dispatch(setLearnCount(learned + 1));
     }
   }, [isRoundEnd]);
 
@@ -143,7 +149,7 @@ const ConstructorGame: React.FC = () => {
   const nextRoundHandler = () => {
     if (roundCount === 10) {
       dispatch(constructorGameStart(false));
-      setLearnCount(0);
+      dispatch(setLearnCount(0));
     }
 
     dispatch(setRoundCount(roundCount + 1));
@@ -153,7 +159,7 @@ const ConstructorGame: React.FC = () => {
   const startGameHandler = () => {
     dispatch(setShuffledWordList(shuffle(currentWordList)));
     dispatch(constructorGameStart(true));
-    setLearnCount(0);
+    dispatch(setLearnCount(0));
     dispatch(setRoundCount(0));
     dispatch(setRoundEnd(false));
   };

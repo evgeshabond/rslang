@@ -5,6 +5,18 @@ const CONSTRUCTOR_SHUFFLED_LIST = 'CONSTRUCTOR_GAME_SHUFFLED_LIST';
 const CONSTRUCTOR_ROUND_STATUS = 'CONSTRUCTOR_ROUND_STATUS';
 const UPDATE_CHARS_POSITION = 'UPDATE_CHARS_POSITION';
 const UPDATE_ROUND_COUNT = 'UPDATE_ROUND_COUNT';
+const UPDATE_WORD_OBJ = 'UPDATE_WORD_OBJ';
+const UPDATE_LEARNED_COUNT = 'UPDATE_LEARNED_COUNT';
+
+const setLearnCount = (value: number) => ({
+  type: UPDATE_LEARNED_COUNT,
+  payload: value,
+});
+
+const setWordObj = (value: CurrentWordListType) => ({
+  type: UPDATE_WORD_OBJ,
+  payload: value,
+});
 
 const setRoundCount = (value: number) => ({
   type: UPDATE_ROUND_COUNT,
@@ -33,7 +45,12 @@ const setShuffledWordList = (value: Array<CurrentWordListType>) => ({
 
 export type ConstructorGameActionType = {
   type: string;
-  payload: boolean | Array<CurrentWordListType> | [string, string][] | number;
+  payload:
+    | boolean
+    | Array<CurrentWordListType>
+    | [string, string][]
+    | number
+    | CurrentWordListType;
 };
 
 export {
@@ -42,9 +59,13 @@ export {
   setRoundEnd,
   updateCharsPosition,
   setRoundCount,
+  setWordObj,
+  setLearnCount,
   CONSTRUCTOR_GAME_PLAY_STATUS,
   CONSTRUCTOR_SHUFFLED_LIST,
   CONSTRUCTOR_ROUND_STATUS,
   UPDATE_CHARS_POSITION,
   UPDATE_ROUND_COUNT,
+  UPDATE_WORD_OBJ,
+  UPDATE_LEARNED_COUNT,
 };
