@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import useSound from 'use-sound';
 import styles from './ConstructorGame.module.css';
 import { ReactComponent as CatSleeping } from '../../assets/images/cat-sleeping.svg';
-
+import { ReactComponent as AudioOn } from '../../assets/images/audioOn.svg';
 import { RootStateType } from '../../reducer/root-reducer';
 import { mainPath } from '../../utils/constants';
 import {
@@ -120,6 +120,15 @@ const ConstructorGame: React.FC = () => {
   return constructorGameIsStarted ? (
     <div className={styles['my-game']}>
       <TopBlock />
+      {isRoundEnd ? (
+        <button
+          type="button"
+          className={styles['audio-button']}
+          onClick={() => wordSound()}
+        >
+          <AudioOn />
+        </button>
+      ) : null}
       <DragEndDrop />
       <img
         className={styles.picture}

@@ -74,18 +74,6 @@ div .word {
   color: #733999;
 }
 
-.audio-button {
-  display: flex;
-  align-items: center;
-  position: absolute;
-  top: 20px;
-  right: 66px;
-  width: 30px;
-  height: 30px;
-  background-color: inherit;
-  border: none;
-}
-
 .exit-button {
   display: flex;
   align-items: center;
