@@ -9,7 +9,7 @@ import { Typography } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import clsx from 'clsx';
 
-import WordList from './WordList'
+import WordList from '../../components/BookComponents/word-list'
 
 // update theme object of material ui
 const primaryColor = '#FDEBFF'
@@ -21,13 +21,13 @@ const useStyles = makeStyles({
     display: 'flex',
     position: 'relative',
     flexDirection: 'column',
-    minHeight: '85vh',
+    height: '85vh',
     maxWidth: 1200,
     color: secondaryColor,
     backgroundColor: primaryColor,
     margin: '1rem auto',
     paddingTop: '1rem',
-    borderRadius: '3rem'    
+    borderRadius: '3rem'
   },
   settings: {
     position: 'absolute',
@@ -43,7 +43,8 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     width: '84px',
     heigth: '456px',
-    marginLeft: '15px'
+    marginLeft: '15px',
+    alignSelf: 'center'
   },
   level: {
     width: '84px',
@@ -79,8 +80,11 @@ const useStyles = makeStyles({
   },
   wordList: {
     display: 'flex',
+    height: '70vh',
     flexDirection: 'column',
-    flexBasis: '100%'    
+    flexBasis: '100%',
+    margin: '1rem',
+    overflowY: 'scroll',
   }
 })
 
@@ -88,7 +92,7 @@ const Learn:React.FC = () => {
   const classes = useStyles()
   return (
     <Paper className={classes.root}>
-      <Typography variant="h5" component="h3">
+      <Typography variant="h4" component="h3">
           Электронный учебник
       </Typography>
       <Box className={classes.settings}>Settings</Box>
