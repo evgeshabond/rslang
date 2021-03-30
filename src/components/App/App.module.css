@@ -4,6 +4,7 @@
   text-align: center;
   overflow: auto;
 }
+
 .App::before {
   content: '';
   position: fixed;
@@ -33,6 +34,7 @@
 }
 
 .main {
+  position: relative;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
