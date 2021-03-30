@@ -7,6 +7,8 @@ import {
   setRoundEnd,
 } from '../../../actions/constructor-game-actions';
 import { RootStateType } from '../../../reducer/root-reducer';
+import { removeTagsAndWordInside } from '../../../utils/removeTagsAndWordInside';
+import { removeTagsFromString } from '../../../utils/removeTagsFromString';
 import styles from './BottomBlock.module.css';
 
 export const BottomBlock: React.FC = () => {
@@ -34,12 +36,6 @@ export const BottomBlock: React.FC = () => {
     dispatch(setRoundEnd(false));
   };
 
-  const removeTagsFromString = (originalString: string) =>
-    originalString.replace(/(<([^>]+)>)/gi, '');
-
-  const removeTagsAndContextWord = (originalString: string) =>
-    originalString.replace(/<([^>]+?)([^>]*?)>(.*?)<\/\1>/gi, '...');
-
   return isRoundEnd ? (
     <>
       <p className={styles.description}>Пример</p>
@@ -60,7 +56,7 @@ export const BottomBlock: React.FC = () => {
       <p className={styles.word__transcription}>
         {`${
           wordObj.textMeaning
-            ? removeTagsAndContextWord(wordObj.textMeaning)
+            ? removeTagsAndWordInside(wordObj.textMeaning)
             : ''
         }`}
       </p>

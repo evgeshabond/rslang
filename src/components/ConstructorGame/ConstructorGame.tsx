@@ -3,14 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import useSound from 'use-sound';
 import styles from './ConstructorGame.module.css';
 import { ReactComponent as CatSleeping } from '../../assets/images/cat-sleeping.svg';
-import { ReactComponent as ExitButton } from '../../assets/images/exit-button-mini.svg';
-import { ReactComponent as AudioOn } from '../../assets/images/audioOn.svg';
+
 import { RootStateType } from '../../reducer/root-reducer';
 import { mainPath } from '../../utils/constants';
 import {
-  constructorGameStart,
   setRoundEnd,
-  setRoundCount,
   updateCharsPosition,
   setWordObj,
   setLearnCount,
@@ -19,6 +16,7 @@ import { shuffle } from '../../utils/shuffle';
 import { StartScreen } from './Start-screen/Start-screen';
 import { DragEndDrop } from './DragEndDrop/DragEndDrop';
 import { BottomBlock } from './BottomBlock/BottomBlock';
+import { TopBlock } from './TopBlock/TopBlock';
 
 type WordObjectType = { [key: string]: string };
 
@@ -119,42 +117,9 @@ const ConstructorGame: React.FC = () => {
     }
   }, [isRoundEnd]);
 
-  const endGameHandler = () => {
-    dispatch(constructorGameStart(false));
-  };
-
   return constructorGameIsStarted ? (
     <div className={styles['my-game']}>
-      <div className={styles.word__container}>
-        <div className={styles.word__empty} />
-        <div className={styles.word__inner}>
-          <p className={`${styles.text} ${styles.word}`}>
-            {wordObj.wordTranslate}
-          </p>
-          {isRoundEnd ? (
-            <p className={styles.word__transcription}>
-              {wordObj.transcription}
-            </p>
-          ) : (
-            <p className={styles.description}>Собери слово из букв.</p>
-          )}
-        </div>
-        <div className={styles.counter}>{`${roundCount}/10`}</div>
-      </div>
-      <button
-        type="button"
-        className={styles['audio-button']}
-        onClick={() => (isRoundEnd ? wordSound() : null)}
-      >
-        <AudioOn />
-      </button>
-      <button
-        type="button"
-        className={styles['exit-button']}
-        onClick={endGameHandler}
-      >
-        <ExitButton />
-      </button>
+      <TopBlock />
       <DragEndDrop />
       <img
         className={styles.picture}
