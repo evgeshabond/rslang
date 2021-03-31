@@ -13,6 +13,7 @@ import ProfilePage from '../../pages/profile-page/Profile-page';
 import ConstructorGame from '../ConstructorGame/ConstructorGame';
 import GitLinks from '../GitLinks/GitLinks';
 import { QuestionPage } from '../../pages/question-page/Question-page';
+import { GameTest } from '../game-statistic-test/Game-statistic-test';
 
 const App: React.FC = () => (
   <Router basename="/">
@@ -33,6 +34,7 @@ const App: React.FC = () => (
               component={ConstructorGame}
             />
             <Route path={mainPath.questionPage} component={QuestionPage} />
+            <Route path={mainPath.userStatistic} component={GameTest} />
           </Switch>
         </main>
         <Footer />
