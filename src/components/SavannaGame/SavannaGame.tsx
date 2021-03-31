@@ -1,7 +1,7 @@
 import React from 'react';
 import classes from './SavannaGame.module.css'
 
-export default function AudioGame() {
+export default function SavannaGame() {
     return (
         <div className={classes.game__wrapper}>
             <div className={classes.game__content}>
