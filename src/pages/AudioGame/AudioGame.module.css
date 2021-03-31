@@ -7,6 +7,7 @@
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   --mainColor: #733999;
   --mainFont: 1.8rem;
+  --btnBackColor: #c6d8e7;
 }
 
 .game__wrapper {
@@ -93,7 +94,8 @@
   background: #fdebff;
 }
 
-.playing__btn {
+.playing__btn,
+.add__aswer {
   width: 200px;
   height: 50px;
   border-radius: 30px;
@@ -103,8 +105,31 @@
   box-shadow: inset -8px -8px 16px #fff, inset 8px 8px 16px #f7d2fb;
   font-size: var(--mainFont);
   line-height: 50px;
+  border: none;
+}
+
+.add__aswer::before {
+  width: 30px;
+  height: 30px;
+  content: '';
+  display: inline-block;
+  background: url(../../assets/images/arrow.svg) no-repeat bottom center;
+  transition: all 0.15s ease;
+  /* background-position-x: 50%;
+  background-position-y: bottom;
+  line-height: 0; */
 }
 
 .rightAnswer {
   background-color: red;
+}
+
+.btn__container {
+  margin-right: 2.6rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-self: flex-end;
+  width: 12rem;
+  height: 3rem;
 }

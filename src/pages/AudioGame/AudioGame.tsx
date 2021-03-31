@@ -20,6 +20,8 @@ import { PlayButton } from '../../components/button-icons/playBig-button/playBig
 import { audioGameStart } from '../../actions/audioGame-actions';
 import { CloseButton } from '../../components/button-icons/close-button/close-button';
 import { AudioOnButton } from '../../components/button-icons/audiOn-button/audioOn-button';
+import { QuestionButton } from '../../components/button-icons/question-button/question-button';
+import { RefreshButton } from '../../components/button-icons/refresh-button.tsx/refresh-button';
 
 
 const AudioGame: React.FC = () => {
@@ -62,6 +64,7 @@ const AudioGame: React.FC = () => {
   }
 
   const playGame = () => {
+    setIsCorrectAnswer(false)
     if (wordList === undefined) {
       return;
     }
@@ -125,36 +128,28 @@ const AudioGame: React.FC = () => {
   )
 
 
-  // const audio = new Audio();
-  // if (isPlaying) {
-  //   audio.src = mainPath.serverUrl + currentPlayList[0].audio;
-  // }
+  const playingBtn = () => (isCorrectAnswer ? (
+    <button aria-label='word-btn' type="button" className={styles.add__aswer} />
 
-  // const playSound = () => {
-  //   if (audio) {
-  //     audio.pause();
-  //   }
-  //   audio.load();
-  //   playAudio()
-  // }
+  ) : (
+
+    <button type='button' className={styles.playing__btn}>
+      Не знаю
+    </button >
 
 
-  // const playAudio = () => {
-  //   const audioPromise = audio.play()
-  //   if (audioPromise !== undefined) {
-  //     audioPromise
-  //       .then(_ => {
-  //       })
-  //       .catch(err => {
-  //         console.info(err)
-  //       })
-  //   }
-  // }
+  )
+  )
 
   return isPlaying ? (
 
     <div className={styles.game__content}>
-      <CloseButton buttonClick={() => dispatch(audioGameStart(false))} />
+      <div className={styles.btn__container}>
+        <QuestionButton buttonClick={() => console.log('info')} />
+        <RefreshButton buttonClick={() => console.log('refresh')} />
+        <CloseButton buttonClick={() => dispatch(audioGameStart(false))} />
+      </div>
+
       <AudioOnButton buttonClick={() => playSound()} />
       {currentPlayWords.length === 0 ? <Spinner /> : renderWordCard()}
 
@@ -162,9 +157,10 @@ const AudioGame: React.FC = () => {
       {console.log('audio', audioList)}
       {console.log('words', currentPlayWords)}
 
-      <div className={styles.playing__btn}>
+      {/* <button type='button' className={styles.playing__btn}>
         Не знаю
-      </div>
+      </button> */}
+      {playingBtn()}
       {/* < PlayButton buttonClick={() => playSound()} /> */}
     </div>
   ) : (
