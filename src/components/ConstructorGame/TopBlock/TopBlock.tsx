@@ -4,6 +4,7 @@ import { RootStateType } from '../../../reducer/root-reducer';
 import styles from './TopBlock.module.css';
 import { ReactComponent as ExitButton } from '../../../assets/images/exit-button-mini.svg';
 import { constructorGameStart } from '../../../actions/constructor-game-actions';
+import GameHotkeys from '../GameHotkeys/GameHotkeys';
 
 export const TopBlock: React.FC = () => {
   const dispatch = useDispatch();
@@ -49,6 +50,7 @@ export const TopBlock: React.FC = () => {
       >
         <ExitButton />
       </button>
+      <GameHotkeys />
     </>
   );
 };

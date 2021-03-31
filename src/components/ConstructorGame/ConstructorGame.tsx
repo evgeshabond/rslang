@@ -48,10 +48,6 @@ const ConstructorGame: React.FC = () => {
     (state: RootStateType) => state.constructorGameState.chars
   );
 
-  const loading = useSelector(
-    (state: RootStateType) => state.wordState.loading
-  );
-
   useEffect(() => {
     dispatch(setWordObj(shuffledWordList[roundCount]));
   }, [shuffledWordList, roundCount]);
