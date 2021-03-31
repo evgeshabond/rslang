@@ -8,6 +8,7 @@ import { questionReducer, QuestionStateType } from './question-reducer';
 import { statisticReducer, StatisticStateType } from './statistic-reduser';
 import { userReducer, UserState } from './user-reducer';
 import { wordReducer, WordStateType } from './word-reducer';
+import { userWordsReducer, UserWordsStateType } from './user-words-reducer';
 
 export type RootStateType = {
   wordState: WordStateType;
@@ -16,6 +17,7 @@ export type RootStateType = {
   constructorGameState: ConstructorGameStartState;
   questionState: QuestionStateType;
   statisticState: StatisticStateType;
+  userWordsState: UserWordsStateType;
 };
 
 const rootReducer = combineReducers({
@@ -25,6 +27,7 @@ const rootReducer = combineReducers({
   constructorGameState: constructorGameReducer,
   questionState: questionReducer,
   statisticState: statisticReducer,
+  userWordsState: userWordsReducer,
 });
 
 export default rootReducer;
