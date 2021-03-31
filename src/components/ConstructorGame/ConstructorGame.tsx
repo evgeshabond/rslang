@@ -17,6 +17,7 @@ import { StartScreen } from './Start-screen/Start-screen';
 import { DragEndDrop } from './DragEndDrop/DragEndDrop';
 import { BottomBlock } from './BottomBlock/BottomBlock';
 import { TopBlock } from './TopBlock/TopBlock';
+import Spinner from '../Spinner/Spinner';
 
 type WordObjectType = { [key: string]: string };
 
@@ -45,6 +46,10 @@ const ConstructorGame: React.FC = () => {
 
   const chars = useSelector(
     (state: RootStateType) => state.constructorGameState.chars
+  );
+
+  const loading = useSelector(
+    (state: RootStateType) => state.wordState.loading
   );
 
   useEffect(() => {
@@ -128,24 +133,35 @@ const ConstructorGame: React.FC = () => {
 
   return constructorGameIsStarted ? (
     <div className={styles['my-game']}>
-      <TopBlock />
-      {isRoundEnd ? (
-        <button
-          type="button"
-          className={styles['audio-button']}
-          onClick={() => wordSound()}
-        >
-          <AudioOn />
-        </button>
-      ) : null}
-      <DragEndDrop />
-      <img
-        className={styles.picture}
-        src={`${mainPath.langUrl}${wordObj ? wordObj.image : ''}`}
-        alt={wordObj ? wordObj.word : ''}
-      />
-      <BottomBlock />
-      <CatSleeping className={styles.cat_sleeping} />
+      {wordObj ? (
+        <>
+          <TopBlock />
+          {isRoundEnd ? (
+            <button
+              type="button"
+              className={styles['audio-button']}
+              onClick={() => wordSound()}
+            >
+              <AudioOn />
+            </button>
+          ) : null}
+          <DragEndDrop />
+          {wordObj ? (
+            <img
+              className={styles.picture}
+              src={`${mainPath.langUrl}${wordObj.image}`}
+              alt={wordObj.word}
+            />
+          ) : (
+            <Spinner />
+          )}
+
+          <BottomBlock />
+          <CatSleeping className={styles.cat_sleeping} />
+        </>
+      ) : (
+        <Spinner />
+      )}
     </div>
   ) : (
     <StartScreen />
