@@ -30,9 +30,11 @@ const getColor = function(group: Number) {
 const useStyles = makeStyles({
   container: {
     display: 'flex',
+    flexWrap: 'wrap',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    marginBottom: '2px',
+    marginBottom: '10px',
+    marginLeft: '1rem',
     padding: '1rem',
     borderRadius: '2rem',
     backgroundColor: (word: CurrentWordListType) => 
@@ -42,12 +44,15 @@ const useStyles = makeStyles({
     width: '2.5rem',
     height: '2.5rem',
     marginTop: '1.5rem',
+    marginLeft: '1rem',
+    filter: 'contrast(10%)'
   },
   wordImage: {
     width: '5rem',
     height: '5rem',
     flexShrink: 0,
     marginTop: '1rem',
+    marginLeft: '1rem',
     backgroundImage: (word: CurrentWordListType) =>
       `url(${langUrl}${word.image})`,
     backgroundSize: 'contain',
@@ -57,6 +62,7 @@ const useStyles = makeStyles({
     width: '2.5rem',
     height: '2.5rem',
     marginTop: '1.5rem',
+    marginLeft: '1rem',
     cursor: 'pointer',
     backgroundImage: `url(${playIcon})`,
     backgroundSize: 'contain',
@@ -68,8 +74,19 @@ const useStyles = makeStyles({
     alignItems: 'flex-start',
     flexBasis: '30rem',
     marginTop: '1.5rem',
+    marginLeft: '1rem',
     gap: '2rem'
   },
+  buttonIcon: {
+    width: '2.5rem',
+    height: '2.5rem',
+    marginTop: '1.5rem',
+    marginLeft: '1rem',
+    cursor: 'pointer',
+  },
+  helperMarginRight: {
+    marginRight: '1rem'
+  }
 });
 
 // params:
@@ -82,7 +99,6 @@ type Props = {
 };
 
 const WordItem: React.FC<Props> = ({ word }) => {
-  console.log(word);
   const classes = useStyles(word);
   const handleClick = () => {
     const audio = new Audio(`${langUrl}${word.audioMeaning}`);
@@ -109,7 +125,7 @@ const WordItem: React.FC<Props> = ({ word }) => {
       <div className={classes.playButton} onClick={handleClick} aria-hidden={true} />
       <div className={classes.wordContainer}>
         <div>
-          <Typography variant="h4" component="span">
+          <Typography variant="h4" component="span" className={classes.helperMarginRight}>
             {word.word}
           </Typography>
           <Typography variant="h4" component="span">
@@ -139,6 +155,20 @@ const WordItem: React.FC<Props> = ({ word }) => {
             {word.textExampleTranslate}
           </Typography>
         </div>
+      </div>
+      <div>
+        <img
+          className={classes.buttonIcon}
+          src={hardIcon}
+          alt="Добаить в сложное"
+          aria-hidden="true"
+        />
+        <img
+          className={classes.buttonIcon}
+          src={deleteIcon}
+          alt="Добаить в сложное"
+          aria-hidden="true"
+        />
       </div>
     </div>
   );

@@ -21,18 +21,22 @@ const useStyles = makeStyles({
   }
 })
 
-const WordList = () => {
+type PropsType = {
+  page: number
+}
+
+const WordList = (props: PropsType) => {
   const currentState = useSelector((state: RootStateType) => state.wordState)  
   const dispatch = useDispatch()
   const classes = useStyles()
 
   useEffect(() => {
-    dispatch(fetchWordsList( {page: 0, group: 0}) )
-  },[])
+    dispatch(fetchWordsList( {page: props.page, group: 0}) )
+  },[props])
 
   const renderWords = () => (currentState.currentWordList.map( (word) => ( <WordItem key={word.id} word={word} /> )) )
 
-  console.log(currentState.currentWordList)
+  // console.log(currentState.currentWordList)
   return <div className={classes.container} >{currentState.loading ? (<span>Loading</span>) : <>{renderWords()}</>}</div>;
 }
 

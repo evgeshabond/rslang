@@ -1,11 +1,13 @@
-import React from 'react'
+import React, {useState} from 'react'
 
-//  Router
+//  Pagination
+import ReactPaginate from 'react-paginate';
 
 //  material ui
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import { Typography } from '@material-ui/core';
+// import Pagination from '@material-ui/lab/Pagination';
 import Box from '@material-ui/core/Box';
 import clsx from 'clsx';
 
@@ -21,13 +23,14 @@ const useStyles = makeStyles({
     display: 'flex',
     position: 'relative',
     flexDirection: 'column',
-    height: '85vh',
+    height: '80vh',
     maxWidth: 1200,
-    color: secondaryColor,
-    backgroundColor: primaryColor,
     margin: '1rem auto',
     paddingTop: '1rem',
-    borderRadius: '3rem'
+    borderRadius: '3rem',
+    color: secondaryColor,
+    backgroundColor: primaryColor,
+    overflow: 'hidden'
   },
   settings: {
     position: 'absolute',
@@ -41,15 +44,13 @@ const useStyles = makeStyles({
   levels: {
     display: 'flex',
     flexDirection: 'column',
-    width: '84px',
-    heigth: '456px',
+    flexShrink: 1,
     marginLeft: '15px',
     alignSelf: 'center'
   },
   level: {
-    width: '84px',
-    height: '76px',
     display: 'flex',
+    padding: '2rem 2rem',
     flexDirection: 'column',
     justifyContent: 'center',
     cursor: 'pointer'
@@ -80,16 +81,59 @@ const useStyles = makeStyles({
   },
   wordList: {
     display: 'flex',
-    height: '70vh',
     flexDirection: 'column',
-    flexBasis: '100%',
+    maxHeight: '65vh',
     margin: '1rem',
     overflowY: 'scroll',
+    willChange: 'transform'
+  },
+  pagination: {
+    height: '70px',
+    width: '600px',
+    margin: '1rem auto',
+    marginBottom: '3rem',
+    fontSize: '2rem',
+    listStyle: 'none',
+
+    '& li': { 
+      display: 'inline-block',
+      marginLeft: '0.5rem', 
+    },
+
+    '& a': {
+      width: '3rem',
+      height: '3rem',
+      cursor: 'pointer',
+      paddingLeft: '0.9rem',   
+      paddingRight: '1rem'
+    }
+  },
+  activePage: {
+    color: 'white' ,
+    backgroundColor: secondaryColor,
+    borderRadius: '2rem'  
+  },
+  disabled: {
+    color: 'grey',
+
+    '& a': {
+      cursor: 'not-allowed'
+    }    
+  },
+  activeLink: {
+    outline: 'none'
   }
 })
 
 const Learn:React.FC = () => {
   const classes = useStyles()
+  const [page, setPage] = useState(5)
+  
+  const handlePageChange = (data: any) => {
+    console.log(data.selected + 1) // actual page exuals selected + 1
+    setPage(data.selected + 1)
+  };
+
   return (
     <Paper className={classes.root}>
       <Typography variant="h4" component="h3">
@@ -118,9 +162,24 @@ const Learn:React.FC = () => {
           </div>
         </Box>
         <Box className={classes.wordList}>
-          <WordList />
+          <WordList page={page} />
         </Box>
       </Box>
+      <ReactPaginate
+          previousLabel='<'
+          nextLabel='>'
+          breakLabel='...'
+          breakClassName='breakMe'
+          pageCount={20}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          onPageChange={handlePageChange}
+          containerClassName={classes.pagination}
+          activeClassName={classes.activePage}
+          initialPage={page-1} //  choose 5th page (selected - 1)
+          disabledClassName={classes.disabled}
+          activeLinkClassName={classes.activeLink}
+        />
     </Paper>
   )
 }
