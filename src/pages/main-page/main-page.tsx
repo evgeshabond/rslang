@@ -34,7 +34,7 @@ const MainPage: React.FC = () => {
           Приступить
         </Link>
         <Link
-          to="/"
+          to={mainPath.userStatistic}
           className={`${buttonStyles['main-button']} ${styles['padding-top__10']}`}
         >
           Узнать больше

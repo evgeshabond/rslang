@@ -11,6 +11,7 @@ import { mainPath } from '../../utils/constants';
 import EbookPage from '../../pages/e-book-page/E-book-page';
 import ProfilePage from '../../pages/profile-page/Profile-page';
 import { QuestionPage } from '../../pages/question-page/Question-page';
+import { GameTest } from '../game-statistic-test/Game-statistic-test';
 
 const App: React.FC = () => (
   <Router basename="/">
@@ -26,6 +27,7 @@ const App: React.FC = () => (
             <Route path={mainPath.ebookPage} component={EbookPage} />
             <Route path={mainPath.profilePAge} component={ProfilePage} />
             <Route path={mainPath.questionPage} component={QuestionPage} />
+            <Route path={mainPath.userStatistic} component={GameTest} />
           </Switch>
         </main>
         <Footer />
