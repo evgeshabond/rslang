@@ -1,5 +1,11 @@
+import { mainPath } from '../utils/constants';
+
 export default class LangService {
-  langUrl = 'https://rslang-app.herokuapp.com/';
+  langUrl: string;
+
+  constructor() {
+    this.langUrl = mainPath.langUrl;
+  }
 
   async getWordList(listProps: { page: number; group: number }) {
     const { page, group } = listProps;

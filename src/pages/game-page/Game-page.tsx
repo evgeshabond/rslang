@@ -6,13 +6,17 @@ import rootStyles from '../e-book-page/e-book-page.module.css';
 
 const GamePage: React.FC = () => (
   <div className={rootStyles['ebook-container']}>
+    <h2 className={rootStyles.title}>Мини-игры</h2>
     <div className={rootStyles['ebook-buttons-container']}>
       <LinkButton link={mainPath.gamePage} buttonName="Саванна" />
       <LinkButton link={mainPath.gamePage} buttonName="Аудиовызов" />
     </div>
     <div className={rootStyles['ebook-buttons-container']}>
       <LinkButton link={mainPath.gamePage} buttonName="Спринт" />
-      <LinkButton link={mainPath.gamePage} buttonName="Конструктор слов" />
+      <LinkButton
+        link={mainPath.constructorGame}
+        buttonName="Конструктор слов"
+      />
     </div>
     <MainCat />
   </div>

@@ -27,10 +27,16 @@ const MainPage: React.FC = () => {
         попробуйте!
       </div>
       <div className={styles['main-button-container']}>
-        <Link to={mainPath.auth} className={buttonStyles['main-button']}>
+        <Link
+          to={mainPath.ebookPage}
+          className={`${buttonStyles['main-button']} ${styles['padding-top__10']}`}
+        >
           Приступить
         </Link>
-        <Link to="/" className={buttonStyles['main-button']}>
+        <Link
+          to={mainPath.userStatistic}
+          className={`${buttonStyles['main-button']} ${styles['padding-top__10']}`}
+        >
           Узнать больше
         </Link>
       </div>

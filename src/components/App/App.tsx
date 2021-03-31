@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import GamePage from '../../pages/game-page/Game-page';
 import { MainPage } from '../../pages/main-page/main-page';
 import WordsList from '../word-list/words-list';
@@ -11,6 +11,10 @@ import { mainPath } from '../../utils/constants';
 import EbookPage from '../../pages/e-book-page/E-book-page';
 import LearnPage from '../../pages/learn-page/learn-page'
 import ProfilePage from '../../pages/profile-page/Profile-page';
+import ConstructorGame from '../ConstructorGame/ConstructorGame';
+import GitLinks from '../GitLinks/GitLinks';
+import { QuestionPage } from '../../pages/question-page/Question-page';
+import { GameTest } from '../game-statistic-test/Game-statistic-test';
 
 const App: React.FC = () => (
   <Router basename="/">
@@ -18,6 +22,7 @@ const App: React.FC = () => (
       <div className={styles.container}>
         <Header />
         <main className={styles.main}>
+          <GitLinks />
           <Switch>
             <Route path={mainPath.main} component={MainPage} exact />
             <Route path={mainPath.gamePage} component={GamePage} />
@@ -27,6 +32,12 @@ const App: React.FC = () => (
             <Route path={mainPath.learnPage} component={LearnPage} />
             <Route path={mainPath.dictionaryPage} component={LearnPage} />
             <Route path={mainPath.profilePAge} component={ProfilePage} />
+            <Route
+              path={mainPath.constructorGame}
+              component={ConstructorGame}
+            />
+            <Route path={mainPath.questionPage} component={QuestionPage} />
+            <Route path={mainPath.userStatistic} component={GameTest} />
           </Switch>
         </main>
         <Footer />
