@@ -1,21 +1,19 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import styles from './button-main.module.css';
 
 type Props = {
   text: string;
-  clickOnButton: () => void;
+  clickOnButton?: () => void;
+  type: string;
 };
 
-const MainButton: React.FC<Props> = ({ text, clickOnButton }) => (
-  <Link
-    to="/"
+const MainButton: React.FC<Props> = ({ text, clickOnButton, type }) => (
+  <input
     className={styles['main-button']}
     onClick={clickOnButton}
-    type="button"
-  >
-    {text}
-  </Link>
+    type={type}
+    value={text}
+  />
 );
 
 export { MainButton };

@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import LangService from '../services/lang-service';
+import UserService from '../services/user-service';
 import { authErrorPath } from '../utils/constants';
 
 export const USER_CREATED = 'USER_CREATED';
@@ -13,6 +13,9 @@ export const USER_AUTH_OK = 'USER_AUTH_OK';
 export const LOGIN_PAGE_CHANGE = 'LOGIN_PAGE_CHANGE';
 export const USER_LOGOUT = 'USER_LOGOUT';
 export const ERROR_MESSAGE_CLEAR = 'ERROR_MESSAGE_CLEAR';
+export const USER_FOTO_UPLOAD = 'USER_FOTO_UPLOAD';
+export const USER_FOTO_UPDATE = 'USER_FOTO_UPDATE';
+export const USER_LEVEL_UPDATE = 'USER_LEVEL_UPDATE';
 
 export type UserType = {
   message: string;
@@ -115,15 +118,31 @@ export const errorMessageClear = () => ({
   type: ERROR_MESSAGE_CLEAR,
 });
 
-const wordService = new LangService();
+export const saveUploadFoto64 = (value: string) => ({
+  type: USER_FOTO_UPLOAD,
+  payload: value,
+});
+
+export const userFotoUpdate = (value: string) => ({
+  type: USER_FOTO_UPDATE,
+  payload: value,
+});
+
+export const userLevelUpdate = (value: string) => ({
+  type: USER_LEVEL_UPDATE,
+  payload: value,
+});
+
+const usersService = new UserService();
 
 const createUser = (params: {
   name: string;
   email: string;
   password: string;
+  foto64: string;
 }) => (dispatch: Dispatch<SaveFromBackDataActions>) => {
   dispatch(userDataLoading(true));
-  wordService
+  usersService
     .createUser(params)
     .then((data) => {
       if (data.error) {
@@ -171,16 +190,48 @@ const createUser = (params: {
 const logIn = (params: { email: string; password: string }) => (
   dispatch: Dispatch<SaveFromBackDataActions>
 ) => {
-  wordService
+  dispatch(userDataLoading(true));
+  usersService
     .loginUser(params)
     .then((data) => {
       if (data.error) {
         dispatch(userAuthErr(data.error));
+        dispatch(userDataLoading(false));
       } else {
         dispatch(userAuthOk(data));
+        dispatch(userDataLoading(false));
       }
     })
-    .catch((err) => console.error('fetch err action user', err));
+    .catch((err) => {
+      dispatch(userDataLoading(false));
+      console.error('fetch err action user', err);
+    });
+};
+
+export const updateUser = (params: {
+  userId: string;
+  token: string;
+  body: {
+    foto64?: string;
+    level?: string;
+  };
+}) => (dispatch: Dispatch<SaveFromBackDataActions>) => {
+  dispatch(userDataLoading(true));
+  usersService
+    .updateUser(params)
+    .then((data) => {
+      if (data.error) {
+        console.error('error load image');
+        dispatch(userDataLoading(false));
+      } else {
+        dispatch(userFotoUpdate(data.foto64));
+        dispatch(userDataLoading(false));
+      }
+    })
+    .catch((err) => {
+      dispatch(userDataLoading(false));
+      console.error('fetch err action user', err);
+    });
 };
 
 export { createUser, logIn };

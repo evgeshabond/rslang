@@ -100,19 +100,17 @@
   cursor: pointer;
 }
 
-.auth-err-msg {
-  border-radius: 30px;
-  max-width: 330px;
-  min-width: 250px;
-  width: 100%;
-  margin-top: 20px;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  color: #db1557;
-  text-align: left;
-}
-
 .login-change {
   margin-bottom: 10px;
+}
+
+.profile-img-wrapper {
+  width: 100%;
+  height: 70px;
+  border-radius: 15px;
+  margin-top: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #5b2467;
 }

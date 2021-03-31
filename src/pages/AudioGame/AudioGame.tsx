@@ -137,7 +137,6 @@ const AudioGame: React.FC = () => {
       Не знаю
     </button >
 
-
   )
   )
 
@@ -157,9 +156,6 @@ const AudioGame: React.FC = () => {
       {console.log('audio', audioList)}
       {console.log('words', currentPlayWords)}
 
-      {/* <button type='button' className={styles.playing__btn}>
-        Не знаю
-      </button> */}
       {playingBtn()}
       {/* < PlayButton buttonClick={() => playSound()} /> */}
     </div>
