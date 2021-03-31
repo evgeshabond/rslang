@@ -1,0 +1,49 @@
+.my-game {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #fdebff;
+  border-radius: 50px;
+  max-width: 1022px;
+  width: 80%;
+  min-height: 560px;
+  text-align: center;
+  padding: 5px;
+}
+
+.picture {
+  width: 250px;
+}
+
+.audio-button {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 20px;
+  right: 66px;
+  width: 30px;
+  height: 30px;
+  background-color: inherit;
+  border: none;
+}
+
+.cat_sleeping {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 210px;
+  height: 142px;
+}
+
+@media screen and (max-width: 680px) {
+  .cat_sleeping {
+    right: -67px;
+  }
+}
+@media screen and (max-width: 500px) {
+  .cat_sleeping {
+    right: -100px;
+  }
+}

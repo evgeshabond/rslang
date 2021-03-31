@@ -5,6 +5,8 @@ export const mainPath = {
   auth: '/user',
   ebookPage: '/ebookpage',
   profilePAge: '/profile',
+  constructorGame: '/constructorgame',
+  langUrl: 'https://rslang-app.herokuapp.com/',
   questionPage: '/quiz',
   userStatistic: '/statistic',
 };

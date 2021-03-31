@@ -41,7 +41,14 @@ export default class StatisticService {
         body: JSON.stringify(body),
       }
     );
-    console.log(params.body);
+
+    if (res.status === 401) {
+      return {
+        error: {
+          errors: [{ message: 'Пользователь не найден' }],
+        },
+      };
+    }
     const data = await res.json();
     return data;
   };

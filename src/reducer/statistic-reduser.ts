@@ -1,6 +1,7 @@
 import {
   CLEAR_ALL_STATISTIC,
   GAME_STAT_UPDATE,
+  STATISTIC_LOAD_ERROR,
 } from '../actions/statistic-action';
 import { AllGameStatisticType } from './statistic-state-types';
 
@@ -44,6 +45,11 @@ export const statisticReducer = (
         optional: {
           gameStatistic: action.payload,
         },
+      };
+    case STATISTIC_LOAD_ERROR:
+      return {
+        ...state,
+        errorMsg: action.payload,
       };
     case CLEAR_ALL_STATISTIC:
       return initialState;
