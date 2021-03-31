@@ -98,6 +98,7 @@ const ConstructorGame: React.FC = () => {
     if (chars === undefined) {
       return;
     }
+
     if (wordObj === undefined) {
       return;
     }
@@ -111,7 +112,11 @@ const ConstructorGame: React.FC = () => {
   }, [wordObj, chars]);
 
   useEffect(() => {
-    if (chars === undefined || wordObj === undefined) {
+    if (chars === undefined) {
+      return;
+    }
+
+    if (wordObj === undefined) {
       return;
     }
 
