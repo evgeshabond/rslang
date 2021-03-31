@@ -117,7 +117,7 @@ const useStyles = makeStyles({
     color: 'grey',
 
     '& a': {
-      cursor: 'not-allowed'
+      display: 'none'
     }    
   },
   activeLink: {
