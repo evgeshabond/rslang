@@ -95,9 +95,13 @@ const ConstructorGame: React.FC = () => {
   }, [wordObj, isRoundEnd]);
 
   useEffect(() => {
-    if (chars === undefined || wordObj === undefined) {
+    if (chars === undefined) {
       return;
     }
+    if (wordObj === undefined) {
+      return;
+    }
+
     const currentChars = chars.map((char) => char[1]).join('');
 
     if (wordObj.word === currentChars) {
