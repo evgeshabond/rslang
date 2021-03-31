@@ -145,6 +145,8 @@ const ConstructorGame: React.FC = () => {
           {wordObj ? (
             <img
               className={styles.picture}
+              width="256px"
+              height="166px"
               src={`${mainPath.langUrl}${wordObj.image}`}
               alt={wordObj.word}
             />
