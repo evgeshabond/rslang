@@ -39,9 +39,15 @@ export const BottomBlock: React.FC = () => {
   return isRoundEnd ? (
     <>
       <p className={styles.description}>Пример</p>
-      <p className={styles.word__transcription}>{`${
-        wordObj.textExample ? removeTagsFromString(wordObj.textExample) : ''
-      }`}</p>
+      <p className={styles.word__transcription}>
+        {wordObj
+          ? `${
+              wordObj.textExample
+                ? removeTagsFromString(wordObj.textExample)
+                : ''
+            }`
+          : ''}
+      </p>
       <button
         className={styles['btn-next']}
         type="button"
@@ -54,11 +60,13 @@ export const BottomBlock: React.FC = () => {
     <>
       <p className={styles.description}>Контекст</p>
       <p className={styles.word__transcription}>
-        {`${
-          wordObj.textMeaning
-            ? removeTagsAndWordInside(wordObj.textMeaning)
-            : ''
-        }`}
+        {wordObj
+          ? `${
+              wordObj.textMeaning
+                ? removeTagsAndWordInside(wordObj.textMeaning)
+                : ''
+            }`
+          : ''}
       </p>
       <button
         className={styles['btn-next']}

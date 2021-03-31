@@ -107,7 +107,7 @@ const ConstructorGame: React.FC = () => {
   }, [wordObj, chars]);
 
   useEffect(() => {
-    if (chars === undefined) {
+    if (chars === undefined || wordObj === undefined) {
       return;
     }
 
@@ -132,8 +132,8 @@ const ConstructorGame: React.FC = () => {
       <DragEndDrop />
       <img
         className={styles.picture}
-        src={`${mainPath.langUrl}${wordObj.image}`}
-        alt={wordObj.word}
+        src={`${mainPath.langUrl}${wordObj ? wordObj.image : ''}`}
+        alt={wordObj ? wordObj.word : ''}
       />
       <BottomBlock />
       <CatSleeping className={styles.cat_sleeping} />

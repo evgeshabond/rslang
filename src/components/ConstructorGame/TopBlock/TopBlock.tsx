@@ -30,11 +30,11 @@ export const TopBlock: React.FC = () => {
         <div className={styles.word__empty} />
         <div className={styles.word__inner}>
           <p className={`${styles.text} ${styles.word}`}>
-            {wordObj.wordTranslate}
+            {wordObj ? wordObj.wordTranslate : ''}
           </p>
           {isRoundEnd ? (
             <p className={styles.word__transcription}>
-              {wordObj.transcription}
+              {wordObj ? wordObj.transcription : ''}
             </p>
           ) : (
             <p className={styles.description}>Собери слово из букв.</p>
