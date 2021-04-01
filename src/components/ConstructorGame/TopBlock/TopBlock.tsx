@@ -5,8 +5,10 @@ import styles from './TopBlock.module.css';
 import { ReactComponent as ExitButton } from '../../../assets/images/exit-button-mini.svg';
 import { constructorGameStart } from '../../../actions/constructor-game-actions';
 import GameHotkeys from '../GameHotkeys/GameHotkeys';
+import { gameConstants } from '../../../utils/constants';
 
 export const TopBlock: React.FC = () => {
+  const { amountOfRounds } = gameConstants;
   const dispatch = useDispatch();
 
   const wordObj = useSelector(
@@ -41,7 +43,9 @@ export const TopBlock: React.FC = () => {
             <p className={styles.description}>Собери слово из букв.</p>
           )}
         </div>
-        <div className={styles.counter}>{`${roundCount}/10`}</div>
+        <div
+          className={styles.counter}
+        >{`${roundCount}/${amountOfRounds}`}</div>
       </div>
       <button
         type="button"
