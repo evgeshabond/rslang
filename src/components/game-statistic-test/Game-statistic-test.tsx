@@ -62,7 +62,7 @@ export const GameTest: React.FC = () => {
   const getWordToState = () => {
     const param = {
       userId: user.userId,
-      wordId: wordList.currentWordList[0].id,
+      wordId: wordList.currentWordList[1].id,
       token: user.token,
     };
 
@@ -72,7 +72,7 @@ export const GameTest: React.FC = () => {
   const deleteWordToState = () => {
     const param = {
       userId: user.userId,
-      wordId: wordList.currentWordList[0].id,
+      wordId: wordList.currentWordList[1].id,
       token: user.token,
     };
 

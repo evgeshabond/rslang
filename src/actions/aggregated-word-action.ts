@@ -79,8 +79,8 @@ export const getAggregatedWordsList = (
   dispatch(userAggregatedWordRequested());
   service
     .getAggregatedWordsList(params, filterType)
-    .then((data) => console.log(data)) // dispatch(userAggregatedWordLoaded(data)))
-    .catch((err) => console.log(err)); // dispatch(userAggregatedWordFetchErr(err.message)));
+    .then((data) => dispatch(userAggregatedWordLoaded(data[0])))
+    .catch((err) => dispatch(userAggregatedWordFetchErr(err.message)));
 };
 
 export const getAggregatedWord = (params: {
@@ -91,6 +91,6 @@ export const getAggregatedWord = (params: {
   dispatch(userAggregatedWordRequested());
   service
     .getAggregatedWord(params)
-    .then((data) => console.log(data)) // dispatch(userAggregatedWord(data)))
-    .catch((err) => console.log(err)); // dispatch(userAggregatedWordFetchErr(err.message)));
+    .then((data) => dispatch(userAggregatedWord(data[0])))
+    .catch((err) => dispatch(userAggregatedWordFetchErr(err.message)));
 };
