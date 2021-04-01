@@ -70,6 +70,9 @@ div.MuiSelect-select:focus {
 }
 
 div.MuiSelect-select.MuiSelect-select {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 1.4rem;
   color: #733999;
 }
