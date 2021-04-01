@@ -27,6 +27,7 @@ export const gameType = {
 export const difficulty = {
   hard: 'hard',
   easy: 'easy',
+  deleted: 'deleted',
 };
 
 export const gameConstants = {
