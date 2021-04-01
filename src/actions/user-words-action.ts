@@ -11,7 +11,7 @@ export type UserWord = {
   id: string;
   difficulty: string;
   optional: {
-    isDeleted: boolean;
+    learning: boolean;
   };
 };
 
@@ -77,7 +77,7 @@ export const addUserWord = (params: {
   body: {
     difficulty: string;
     optional: {
-      isDeleted?: boolean;
+      learning?: boolean;
     };
   };
 }) => (dispatch: Dispatch<UserWordActionForReducer>) => {
@@ -100,20 +100,114 @@ export const getUserWord = (params: {
     .catch((err) => dispatch(userWordFetchErr(err.message)));
 };
 
-export const updateUserWord = (params: {
+// export const updateUserWord = (params: {
+//   userId: string;
+//   wordId: string;
+//   token: string;
+//   body: {
+//     difficulty: string;
+//     optional: {
+//       isDeleted?: boolean;
+//     };
+//   };
+// }) => (dispatch: Dispatch<UserWordActionForReducer>) => {
+//   dispatch(userWordRequested());
+//   service
+//     .updateWord(params)
+//     .then((data) => dispatch(userWordLoaded(data)))
+//     .catch((err) => dispatch(userWordFetchErr(err.message)));
+// };
+
+export const userWordDeleted = (params: {
   userId: string;
   wordId: string;
   token: string;
-  body: {
-    difficulty: string;
-    optional: {
-      isDeleted?: boolean;
-    };
-  };
 }) => (dispatch: Dispatch<UserWordActionForReducer>) => {
   dispatch(userWordRequested());
+  const body = {
+    difficulty: 'deleted',
+  };
   service
-    .updateWord(params)
+    .updateWord(params, body)
+    .then((data) => dispatch(userWordLoaded(data)))
+    .catch((err) => dispatch(userWordFetchErr(err.message)));
+};
+
+export const userWordUnDeleted = (params: {
+  userId: string;
+  wordId: string;
+  token: string;
+}) => (dispatch: Dispatch<UserWordActionForReducer>) => {
+  dispatch(userWordRequested());
+  const body = {
+    difficulty: 'easy',
+  };
+  service
+    .updateWord(params, body)
+    .then((data) => dispatch(userWordLoaded(data)))
+    .catch((err) => dispatch(userWordFetchErr(err.message)));
+};
+
+export const userWordToHard = (params: {
+  userId: string;
+  wordId: string;
+  token: string;
+}) => (dispatch: Dispatch<UserWordActionForReducer>) => {
+  dispatch(userWordRequested());
+  const body = {
+    difficulty: 'hard',
+  };
+  service
+    .updateWord(params, body)
+    .then((data) => dispatch(userWordLoaded(data)))
+    .catch((err) => dispatch(userWordFetchErr(err.message)));
+};
+
+export const userWordToEasy = (params: {
+  userId: string;
+  wordId: string;
+  token: string;
+}) => (dispatch: Dispatch<UserWordActionForReducer>) => {
+  dispatch(userWordRequested());
+  const body = {
+    difficulty: 'easy',
+  };
+  service
+    .updateWord(params, body)
+    .then((data) => dispatch(userWordLoaded(data)))
+    .catch((err) => dispatch(userWordFetchErr(err.message)));
+};
+
+export const userWordToLearning = (params: {
+  userId: string;
+  wordId: string;
+  token: string;
+}) => (dispatch: Dispatch<UserWordActionForReducer>) => {
+  dispatch(userWordRequested());
+  const body = {
+    optional: {
+      learning: true,
+    },
+  };
+  service
+    .updateWord(params, body)
+    .then((data) => dispatch(userWordLoaded(data)))
+    .catch((err) => dispatch(userWordFetchErr(err.message)));
+};
+
+export const userWordToUnLearning = (params: {
+  userId: string;
+  wordId: string;
+  token: string;
+}) => (dispatch: Dispatch<UserWordActionForReducer>) => {
+  dispatch(userWordRequested());
+  const body = {
+    optional: {
+      learning: false,
+    },
+  };
+  service
+    .updateWord(params, body)
     .then((data) => dispatch(userWordLoaded(data)))
     .catch((err) => dispatch(userWordFetchErr(err.message)));
 };

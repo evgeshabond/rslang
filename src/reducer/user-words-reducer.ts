@@ -14,7 +14,7 @@ const initialState = {
     id: '',
     difficulty: difficulty.easy,
     optional: {
-      isDeleted: false,
+      learning: false,
     },
   },
   userWordsList: [],
@@ -51,7 +51,7 @@ const userWordsReducer = (
           id: '',
           difficulty: difficulty.easy,
           optional: {
-            isDeleted: false,
+            learning: false,
           },
         },
       };
