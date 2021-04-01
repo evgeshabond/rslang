@@ -23,6 +23,19 @@
   width: 100%;
 }
 
+.title {
+  margin: 25px 0 20px;
+
+  font-weight: 500;
+  font-size: 36px;
+  line-height: 42px;
+  text-align: center;
+
+  color: #5b2467;
+
+  text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
 @media (max-width: 550px) {
   .ebook-buttons-container {
     display: flex;

@@ -4,6 +4,7 @@ import LangService from '../services/lang-service';
 export const WORD_LIST_LOADED = 'WORD_LIST_LOADED';
 export const WORD_LIST_LOADING = 'WORD_LIST_LOADING';
 export const WORD_LIST_ERROR = 'WORD_LIST_ERROR';
+export const WORD_LOADED = 'WORD_LOADED';
 
 export type CurrentWordListType = {
   id: string;
@@ -24,11 +25,12 @@ export type CurrentWordListType = {
 
 export type WordListLoadedAType = {
   type: string;
-  payload: CurrentWordListType;
+  payload: Array<CurrentWordListType>;
 };
 
 export type WordListRequestAType = {
   type: string;
+  payload: '';
 };
 
 export type WordListFetchErrAType = {
@@ -36,13 +38,19 @@ export type WordListFetchErrAType = {
   payload: unknown;
 };
 
-export const wordListLoaded = (newList: CurrentWordListType) => ({
+export type CuurentWordLoadeAType = {
+  type: string;
+  payload: CurrentWordListType;
+};
+
+export const wordListLoaded = (newList: Array<CurrentWordListType>) => ({
   type: WORD_LIST_LOADED,
   payload: newList,
 });
 
 export const wordListRequested = () => ({
   type: WORD_LIST_LOADING,
+  payload: '',
 });
 
 export const wordListFetchErr = (err: unknown) => ({
@@ -50,11 +58,18 @@ export const wordListFetchErr = (err: unknown) => ({
   payload: err,
 });
 
-export type WordsActions =
+export const currentWordLoaded = (value: CurrentWordListType) => ({
+  type: WORD_LOADED,
+  payload: value,
+});
+
+export type WordActionForReducer =
   | WordListLoadedAType
   | WordListRequestAType
   | WordListFetchErrAType
-  | typeof fetchWordsList;
+  | WordListFetchErrAType;
+
+export type WordsActions = WordActionForReducer | typeof fetchWordsList;
 
 const wordService = new LangService();
 
@@ -68,4 +83,14 @@ const fetchWordsList = (params: { page: number; group: number }) => (
     .catch((err) => dispatch(wordListFetchErr(err)));
 };
 
-export { fetchWordsList };
+const getCurrentWords = (wordId: string) => (
+  dispatch: Dispatch<WordsActions>
+) => {
+  dispatch(wordListRequested());
+  wordService
+    .getWord(wordId)
+    .then((data) => dispatch(currentWordLoaded(data)))
+    .catch((err) => dispatch(wordListFetchErr(err)));
+};
+
+export { fetchWordsList, getCurrentWords };
