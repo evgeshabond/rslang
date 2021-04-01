@@ -1,20 +1,14 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import useSound from 'use-sound';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { ActionCreatorsMapObject, bindActionCreators } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   CurrentWordListType,
   fetchWordsList,
-  wordListLoaded,
-  wordListRequested,
 } from '../../actions/word-actions';
 import { RootStateType } from '../../reducer/root-reducer';
-import { WordStateType } from '../../reducer/word-reducer';
 import Spinner from '../../components/Spinner/Spinner';
 import { WordItem } from '../../components/word-item/word-item-game';
 import styles from './AudioGame.module.css';
-import WordList from '../../components/word-list/words-list';
-import { AudioGameState } from '../../reducer/audio-game-reducer';
 import { mainPath } from '../../utils/constants';
 import { PlayButton } from '../../components/button-icons/playBig-button/playBig-button';
 import { audioGameStart } from '../../actions/audioGame-actions';
@@ -22,6 +16,7 @@ import { CloseButton } from '../../components/button-icons/close-button/close-bu
 import { AudioOnButton } from '../../components/button-icons/audiOn-button/audioOn-button';
 import { QuestionButton } from '../../components/button-icons/question-button/question-button';
 import { RefreshButton } from '../../components/button-icons/refresh-button.tsx/refresh-button';
+import ControlledSelect from '../../components/ControlledSelect/ControlledSelect';
 
 
 const AudioGame: React.FC = () => {
@@ -38,17 +33,17 @@ const AudioGame: React.FC = () => {
     {} as CurrentWordListType
   );
   const ref = useRef();
-  const [play] = useSound(`${mainPath.serverUrl}${audioList.audio}`, { interrupt: true });
+  const [play] = useSound(`${mainPath.langUrl}${audioList.audio}`, { interrupt: true });
+  const [playExample] = useSound((`${mainPath.langUrl}${audioList.audioExample}`))
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchWordsList({ page: 0, group: 0 }))
   }, [])
 
-  const getRandomInt = (min: number, max: number) => {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-    console.log('random');
-  }
+  const getRandomInt = (min: number, max: number) => (
+    Math.floor(Math.random() * (max - min + 1)) + min
+  )
 
   const shuffle = (arr: Array<CurrentWordListType>) => {
     // console.log('shuffle');
@@ -84,7 +79,7 @@ const AudioGame: React.FC = () => {
   }, [currentPlayWords])
 
   useEffect(() => {
-    playSound();
+    playSoundWord();
   }, [play])
 
   useEffect(() =>
@@ -94,9 +89,8 @@ const AudioGame: React.FC = () => {
 
     }, [])
 
-  // setCountStep(prevcountStep => prevcountStep + 1);
 
-  const playSound = () => {
+  const playSoundWord = () => {
     if (Object.keys(audioList).length > 0) {
       play()
     }
@@ -104,11 +98,7 @@ const AudioGame: React.FC = () => {
 
 
   const checkUserAnswer = (word: string) => {
-    console.log(word);
-    console.log(audioList.word)
-
     if (audioList.word === word) {
-      console.log('true')
       setIsCorrectAnswer(true)
     }
   }
@@ -117,7 +107,7 @@ const AudioGame: React.FC = () => {
 
   const renderWordCard = () => (
     <div className={styles.word__list}>
-      { console.log('render')}
+
       {
         currentPlayWords.map((word: CurrentWordListType, index: number) => (
           <WordItem buttonClick={() => checkUserAnswer(word.word)} key={word.id} word={word} />
@@ -129,7 +119,11 @@ const AudioGame: React.FC = () => {
 
 
   const playingBtn = () => (isCorrectAnswer ? (
-    <button aria-label='word-btn' type="button" className={styles.add__aswer} />
+    <button aria-label='word-btn' type="button" className={styles.add__aswer} onClick={() => {
+      setCountStep(CountStep => countStep + 1);
+      console.log(countStep);
+      playGame()
+    }} />
 
   ) : (
 
@@ -140,6 +134,7 @@ const AudioGame: React.FC = () => {
   )
   )
 
+
   return isPlaying ? (
 
     <div className={styles.game__content}>
@@ -148,8 +143,28 @@ const AudioGame: React.FC = () => {
         <RefreshButton buttonClick={() => console.log('refresh')} />
         <CloseButton buttonClick={() => dispatch(audioGameStart(false))} />
       </div>
+      {isCorrectAnswer ? (
+        <div className={styles.word__info}>
+          <div className={styles.word__image}>
+            <img
+              className={styles.word__image}
+              src={`${mainPath.langUrl}${audioList.image}`}
+              alt={audioList.word}
+            />
+          </div>
+          <div className={styles.word__sound}>
+            <AudioOnButton buttonClick={() => playSoundWord()} />
+            <span>{audioList.word} {audioList.transcription}</span>
+          </div>
+          <div className={styles.word__context}>
+            <AudioOnButton buttonClick={() => playExample()} />
+            <span>{audioList.textExample} </span>
+          </div>
+        </div>
+      ) : (
+        <AudioOnButton buttonClick={() => playSoundWord()} />
+      )}
 
-      <AudioOnButton buttonClick={() => playSound()} />
       {currentPlayWords.length === 0 ? <Spinner /> : renderWordCard()}
 
       {/* {console.log('renderComp')} */}
@@ -157,11 +172,11 @@ const AudioGame: React.FC = () => {
       {console.log('words', currentPlayWords)}
 
       {playingBtn()}
-      {/* < PlayButton buttonClick={() => playSound()} /> */}
     </div>
   ) : (
     <div className={styles.game__wrapper}>
       <div className={styles.game__startSreen}>
+        <ControlledSelect />
         <div className={styles.game__title}>Аудиовызов</div>
         <div className={styles.game__decription}>Тренировка улучшает восприятие английской речи на слух.
         Выберите из предложенных вариантов ответа правильный перевод слова,

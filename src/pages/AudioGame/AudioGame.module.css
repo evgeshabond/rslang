@@ -96,6 +96,7 @@
 
 .playing__btn,
 .add__aswer {
+  cursor: pointer;
   width: 200px;
   height: 50px;
   border-radius: 30px;
@@ -106,6 +107,11 @@
   font-size: var(--mainFont);
   line-height: 50px;
   border: none;
+}
+
+.playing__btn,
+.add__aswer:focus {
+  outline: none;
 }
 
 .add__aswer::before {
@@ -132,4 +138,23 @@
   align-self: flex-end;
   width: 12rem;
   height: 3rem;
+}
+
+.word__info {
+  width: 40.175rem;
+  height: 19.3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.word__sound {
+  height: 2rem;
+}
+
+.word__image {
+  width: 22.8rem;
+  height: 12.1rem;
+  border-radius: 20px;
 }
