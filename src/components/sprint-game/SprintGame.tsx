@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './sprint-game.module.css';
 import { RootStateType } from '../../reducer/root-reducer';
-import { sprintGameStatusChange } from '../../actions/sprint-game-action';
+import {
+  sprintGameShuffledArray,
+  sprintGameStatusChange,
+  sprintGameTotalPoints,
+} from '../../actions/sprint-game-action';
 import { RefreshButton } from '../button-icons/refresh-button.tsx/refresh-button';
 import { QuestionButton } from '../button-icons/question-button/question-button';
 import { CloseButton } from '../button-icons/close-button/close-button';
@@ -23,21 +27,39 @@ const SprintGame: React.FC = () => {
   const gameStatuses = useSelector(
     (state: RootStateType) => state.sprintGameState
   );
-  const { gameTitle, gameDescription, gameStatus } = gameStatuses;
+  const {
+    gameTitle,
+    gameDescription,
+    gameStatus,
+    totalPoints,
+    shuffledArray,
+  } = gameStatuses;
 
   console.log(wordList);
-const [wordCounter, setWordCounter] = useState(0);
-const [points, setPoints] = useState(0);
+  const [wordCounter, setWordCounter] = useState(0);
 
-const doubleArray = wordList.slice();
-  const shuffledArray = doubleArray.sort(() => Math.random() - 0.5);//  создала свой ээрей и перемешала его
-  const translationArray = wordList.map((elem) => elem.wordTranslate).sort(() => Math.random() - 0.5); // массив с переводом
-  console.log(translationArray, 'translation')
-  console.log(shuffledArray, 'shuffled')
-  console.log(wordList, 'wordlist')
+  // const copyMainArray = wordList.slice().sort(() => Math.random() - 0.5);
+  // console.log(copyMainArray, 'copy');
 
+  // console.log(shuffledArray, 'shuffled');
+  
   useEffect(() => {
+    dispatch(sprintGameShuffledArray(wordList));
+
   }, [wordList]);
+
+console.log(shuffledArray, 'list')
+
+// let translationArray = shuffledArray.map((elem) => elem.wordTranslate);
+// console.log(translationArray, 'translation')
+
+  // const translationArray = wordList
+  //   .map((elem) => elem.wordTranslate)
+  //   .sort(() => Math.random() - 0.5); // массив с переводом
+
+  // console.log(translationArray, 'translation');
+  // console.log(wordList, 'wordlist');
+
 
   const renderTimerPage = () => (
     <div className={`${styles.game__wrapper} ${styles.timer__page}`}>
@@ -50,22 +72,23 @@ const doubleArray = wordList.slice();
     </div>
   );
 
-  const checkTheWordRight =() =>{
-    if (shuffledArray[wordCounter].wordTranslate === translationArray[wordCounter]){
-      setPoints(+50);
-    }
-    setWordCounter(+1);
+  // const checkTheWordRight = () => {
+  //   if (
+  //     shuffledArray[wordCounter].wordTranslate === translationArray[wordCounter]
+  //   ) {
+  //     dispatch(sprintGameTotalPoints(totalPoints+50));
+  //   }
+  //   setWordCounter(+1);
+  // };
 
-  }
-
-
-
-  const checkTheWordWrong =() =>{
-    if (shuffledArray[wordCounter].wordTranslate !==translationArray[wordCounter]){
-      setPoints(+50);
-    }
-    setWordCounter(+1);
-  }
+  // const checkTheWordWrong = () => {
+  //   if (
+  //     shuffledArray[wordCounter].wordTranslate !== translationArray[wordCounter]
+  //   ) {
+  //     dispatch(sprintGameTotalPoints(totalPoints+50));
+  //   }
+  //   setWordCounter(+1);
+  // };
 
   const renderGamePage = () => (
     <div className={`${styles.game__wrapper} ${styles.play}`}>
@@ -91,21 +114,36 @@ const doubleArray = wordList.slice();
           backgroundRepeat: 'no-repeat',
         }}
       >
-        <div className={styles.total__points} style={{color: 'white'}}>{points}</div>
+        <div className={styles.total__points} style={{ color: 'white' }}>
+          Всего {totalPoints} очков
+        </div>
         <div className={styles.current__points}>очков за слово</div>
         <div className={styles.check__points}>circles</div>
         <div className={styles.balls}> total 4 balls</div>
         <div className={styles.guess__word}>
-          <div className={styles.the__word}>{shuffledArray[wordCounter].word} </div> - 
-          <div className={styles.translation}>{translationArray[wordCounter]} </div>
+          <div className={styles.the__word}>
+            {/* {shuffledArray[wordCounter].word}{' '} */}
+          </div>{' '}
+          -
+          {/* <div className={styles.translation}>
+            {translationArray[wordCounter]}{' '}
+          </div> */}
         </div>
 
         <div className={styles.guess_not}> check</div>
         <div className={styles.button__toguess}>
-          <button type="button" className={styles.green__button} onClick={checkTheWordRight}>
+          <button
+            type="button"
+            className={styles.green__button}
+            // onClick={checkTheWordRight}
+          >
             Верно
           </button>
-          <button type="button" className={styles.red__button} onClick={checkTheWordWrong}>
+          <button
+            type="button"
+            className={styles.red__button}
+            // onClick={checkTheWordWrong}
+          >
             Неверно
           </button>
         </div>

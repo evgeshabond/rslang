@@ -11,7 +11,7 @@ const GamePage: React.FC = () => (
       <LinkButton link={mainPath.gamePage} buttonName="Аудиовызов" />
     </div>
     <div className={rootStyles['ebook-buttons-container']}>
-      <LinkButton link={mainPath.gamePage} buttonName="Спринт" />
+      <LinkButton link={mainPath.sprint} buttonName="Спринт" />
       <LinkButton link={mainPath.gamePage} buttonName="Конструктор слов" />
     </div>
     <MainCat />
