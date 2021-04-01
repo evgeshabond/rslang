@@ -24,7 +24,7 @@ export default class UserWordsService {
     body: {
       difficulty: string;
       optional: {
-        isDeleted?: boolean;
+        learning?: boolean;
       };
     };
   }) => {
@@ -66,17 +66,19 @@ export default class UserWordsService {
     return data;
   };
 
-  updateWord = async (params: {
-    userId: string;
-    wordId: string;
-    token: string;
+  updateWord = async (
+    params: {
+      userId: string;
+      wordId: string;
+      token: string;
+    },
     body: {
-      difficulty: string;
-      optional: {
-        isDeleted?: boolean;
+      difficulty?: string;
+      optional?: {
+        learning?: boolean;
       };
-    };
-  }) => {
+    }
+  ) => {
     const res = await fetch(
       `${serverUrl}users/${params.userId}/words/${params.wordId}`,
       {
@@ -86,7 +88,7 @@ export default class UserWordsService {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(params.body),
+        body: JSON.stringify(body),
       }
     );
     this.checkErr(res.status);

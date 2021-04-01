@@ -21,6 +21,12 @@ export type CurrentWordListType = {
   wordTranslate: string;
   textMeaningTranslate: string;
   textExampleTranslate: string;
+  userWord?: {
+    difficulty?: string;
+    optional?: {
+      learning?: boolean;
+    };
+  };
 };
 
 export type WordListLoadedAType = {
