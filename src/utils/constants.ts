@@ -24,5 +24,10 @@ export const gameType = {
   constructors: 'constructors',
 };
 
+export const difficulty = {
+  hard: 'hard',
+  easy: 'easy'
+}
+
 export const serverUrl = 'https://rslang-app.herokuapp.com/';
 export const serverUrlLocal = 'http://localhost:3001/';
