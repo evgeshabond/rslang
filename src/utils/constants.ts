@@ -26,8 +26,12 @@ export const gameType = {
 
 export const difficulty = {
   hard: 'hard',
-  easy: 'easy'
-}
+  easy: 'easy',
+};
+
+export const gameConstants = {
+  amountOfRounds: 10,
+};
 
 export const serverUrl = 'https://rslang-app.herokuapp.com/';
 export const serverUrlLocal = 'http://localhost:3001/';

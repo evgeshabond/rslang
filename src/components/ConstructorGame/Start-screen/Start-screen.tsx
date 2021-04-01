@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   constructorGameStart,
@@ -13,6 +13,7 @@ import styles from './Start-screen.module.css';
 import { ReactComponent as Play } from '../../../assets/images/video-player-mini.svg';
 import { RootStateType } from '../../../reducer/root-reducer';
 import { ReactComponent as CatSleeping } from '../../../assets/images/cat-sleeping.svg';
+import { fetchWordsList } from '../../../actions/word-actions';
 
 export const StartScreen: React.FC = () => {
   const dispatch = useDispatch();
@@ -20,6 +21,12 @@ export const StartScreen: React.FC = () => {
   const currentWordList = useSelector(
     (state: RootStateType) => state.wordState.currentWordList
   );
+
+  useEffect(() => {
+    if (currentWordList.length === 0) {
+      dispatch(fetchWordsList({ page: 0, group: 0 }));
+    }
+  }, []);
 
   const startGameHandler = () => {
     dispatch(setShuffledWordList(shuffle(currentWordList)));

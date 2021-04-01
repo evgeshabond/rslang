@@ -17,6 +17,7 @@ import { StartScreen } from './Start-screen/Start-screen';
 import { DragEndDrop } from './DragEndDrop/DragEndDrop';
 import { BottomBlock } from './BottomBlock/BottomBlock';
 import { TopBlock } from './TopBlock/TopBlock';
+import Spinner from '../Spinner/Spinner';
 
 type WordObjectType = { [key: string]: string };
 
@@ -95,9 +96,14 @@ const ConstructorGame: React.FC = () => {
   }, [wordObj, isRoundEnd]);
 
   useEffect(() => {
-    if (chars === undefined || wordObj === undefined) {
+    if (chars === undefined) {
       return;
     }
+
+    if (wordObj === undefined) {
+      return;
+    }
+
     const currentChars = chars.map((char) => char[1]).join('');
 
     if (wordObj.word === currentChars) {
@@ -111,6 +117,10 @@ const ConstructorGame: React.FC = () => {
       return;
     }
 
+    if (wordObj === undefined) {
+      return;
+    }
+
     const currentChars = chars.map((char) => char[1]).join('');
     if (wordObj.word === currentChars && isRoundEnd) {
       dispatch(setLearnCount(learned + 1));
@@ -119,24 +129,37 @@ const ConstructorGame: React.FC = () => {
 
   return constructorGameIsStarted ? (
     <div className={styles['my-game']}>
-      <TopBlock />
-      {isRoundEnd ? (
-        <button
-          type="button"
-          className={styles['audio-button']}
-          onClick={() => wordSound()}
-        >
-          <AudioOn />
-        </button>
-      ) : null}
-      <DragEndDrop />
-      <img
-        className={styles.picture}
-        src={`${mainPath.langUrl}${wordObj.image}`}
-        alt={wordObj.word}
-      />
-      <BottomBlock />
-      <CatSleeping className={styles.cat_sleeping} />
+      {wordObj ? (
+        <>
+          <TopBlock />
+          {isRoundEnd ? (
+            <button
+              type="button"
+              className={styles['audio-button']}
+              onClick={() => wordSound()}
+            >
+              <AudioOn />
+            </button>
+          ) : null}
+          <DragEndDrop />
+          {wordObj ? (
+            <img
+              className={styles.picture}
+              width="256px"
+              height="166px"
+              src={`${mainPath.langUrl}${wordObj.image}`}
+              alt={wordObj.word}
+            />
+          ) : (
+            <Spinner />
+          )}
+
+          <BottomBlock />
+          <CatSleeping className={styles.cat_sleeping} />
+        </>
+      ) : (
+        <Spinner />
+      )}
     </div>
   ) : (
     <StartScreen />
