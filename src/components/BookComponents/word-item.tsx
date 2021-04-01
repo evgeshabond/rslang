@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux'
 
 
 //  material ui
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 
-//  actions
+//  actions and types
 import { CurrentWordListType } from '../../actions/word-actions';
+import { RootStateType } from '../../reducer/root-reducer';
+import { addUserWord, userWordDeleted, getUserWordList } from '../../actions/user-words-action'
+import { getAggregatedWordsList } from '../../actions/aggregated-word-action';
 
 //  icons
 import deleteIcon from '../../assets/images/delete.svg';
@@ -30,7 +35,6 @@ const getColor = function(group: Number) {
 const useStyles = makeStyles({
   container: {
     display: 'flex',
-    flexWrap: 'wrap',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     marginBottom: '10px',
@@ -41,11 +45,17 @@ const useStyles = makeStyles({
       getColor(word.group),
   },
   statusIcon: {
+    // width: '2.5rem',
+    // height: '2.5rem',
+    // marginTop: '1.5rem',
+    // marginLeft: '1rem',
+    filter: 'contrast(10%)'
+  },
+  statusIconContainer: {
     width: '2.5rem',
     height: '2.5rem',
     marginTop: '1.5rem',
     marginLeft: '1rem',
-    filter: 'contrast(10%)'
   },
   wordImage: {
     width: '5rem',
@@ -100,29 +110,91 @@ type Props = {
 
 const WordItem: React.FC<Props> = ({ word }) => {
   const classes = useStyles(word);
-  const handleClick = () => {
+  const user = useSelector( (state: RootStateType) => state.userState.user)
+  const userWords = useSelector( (state: RootStateType) => state.userWordsState.userWordsList)  
+  const [additionalInfo, setAdditionalInfo] = useState({difficulty: 'notAssigned'})
+  const dispatch = useDispatch()  
+
+  useEffect(() => {
+    const userWord = userWords.find( (item: {id: string, difficulty: string, wordId: string}) => item.wordId === word.id)
+    if (userWord) {
+      setAdditionalInfo(userWord)
+    }
+  },
+  [userWords, word])
+
+  const handleClickAudio = () => {
     const audio = new Audio(`${langUrl}${word.audioMeaning}`);
     audio.play();
   };
 
+  const handleClickAddHard = () => {
+    const isAdded = additionalInfo.difficulty !== 'notAssigned';
+    console.log('clicked add hard with id ', word.id)
+    const params = {
+      userId: user.userId,
+      wordId: word.id,
+      token: user.token,
+      body: {
+        difficulty: 'hard',
+        optional: {
+        }
+      }
+    }
+    console.log('this word is added: ', isAdded)
+    if (isAdded) {
+      console.log('already added!')
+      return
+    }
+    dispatch(addUserWord(params))       
+    setTimeout(() => {
+      console.log('before getting wordslist')
+      dispatch(getUserWordList({userId: user.userId, token: user.token}))
+    },100)
+
+  }
+
+  const handleClickDelete = () => {
+    const isAdded = additionalInfo.difficulty !== 'notAssigned';
+    console.log('clicked delete with id ', word.id)
+    const params = {
+      userId: user.userId,
+      wordId: word.id,
+      token: user.token,
+      body: {
+        difficulty: 'deleted',
+        optional: {
+        }
+      }
+    }
+    if (isAdded) {
+      console.log('delete already added!')
+      dispatch(userWordDeleted(params))
+    } else {
+      console.log('delete not added')
+      dispatch(addUserWord(params))
+    }
+    
+    setTimeout(() => {
+      console.log('before getting wordslist')
+      dispatch(getUserWordList({userId: user.userId, token: user.token}))
+    },100)
+  }
+
+  if (additionalInfo?.difficulty === 'deleted') return null
+
   return (
     <div className={classes.container}>
-      <div>
-        <img
+      <div className={classes.statusIconContainer}>
+        {additionalInfo?.difficulty === 'hard' && <img
           className={classes.statusIcon}
           src={hardIcon}
           alt="Слово добавлено в сложные"
           aria-hidden="true"
-        />
-        <img
-          className={classes.statusIcon}
-          src={deleteIcon}
-          alt="Слово добавлено в сложные"
-          aria-hidden="true"
-        />
+        />}
       </div>
       <div className={classes.wordImage} />
-      <div className={classes.playButton} onClick={handleClick} aria-hidden={true} />
+      <div className={classes.playButton} onClick={handleClickAudio} aria-hidden={true} />
       <div className={classes.wordContainer}>
         <div>
           <Typography variant="h4" component="span" className={classes.helperMarginRight}>
@@ -159,12 +231,14 @@ const WordItem: React.FC<Props> = ({ word }) => {
       <div>
         <img
           className={classes.buttonIcon}
+          onClick={handleClickAddHard}
           src={hardIcon}
-          alt="Добаить в сложное"
+          alt="Добавить в сложное"
           aria-hidden="true"
         />
         <img
           className={classes.buttonIcon}
+          onClick={handleClickDelete}
           src={deleteIcon}
           alt="Добаить в сложное"
           aria-hidden="true"
