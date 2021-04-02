@@ -110,3 +110,7 @@
   flex-wrap: wrap;
   justify-content: space-evenly;
 }
+
+.line {
+  margin: 10px 0;
+}

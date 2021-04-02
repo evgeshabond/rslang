@@ -74,7 +74,7 @@ export const GameResult: React.FC = () => {
             </li>
           ))}
         </ul>
-        <hr />
+        <hr className={styles.line} />
         <h2 className={`${styles['sub-title']} ${styles['sub-title_wasted']}`}>
           Неправильно: {10 - learned}
         </h2>

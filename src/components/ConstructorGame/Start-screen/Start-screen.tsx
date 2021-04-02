@@ -11,6 +11,7 @@ import { fetchWordsList } from '../../../actions/word-actions';
 import { ReactComponent as CatSleeping } from '../../../assets/images/cat-sleeping.svg';
 import { ReactComponent as Play } from '../../../assets/images/video-player-mini.svg';
 import { RootStateType } from '../../../reducer/root-reducer';
+// import { GameStart } from '../../../utils/constants';
 import { shuffle } from '../../../utils/shuffle';
 import ControlledSelect from '../../ControlledSelect/ControlledSelect';
 import { GameResult } from '../../GameResult/GameResult';
@@ -32,6 +33,18 @@ export const StartScreen: React.FC = () => {
       dispatch(fetchWordsList({ page: 0, group: 0 }));
     }
   }, []);
+
+  // const gameStatus = useSelector(
+  //   (state: RootStateType) => state.wordState.gameStart
+  // );
+
+  // if (gameStatus === GameStart.Menu) {
+  //   console.log('It is same');
+  //   console.log(GameStart.Menu);
+  //   console.log(GameStart.Book);
+  //   console.log(GameStart.Deleted);
+  //   console.log(GameStart.Dictionary);
+  // }
 
   const startGameHandler = () => {
     dispatch(setShuffledWordList(shuffle(currentWordList)));
