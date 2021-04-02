@@ -5,7 +5,7 @@ img {
   /* margin-top: 3.2rem; */
   background-color: transparent;
   border: none;
-  outline: none;
+
   cursor: pointer;
 }
 .game__wrapper {
@@ -137,7 +137,7 @@ img.side__buttons{
   height: 4rem;
   border-radius: 2rem;
   border: none;
-  outline: none;
+
   color: #733999; 
   font-size: 1.8rem;
   font-weight: 900;
@@ -158,4 +158,24 @@ img.side__buttons{
 margin: 0 auto;
 
 
+}
+
+.points{
+  display: flex;
+  flex-direction: column;
+  
+}
+.total__points{
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: #45F9A3;
+
+}
+.current__points{
+  color: #ffff;
+  font-weight: 900;
+  font-size: 2.4rem;
+
+
+  
 }

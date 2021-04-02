@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styles from './sprint-game.module.css';
 import { RootStateType } from '../../reducer/root-reducer';
 import {
+  sprintGameRandomArray,
   sprintGameShuffledArray,
   sprintGameStatusChange,
   sprintGameTotalPoints,
@@ -17,6 +18,9 @@ import { ReactComponent as Cat } from '../../assets/images/cat2.svg';
 import { ReactComponent as Timer1 } from '../../assets/images/timer1.svg';
 import { ReactComponent as Timer2 } from '../../assets/images/timer2.svg';
 import banner from '../../assets/images/sprint-top.png';
+import { fetchWordsList } from '../../actions/word-actions';
+import Balls from './Balls';
+
 
 const SprintGame: React.FC = () => {
   const dispatch = useDispatch();
@@ -27,39 +31,51 @@ const SprintGame: React.FC = () => {
   const gameStatuses = useSelector(
     (state: RootStateType) => state.sprintGameState
   );
+
   const {
     gameTitle,
     gameDescription,
     gameStatus,
     totalPoints,
+    currentPoints,
     shuffledArray,
+    randomArray,
   } = gameStatuses;
 
-  console.log(wordList);
   const [wordCounter, setWordCounter] = useState(0);
+  const getRandomNumber = (num: number) => Math.floor(Math.random() * num);
+  const [wordToGuess, setWordToGuess] = useState('');
 
-  // const copyMainArray = wordList.slice().sort(() => Math.random() - 0.5);
-  // console.log(copyMainArray, 'copy');
-
-  // console.log(shuffledArray, 'shuffled');
-  
   useEffect(() => {
-    dispatch(sprintGameShuffledArray(wordList));
+    dispatch(sprintGameTotalPoints(0));
+  }, []);
 
+  const createRandomArray = () => {
+    const array = [];
+    for (let i = 0; i < 20; i++) {
+      array.push(getRandomNumber(20));
+    }
+    return array;
+  };
+
+  useEffect(() => {
+    if (wordList.length === 0) {
+      dispatch(fetchWordsList({ page: 0, group: 0 }));
+    }
+    dispatch(sprintGameRandomArray(createRandomArray()));
+  }, []);
+
+  useEffect(() => {
+    dispatch(
+      sprintGameShuffledArray(wordList.slice().sort(() => Math.random() - 0.5))
+    );
   }, [wordList]);
+  console.log(shuffledArray, 'shuffled');
+  console.log(randomArray, 'random');
 
-console.log(shuffledArray, 'list')
-
-// let translationArray = shuffledArray.map((elem) => elem.wordTranslate);
-// console.log(translationArray, 'translation')
-
-  // const translationArray = wordList
-  //   .map((elem) => elem.wordTranslate)
-  //   .sort(() => Math.random() - 0.5); // массив с переводом
-
-  // console.log(translationArray, 'translation');
-  // console.log(wordList, 'wordlist');
-
+  // useEffect(() => {
+  //   setRandomWord(getRandomNumber(20));
+  // }, [wordCounter]);
 
   const renderTimerPage = () => (
     <div className={`${styles.game__wrapper} ${styles.timer__page}`}>
@@ -72,23 +88,27 @@ console.log(shuffledArray, 'list')
     </div>
   );
 
-  // const checkTheWordRight = () => {
-  //   if (
-  //     shuffledArray[wordCounter].wordTranslate === translationArray[wordCounter]
-  //   ) {
-  //     dispatch(sprintGameTotalPoints(totalPoints+50));
-  //   }
-  //   setWordCounter(+1);
-  // };
+  const checkTheWordRight = () => {
+    console.log('here');
 
-  // const checkTheWordWrong = () => {
-  //   if (
-  //     shuffledArray[wordCounter].wordTranslate !== translationArray[wordCounter]
-  //   ) {
-  //     dispatch(sprintGameTotalPoints(totalPoints+50));
-  //   }
-  //   setWordCounter(+1);
-  // };
+    if (shuffledArray[wordCounter].wordTranslate === wordToGuess) {
+      dispatch(sprintGameTotalPoints(totalPoints + currentPoints));
+    }
+    setWordCounter(wordCounter + 1);
+  };
+
+  useEffect(() => {
+    getRandomNumber(2) === 0
+      ? setWordToGuess(shuffledArray[wordCounter].wordTranslate)
+      : setWordToGuess(shuffledArray[randomArray[wordCounter]].wordTranslate);
+  }, [wordCounter]);
+
+  const checkTheWordWrong = () => {
+    if (shuffledArray[wordCounter].wordTranslate !== wordToGuess) {
+      dispatch(sprintGameTotalPoints(totalPoints + currentPoints));
+    }
+    setWordCounter(wordCounter + 1);
+  };
 
   const renderGamePage = () => (
     <div className={`${styles.game__wrapper} ${styles.play}`}>
@@ -101,11 +121,6 @@ console.log(shuffledArray, 'list')
           />
           <Timer2 className={styles.timer2} />
         </div>
-        <LevelIcon
-          buttonClick={() => console.log('level')}
-          type={0}
-          number={1}
-        />
       </div>
       <div
         className={styles.game__field}
@@ -114,20 +129,23 @@ console.log(shuffledArray, 'list')
           backgroundRepeat: 'no-repeat',
         }}
       >
-        <div className={styles.total__points} style={{ color: 'white' }}>
-          Всего {totalPoints} очков
+        <div className={styles.point}>
+          <div className={styles.total__points}>{totalPoints}</div>
+          <div className={styles.current__points}>
+            {currentPoints > 0 ? `+${currentPoints} ` : currentPoints}очков за
+            слово
+          </div>
         </div>
-        <div className={styles.current__points}>очков за слово</div>
         <div className={styles.check__points}>circles</div>
-        <div className={styles.balls}> total 4 balls</div>
+        <div className={styles.balls}><Balls/></div>
         <div className={styles.guess__word}>
           <div className={styles.the__word}>
-            {/* {shuffledArray[wordCounter].word}{' '} */}
+            {shuffledArray[wordCounter].word}
           </div>{' '}
-          -
-          {/* <div className={styles.translation}>
-            {translationArray[wordCounter]}{' '}
-          </div> */}
+          - 
+          <div className={styles.translation}>
+            {wordToGuess}
+          </div>
         </div>
 
         <div className={styles.guess_not}> check</div>
@@ -135,14 +153,14 @@ console.log(shuffledArray, 'list')
           <button
             type="button"
             className={styles.green__button}
-            // onClick={checkTheWordRight}
+            onClick={checkTheWordRight}
           >
             Верно
           </button>
           <button
             type="button"
             className={styles.red__button}
-            // onClick={checkTheWordWrong}
+            onClick={checkTheWordWrong}
           >
             Неверно
           </button>

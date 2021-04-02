@@ -13,12 +13,10 @@ const GamePage: React.FC = () => (
     </div>
     <div className={rootStyles['ebook-buttons-container']}>
       <LinkButton link={mainPath.sprint} buttonName="Спринт" />
-      <LinkButton link={mainPath.gamePage} buttonName="Конструктор слов" />
       <LinkButton
         link={mainPath.constructorGame}
         buttonName="Конструктор слов"
       />
-
     </div>
     <MainCat />
   </div>
