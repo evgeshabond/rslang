@@ -16,6 +16,7 @@ import ConstructorGame from '../ConstructorGame/ConstructorGame';
 import GitLinks from '../GitLinks/GitLinks';
 import { QuestionPage } from '../../pages/question-page/Question-page';
 import { GameTest } from '../game-statistic-test/Game-statistic-test';
+import SavannaGame from '../SavannaGame/SavannaGame';
 
 const App: React.FC = () => (
   <Router basename="/">
@@ -34,6 +35,7 @@ const App: React.FC = () => (
             <Route path={mainPath.ebookPage} component={EbookPage} />
             <Route path={mainPath.profilePAge} component={ProfilePage} />
             <Route path={mainPath.audioGame} component={AudioGame} />
+            <Route path={mainPath.savannaGame} component={SavannaGame} />
 
             <Route
               path={mainPath.constructorGame}

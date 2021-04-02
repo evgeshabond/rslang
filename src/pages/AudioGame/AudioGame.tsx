@@ -121,8 +121,7 @@ const AudioGame: React.FC = () => {
     }} />
 
   ) : (
-
-    <button type='button' className={styles.playing__btn}>
+    <button onClick={() => dispatch(isAnswerSelected(true))} type='button' className={styles.playing__btn}>
       Не знаю
     </button >
 
