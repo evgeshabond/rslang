@@ -14,9 +14,10 @@ import {
   userWordToUnLearning,
   userWordUnDeleted,
 } from '../../actions/user-words-action';
+import { gameStartStatusChange } from '../../actions/word-actions';
 import { RootStateType } from '../../reducer/root-reducer';
 import { filterQuery } from '../../services/word-aggregate-service';
-import { difficulty, gameType } from '../../utils/constants';
+import { difficulty, GameStart, gameType } from '../../utils/constants';
 
 export const GameTest: React.FC = () => {
   const user = useSelector((state: RootStateType) => state.userState.user);
@@ -24,6 +25,15 @@ export const GameTest: React.FC = () => {
     (state: RootStateType) => state.statisticState.optional.gameStatistic
   );
   const wordList = useSelector((state: RootStateType) => state.wordState);
+  // state for game start
+  const gameStatus = useSelector(
+    (state: RootStateType) => state.wordState.gameStart
+  );
+  const userWordList = useSelector(
+    (state: RootStateType) =>
+      state.aggregatedWordsState.userAggregatedWords.paginatedResults
+  );
+
   const userWordState = useSelector(
     (state: RootStateType) => state.userWordsState
   );
@@ -213,6 +223,14 @@ export const GameTest: React.FC = () => {
       getAggregatedWordsList(params, filterQuery.learnedWordsAndHardWords)
     );
   };
+
+  // ------------------
+  // game status change
+  // =======================
+
+  const gameStatusChange = () => {
+    dispatch(gameStartStatusChange(GameStart.Book));
+  };
   // const renderSavanaStatistic = () => {
   //   if (gameStatistic.savanna) {
   //     return gameStatistic.savanna.total.map((item) => (
@@ -306,6 +324,15 @@ export const GameTest: React.FC = () => {
           type="button"
           value="get learning"
           onClick={getAggregateLearning}
+        />
+      </div>
+
+      <h3>game status change</h3>
+      <div>
+        <input
+          type="button"
+          value="game status change"
+          onClick={gameStatusChange}
         />
       </div>
 
