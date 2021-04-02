@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setResultPageState } from '../../actions/constructor-game-actions';
+import { gameStartStatusChange } from '../../actions/word-actions';
 import { MainCat } from '../../components/cats-img/main-cat/Main-cat';
 import { LinkButton } from '../../components/link-button/Link-button';
-import { mainPath } from '../../utils/constants';
+import { GameStart, mainPath } from '../../utils/constants';
 import rootStyles from '../e-book-page/e-book-page.module.css';
 import styles from './game-page.module.css';
 
@@ -13,6 +14,10 @@ const GamePage: React.FC = () => {
   const openConstructorGameHandler = () => {
     dispatch(setResultPageState(false));
   };
+
+  useEffect(() => {
+    dispatch(gameStartStatusChange(GameStart.Menu));
+  }, []);
 
   return (
     <div className={rootStyles['ebook-container']}>

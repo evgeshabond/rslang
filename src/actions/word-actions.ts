@@ -1,10 +1,12 @@
 import { Dispatch } from 'react';
 import LangService from '../services/lang-service';
+import { GameStart } from '../utils/constants';
 
 export const WORD_LIST_LOADED = 'WORD_LIST_LOADED';
 export const WORD_LIST_LOADING = 'WORD_LIST_LOADING';
 export const WORD_LIST_ERROR = 'WORD_LIST_ERROR';
 export const WORD_LOADED = 'WORD_LOADED';
+export const GAME_START_TYPE = 'GAME_START_TYPE';
 
 export type CurrentWordListType = {
   id: string;
@@ -49,6 +51,11 @@ export type CuurentWordLoadeAType = {
   payload: CurrentWordListType;
 };
 
+export type GameTypeStatusChangeAType = {
+  type: string;
+  payload: GameStart;
+};
+
 export const wordListLoaded = (newList: Array<CurrentWordListType>) => ({
   type: WORD_LIST_LOADED,
   payload: newList,
@@ -69,11 +76,17 @@ export const currentWordLoaded = (value: CurrentWordListType) => ({
   payload: value,
 });
 
+export const gameStartStatusChange = (value: GameStart) => ({
+  type: GAME_START_TYPE,
+  payload: value,
+});
+
 export type WordActionForReducer =
   | WordListLoadedAType
   | WordListRequestAType
   | WordListFetchErrAType
-  | WordListFetchErrAType;
+  | WordListFetchErrAType
+  | GameTypeStatusChangeAType;
 
 export type WordsActions = WordActionForReducer | typeof fetchWordsList;
 
