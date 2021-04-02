@@ -10,6 +10,7 @@ import UserPage from '../../pages/auth-page/User-page';
 import { mainPath } from '../../utils/constants';
 import EbookPage from '../../pages/e-book-page/E-book-page';
 import LearnPage from '../../pages/learn-page/learn-page'
+import DictionaryPage from '../../pages/dictionary-page/DictionaryPage'
 import ProfilePage from '../../pages/profile-page/Profile-page';
 import ConstructorGame from '../ConstructorGame/ConstructorGame';
 import GitLinks from '../GitLinks/GitLinks';
@@ -30,7 +31,7 @@ const App: React.FC = () => (
             <Route path={mainPath.auth} component={UserPage} />
             <Route path={mainPath.ebookPage} component={EbookPage} exact />
             <Route path={mainPath.learnPage} component={LearnPage} />
-            <Route path={mainPath.dictionaryPage} component={LearnPage} />
+            <Route path={mainPath.dictionaryPage} component={DictionaryPage} />
             <Route path={mainPath.profilePAge} component={ProfilePage} />
             <Route
               path={mainPath.constructorGame}

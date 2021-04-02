@@ -17,6 +17,7 @@ import { getAggregatedWordsList } from '../../actions/aggregated-word-action';
 import deleteIcon from '../../assets/images/delete.svg';
 import hardIcon from '../../assets/images/hardWord.svg';
 import playIcon from '../../assets/images/play-big.svg';
+import { difficulty } from '../../utils/constants';
 
 const langUrl = 'https://rslang-app.herokuapp.com/';
 
@@ -35,6 +36,8 @@ const getColor = function(group: Number) {
 const useStyles = makeStyles({
   container: {
     display: 'flex',
+    flexWrap: 'nowrap',
+    minWidth: '900px',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     marginBottom: '10px',
@@ -141,6 +144,7 @@ const WordItem: React.FC<Props> = ({ word }) => {
         }
       }
     }
+
     console.log('this word is added: ', isAdded)
     if (isAdded) {
       console.log('already added!')
@@ -150,7 +154,7 @@ const WordItem: React.FC<Props> = ({ word }) => {
     setTimeout(() => {
       console.log('before getting wordslist')
       dispatch(getUserWordList({userId: user.userId, token: user.token}))
-    },100)
+    },200)
 
   }
 
@@ -178,7 +182,7 @@ const WordItem: React.FC<Props> = ({ word }) => {
     setTimeout(() => {
       console.log('before getting wordslist')
       dispatch(getUserWordList({userId: user.userId, token: user.token}))
-    },100)
+    },200)
   }
 
   if (additionalInfo?.difficulty === 'deleted') return null

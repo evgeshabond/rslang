@@ -13,7 +13,6 @@ import {
   wordListLoaded,
 } from '../../actions/word-actions';
 
-
 import {WordItem} from './word-item'
 
 const useStyles = makeStyles({
