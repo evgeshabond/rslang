@@ -1,11 +1,14 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootStateType } from '../../../reducer/root-reducer';
-import styles from './TopBlock.module.css';
+import {
+  constructorGameStart,
+  setResultPageState,
+} from '../../../actions/constructor-game-actions';
 import { ReactComponent as ExitButton } from '../../../assets/images/exit-button-mini.svg';
-import { constructorGameStart } from '../../../actions/constructor-game-actions';
-import GameHotkeys from '../GameHotkeys/GameHotkeys';
+import { RootStateType } from '../../../reducer/root-reducer';
 import { gameConstants } from '../../../utils/constants';
+import GameHotkeys from '../GameHotkeys/GameHotkeys';
+import styles from './TopBlock.module.css';
 
 export const TopBlock: React.FC = () => {
   const { amountOfRounds } = gameConstants;
@@ -25,6 +28,7 @@ export const TopBlock: React.FC = () => {
 
   const endGameHandler = () => {
     dispatch(constructorGameStart(false));
+    dispatch(setResultPageState(false));
   };
 
   return (

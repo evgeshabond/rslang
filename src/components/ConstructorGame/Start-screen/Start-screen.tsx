@@ -7,19 +7,24 @@ import {
   setRoundEnd,
   setShuffledWordList,
 } from '../../../actions/constructor-game-actions';
-import { shuffle } from '../../../utils/shuffle';
-import ControlledSelect from '../../ControlledSelect/ControlledSelect';
-import styles from './Start-screen.module.css';
+import { fetchWordsList } from '../../../actions/word-actions';
+import { ReactComponent as CatSleeping } from '../../../assets/images/cat-sleeping.svg';
 import { ReactComponent as Play } from '../../../assets/images/video-player-mini.svg';
 import { RootStateType } from '../../../reducer/root-reducer';
-import { ReactComponent as CatSleeping } from '../../../assets/images/cat-sleeping.svg';
-import { fetchWordsList } from '../../../actions/word-actions';
+import { shuffle } from '../../../utils/shuffle';
+import ControlledSelect from '../../ControlledSelect/ControlledSelect';
+import { GameResult } from '../../GameResult/GameResult';
+import styles from './Start-screen.module.css';
 
 export const StartScreen: React.FC = () => {
   const dispatch = useDispatch();
 
   const currentWordList = useSelector(
     (state: RootStateType) => state.wordState.currentWordList
+  );
+
+  const isResultPage = useSelector(
+    (state: RootStateType) => state.constructorGameState.isResultPage
   );
 
   useEffect(() => {
@@ -38,25 +43,31 @@ export const StartScreen: React.FC = () => {
 
   return (
     <div className={styles['my-game']}>
-      <h2 className={styles.title}>конструктор слов</h2>
-      <p className={styles.text}>
-        Составление оригинального слова по переводу.
-      </p>
-      <button
-        type="button"
-        className={styles['play-button']}
-        onClick={startGameHandler}
-      >
-        <Play className={styles.play} />
-      </button>
+      {isResultPage ? (
+        <GameResult />
+      ) : (
+        <>
+          <h2 className={styles.title}>конструктор слов</h2>
+          <p className={styles.text}>
+            Составление оригинального слова по переводу.
+          </p>
+          <button
+            type="button"
+            className={styles['play-button']}
+            onClick={startGameHandler}
+          >
+            <Play className={styles.play} />
+          </button>
 
-      <ControlledSelect />
+          <ControlledSelect />
 
-      <CatSleeping
-        width="210px"
-        height="142px"
-        className={styles.cat_sleeping}
-      />
+          <CatSleeping
+            width="210px"
+            height="142px"
+            className={styles.cat_sleeping}
+          />
+        </>
+      )}
     </div>
   );
 };
