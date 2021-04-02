@@ -1,5 +1,5 @@
 // import { serverUrlLocal } from '../utils/constants';
-import { serverUrl } from '../utils/constants';
+import { difficulty, serverUrl } from '../utils/constants';
 
 export default class UserWordsService {
   checkErr = (status: number) => {
@@ -7,7 +7,7 @@ export default class UserWordsService {
       throw new Error('слово уже добавлено в словарь');
     }
     if (status === 404) {
-      throw new Error('сервер не доступен');
+      throw new Error('выбранное слово отсутсвует в вашем списке слов');
     }
     if (status === 401) {
       throw new Error('пожалуйста авторизуйтесь');
@@ -17,17 +17,33 @@ export default class UserWordsService {
     }
   };
 
-  addWord = async (params: {
-    userId: string;
-    wordId: string;
-    token: string;
-    body: {
-      difficulty: string;
-      optional: {
-        learning?: boolean;
+  addWord = async (
+    params: {
+      userId: string;
+      wordId: string;
+      token: string;
+      body: {
+        difficulty?: string;
+        optional?: {
+          learning?: boolean;
+        };
       };
+    },
+    unCheckErr?: boolean
+  ) => {
+    const body = {
+      difficulty: difficulty.easy,
+      optional: {
+        learning: false,
+      },
     };
-  }) => {
+    if (params.body.difficulty) {
+      body.difficulty = params.body.difficulty;
+    }
+    if (params.body.optional?.learning) {
+      body.optional.learning = params.body.optional.learning;
+    }
+
     const res = await fetch(
       `${serverUrl}users/${params.userId}/words/${params.wordId}`,
       {
@@ -37,12 +53,15 @@ export default class UserWordsService {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(params.body),
+        body: JSON.stringify(body),
       }
     );
-    this.checkErr(res.status);
-    const data = await res.json();
-    return data;
+    if (!unCheckErr) {
+      this.checkErr(res.status);
+      const data = await res.json();
+      return data;
+    }
+    return null;
   };
 
   getWord = async (params: {
@@ -79,6 +98,8 @@ export default class UserWordsService {
       };
     }
   ) => {
+    await this.addWord({ ...params, body }, true);
+
     const res = await fetch(
       `${serverUrl}users/${params.userId}/words/${params.wordId}`,
       {
