@@ -27,5 +27,23 @@ export const gameType = {
   constructors: 'constructors',
 };
 
+export const difficulty = {
+  hard: 'hard',
+  easy: 'easy',
+  deleted: 'deleted',
+};
+
+export const gameConstants = {
+  amountOfRounds: 10,
+};
+
 export const serverUrl = 'https://rslang-app.herokuapp.com/';
 export const serverUrlLocal = 'http://localhost:3001/';
+
+// prettier-ignore
+export enum GameStart {
+  Menu = 'MENU',
+  Dictionary = 'DICTIONARY',
+  Book = 'BOOK',
+  Deleted= 'DELETED'
+}

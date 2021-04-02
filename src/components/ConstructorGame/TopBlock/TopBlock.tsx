@@ -4,8 +4,11 @@ import { RootStateType } from '../../../reducer/root-reducer';
 import styles from './TopBlock.module.css';
 import { ReactComponent as ExitButton } from '../../../assets/images/exit-button-mini.svg';
 import { constructorGameStart } from '../../../actions/constructor-game-actions';
+import GameHotkeys from '../GameHotkeys/GameHotkeys';
+import { gameConstants } from '../../../utils/constants';
 
 export const TopBlock: React.FC = () => {
+  const { amountOfRounds } = gameConstants;
   const dispatch = useDispatch();
 
   const wordObj = useSelector(
@@ -30,17 +33,19 @@ export const TopBlock: React.FC = () => {
         <div className={styles.word__empty} />
         <div className={styles.word__inner}>
           <p className={`${styles.text} ${styles.word}`}>
-            {wordObj.wordTranslate}
+            {wordObj ? wordObj.wordTranslate : ''}
           </p>
           {isRoundEnd ? (
             <p className={styles.word__transcription}>
-              {wordObj.transcription}
+              {wordObj ? wordObj.transcription : ''}
             </p>
           ) : (
             <p className={styles.description}>Собери слово из букв.</p>
           )}
         </div>
-        <div className={styles.counter}>{`${roundCount}/10`}</div>
+        <div
+          className={styles.counter}
+        >{`${roundCount}/${amountOfRounds}`}</div>
       </div>
       <button
         type="button"
@@ -49,6 +54,7 @@ export const TopBlock: React.FC = () => {
       >
         <ExitButton />
       </button>
+      <GameHotkeys />
     </>
   );
 };

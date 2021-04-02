@@ -84,4 +84,10 @@ div .word {
   height: 30px;
   background-color: inherit;
   border: none;
+  cursor: pointer;
+}
+
+.exit-button:hover {
+  border-radius: 50%;
+  box-shadow: -8px -8px 16px #ffffff, 8px 8px 16px #b4c1d5;
 }
