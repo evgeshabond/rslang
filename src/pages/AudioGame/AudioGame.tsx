@@ -11,30 +11,32 @@ import { WordItem } from '../../components/word-item/word-item-game';
 import styles from './AudioGame.module.css';
 import { mainPath } from '../../utils/constants';
 import { PlayButton } from '../../components/button-icons/playBig-button/playBig-button';
-import { audioGameStart } from '../../actions/audioGame-actions';
+import { audioGameStart, wordWrong, wordRight, isAnswerSelected } from '../../actions/audioGame-actions';
 import { CloseButton } from '../../components/button-icons/close-button/close-button';
 import { AudioOnButton } from '../../components/button-icons/audiOn-button/audioOn-button';
 import { QuestionButton } from '../../components/button-icons/question-button/question-button';
 import { RefreshButton } from '../../components/button-icons/refresh-button.tsx/refresh-button';
 import ControlledSelect from '../../components/ControlledSelect/ControlledSelect';
-
+import { removeTagsFromString } from '../../utils/removeTagsFromString';
 
 const AudioGame: React.FC = () => {
   const isPlaying = useSelector((state: RootStateType) => state.audioGameState.audioGameStart);
   const wordList = useSelector((state: RootStateType) => state.wordState.currentWordList);
+  const wrongWord = useSelector((state: RootStateType) => state.audioGameState.wordWrong);
+  const rightWord = useSelector((state: RootStateType) => state.audioGameState.wordRight);
+  const isAnswer = useSelector((state: RootStateType) => state.audioGameState.isAnswerSelected);
+
 
   const [countStep, setCountStep] = useState(0);
-  const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
+  // const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
+  // const [isOpenWord, setIsOpenWord] = useState(false)
   const [userAnswer, setUserAnswer] = useState('');
 
   const [currentPlayWords, setcurrentPlayWords] = useState<Array<CurrentWordListType>>(
     [] as Array<CurrentWordListType>);
-  const [audioList, setAudioList] = useState<CurrentWordListType>(
-    {} as CurrentWordListType
-  );
-  const ref = useRef();
-  const [play] = useSound(`${mainPath.langUrl}${audioList.audio}`, { interrupt: true });
-  const [playExample] = useSound((`${mainPath.langUrl}${audioList.audioExample}`))
+
+  const [play] = useSound(`${mainPath.langUrl}${rightWord.audio}`, { interrupt: true });
+  const [playExample] = useSound((`${mainPath.langUrl}${rightWord.audioExample}`))
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -46,7 +48,6 @@ const AudioGame: React.FC = () => {
   )
 
   const shuffle = (arr: Array<CurrentWordListType>) => {
-    // console.log('shuffle');
     const result = [];
     if (arr) {
       const elem = arr.slice();
@@ -59,7 +60,9 @@ const AudioGame: React.FC = () => {
   }
 
   const playGame = () => {
-    setIsCorrectAnswer(false)
+    dispatch(wordWrong(''));
+    dispatch(isAnswerSelected(false));
+    setUserAnswer('');
     if (wordList === undefined) {
       return;
     }
@@ -73,8 +76,8 @@ const AudioGame: React.FC = () => {
       return;
     }
     const random = currentPlayWords[getRandomInt(0, currentPlayWords.length - 1)];
-    setAudioList(prevAudioList => random);
-
+    dispatch(wordRight(random));
+    console.log('right22', rightWord)
 
   }, [currentPlayWords])
 
@@ -85,40 +88,32 @@ const AudioGame: React.FC = () => {
   useEffect(() =>
     () => {
       setcurrentPlayWords([]);
-      setAudioList({} as CurrentWordListType);
-
     }, [])
 
 
   const playSoundWord = () => {
-    if (Object.keys(audioList).length > 0) {
+    if (Object.keys(rightWord).length > 0) {
       play()
     }
   }
 
 
   const checkUserAnswer = (word: string) => {
-    if (audioList.word === word) {
-      setIsCorrectAnswer(true)
+    if (wrongWord === '') {
+      dispatch(wordWrong(word));
     }
+
+    dispatch(isAnswerSelected(true));
   }
 
-
-
   const renderWordCard = () => (
-    <div className={styles.word__list}>
+    currentPlayWords.map((word: CurrentWordListType, index: number) => (
 
-      {
-        currentPlayWords.map((word: CurrentWordListType, index: number) => (
-          <WordItem buttonClick={() => checkUserAnswer(word.word)} key={word.id} word={word} />
-        ))
-      }
-    </div>
-
+      <WordItem buttonClick={() => { checkUserAnswer(word.word); setUserAnswer(word.word) }} key={word.id} word={word} />
+    ))
   )
 
-
-  const playingBtn = () => (isCorrectAnswer ? (
+  const playingBtn = () => (isAnswer ? (
     <button aria-label='word-btn' type="button" className={styles.add__aswer} onClick={() => {
       setCountStep(CountStep => countStep + 1);
       console.log(countStep);
@@ -136,40 +131,42 @@ const AudioGame: React.FC = () => {
 
 
   return isPlaying ? (
-
     <div className={styles.game__content}>
       <div className={styles.btn__container}>
         <QuestionButton buttonClick={() => console.log('info')} />
         <RefreshButton buttonClick={() => console.log('refresh')} />
         <CloseButton buttonClick={() => dispatch(audioGameStart(false))} />
       </div>
-      {isCorrectAnswer ? (
+      {isAnswer ? (
         <div className={styles.word__info}>
           <div className={styles.word__image}>
             <img
               className={styles.word__image}
-              src={`${mainPath.langUrl}${audioList.image}`}
-              alt={audioList.word}
+              src={`${mainPath.langUrl}${rightWord.image}`}
+              alt={rightWord.word}
             />
           </div>
           <div className={styles.word__sound}>
             <AudioOnButton buttonClick={() => playSoundWord()} />
-            <span>{audioList.word} {audioList.transcription}</span>
+            <span className={styles.game__text}>{rightWord.word} {rightWord.transcription}</span>
           </div>
           <div className={styles.word__context}>
             <AudioOnButton buttonClick={() => playExample()} />
-            <span>{audioList.textExample} </span>
+            <span className={styles.game__text}>{removeTagsFromString(rightWord.textExample)} </span>
           </div>
         </div>
       ) : (
         <AudioOnButton buttonClick={() => playSoundWord()} />
       )}
 
-      {currentPlayWords.length === 0 ? <Spinner /> : renderWordCard()}
+      {currentPlayWords.length === 0 ? <Spinner /> :
+        <div className={styles.word__list}>{renderWordCard()}</div>}
 
       {/* {console.log('renderComp')} */}
-      {console.log('audio', audioList)}
-      {console.log('words', currentPlayWords)}
+      {/* { console.log(wrongWord)}
+
+      
+      {console.log('words', currentPlayWords)} */}
 
       {playingBtn()}
     </div>

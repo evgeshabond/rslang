@@ -70,6 +70,10 @@
   height: 120px;
 }
 
+.word__list__disable {
+  color: tomato;
+}
+
 .sound__btn {
   width: 50px;
   height: 50px;
@@ -107,6 +111,9 @@
   font-size: var(--mainFont);
   line-height: 50px;
   border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .playing__btn,
@@ -149,8 +156,17 @@
   align-items: center;
 }
 
-.word__sound {
+.word__sound,
+.word__context {
+  display: flex;
+  align-items: center;
+}
+
+.word__sound > img,
+.word__context > img {
+  width: 2rem;
   height: 2rem;
+  margin-right: 1rem;
 }
 
 .word__image {
@@ -158,3 +174,15 @@
   height: 12.1rem;
   border-radius: 20px;
 }
+
+.game__text {
+  font-size: 1.7rem;
+  font-weight: 600;
+  vertical-align: middle;
+  color: var(--mainColor);
+}
+
+/* .word__info__image {
+  width: 2rem;
+  height: 2rem;
+} */

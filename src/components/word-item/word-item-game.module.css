@@ -18,13 +18,27 @@
   text-align: center;
   vertical-align: middle;
   margin: 10px;
+  /* pointer-events: none; */
 }
 
-.word__item:focus {
+.word__item__right {
   outline: none;
   background: #45f9a3;
 }
 
+.word__item__wrong {
+  outline: none;
+  background: #f945d1;
+}
+
+.word__item:focus {
+  outline: none;
+}
+
 .word__item:active {
   border: none;
+}
+
+.word__list__disable {
+  background: tomato;
 }
