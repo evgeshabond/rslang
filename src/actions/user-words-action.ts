@@ -1,5 +1,6 @@
 import { Dispatch } from 'react';
 import UserWordsService from '../services/user-words-service';
+import { difficulty } from '../utils/constants';
 
 export const USER_WORD_LOADED = 'USER_WORD_LOADED';
 export const USER_WORD_LOADING = 'USER_WORD_LOADING';
@@ -220,7 +221,17 @@ export const removeUserWord = (params: {
   dispatch(userWordRequested());
   service
     .removeWord(params)
-    .then()
+    .then((data) =>
+      dispatch(
+        userWordLoaded({
+          id: '',
+          difficulty: difficulty.easy,
+          optional: {
+            learning: false,
+          },
+        })
+      )
+    )
     .catch((err) => {
       if (err.name === 'SyntaxError') {
         dispatch(removeUserWordReducer());
