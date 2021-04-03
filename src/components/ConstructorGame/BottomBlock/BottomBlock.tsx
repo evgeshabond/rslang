@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  addNotLearnedWord,
   constructorGameStart,
-  setLearnCount,
+  setResultPageState,
   setRoundCount,
   setRoundEnd,
 } from '../../../actions/constructor-game-actions';
@@ -58,11 +59,16 @@ export const BottomBlock: React.FC = () => {
   const nextRoundHandler = () => {
     if (roundCount === amountOfRounds) {
       dispatch(constructorGameStart(false));
-      dispatch(setLearnCount(0));
+      dispatch(setResultPageState(true));
     }
 
     dispatch(setRoundCount(roundCount + 1));
     dispatch(setRoundEnd(false));
+  };
+
+  const dontKnowHandler = () => {
+    dispatch(addNotLearnedWord(wordObj));
+    dispatch(setRoundEnd(true));
   };
 
   return isRoundEnd ? (
@@ -82,7 +88,7 @@ export const BottomBlock: React.FC = () => {
         type="button"
         onClick={() => nextRoundHandler()}
       >
-        {roundCount === amountOfRounds ? `Выйти` : `Далее`}
+        {roundCount === amountOfRounds ? `Результаты` : `Далее`}
       </button>
     </>
   ) : (
@@ -100,7 +106,7 @@ export const BottomBlock: React.FC = () => {
       <button
         className={styles['btn-next']}
         type="button"
-        onClick={() => dispatch(setRoundEnd(true))}
+        onClick={() => dontKnowHandler()}
       >
         Не знаю
       </button>
