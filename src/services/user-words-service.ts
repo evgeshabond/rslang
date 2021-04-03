@@ -1,5 +1,5 @@
-// import { serverUrlLocal, serverUrl } from '../utils/constants';
-import { difficulty, serverUrlLocal } from '../utils/constants';
+// import { serverUrl, serverUrl } from '../utils/constants';
+import { difficulty, serverUrl } from '../utils/constants';
 
 export default class UserWordsService {
   checkErr = (status: number) => {
@@ -31,8 +31,7 @@ export default class UserWordsService {
         correctCount: number;
         inCorrectCount: number;
       };
-    },
-    unCheckErr?: boolean
+    }
   ) => {
     const initialBody = {
       difficulty: body?.difficulty || difficulty.easy,
@@ -43,11 +42,9 @@ export default class UserWordsService {
         inCorrectCount: body?.optional?.inCorrectCount || 0,
       },
     };
-    const body2 = {
-      difficulty: body?.difficulty || difficulty.easy,
-    };
+
     const res = await fetch(
-      `${serverUrlLocal}users/${params.userId}/words/${params.wordId}`,
+      `${serverUrl}users/${params.userId}/words/${params.wordId}`,
       {
         method: 'POST',
         headers: {
@@ -55,15 +52,13 @@ export default class UserWordsService {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(body2),
+        body: JSON.stringify(initialBody),
       }
     );
-    if (!unCheckErr) {
-      this.checkErr(res.status);
-      const data = await res.json();
-      return data;
-    }
-    return null;
+
+    this.checkErr(res.status);
+    const data = await res.json();
+    return data;
   };
 
   getWord = async (params: {
@@ -72,7 +67,7 @@ export default class UserWordsService {
     token: string;
   }) => {
     const res = await fetch(
-      `${serverUrlLocal}users/${params.userId}/words/${params.wordId}`,
+      `${serverUrl}users/${params.userId}/words/${params.wordId}`,
       {
         method: 'GET',
         headers: {
@@ -103,10 +98,8 @@ export default class UserWordsService {
       };
     }
   ) => {
-    await this.addWord(params, body, true);
-
     const res = await fetch(
-      `${serverUrlLocal}users/${params.userId}/words/${params.wordId}`,
+      `${serverUrl}users/${params.userId}/words/${params.wordId}`,
       {
         method: 'PUT',
         headers: {
@@ -117,6 +110,11 @@ export default class UserWordsService {
         body: JSON.stringify(body),
       }
     );
+
+    if (res.status === 404) {
+      const data = await this.addWord(params, body);
+      return data;
+    }
     this.checkErr(res.status);
     const data = await res.json();
     return data;
@@ -132,10 +130,8 @@ export default class UserWordsService {
       isCorrect: boolean;
     }
   ) => {
-    await this.addWord(params, undefined, true);
-
     const res = await fetch(
-      `${serverUrlLocal}users/${params.userId}/learn/${params.wordId}`,
+      `${serverUrl}users/${params.userId}/learn/${params.wordId}`,
       {
         method: 'PUT',
         headers: {
@@ -146,6 +142,19 @@ export default class UserWordsService {
         body: JSON.stringify({ optional: gameResult }),
       }
     );
+    if (res.status === 404) {
+      const initialBody = {
+        difficulty: difficulty.easy,
+        optional: {
+          learning: true,
+          learned: gameResult.isCorrect,
+          correctCount: gameResult.isCorrect ? 1 : 0,
+          inCorrectCount: gameResult.isCorrect ? 0 : 1,
+        },
+      };
+      const data = await this.addWord(params, initialBody);
+      return data;
+    }
     this.checkErr(res.status);
     const data = await res.json();
     return data;
@@ -157,7 +166,7 @@ export default class UserWordsService {
     token: string;
   }) => {
     const res = await fetch(
-      `${serverUrlLocal}users/${params.userId}/words/${params.wordId}`,
+      `${serverUrl}users/${params.userId}/words/${params.wordId}`,
       {
         method: 'DELETE',
         headers: {
@@ -173,7 +182,7 @@ export default class UserWordsService {
   };
 
   getWordsList = async (params: { userId: string; token: string }) => {
-    const res = await fetch(`${serverUrlLocal}users/${params.userId}/words`, {
+    const res = await fetch(`${serverUrl}users/${params.userId}/words`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${params.token}`,

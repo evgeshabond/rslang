@@ -56,7 +56,7 @@ export const GameTest: React.FC = () => {
   const addwordToState = () => {
     const params = {
       userId: user.userId,
-      wordId: wordList.currentWordList[5].id,
+      wordId: wordList.currentWordList[1].id,
       token: user.token,
     };
     dispatch(addUserWord(params));
@@ -116,7 +116,7 @@ export const GameTest: React.FC = () => {
   const toHard = () => {
     const params = {
       userId: user.userId,
-      wordId: wordList.currentWordList[5].id,
+      wordId: wordList.currentWordList[1].id,
       token: user.token,
     };
     dispatch(userWordToHard(params));
@@ -152,7 +152,7 @@ export const GameTest: React.FC = () => {
   const addGameResult = () => {
     const params = {
       userId: user.userId,
-      wordId: wordList.currentWordList[5].id,
+      wordId: wordList.currentWordList[1].id,
       token: user.token,
     };
     const gameResult = {
