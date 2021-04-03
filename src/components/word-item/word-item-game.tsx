@@ -14,14 +14,14 @@ type Props = {
 const WordItem: React.FC<Props> = ({ word, buttonClick }) => {
   const dispatch = useDispatch();
 
-  const wordWrong = useSelector((state: RootStateType) => state.audioGameState.wordWrong);
+  const wordUserAnswer = useSelector((state: RootStateType) => state.audioGameState.wordUserAnswer);
   const correctWord = useSelector((state: RootStateType) => state.audioGameState.wordRight);
   const isAnswer = useSelector((state: RootStateType) => state.audioGameState.isAnswerSelected);
 
 
   return (
 
-    < button type='button' onClick={buttonClick} className={`${styles.word__item}  ${wordWrong !== correctWord.word && wordWrong === word.word ? styles.word__item__wrong : ''} ${(wordWrong === correctWord.word && wordWrong === word.word) ? styles.word__item__right : ''} `}>
+    < button type='button' onClick={buttonClick} className={`${styles.word__item}  ${wordUserAnswer !== correctWord.word && wordUserAnswer === word.word ? styles.word__item__wrong : ''} ${(wordUserAnswer === correctWord.word && wordUserAnswer === word.word) ? styles.word__item__right : ''} `}>
       { word.wordTranslate}
     </button >
 

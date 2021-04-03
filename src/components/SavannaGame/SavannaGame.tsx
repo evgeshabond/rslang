@@ -11,7 +11,7 @@ import { WordItem } from "../word-item/word-item-game";
 import styles from './SavannaGame.module.css';
 import { mainPath } from '../../utils/constants';
 import { PlayButton } from "../button-icons/playBig-button/playBig-button";
-import { audioGameStart, wordWrong, wordRight, isAnswerSelected } from '../../actions/audioGame-actions';
+import { audioGameStart, wordUserAnswer, wordRight, isAnswerSelected } from '../../actions/audioGame-actions';
 import { CloseButton } from "../button-icons/close-button/close-button";
 import { AudioOnButton } from "../button-icons/audiOn-button/audioOn-button";
 import { QuestionButton } from "../button-icons/question-button/question-button";
@@ -22,7 +22,7 @@ import { removeTagsFromString } from '../../utils/removeTagsFromString';
 const SavannaGame: React.FC = () => {
   const isPlaying = useSelector((state: RootStateType) => state.audioGameState.audioGameStart);
   const wordList = useSelector((state: RootStateType) => state.wordState.currentWordList);
-  const wrongWord = useSelector((state: RootStateType) => state.audioGameState.wordWrong);
+  const wrongWord = useSelector((state: RootStateType) => state.audioGameState.wordUserAnswer);
   const rightWord = useSelector((state: RootStateType) => state.audioGameState.wordRight);
   const isAnswer = useSelector((state: RootStateType) => state.audioGameState.isAnswerSelected);
 
@@ -60,7 +60,7 @@ const SavannaGame: React.FC = () => {
   }
 
   const playGame = () => {
-    dispatch(wordWrong(''));
+    dispatch(wordUserAnswer(''));
     dispatch(isAnswerSelected(false));
     setUserAnswer('');
     if (wordList === undefined) {
@@ -100,7 +100,7 @@ const SavannaGame: React.FC = () => {
 
   const checkUserAnswer = (word: string) => {
     if (wrongWord === '') {
-      dispatch(wordWrong(word));
+      dispatch(wordUserAnswer(word));
     }
 
     dispatch(isAnswerSelected(true));

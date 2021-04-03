@@ -1,9 +1,10 @@
 import { CurrentWordListType } from './word-actions';
 
 const AUDIO_GAME_STATUS = 'AUDIO_GAME_STATUS';
-const WORD_WRONG='WORD_WRONG';
+const WORD_USER_ANSWER='WORD_USER_ANSWER';
 const WORD_RIGHT=' WORD_RIGHT';
-const IS_ANSWER_SELECTED='IS_ANSWER_SELECTED'
+const IS_ANSWER_SELECTED='IS_ANSWER_SELECTED';
+const CURRENT_PLAY_WORDS='CURRENT_PLAY_WORDS'
 
 
 const wordRight = (value: CurrentWordListType) => ({
@@ -16,8 +17,8 @@ const audioGameStart = (value: boolean) => ({
   payload: value
 })
 
-const wordWrong=(value: string)=>({
-  type: WORD_WRONG,
+const wordUserAnswer=(value: string)=>({
+  type: WORD_USER_ANSWER,
   payload:value
 })
 
@@ -26,19 +27,27 @@ const isAnswerSelected = (value: boolean) => ({
   payload: value
 })
 
+const currentPlayWords = (value: Array<CurrentWordListType>) => ({
+  type: CURRENT_PLAY_WORDS,
+  payload: value
+})
+
+
 
 export type AudioGameStartActionType = {
   type: string;
   payload:
   | boolean
   | string
-  | CurrentWordListType;
+  | CurrentWordListType
+  | Array<CurrentWordListType>
 };
 
 
 export { 
   audioGameStart, AUDIO_GAME_STATUS,
-  wordWrong, WORD_WRONG,
+  wordUserAnswer, WORD_USER_ANSWER,
   wordRight, WORD_RIGHT,
-  isAnswerSelected, IS_ANSWER_SELECTED
+  isAnswerSelected, IS_ANSWER_SELECTED,
+  currentPlayWords, CURRENT_PLAY_WORDS
  }

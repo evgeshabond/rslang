@@ -3,18 +3,6 @@ import { useDispatch } from 'react-redux';
 import { gameStartStatusChange } from '../../actions/word-actions';
 import { MainCat } from '../../components/cats-img/main-cat/Main-cat';
 import { LinkButton } from '../../components/link-button/Link-button';
-<<<<<<< HEAD
-import AudioGame from '../AudioGame/AudioGame';
-import { mainPath } from '../../utils/constants';
-import rootStyles from '../e-book-page/e-book-page.module.css';
-
-const GamePage: React.FC = () => (
-  <div className={rootStyles['ebook-container']}>
-    <h2 className={rootStyles.title}>Мини-игры</h2>
-    <div className={rootStyles['ebook-buttons-container']}>
-      <LinkButton link={mainPath.savannaGame} buttonName="Саванна" />
-      <LinkButton link={mainPath.audioGame} buttonName="Аудиовызов" />
-=======
 import { GameStart, mainPath } from '../../utils/constants';
 import rootStyles from '../e-book-page/e-book-page.module.css';
 
@@ -27,8 +15,8 @@ const GamePage: React.FC = () => {
     <div className={rootStyles['ebook-container']}>
       <h2 className={rootStyles.title}>Мини-игры</h2>
       <div className={rootStyles['ebook-buttons-container']}>
-        <LinkButton link={mainPath.gamePage} buttonName="Саванна" />
-        <LinkButton link={mainPath.gamePage} buttonName="Аудиовызов" />
+        <LinkButton link={mainPath.savannaGame} buttonName="Саванна" />
+        <LinkButton link={mainPath.audioGame} buttonName="Аудиовызов" />
       </div>
       <div className={rootStyles['ebook-buttons-container']}>
         <LinkButton link={mainPath.gamePage} buttonName="Спринт" />
@@ -38,7 +26,6 @@ const GamePage: React.FC = () => {
         />
       </div>
       <MainCat />
->>>>>>> e31b5b80424beda1bdfd23c581478ed11c53e32f
     </div>
   );
 };

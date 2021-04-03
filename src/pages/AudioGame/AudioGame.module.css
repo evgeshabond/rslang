@@ -182,7 +182,10 @@
   color: var(--mainColor);
 }
 
-/* .word__info__image {
-  width: 2rem;
-  height: 2rem;
-} */
+.cat__image {
+  position: absolute;
+  left: 1135px;
+  top: 290px;
+  width: 120px;
+  height: 125.29px;
+}
