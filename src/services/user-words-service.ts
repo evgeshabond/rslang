@@ -1,5 +1,5 @@
-// import { serverUrlLocal } from '../utils/constants';
-import { difficulty, serverUrl } from '../utils/constants';
+// import { serverUrlLocal, serverUrl } from '../utils/constants';
+import { difficulty, serverUrlLocal } from '../utils/constants';
 
 export default class UserWordsService {
   checkErr = (status: number) => {
@@ -43,9 +43,11 @@ export default class UserWordsService {
         inCorrectCount: body?.optional?.inCorrectCount || 0,
       },
     };
-
+    const body2 = {
+      difficulty: body?.difficulty || difficulty.easy,
+    };
     const res = await fetch(
-      `${serverUrl}users/${params.userId}/words/${params.wordId}`,
+      `${serverUrlLocal}users/${params.userId}/words/${params.wordId}`,
       {
         method: 'POST',
         headers: {
@@ -53,7 +55,7 @@ export default class UserWordsService {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(initialBody),
+        body: JSON.stringify(body2),
       }
     );
     if (!unCheckErr) {
@@ -70,7 +72,7 @@ export default class UserWordsService {
     token: string;
   }) => {
     const res = await fetch(
-      `${serverUrl}users/${params.userId}/words/${params.wordId}`,
+      `${serverUrlLocal}users/${params.userId}/words/${params.wordId}`,
       {
         method: 'GET',
         headers: {
@@ -104,7 +106,7 @@ export default class UserWordsService {
     await this.addWord(params, body, true);
 
     const res = await fetch(
-      `${serverUrl}users/${params.userId}/words/${params.wordId}`,
+      `${serverUrlLocal}users/${params.userId}/words/${params.wordId}`,
       {
         method: 'PUT',
         headers: {
@@ -133,7 +135,7 @@ export default class UserWordsService {
     await this.addWord(params, undefined, true);
 
     const res = await fetch(
-      `${serverUrl}users/${params.userId}/learn/${params.wordId}`,
+      `${serverUrlLocal}users/${params.userId}/learn/${params.wordId}`,
       {
         method: 'PUT',
         headers: {
@@ -155,7 +157,7 @@ export default class UserWordsService {
     token: string;
   }) => {
     const res = await fetch(
-      `${serverUrl}users/${params.userId}/words/${params.wordId}`,
+      `${serverUrlLocal}users/${params.userId}/words/${params.wordId}`,
       {
         method: 'DELETE',
         headers: {
@@ -171,7 +173,7 @@ export default class UserWordsService {
   };
 
   getWordsList = async (params: { userId: string; token: string }) => {
-    const res = await fetch(`${serverUrl}users/${params.userId}/words`, {
+    const res = await fetch(`${serverUrlLocal}users/${params.userId}/words`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${params.token}`,
