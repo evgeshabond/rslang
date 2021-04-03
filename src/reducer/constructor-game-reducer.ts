@@ -10,7 +10,7 @@ import {
   UPDATE_CHARS_POSITION,
   UPDATE_LEARNED_COUNT,
   UPDATE_ROUND_COUNT,
-  UPDATE_WORD_OBJ,
+  UPDATE_WORD_OBJ
 } from '../actions/constructor-game-actions';
 import { CurrentWordListType } from '../actions/word-actions';
 
@@ -32,7 +32,7 @@ const initialState: ConstructorGameStartState = {
   shuffledWordList: [],
   constructorRoundStatus: false,
   chars: [['', '']],
-  roundCount: 0,
+  roundCount: 1,
   learned: 0,
   learnedWords: [],
   notLearnedWords: [],
@@ -98,3 +98,4 @@ const constructorGameReducer = (
 };
 
 export { constructorGameReducer };
+

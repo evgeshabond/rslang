@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setResultPageState } from '../../actions/constructor-game-actions';
+import {
+  clearWords,
+  constructorGameStart,
+  setResultPageState,
+} from '../../actions/constructor-game-actions';
 import { gameStartStatusChange } from '../../actions/word-actions';
 import { MainCat } from '../../components/cats-img/main-cat/Main-cat';
 import { LinkButton } from '../../components/link-button/Link-button';
@@ -12,7 +16,9 @@ const GamePage: React.FC = () => {
   const dispatch = useDispatch();
 
   const openConstructorGameHandler = () => {
+    dispatch(constructorGameStart(false));
     dispatch(setResultPageState(false));
+    dispatch(clearWords());
   };
 
   useEffect(() => {

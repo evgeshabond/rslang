@@ -37,7 +37,7 @@ export const GameResult: React.FC = () => {
     dispatch(setShuffledWordList(shuffle(currentWordList)));
     dispatch(constructorGameStart(true));
     dispatch(setLearnCount(0));
-    dispatch(setRoundCount(0));
+    dispatch(setRoundCount(1));
     dispatch(setRoundEnd(false));
     dispatch(clearWords());
   };

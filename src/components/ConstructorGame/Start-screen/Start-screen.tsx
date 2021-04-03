@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  clearWords,
   constructorGameStart,
   setLearnCount,
   setRoundCount,
@@ -34,24 +35,13 @@ export const StartScreen: React.FC = () => {
     }
   }, []);
 
-  // const gameStatus = useSelector(
-  //   (state: RootStateType) => state.wordState.gameStart
-  // );
-
-  // if (gameStatus === GameStart.Menu) {
-  //   console.log('It is same');
-  //   console.log(GameStart.Menu);
-  //   console.log(GameStart.Book);
-  //   console.log(GameStart.Deleted);
-  //   console.log(GameStart.Dictionary);
-  // }
-
   const startGameHandler = () => {
     dispatch(setShuffledWordList(shuffle(currentWordList)));
     dispatch(constructorGameStart(true));
     dispatch(setLearnCount(0));
-    dispatch(setRoundCount(0));
+    dispatch(setRoundCount(1));
     dispatch(setRoundEnd(false));
+    dispatch(clearWords());
   };
 
   return (

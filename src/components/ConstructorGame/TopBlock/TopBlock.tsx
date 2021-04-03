@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  clearWords,
   constructorGameStart,
   setResultPageState,
 } from '../../../actions/constructor-game-actions';
@@ -29,6 +30,7 @@ export const TopBlock: React.FC = () => {
   const endGameHandler = () => {
     dispatch(constructorGameStart(false));
     dispatch(setResultPageState(false));
+    clearWords();
   };
 
   return (
