@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import styles from './sprint-game.module.css';
 import { RootStateType } from '../../reducer/root-reducer';
 import {
+  sprintGameBallsCounter,
+  sprintGameCheckPoints,
   sprintGameRandomArray,
   sprintGameShuffledArray,
   sprintGameStatusChange,
@@ -11,7 +13,6 @@ import {
 import { RefreshButton } from '../button-icons/refresh-button.tsx/refresh-button';
 import { QuestionButton } from '../button-icons/question-button/question-button';
 import { CloseButton } from '../button-icons/close-button/close-button';
-import { LevelIcon } from '../button-icons/level-icons/level-icons';
 import { Timer } from './Timer';
 import { TitleGamePage } from '../title-game-page/TitleGamePage';
 import { ReactComponent as Cat } from '../../assets/images/cat2.svg';
@@ -20,7 +21,7 @@ import { ReactComponent as Timer2 } from '../../assets/images/timer2.svg';
 import banner from '../../assets/images/sprint-top.png';
 import { fetchWordsList } from '../../actions/word-actions';
 import Balls from './Balls';
-
+import CheckPoints from './CheckPoints';
 
 const SprintGame: React.FC = () => {
   const dispatch = useDispatch();
@@ -40,6 +41,8 @@ const SprintGame: React.FC = () => {
     currentPoints,
     shuffledArray,
     randomArray,
+    checkpoints,
+    ballsCounter,
   } = gameStatuses;
 
   const [wordCounter, setWordCounter] = useState(0);
@@ -48,12 +51,14 @@ const SprintGame: React.FC = () => {
 
   useEffect(() => {
     dispatch(sprintGameTotalPoints(0));
+    dispatch(sprintGameBallsCounter(0));
+    dispatch(sprintGameCheckPoints(0));
   }, []);
 
   const createRandomArray = () => {
     const array = [];
-    for (let i = 0; i < 20; i++) {
-      array.push(getRandomNumber(20));
+    for (let i = 0; i < wordList.length; i++) {
+      array.push(getRandomNumber(wordList.length));
     }
     return array;
   };
@@ -70,12 +75,6 @@ const SprintGame: React.FC = () => {
       sprintGameShuffledArray(wordList.slice().sort(() => Math.random() - 0.5))
     );
   }, [wordList]);
-  console.log(shuffledArray, 'shuffled');
-  console.log(randomArray, 'random');
-
-  // useEffect(() => {
-  //   setRandomWord(getRandomNumber(20));
-  // }, [wordCounter]);
 
   const renderTimerPage = () => (
     <div className={`${styles.game__wrapper} ${styles.timer__page}`}>
@@ -88,11 +87,28 @@ const SprintGame: React.FC = () => {
     </div>
   );
 
-  const checkTheWordRight = () => {
-    console.log('here');
+  const changeGameStats = () => {
+    dispatch(sprintGameTotalPoints(totalPoints + currentPoints));
+    dispatch(sprintGameCheckPoints(checkpoints < 3 ? checkpoints + 1 : 1));
+    console.log(checkpoints, 'checkpoint');
+    if (checkpoints === 3) {
+      dispatch(sprintGameBallsCounter(ballsCounter + 1));
+      if (ballsCounter === 4) {
+        dispatch(sprintGameBallsCounter(ballsCounter));
+      }
+    }
+  };
 
+  const checkTheWordRight = () => {
     if (shuffledArray[wordCounter].wordTranslate === wordToGuess) {
-      dispatch(sprintGameTotalPoints(totalPoints + currentPoints));
+      changeGameStats();
+    }
+    setWordCounter(wordCounter + 1);
+  };
+
+  const checkTheWordWrong = () => {
+    if (shuffledArray[wordCounter].wordTranslate !== wordToGuess) {
+      changeGameStats();
     }
     setWordCounter(wordCounter + 1);
   };
@@ -102,13 +118,6 @@ const SprintGame: React.FC = () => {
       ? setWordToGuess(shuffledArray[wordCounter].wordTranslate)
       : setWordToGuess(shuffledArray[randomArray[wordCounter]].wordTranslate);
   }, [wordCounter]);
-
-  const checkTheWordWrong = () => {
-    if (shuffledArray[wordCounter].wordTranslate !== wordToGuess) {
-      dispatch(sprintGameTotalPoints(totalPoints + currentPoints));
-    }
-    setWordCounter(wordCounter + 1);
-  };
 
   const renderGamePage = () => (
     <div className={`${styles.game__wrapper} ${styles.play}`}>
@@ -136,16 +145,17 @@ const SprintGame: React.FC = () => {
             слово
           </div>
         </div>
-        <div className={styles.check__points}>circles</div>
-        <div className={styles.balls}><Balls/></div>
+        <div className={styles.check__points}>
+          <CheckPoints />
+        </div>
+        <div className={styles.balls}>
+          <Balls />
+        </div>
         <div className={styles.guess__word}>
           <div className={styles.the__word}>
             {shuffledArray[wordCounter].word}
           </div>{' '}
-          - 
-          <div className={styles.translation}>
-            {wordToGuess}
-          </div>
+          -<div className={styles.translation}>{wordToGuess}</div>
         </div>
 
         <div className={styles.guess_not}> check</div>

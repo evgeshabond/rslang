@@ -1,20 +1,30 @@
 import React from 'react';
-import styles from './balls.module.css';
+import { useSelector } from 'react-redux';
+import { RootStateType } from '../../reducer/root-reducer';
 import ball2 from '../../assets/images/ball1.png';
 import ball1 from '../../assets/images/ball2.png';
 import ball4 from '../../assets/images/ball3.png';
 import ball3 from '../../assets/images/ball4.png';
+import styles from './balls.module.css';
+
 
 const Balls: React.FC = () => {
+  const ballsCounter = useSelector(
+    (state: RootStateType) => state.sprintGameState.ballsCounter
+  );
   const ballsArray = [
-    {id: '1', src: ball1}, {id:'2', src: ball2}, {id: '3', src: ball3}, {id: '4', src: ball4 }
+    { id: '1', src: ball1 },
+    { id: '2', src: ball2 },
+    { id: '3', src: ball3 },
+    { id: '4', src: ball4 },
   ];
+  console.log(ballsCounter, 'ballsCounter');
 
   return (
     <ul className={styles.balls__wrapper}>
-      {ballsArray.map(({id, src}) => (
+      {ballsArray.slice(0, ballsCounter).map(({ id, src }) => (
         <li key={id} className={styles.ball}>
-          <img src={src} alt='ball-picture'/>
+          <img src={src} alt="ball-picture" />
         </li>
       ))}
     </ul>
