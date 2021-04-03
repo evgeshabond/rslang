@@ -182,3 +182,30 @@ img.side__buttons {
 .check__points {
   height: 100px;
 }
+
+
+.guess_not{
+  display: flex;
+  justify-content: center;
+  height: 30px;
+}
+.lines{
+  height: 1px;
+  width: 480px;
+  background-color: #733999;
+  opacity: 0.6;
+  position: relative;
+}
+
+.correct__sign{
+  position: absolute;
+bottom: 31%;
+
+}
+.refresh__button,
+.question__button,
+.close__button{
+  background-color: transparent;
+  /* border-radius: 100%; */
+  border: none;
+}

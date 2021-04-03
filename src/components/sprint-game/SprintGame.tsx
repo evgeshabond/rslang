@@ -11,9 +11,6 @@ import {
   sprintGameStatusChange,
   sprintGameTotalPoints,
 } from '../../actions/sprint-game-action';
-import { RefreshButton } from '../button-icons/refresh-button.tsx/refresh-button';
-import { QuestionButton } from '../button-icons/question-button/question-button';
-import { CloseButton } from '../button-icons/close-button/close-button';
 import { Timer } from './Timer';
 import { TitleGamePage } from './TitleGamePage';
 import { ReactComponent as Cat } from '../../assets/images/cat2.svg';
@@ -26,6 +23,12 @@ import CheckPoints from './CheckPoints';
 import correctSound from '../../assets/sounds/src_music_correct.mp3';
 import wrongSound from '../../assets/sounds/src_music_wrong.wav';
 import countDown from '../../assets/sounds/countDown.wav';
+import correctImage from '../../assets/images/correct.svg';
+import inCorrectImage from '../../assets/images/incorrect.svg';
+import refreshIcon from '../../assets/images/refreshing.svg';
+import closeIcon from '../../assets/images/close.svg';
+
+import questionIcon from '../../assets/images/question.svg';
 
 const SprintGame: React.FC = () => {
   const dispatch = useDispatch();
@@ -53,6 +56,7 @@ const SprintGame: React.FC = () => {
   const getRandomNumber = (num: number) => Math.floor(Math.random() * num);
   const [wordToGuess, setWordToGuess] = useState('');
   const [startCountDown] = useSound(countDown);
+  const [correctAnswer, setCorrectAnswer] = useState(true);
   const [playCorrectSound] = useSound(correctSound, {
     interrupt: true,
   });
@@ -98,6 +102,7 @@ const SprintGame: React.FC = () => {
   );
 
   const changeGameStats = () => {
+    setCorrectAnswer(true);
     playCorrectSound();
     dispatch(sprintGameTotalPoints(totalPoints + currentPoints));
     dispatch(sprintGameCheckPoints(checkpoints < 3 ? checkpoints + 1 : 1));
@@ -111,6 +116,8 @@ const SprintGame: React.FC = () => {
   };
 
   const cleanCurrentGameStats = () => {
+    setCorrectAnswer(false);
+    playWrongSound();
     dispatch(sprintGameCheckPoints(0));
     dispatch(sprintGameBallsCounter(0));
   };
@@ -119,7 +126,6 @@ const SprintGame: React.FC = () => {
     if (shuffledArray[wordCounter].wordTranslate === wordToGuess) {
       changeGameStats();
     } else {
-      playWrongSound();
       cleanCurrentGameStats();
     }
     setWordCounter(wordCounter + 1);
@@ -130,7 +136,6 @@ const SprintGame: React.FC = () => {
       changeGameStats();
     } else {
       cleanCurrentGameStats();
-      playWrongSound();
     }
     setWordCounter(wordCounter + 1);
   };
@@ -143,7 +148,7 @@ const SprintGame: React.FC = () => {
 
   const checkTheEndOfTheGame = () => {
     console.log(wordCounter, 'wordcounter');
-    if (wordCounter === 19) {
+    if (wordCounter === 18) {
       dispatch(sprintGameStatusChange('finish'));
       console.log('i was here');
     }
@@ -174,8 +179,6 @@ const SprintGame: React.FC = () => {
 
         <div className={styles.check__points}>
           <CheckPoints />
-          {/* </div> */}
-          {/* <div className={styles.balls}> */}
           <Balls />
         </div>
         <div className={styles.guess__word}>
@@ -185,7 +188,14 @@ const SprintGame: React.FC = () => {
           -<div className={styles.translation}>{wordToGuess}</div>
         </div>
 
-        <div className={styles.guess_not}> check</div>
+        <div className={styles.guess_not}>
+          <div className={styles.lines}> </div>
+          <img
+            src={correctAnswer ? correctImage : inCorrectImage}
+            alt="guessed-or-not"
+            className={styles.correct__sign}
+          />
+        </div>
         <div className={styles.button__toguess}>
           <button
             type="button"
@@ -205,14 +215,55 @@ const SprintGame: React.FC = () => {
       </div>
 
       <div className={styles.side__buttons}>
-        <RefreshButton buttonClick={() => console.log('click')} />
-        <QuestionButton buttonClick={() => console.log('click')} />
-        <CloseButton buttonClick={() => console.log('click')} />
+        <button
+          type="button"
+          className={styles.refresh__button}
+          onClick={() => dispatch(sprintGameStatusChange('play'))}
+        >
+          <img src={refreshIcon} alt="refresh icon" />
+        </button>
+        <button
+          type="button"
+          className={styles.question__button}
+          onClick={() => console.log('question?')}
+        >
+          <img src={questionIcon} alt="question icon" />
+        </button>
+        <button
+          type="button"
+          className={styles.close__button}
+          onClick={() => dispatch(sprintGameStatusChange('start'))}
+        >
+          <img src={closeIcon} alt="close icon" />
+        </button>
       </div>
     </div>
   );
 
-  const renderFinishPage = () => <h1>finish</h1>;
+  const renderFinishPage = () => (
+    <div className={styles.finish_game__wrapper}>
+      <h3>Результаты</h3>
+      <div className={styles.result__wrapper}>
+        Вы набрали {totalPoints} очков! Это ваш лучший результат! Он на 100%
+        лучше предыдущего!
+      </div>
+      <div className={styles.details__wrapper}>
+        <div className={styles.correct_not_correct}>
+          <div className={styles.correct}>Правильно:</div>
+          <div className={styles.correct}>Неправильно:</div>
+        </div>
+    <div className={styles.words__wrapper}>
+        <div className={styles.correct_word_details}>1</div>
+        <div className={styles.incorrect_word_details}>1</div>
+        </div>
+        <div className={styles.result__buttons}>
+          <button type="button" className={styles.word_list}>К списку слов</button>
+          <button type="button" className={styles.repeat}>Повторить</button>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div className={styles.sprint__game}>
       {gameStatus === 'start' ? (
