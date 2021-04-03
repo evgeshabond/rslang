@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import {
   clearWords,
   constructorGameStart,
@@ -95,9 +96,9 @@ export const GameResult: React.FC = () => {
         </ul>
       </div>
       <div className={styles.button__wrapper}>
-        <button className={styles.restart} type="button">
+        <Link to={mainPath.ebookPage} className={styles.restart}>
           К списку слов
-        </button>
+        </Link>
         <button
           className={styles.restart}
           type="button"
