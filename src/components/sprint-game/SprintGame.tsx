@@ -91,7 +91,7 @@ const SprintGame: React.FC = () => {
     dispatch(sprintGameTotalPoints(totalPoints + currentPoints));
     dispatch(sprintGameCheckPoints(checkpoints < 3 ? checkpoints + 1 : 1));
     console.log(checkpoints, 'checkpoint');
-    if (checkpoints === 3) {
+    if (checkpoints === 2) {
       dispatch(sprintGameBallsCounter(ballsCounter + 1));
       if (ballsCounter === 4) {
         dispatch(sprintGameBallsCounter(ballsCounter));
@@ -99,9 +99,15 @@ const SprintGame: React.FC = () => {
     }
   };
 
+  const cleanCurrentGameStats = () => {
+    dispatch(sprintGameCheckPoints(0));
+    dispatch(sprintGameBallsCounter(0));
+  };
   const checkTheWordRight = () => {
     if (shuffledArray[wordCounter].wordTranslate === wordToGuess) {
       changeGameStats();
+    } else {
+      cleanCurrentGameStats();
     }
     setWordCounter(wordCounter + 1);
   };
@@ -109,6 +115,9 @@ const SprintGame: React.FC = () => {
   const checkTheWordWrong = () => {
     if (shuffledArray[wordCounter].wordTranslate !== wordToGuess) {
       changeGameStats();
+    } else {
+      cleanCurrentGameStats();
+
     }
     setWordCounter(wordCounter + 1);
   };
