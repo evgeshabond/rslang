@@ -12,7 +12,6 @@ import { fetchWordsList } from '../../../actions/word-actions';
 import { ReactComponent as CatSleeping } from '../../../assets/images/cat-sleeping.svg';
 import { ReactComponent as Play } from '../../../assets/images/video-player-mini.svg';
 import { RootStateType } from '../../../reducer/root-reducer';
-// import { GameStart } from '../../../utils/constants';
 import { shuffle } from '../../../utils/shuffle';
 import ControlledSelect from '../../ControlledSelect/ControlledSelect';
 import { GameResult } from '../../GameResult/GameResult';
@@ -27,6 +26,10 @@ export const StartScreen: React.FC = () => {
 
   const isResultPage = useSelector(
     (state: RootStateType) => state.constructorGameState.isResultPage
+  );
+
+  const isLevelVisible = useSelector(
+    (state: RootStateType) => state.menuState.isLevelVisible
   );
 
   useEffect(() => {
@@ -62,7 +65,7 @@ export const StartScreen: React.FC = () => {
             <Play className={styles.play} />
           </button>
 
-          <ControlledSelect />
+          {isLevelVisible ? <ControlledSelect /> : null}
 
           <CatSleeping
             width="210px"

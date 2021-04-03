@@ -5,6 +5,7 @@ import {
   constructorGameStart,
   setResultPageState,
 } from '../../actions/constructor-game-actions';
+import { setLevelVisibility } from '../../actions/menu-actions';
 import { gameStartStatusChange } from '../../actions/word-actions';
 import { MainCat } from '../../components/cats-img/main-cat/Main-cat';
 import { LinkButton } from '../../components/link-button/Link-button';
@@ -19,6 +20,7 @@ const GamePage: React.FC = () => {
     dispatch(constructorGameStart(false));
     dispatch(setResultPageState(false));
     dispatch(clearWords());
+    dispatch(setLevelVisibility(true));
   };
 
   useEffect(() => {

@@ -5,6 +5,7 @@ import {
   constructorGameStart,
   setResultPageState,
 } from '../../../actions/constructor-game-actions';
+import { setLevelVisibility } from '../../../actions/menu-actions';
 import { ReactComponent as ExitButton } from '../../../assets/images/exit-button-mini.svg';
 import { RootStateType } from '../../../reducer/root-reducer';
 import { gameConstants } from '../../../utils/constants';
@@ -30,6 +31,7 @@ export const TopBlock: React.FC = () => {
   const endGameHandler = () => {
     dispatch(constructorGameStart(false));
     dispatch(setResultPageState(false));
+    dispatch(setLevelVisibility(true));
     clearWords();
   };
 
