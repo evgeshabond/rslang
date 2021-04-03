@@ -15,7 +15,6 @@ const CheckPoints: React.FC = () => {
     { id: '3', src: check },
   ];
 
-  console.log(checkpoints, 'check');
   return (
     <ul className={styles.check__points}>
       {checkArray.slice(0, checkpoints).map(({ id, src }) => (

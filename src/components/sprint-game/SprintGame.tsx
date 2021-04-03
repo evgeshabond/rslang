@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import useSound from 'use-sound';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './sprint-game.module.css';
 import { RootStateType } from '../../reducer/root-reducer';
@@ -22,6 +23,8 @@ import banner from '../../assets/images/sprint-top.png';
 import { fetchWordsList } from '../../actions/word-actions';
 import Balls from './Balls';
 import CheckPoints from './CheckPoints';
+import correctSound from '../../assets/sounds/src_music_correct.mp3';
+import wrongSound from '../../assets/sounds/src_music_wrong.wav';
 
 const SprintGame: React.FC = () => {
   const dispatch = useDispatch();
@@ -48,6 +51,11 @@ const SprintGame: React.FC = () => {
   const [wordCounter, setWordCounter] = useState(0);
   const getRandomNumber = (num: number) => Math.floor(Math.random() * num);
   const [wordToGuess, setWordToGuess] = useState('');
+
+  const [playCorrectSound] = useSound(correctSound, {
+    interrupt: true,
+  });
+  const [playWrongSound] = useSound(wrongSound, { interrupt: true });
 
   useEffect(() => {
     dispatch(sprintGameTotalPoints(0));
@@ -88,6 +96,7 @@ const SprintGame: React.FC = () => {
   );
 
   const changeGameStats = () => {
+    playCorrectSound();
     dispatch(sprintGameTotalPoints(totalPoints + currentPoints));
     dispatch(sprintGameCheckPoints(checkpoints < 3 ? checkpoints + 1 : 1));
     console.log(checkpoints, 'checkpoint');
@@ -107,6 +116,8 @@ const SprintGame: React.FC = () => {
     if (shuffledArray[wordCounter].wordTranslate === wordToGuess) {
       changeGameStats();
     } else {
+      playWrongSound();
+
       cleanCurrentGameStats();
     }
     setWordCounter(wordCounter + 1);
@@ -117,7 +128,7 @@ const SprintGame: React.FC = () => {
       changeGameStats();
     } else {
       cleanCurrentGameStats();
-
+      playWrongSound();
     }
     setWordCounter(wordCounter + 1);
   };

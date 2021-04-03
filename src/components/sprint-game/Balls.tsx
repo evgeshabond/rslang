@@ -18,7 +18,6 @@ const Balls: React.FC = () => {
     { id: '3', src: ball3 },
     { id: '4', src: ball4 },
   ];
-  console.log(ballsCounter, 'ballsCounter');
 
   return (
     <ul className={styles.balls__wrapper}>
