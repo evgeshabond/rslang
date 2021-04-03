@@ -22,27 +22,27 @@ export default class UserWordsService {
       userId: string;
       wordId: string;
       token: string;
-      body: {
-        difficulty?: string;
-        optional?: {
-          learning?: boolean;
-        };
+    },
+    body?: {
+      difficulty?: string;
+      optional?: {
+        learning: boolean;
+        learned: boolean;
+        correctCount: number;
+        inCorrectCount: number;
       };
     },
     unCheckErr?: boolean
   ) => {
-    const body = {
-      difficulty: difficulty.easy,
+    const initialBody = {
+      difficulty: body?.difficulty || difficulty.easy,
       optional: {
-        learning: false,
+        learning: body?.optional?.learning || false,
+        learned: body?.optional?.learned || false,
+        correctCount: body?.optional?.correctCount || 0,
+        inCorrectCount: body?.optional?.inCorrectCount || 0,
       },
     };
-    if (params.body.difficulty) {
-      body.difficulty = params.body.difficulty;
-    }
-    if (params.body.optional?.learning) {
-      body.optional.learning = params.body.optional.learning;
-    }
 
     const res = await fetch(
       `${serverUrl}users/${params.userId}/words/${params.wordId}`,
@@ -53,7 +53,7 @@ export default class UserWordsService {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(body),
+        body: JSON.stringify(initialBody),
       }
     );
     if (!unCheckErr) {
@@ -94,11 +94,14 @@ export default class UserWordsService {
     body: {
       difficulty?: string;
       optional?: {
-        learning?: boolean;
+        learning: boolean;
+        learned: boolean;
+        correctCount: number;
+        inCorrectCount: number;
       };
     }
   ) => {
-    await this.addWord({ ...params, body }, true);
+    await this.addWord(params, body, true);
 
     const res = await fetch(
       `${serverUrl}users/${params.userId}/words/${params.wordId}`,
@@ -110,6 +113,35 @@ export default class UserWordsService {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(body),
+      }
+    );
+    this.checkErr(res.status);
+    const data = await res.json();
+    return data;
+  };
+
+  updateLearnWord = async (
+    params: {
+      userId: string;
+      wordId: string;
+      token: string;
+    },
+    gameResult: {
+      isCorrect: boolean;
+    }
+  ) => {
+    await this.addWord(params, undefined, true);
+
+    const res = await fetch(
+      `${serverUrl}users/${params.userId}/learn/${params.wordId}`,
+      {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${params.token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ optional: gameResult }),
       }
     );
     this.checkErr(res.status);

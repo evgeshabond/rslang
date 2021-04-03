@@ -10,8 +10,7 @@ import {
   userWordDeleted,
   userWordToEasy,
   userWordToHard,
-  userWordToLearning,
-  userWordToUnLearning,
+  userWordToLearnResult,
   userWordUnDeleted,
 } from '../../actions/user-words-action';
 import { gameStartStatusChange } from '../../actions/word-actions';
@@ -57,14 +56,8 @@ export const GameTest: React.FC = () => {
   const addwordToState = () => {
     const params = {
       userId: user.userId,
-      wordId: wordList.currentWordList[1].id,
+      wordId: wordList.currentWordList[5].id,
       token: user.token,
-      body: {
-        difficulty: difficulty.easy,
-        optional: {
-          learning: false,
-        },
-      },
     };
     dispatch(addUserWord(params));
   };
@@ -123,7 +116,7 @@ export const GameTest: React.FC = () => {
   const toHard = () => {
     const params = {
       userId: user.userId,
-      wordId: wordList.currentWordList[1].id,
+      wordId: wordList.currentWordList[5].id,
       token: user.token,
     };
     dispatch(userWordToHard(params));
@@ -144,7 +137,7 @@ export const GameTest: React.FC = () => {
       wordId: wordList.currentWordList[1].id,
       token: user.token,
     };
-    dispatch(userWordToLearning(params));
+    // dispatch(userWordToLearning(params));
   };
 
   const toUnLearning = () => {
@@ -153,7 +146,19 @@ export const GameTest: React.FC = () => {
       wordId: wordList.currentWordList[1].id,
       token: user.token,
     };
-    dispatch(userWordToUnLearning(params));
+    // dispatch(userWordToUnLearning(params));
+  };
+
+  const addGameResult = () => {
+    const params = {
+      userId: user.userId,
+      wordId: wordList.currentWordList[5].id,
+      token: user.token,
+    };
+    const gameResult = {
+      isCorrect: true,
+    };
+    dispatch(userWordToLearnResult(params, gameResult));
   };
 
   // aggregate buttons
@@ -303,6 +308,12 @@ export const GameTest: React.FC = () => {
       <input type="button" value="update toEasy" onClick={toEasy} />
       <input type="button" value="update toLearning" onClick={toLearning} />
       <input type="button" value="update toUnLearning" onClick={toUnLearning} />
+
+      <input
+        type="button"
+        value="update toUnLearning"
+        onClick={addGameResult}
+      />
       <h3>Aggregate</h3>
       <div>
         <input type="button" value="get all" onClick={getAggregateAll} />
