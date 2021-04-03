@@ -15,7 +15,7 @@ import { RefreshButton } from '../button-icons/refresh-button.tsx/refresh-button
 import { QuestionButton } from '../button-icons/question-button/question-button';
 import { CloseButton } from '../button-icons/close-button/close-button';
 import { Timer } from './Timer';
-import { TitleGamePage } from '../title-game-page/TitleGamePage';
+import { TitleGamePage } from './TitleGamePage';
 import { ReactComponent as Cat } from '../../assets/images/cat2.svg';
 import { ReactComponent as Timer1 } from '../../assets/images/timer1.svg';
 import { ReactComponent as Timer2 } from '../../assets/images/timer2.svg';
@@ -25,6 +25,7 @@ import Balls from './Balls';
 import CheckPoints from './CheckPoints';
 import correctSound from '../../assets/sounds/src_music_correct.mp3';
 import wrongSound from '../../assets/sounds/src_music_wrong.wav';
+import countDown from '../../assets/sounds/countDown.wav';
 
 const SprintGame: React.FC = () => {
   const dispatch = useDispatch();
@@ -51,13 +52,14 @@ const SprintGame: React.FC = () => {
   const [wordCounter, setWordCounter] = useState(0);
   const getRandomNumber = (num: number) => Math.floor(Math.random() * num);
   const [wordToGuess, setWordToGuess] = useState('');
-
+  const [startCountDown] = useSound(countDown);
   const [playCorrectSound] = useSound(correctSound, {
     interrupt: true,
   });
   const [playWrongSound] = useSound(wrongSound, { interrupt: true });
 
   useEffect(() => {
+    dispatch(sprintGameStatusChange('play'));
     dispatch(sprintGameTotalPoints(0));
     dispatch(sprintGameBallsCounter(0));
     dispatch(sprintGameCheckPoints(0));
@@ -99,7 +101,7 @@ const SprintGame: React.FC = () => {
     playCorrectSound();
     dispatch(sprintGameTotalPoints(totalPoints + currentPoints));
     dispatch(sprintGameCheckPoints(checkpoints < 3 ? checkpoints + 1 : 1));
-    console.log(checkpoints, 'checkpoint');
+    checkTheEndOfTheGame();
     if (checkpoints === 2) {
       dispatch(sprintGameBallsCounter(ballsCounter + 1));
       if (ballsCounter === 4) {
@@ -112,12 +114,12 @@ const SprintGame: React.FC = () => {
     dispatch(sprintGameCheckPoints(0));
     dispatch(sprintGameBallsCounter(0));
   };
+
   const checkTheWordRight = () => {
     if (shuffledArray[wordCounter].wordTranslate === wordToGuess) {
       changeGameStats();
     } else {
       playWrongSound();
-
       cleanCurrentGameStats();
     }
     setWordCounter(wordCounter + 1);
@@ -139,15 +141,19 @@ const SprintGame: React.FC = () => {
       : setWordToGuess(shuffledArray[randomArray[wordCounter]].wordTranslate);
   }, [wordCounter]);
 
+  const checkTheEndOfTheGame = () => {
+    console.log(wordCounter, 'wordcounter');
+    if (wordCounter === 19) {
+      dispatch(sprintGameStatusChange('finish'));
+      console.log('i was here');
+    }
+  };
+
   const renderGamePage = () => (
     <div className={`${styles.game__wrapper} ${styles.play}`}>
       <div className={styles.sidebar}>
         <div className={styles.watch__wrapper}>
-          <Timer
-            initialTimer={60000}
-            nextPage="finish"
-            timerFontSize="1.8rem"
-          />
+          <Timer initialTimer={600} nextPage="finish" timerFontSize="1.8rem" />
           <Timer2 className={styles.timer2} />
         </div>
       </div>
@@ -165,10 +171,11 @@ const SprintGame: React.FC = () => {
             слово
           </div>
         </div>
+
         <div className={styles.check__points}>
           <CheckPoints />
-        </div>
-        <div className={styles.balls}>
+          {/* </div> */}
+          {/* <div className={styles.balls}> */}
           <Balls />
         </div>
         <div className={styles.guess__word}>
