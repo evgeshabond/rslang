@@ -1,9 +1,11 @@
-import React from 'react';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchWordsList } from '../../actions/word-actions';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,9 +24,12 @@ export default function ControlledOpenSelect() {
   const classes = useStyles();
   const [level, setLevel] = React.useState<string | number>('');
   const [open, setOpen] = React.useState(false);
+  const dispatch = useDispatch();
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setLevel(event.target.value as number);
+    const chosenLevel = event.target.value as number;
+    setLevel(chosenLevel);
+    dispatch(fetchWordsList({ page: 0, group: chosenLevel }));
   };
 
   const handleClose = () => {
