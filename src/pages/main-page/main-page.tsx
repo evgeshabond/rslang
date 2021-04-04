@@ -13,6 +13,7 @@ import { QuestionButton } from '../../components/button-icons/question-button/qu
 import { RefreshButton } from '../../components/button-icons/refresh-button.tsx/refresh-button';
 import { SettingsButton } from '../../components/button-icons/settings-button/settings-button';
 import { PlayButton } from '../../components/button-icons/playBig-button/playBig-button';
+import { AudioOnSizeButton } from '../../components/button-icons/audiOn-button/audioOn-Size';
 
 const MainPage: React.FC = () => {
   console.log('main');
@@ -45,6 +46,7 @@ const MainPage: React.FC = () => {
 
         <PauseButton buttonClick={() => console.log('click')} />
         <AudioOnButton buttonClick={() => console.log('click')} />
+        <AudioOnSizeButton buttonClick={() => console.log('click')} size={50} />
         <QuestionButton buttonClick={() => console.log('click')} />
         <RefreshButton buttonClick={() => console.log('click')} />
         <SettingsButton buttonClick={() => console.log('click')} />

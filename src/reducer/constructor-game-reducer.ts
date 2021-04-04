@@ -1,12 +1,16 @@
 import {
-  CONSTRUCTOR_GAME_PLAY_STATUS,
+  ADD_LEARNED_WORD,
+  ADD_NOT_LEARNED_WORD,
+  CLEAR_WORDS,
   ConstructorGameActionType,
-  CONSTRUCTOR_SHUFFLED_LIST,
+  CONSTRUCTOR_GAME_PLAY_STATUS,
+  CONSTRUCTOR_GAME_RESULT_STATUS,
   CONSTRUCTOR_ROUND_STATUS,
+  CONSTRUCTOR_SHUFFLED_LIST,
   UPDATE_CHARS_POSITION,
-  UPDATE_ROUND_COUNT,
-  UPDATE_WORD_OBJ,
   UPDATE_LEARNED_COUNT,
+  UPDATE_ROUND_COUNT,
+  UPDATE_WORD_OBJ
 } from '../actions/constructor-game-actions';
 import { CurrentWordListType } from '../actions/word-actions';
 
@@ -18,6 +22,9 @@ export type ConstructorGameStartState = {
   roundCount: number;
   wordObj: CurrentWordListType;
   learned: number;
+  isResultPage: boolean;
+  learnedWords: Array<CurrentWordListType>;
+  notLearnedWords: Array<CurrentWordListType>;
 };
 
 const initialState: ConstructorGameStartState = {
@@ -25,8 +32,11 @@ const initialState: ConstructorGameStartState = {
   shuffledWordList: [],
   constructorRoundStatus: false,
   chars: [['', '']],
-  roundCount: 0,
+  roundCount: 1,
   learned: 0,
+  learnedWords: [],
+  notLearnedWords: [],
+  isResultPage: false,
   wordObj: {
     id: '0',
     group: 0,
@@ -64,9 +74,28 @@ const constructorGameReducer = (
       return { ...state, wordObj: action.payload };
     case UPDATE_LEARNED_COUNT:
       return { ...state, learned: action.payload };
+    case CONSTRUCTOR_GAME_RESULT_STATUS:
+      return { ...state, isResultPage: action.payload };
+    case ADD_LEARNED_WORD:
+      return {
+        ...state,
+        learnedWords: [...state.learnedWords, action.payload],
+      };
+    case ADD_NOT_LEARNED_WORD:
+      return {
+        ...state,
+        notLearnedWords: [...state.notLearnedWords, action.payload],
+      };
+    case CLEAR_WORDS:
+      return {
+        ...state,
+        notLearnedWords: [],
+        learnedWords: [],
+      };
     default:
       return state;
   }
 };
 
 export { constructorGameReducer };
+
