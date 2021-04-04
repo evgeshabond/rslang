@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import useSound from 'use-sound';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootStateType } from '../../reducer/root-reducer';
-import styles from './SavannaGame.module.css';
+import styles from './LevelInfo.module.css';
 import { PlayButton } from "../../components/button-icons/playBig-button/playBig-button";
 import { audioGameStart, wordUserAnswer, wordRight, isAnswerSelected, currentPlayWords } from '../../actions/audioGame-actions';
 import ControlledSelect from "../../components/ControlledSelect/ControlledSelect";
@@ -10,10 +10,9 @@ import { shuffle } from '../../utils/shuffle';
 import { mainPath } from '../../utils/constants';
 import { ReactComponent as CatAudio } from '../../assets/images/cat-audio-game.svg';
 import { savannaGameStart } from '../../actions/savanna-game-actions';
-// import RenderWordCard from './RenderWordCard';
+import { LevelIcon } from '../../components/button-icons/level-icons/level-icons';
 
-
-const StartScreen: React.FC = () => {
+const LevelInfo: React.FC = () => {
   const dispatch = useDispatch();
 
   const isPlaying = useSelector((state: RootStateType) => state.savannaGameState.savannaGameStart);
@@ -22,42 +21,22 @@ const StartScreen: React.FC = () => {
   const rightWord = useSelector((state: RootStateType) => state.savannaGameState.wordRight);
   const isAnswer = useSelector((state: RootStateType) => state.savannaGameState.isAnswerSelected);
   const currentWords = useSelector((state: RootStateType) => state.savannaGameState.currentPlayWords);
-  const [play] = useSound(`${mainPath.langUrl}${rightWord.audio}`, { interrupt: true });
-
-  useEffect(() => {
-    playSoundWord();
-  }, [play])
-
-
-  const playSoundWord = () => {
-    if ((isPlaying && Object.keys(rightWord).length > 0)) {
-      play()
-    }
-  }
-
-  const playGame = () => {
-    dispatch(wordUserAnswer(''));
-    dispatch(isAnswerSelected(false));
-    if (wordList === undefined) {
-      return;
-    }
-    const currentPlayList = shuffle(wordList).filter((item: Object, index: number) => index < 4);
-    dispatch(currentPlayWords(currentPlayList))
-    console.log('current', currentWords)
-    // setCountStep(CountStep => countStep + 1);
-  }
 
   return (
-    <div className={styles.game__wrapper}>
-      <div className={styles.game__startSreen}>
-        {/* <ControlledSelect /> */}
-        <div className={styles.game__title}>Саванна</div>
-        <div className={styles.game__decription}>Тренировка Саванна развивает
-        словарный запас. Выберите правильный первод слова.</div>
-        < PlayButton buttonClick={() => { dispatch(savannaGameStart(true)); playGame(); }} />
+    <div className={styles.game__level}>
+      <div>
+        Уровень
       </div>
-      <CatAudio className={styles.cat__image} />
+      <div className={styles.level__container}>
+        <LevelIcon number={1} type={0} buttonClick={() => console.log('info')} />
+        <LevelIcon number={2} type={0} buttonClick={() => console.log('info')} />
+        <LevelIcon number={3} type={0} buttonClick={() => console.log('info')} />
+        <LevelIcon number={4} type={0} buttonClick={() => console.log('info')} />
+        <LevelIcon number={5} type={0} buttonClick={() => console.log('info')} />
+        <LevelIcon number={6} type={0} buttonClick={() => console.log('info')} />
+      </div>
+
     </div>
   )
 }
-export default StartScreen;
+export default LevelInfo;

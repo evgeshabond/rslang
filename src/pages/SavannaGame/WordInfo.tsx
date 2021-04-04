@@ -13,9 +13,9 @@ const WordInfo: React.FC = () => {
   const dispatch = useDispatch();
 
   const isPlaying = useSelector((state: RootStateType) =>
-    state.audioGameState.audioGameStart);
+    state.savannaGameState.savannaGameStart);
   const rightWord = useSelector((state: RootStateType) =>
-    state.audioGameState.wordRight);
+    state.savannaGameState.wordRight);
   const [play] = useSound(`${mainPath.langUrl}${rightWord.audio}`, { interrupt: true });
   const [playExample] = useSound((`${mainPath.langUrl}${rightWord.audioExample}`));
 

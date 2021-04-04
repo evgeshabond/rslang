@@ -21,13 +21,13 @@ const NextBtn: React.FC = () => {
     dispatch(fetchWordsList({ page: 0, group: 0 }))
   }, []);
 
-  const isPlaying = useSelector((state: RootStateType) => state.audioGameState.audioGameStart);
+  const isPlaying = useSelector((state: RootStateType) => state.savannaGameState.savannaGameStart);
   const wordList = useSelector((state: RootStateType) => state.wordState.currentWordList);
-  const userAnswer = useSelector((state: RootStateType) => state.audioGameState.wordUserAnswer);
-  const rightWord = useSelector((state: RootStateType) => state.audioGameState.wordRight);
-  const isAnswer = useSelector((state: RootStateType) => state.audioGameState.isAnswerSelected);
-  const currentWords = useSelector((state: RootStateType) => state.audioGameState.currentPlayWords);
-  const stepCounter = useSelector((state: RootStateType) => state.audioGameState.stepCounter);
+  const userAnswer = useSelector((state: RootStateType) => state.savannaGameState.wordUserAnswer);
+  const rightWord = useSelector((state: RootStateType) => state.savannaGameState.wordRight);
+  const isAnswer = useSelector((state: RootStateType) => state.savannaGameState.isAnswerSelected);
+  const currentWords = useSelector((state: RootStateType) => state.savannaGameState.currentPlayWords);
+  const stepCounter = useSelector((state: RootStateType) => state.savannaGameState.stepCounter);
 
 
   const playGame = () => {
@@ -37,7 +37,7 @@ const NextBtn: React.FC = () => {
       return;
     }
     const currentPlayList = shuffle(wordList)
-      .filter((item: Object, index: number) => index < 5);
+      .filter((item: Object, index: number) => index < 4);
     dispatch(currentPlayWords(currentPlayList))
   }
 

@@ -63,12 +63,10 @@
 
 .word__list {
   display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  align-items: center;
-  align-content: space-around;
+  align-self: flex-end;
+
   width: 660px;
-  height: 120px;
+  /* height: 120px; */
 }
 
 .word__list__disable {
@@ -89,14 +87,23 @@
 }
 
 .game__content {
+  position: absolute;
   width: 102.2rem;
-  height: 44rem;
+  height: 57rem;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
   border-radius: 50px;
-  background: #fdebff;
+  background-image: url('../../assets/images/savanna-background.png');
+  /* background: #fdebff; */
+}
+
+.game__field {
+  width: 100rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .playing__btn,
@@ -140,7 +147,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-self: flex-end;
-  width: 12rem;
+  width: 21rem;
   height: 3rem;
 }
 
@@ -181,10 +188,10 @@
 
 .cat__image {
   position: absolute;
-  left: 1135px;
-  top: 290px;
-  width: 120px;
-  height: 125.29px;
+  left: 385px;
+  top: 496px;
+  width: 250px;
+  height: 73px;
 }
 
 .hint:active:after {

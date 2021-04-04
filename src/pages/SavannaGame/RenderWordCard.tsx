@@ -22,17 +22,17 @@ const RenderWordCard: React.FC = () => {
   }, []);
 
   const isPlaying = useSelector((state: RootStateType) =>
-    state.audioGameState.audioGameStart);
+    state.savannaGameState.savannaGameStart);
   const wordList = useSelector((state: RootStateType) =>
     state.wordState.currentWordList);
   const userAnswer = useSelector((state: RootStateType) =>
-    state.audioGameState.wordUserAnswer);
+    state.savannaGameState.wordUserAnswer);
   const rightWord = useSelector((state: RootStateType) =>
-    state.audioGameState.wordRight);
+    state.savannaGameState.wordRight);
   const isAnswer = useSelector((state: RootStateType) =>
-    state.audioGameState.isAnswerSelected);
+    state.savannaGameState.isAnswerSelected);
   const currentWords = useSelector((state: RootStateType) =>
-    state.audioGameState.currentPlayWords);
+    state.savannaGameState.currentPlayWords);
 
   const getRandomInt = (min: number, max: number) => (
     Math.floor(Math.random() * (max - min + 1)) + min
@@ -58,7 +58,6 @@ const RenderWordCard: React.FC = () => {
   return (
     <div className={styles.word__list}>
       {currentWords.map((word: CurrentWordListType, index: number) => (
-
         <WordItem buttonClick={() => { checkUserAnswer(word.word); }}
           key={word.id} word={word} />
       ))}
