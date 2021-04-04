@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import useSound from 'use-sound';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootStateType } from '../../reducer/root-reducer';
-import styles from './AudioGame.module.css';
-import { PlayButton } from '../../components/button-icons/playBig-button/playBig-button';
+import styles from './SavannaGame.module.css';
+import { PlayButton } from "../../components/button-icons/playBig-button/playBig-button";
 import { audioGameStart, wordUserAnswer, wordRight, isAnswerSelected, currentPlayWords } from '../../actions/audioGame-actions';
-import ControlledSelect from '../../components/ControlledSelect/ControlledSelect';
+import ControlledSelect from "../../components/ControlledSelect/ControlledSelect";
 import { shuffle } from '../../utils/shuffle';
 import { mainPath } from '../../utils/constants';
 import { ReactComponent as CatAudio } from '../../assets/images/cat-audio-game.svg';
@@ -50,11 +50,8 @@ const StartScreen: React.FC = () => {
     <div className={styles.game__wrapper}>
       <div className={styles.game__startSreen}>
         <ControlledSelect />
-        <div className={styles.game__title}>Аудиовызов</div>
-        <div className={styles.game__decription}>Тренировка улучшает
-        восприятие английской речи на слух.
-        Выберите из предложенных вариантов ответа правильный перевод слова,
-    которое услышите</div>
+        <div className={styles.game__title}>Саванна</div>
+        <div className={styles.game__decription}>Тренировка Саванна развивает словарный запас. Чем больше слов ты знаешь, тем больше очков опыта получишь.</div>
         < PlayButton buttonClick={() => { dispatch(audioGameStart(true)); playGame(); }} />
       </div>
       <CatAudio className={styles.cat__image} />

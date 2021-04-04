@@ -1,17 +1,17 @@
 import {
-  AUDIO_GAME_STATUS,
-  AudioGameStartActionType,
+  SAVANNA_GAME_STATUS,
+  SavannaGameActionType,
   WORD_USER_ANSWER,
   WORD_RIGHT,
   IS_ANSWER_SELECTED,
   CURRENT_PLAY_WORDS,
   STEP_COUNTER
-} from '../actions/audioGame-actions';
+} from '../actions/savanna-game-actions';
 
 import { CurrentWordListType } from '../actions/word-actions';
 
-export type AudioGameState = {
-  audioGameStart: boolean;
+export type SavannaGameState = {
+  savannaGameStart: boolean;
   wordUserAnswer:string;
   wordRight: CurrentWordListType;
   isAnswerSelected: boolean;
@@ -19,9 +19,9 @@ export type AudioGameState = {
   stepCounter: number
 };
 
-const initialState: AudioGameState = {
+const initialState: SavannaGameState = {
   stepCounter:0,
-  audioGameStart: false,
+  savannaGameStart: false,
   isAnswerSelected: false,
   wordUserAnswer: '',
   currentPlayWords: [],
@@ -43,12 +43,12 @@ const initialState: AudioGameState = {
   }
 };
 
-const audioGameReducer = (state = initialState, action: AudioGameStartActionType) => {
+const savannaGameReducer = (state = initialState, action: SavannaGameActionType) => {
   switch (action.type) {
     case STEP_COUNTER:
       return { ...state, stepCounter: action.payload };
-    case AUDIO_GAME_STATUS:
-      return { ...state, audioGameStart: action.payload };
+    case SAVANNA_GAME_STATUS:
+      return { ...state, savannaGameStart: action.payload };
     case WORD_USER_ANSWER:
       return { ...state, wordUserAnswer: action.payload };
     case WORD_RIGHT:
@@ -63,5 +63,5 @@ const audioGameReducer = (state = initialState, action: AudioGameStartActionType
 };
 
 
-export { audioGameReducer }
+export { savannaGameReducer }
 

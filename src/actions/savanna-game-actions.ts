@@ -1,6 +1,6 @@
 import { CurrentWordListType } from './word-actions';
 
-const AUDIO_GAME_STATUS = 'AUDIO_GAME_STATUS';
+const SAVANNA_GAME_STATUS = ' SAVANNA_GAME_STATUS';
 const WORD_USER_ANSWER='WORD_USER_ANSWER';
 const WORD_RIGHT=' WORD_RIGHT';
 const IS_ANSWER_SELECTED='IS_ANSWER_SELECTED';
@@ -19,8 +19,8 @@ const wordRight = (value: CurrentWordListType) => ({
   payload: value,
 });
 
-const audioGameStart = (value: boolean) => ({
-  type: AUDIO_GAME_STATUS,
+const savannaGameStart = (value: boolean) => ({
+  type: SAVANNA_GAME_STATUS,
   payload: value
 })
 
@@ -41,7 +41,7 @@ const currentPlayWords = (value: Array<CurrentWordListType>) => ({
 
 
 
-export type AudioGameStartActionType = {
+export type SavannaGameActionType = {
   type: string;
   payload:
   | number
@@ -53,7 +53,7 @@ export type AudioGameStartActionType = {
 
 
 export { 
-  audioGameStart, AUDIO_GAME_STATUS,
+  savannaGameStart, SAVANNA_GAME_STATUS,
   wordUserAnswer, WORD_USER_ANSWER,
   wordRight, WORD_RIGHT,
   isAnswerSelected, IS_ANSWER_SELECTED,

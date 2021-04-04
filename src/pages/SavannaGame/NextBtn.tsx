@@ -7,7 +7,7 @@ import {
 import { RootStateType } from '../../reducer/root-reducer';
 import Spinner from '../../components/Spinner/Spinner';
 import { WordItem } from '../../components/word-item/word-item-game';
-import styles from './AudioGame.module.css';
+import styles from './SavannaGame.module.css';
 import { mainPath } from '../../utils/constants';
 import { PlayButton } from '../../components/button-icons/playBig-button/playBig-button';
 import { audioGameStart, wordUserAnswer, wordRight, isAnswerSelected, currentPlayWords } from '../../actions/audioGame-actions';
