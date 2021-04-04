@@ -22,7 +22,7 @@ const Balls: React.FC = () => {
     <ul className={styles.balls__wrapper}>
       {ballsArray.slice(0, ballsCounter).map(({ id, src }) => (
         <li key={id} className={styles.ball}>
-          <img src={src} alt="ball-picture" />
+          <img src={src} alt="ball" />
         </li>
       ))}
     </ul>

@@ -7,8 +7,13 @@ export const SPRINT_GAME_SHUFFLED_ARRAY = 'SPRINT_GAME_SHUFFLED_ARRAY';
 export const SPRINT_GAME_RANDOM_ARRAY = 'SPRINT_GAME_RANDOM_ARRAY';
 export const SPRINT_GAME_CHECK_POINTS = 'SPRINT_GAME_CHECK_POINTS';
 export const SPRINT_GAME_BALLS_COUNTER = 'SPRINT_GAME_BALLS_COUNTER';
-export const SPRINT_GAME_LIST_OF_CORRECT_WORDS = 'SPRINT_GAME_LIST_OF_CORRECT_WORDS';
-export const SPRINT_GAME_LIST_OF_INCORRECT_WORDS ='SPRINT_GAME_LIST_OF_INCORRECT_WORDS';
+export const SPRINT_GAME_LIST_OF_CORRECT_WORDS =
+  'SPRINT_GAME_LIST_OF_CORRECT_WORDS';
+export const SPRINT_GAME_LIST_OF_INCORRECT_WORDS =
+  'SPRINT_GAME_LIST_OF_INCORRECT_WORDS';
+export const SPRINT_GAME_LEARNT_WORDS = 'SPRINT_GAME_LEARNT_WORDS';
+export const SPRINT_GAME_NOT_LEARNT_WORDS = 'SPRINT_GAME_NOT_LEARNT_WORDS';
+export const CLEAR_WORDS = 'CLEAR_WORDS';
 
 export type SprintGameStatusChangeActionType = {
   type: string;
@@ -35,27 +40,40 @@ export const sprintGameShuffledArray = (value: CurrentWordListType[]) => ({
   payload: value,
 });
 
-export const sprintGameRandomArray = (value: number[]) =>({
+export const sprintGameRandomArray = (value: number[]) => ({
   type: 'SPRINT_GAME_RANDOM_ARRAY',
   payload: value,
 });
 
-export const sprintGameCheckPoints = (value: number) =>({
+export const sprintGameCheckPoints = (value: number) => ({
   type: 'SPRINT_GAME_CHECK_POINTS',
   payload: value,
-})
+});
 
-export const sprintGameBallsCounter = (value: number) =>({
+export const sprintGameBallsCounter = (value: number) => ({
   type: 'SPRINT_GAME_BALLS_COUNTER',
   payload: value,
-})
+});
 
-export const sprintGameListOfCorrectWords = (value: string) =>({
-  type:'SPRINT_GAME_LIST_OF_CORRECT_WORDS',
+export const sprintGameListOfCorrectWords = (value: string) => ({
+  type: 'SPRINT_GAME_LIST_OF_CORRECT_WORDS',
   payload: value,
-})
+});
 
-export const sprintGameListOfIncorrectWords = (value: string) =>({
+export const sprintGameListOfIncorrectWords = (value: string) => ({
   type: 'SPRINT_GAME_LIST_OF_INCORRECT_WORDS',
   payload: value,
-})
+});
+
+export const sprintGameSetLearntWords = (value: CurrentWordListType) => ({
+  type: 'SPRINT_GAME_LEARNT_WORDS',
+  payload: value,
+});
+export const sprintGameSetNotLearntWords = (value: CurrentWordListType) => ({
+  type: 'SPRINT_GAME_NOT_LEARNT_WORDS',
+  payload: value,
+});
+
+export const clearWords = () => ({
+  type: CLEAR_WORDS,
+});

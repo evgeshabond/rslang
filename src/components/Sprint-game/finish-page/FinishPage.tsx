@@ -1,6 +1,9 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { sprintGameListOfCorrectWords, sprintGameListOfIncorrectWords } from '../../../actions/sprint-game-action';
+import {
+  sprintGameListOfCorrectWords,
+  sprintGameListOfIncorrectWords,
+} from '../../../actions/sprint-game-action';
 import { RootStateType } from '../../../reducer/root-reducer';
 import styles from './finish-page.module.css';
 
@@ -9,42 +12,79 @@ const FinishPage: React.FC = () => {
   const gameStatuses = useSelector(
     (state: RootStateType) => state.sprintGameState
   );
-  const { totalPoints, listOfCorrectWords, listOfIncorrectWords, shuffledArray } = gameStatuses;
+  const { totalPoints, learntWords, notLearntWords } = gameStatuses;
 
-  useEffect(() =>{
+  useEffect(() => {
     dispatch(sprintGameListOfIncorrectWords(''));
     dispatch(sprintGameListOfCorrectWords(''));
-  }, [])
+  }, []);
 
- 
+  const renderCorrectWordsList = () => (
+    <ul>
+      {learntWords.map((elem) => (
+        <li key={elem.id}>
+          {' '}
+          <button type="button" onClick={() => console.log('play')}>
+            p
+          </button>
+          <span>
+            {elem.word}-<span>{elem.wordTranslate}</span>
+          </span>
+        </li>
+      ))}
+    </ul>
+  );
+
+  const renderIncorrectWordList = () => (
+    <ul>
+      {notLearntWords.map((elem) => (
+        <li key={elem.id}>
+          {' '}
+          <button type="button" onClick={() => console.log('play')}>
+            p
+          </button>
+          <span>
+            {elem.word}-<span>{elem.wordTranslate}</span>
+          </span>
+        </li>
+      ))}
+    </ul>
+  );
 
   return (
     <div className={styles['finish-game-wrapper']}>
       <h3>Результаты</h3>
       <div className={styles['result-wrapper']}>
-       <p> Вы набрали <span className={styles['points-number']}> {totalPoints} </span>очков!</p>
-       <p> Это ваш лучший результат! </p>
-       <p>Он на <span className={styles['points-procents']}>100%</span>
-        лучше предыдущего!</p>
+        <p>
+          {' '}
+          Вы набрали{' '}
+          <span className={styles['points-number']}> {totalPoints} </span>очков!
+        </p>
       </div>
       <div className={styles['details-wrapper']}>
         <div className={styles['correct-not-correct']}>
-          <div className={styles.correct}>Правильно: {listOfCorrectWords.length} </div>
-          <div className={styles.incorrect}>Неправильно: {listOfIncorrectWords.length} </div>
+          <div className={styles.correct}>Правильно: {learntWords.length} </div>
+         
         </div>
         <div className={styles['words-wrapper']}>
-          <div className={styles['correct-word-details']}>{}</div>
-          <div className={styles['incorrect-word-details']}>1</div>
+          <div className={styles['correct-word-details']}>
+            {renderCorrectWordsList()}
+          </div>
+          <div className={styles.incorrect}>
+            Неправильно: {notLearntWords.length}{' '}
+          </div>
+          <div className={`${styles['incorrect-word-details']} ${styles['details-wrapper']}`}>
+            {renderIncorrectWordList()}
+          </div>
         </div>
-        </div>
-        <div className={styles['result-buttons']}>
-          <button type="button" className={styles['word-list']}>
-            К списку слов
-          </button>
-          <button type="button" className={styles.repeat}>
-            Повторить
-          </button>
-        
+      </div>
+      <div className={styles['result-buttons']}>
+        <button type="button" className={styles['word-list']}>
+          Назад
+        </button>
+        <button type="button" className={styles.repeat}>
+          Повторить
+        </button>
       </div>
     </div>
   );

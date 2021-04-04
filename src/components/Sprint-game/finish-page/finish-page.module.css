@@ -56,10 +56,11 @@ h3{
     margin-top: 1.5rem;
     margin-bottom: 1rem;
 }
-.correct-not-correct{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+.correct,
+.incorrect{
+
+
+text-align: start;
     font-size: 1.4rem;
     font-weight: 600;
     margin-bottom: 1rem;

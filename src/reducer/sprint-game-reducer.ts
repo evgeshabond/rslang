@@ -7,8 +7,9 @@ import {
   SPRINT_GAME_TOTAL_POINTS,
   SPRINT_GAME_CHECK_POINTS,
   SPRINT_GAME_BALLS_COUNTER,
-  SPRINT_GAME_LIST_OF_CORRECT_WORDS,
-  SPRINT_GAME_LIST_OF_INCORRECT_WORDS,
+  SPRINT_GAME_LEARNT_WORDS,
+  CLEAR_WORDS,
+  SPRINT_GAME_NOT_LEARNT_WORDS,
 } from '../actions/sprint-game-action';
 import { CurrentWordListType } from '../actions/word-actions';
 
@@ -26,9 +27,10 @@ export type SprintGameStateType = {
   checkpoints: number;
   listType: string;
   correct: boolean;
-  listOfCorrectWords: string[];
-  learntWords: CurrentWordListType;
-  listOfIncorrectWords: string[];
+  learntWords: CurrentWordListType[];
+  notLearntWords: CurrentWordListType[];
+ 
+  
 };
 
 const initialState = {
@@ -45,8 +47,9 @@ const initialState = {
   checkpoints: 0,
   listType: '',
   correct: false,
-  listOfCorrectWords: [],
-  listOfIncorrectWords: [],
+  learntWords: [],
+  notLearntWords: [],
+ 
 };
 
 export const sprintGameReducer = (
@@ -68,17 +71,20 @@ export const sprintGameReducer = (
       return { ...state, checkpoints: action.payload };
     case SPRINT_GAME_BALLS_COUNTER:
       return { ...state, ballsCounter: action.payload };
-    case SPRINT_GAME_LIST_OF_CORRECT_WORDS:
-      console.log(state.listOfCorrectWords, 'list');
 
+      case SPRINT_GAME_LEARNT_WORDS:
+        return {
+          ...state, learntWords: [...state.learntWords, action.payload],
+        }  
+        case SPRINT_GAME_NOT_LEARNT_WORDS:
+        return {
+          ...state, notLearntWords: [...state.notLearntWords, action.payload],
+        }
+        case CLEAR_WORDS:
       return {
         ...state,
-        listOfCorrectWords: [...state.listOfCorrectWords, action.payload],
-      };
-    case SPRINT_GAME_LIST_OF_INCORRECT_WORDS:
-      return {
-        ...state,
-        listOfIncorrectWords: [...state.listOfIncorrectWords, action.payload],
+        notLearntWords: [],
+        learntWords: [],
       };
     default:
       return state;

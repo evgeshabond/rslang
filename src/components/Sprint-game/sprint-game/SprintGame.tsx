@@ -4,11 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import styles from './sprint-game.module.css';
 import { RootStateType } from '../../../reducer/root-reducer';
 import {
+  clearWords,
   sprintGameBallsCounter,
   sprintGameCheckPoints,
-  sprintGameListOfCorrectWords,
-  sprintGameListOfIncorrectWords,
   sprintGameRandomArray,
+  sprintGameSetLearntWords,
+  sprintGameSetNotLearntWords,
   sprintGameShuffledArray,
   sprintGameStatusChange,
   sprintGameTotalPoints,
@@ -52,8 +53,6 @@ const SprintGame: React.FC = () => {
     randomArray,
     checkpoints,
     ballsCounter,
-    listOfCorrectWords,
-    listOfIncorrectWords,
   } = gameStatuses;
 
   const [wordCounter, setWordCounter] = useState(0);
@@ -77,6 +76,7 @@ const SprintGame: React.FC = () => {
 
   useEffect(() => {
     dispatch(sprintGameStatusChange('finish'));
+    dispatch(clearWords());
     dispatch(sprintGameTotalPoints(0));
     dispatch(sprintGameBallsCounter(0));
     dispatch(sprintGameCheckPoints(0));
@@ -90,14 +90,12 @@ const SprintGame: React.FC = () => {
     return array;
   };
 
-
-
   useEffect(() => {
     dispatch(
       sprintGameShuffledArray(wordList.slice().sort(() => Math.random() - 0.5))
     );
   }, [wordList]);
-  console.log(shuffledArray, 'shuffled')
+  console.log(shuffledArray, 'shuffled');
 
   const renderTimerPage = () => (
     <div className={`${styles.game__wrapper} ${styles.timer__page}`}>
@@ -110,11 +108,12 @@ const SprintGame: React.FC = () => {
     </div>
   );
 
-
   const changeGameStats = () => {
+    dispatch(sprintGameSetLearntWords(shuffledArray[wordCounter]));
+
     setCorrectAnswer(true);
     playCorrectSound();
-    dispatch(sprintGameListOfCorrectWords(shuffledArray[wordCounter].id));
+    // dispatch(sprintGameListOfCorrectWords(shuffledArray[wordCounter].id));
     dispatch(sprintGameTotalPoints(totalPoints + currentPoints));
     dispatch(sprintGameCheckPoints(checkpoints < 3 ? checkpoints + 1 : 1));
     checkTheEndOfTheGame();
@@ -127,11 +126,11 @@ const SprintGame: React.FC = () => {
   };
 
   const cleanCurrentGameStats = () => {
-    dispatch(sprintGameListOfIncorrectWords(shuffledArray[wordCounter].id));
+    dispatch(sprintGameSetNotLearntWords(shuffledArray[wordCounter]));
     setCorrectAnswer(false);
     playWrongSound();
     dispatch(sprintGameCheckPoints(0));
-    dispatch(sprintGameBallsCounter(0));
+    // dispatch(sprintGameBallsCounter(0));
   };
 
   const checkTheWordRight = () => {
@@ -170,7 +169,7 @@ const SprintGame: React.FC = () => {
     <div className={`${styles.game__wrapper} ${styles.play}`}>
       <div className={styles.sidebar}>
         <div className={styles.watch__wrapper}>
-          <Timer initialTimer={600} nextPage="finish" timerFontSize="1.8rem" />
+          <Timer initialTimer={60} nextPage="finish" timerFontSize="1.8rem" />
           <Timer2 className={styles.timer2} />
         </div>
       </div>
@@ -257,7 +256,7 @@ const SprintGame: React.FC = () => {
         <TitleGamePage
           gameTitle={gameTitle}
           gameDescription={gameDescription}
-          catNumber={2}
+          // catNumber={2}
           buttonClick={() => dispatch(sprintGameStatusChange('timer'))}
         />
       ) : null}

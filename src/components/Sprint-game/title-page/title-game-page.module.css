@@ -18,3 +18,8 @@
   position: absolute;
   right: -100px;
 } 
+.play-button{
+  background-color: transparent;
+  border: none;
+  margin-top: 4rem;
+}
