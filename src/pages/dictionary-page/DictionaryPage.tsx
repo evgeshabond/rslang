@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 //  redux
-import { useDispatch, useSelector } from 'react-redux'
-import clsx from 'clsx'
+import { useDispatch, useSelector } from 'react-redux';
+import clsx from 'clsx';
 
 //  material ui
 import { makeStyles } from '@material-ui/core/styles';
@@ -10,19 +10,24 @@ import Paper from '@material-ui/core/Paper';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Typography } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
+import Modal from '@material-ui/core/Modal';
+import Switch from '@material-ui/core/Switch';
 //  components
-import WordItem from '../../components/BookComponents/WordItem'
+import WordItem from '../../components/BookComponents/WordItem';
 
 //  types
 import { RootStateType } from '../../reducer/root-reducer';
 import { WordStateType } from '../../reducer/word-reducer';
 //  herlpers and services
-import AggregateService from '../../services/word-aggregate-service'
+import AggregateService from '../../services/word-aggregate-service';
 
 //  icons
-import learningIcon from '../../assets/images/learning.svg'
+import learningIcon from '../../assets/images/learning.svg';
 import hardIcon from '../../assets/images/hardWord.svg';
-import deletedIcon from '../../assets/images/delete.svg'
+import deletedIcon from '../../assets/images/delete.svg';
+import gamesIcon from '../../assets/images/games.svg';
+import settingsIcon from '../../assets/images/settings.svg';
+
 // update theme object of material ui
 const primaryColor = '#FDEBFF';
 const secondaryColor = '#5B2467';
@@ -40,13 +45,13 @@ const useStyles = makeStyles({
     paddingTop: '1rem',
     borderRadius: '3rem',
     color: secondaryColor,
-    backgroundColor: primaryColor
+    backgroundColor: primaryColor,
   },
   difficultyContainer: {
     position: 'absolute',
     display: 'flex',
     top: 0,
-    left: 0
+    left: 0,
   },
   difficultyButton: {
     display: 'block',
@@ -55,7 +60,7 @@ const useStyles = makeStyles({
     border: '2px solid transparent',
     borderRadius: '1rem',
     overflow: 'hidden',
-    marginTop: '0.5rem'
+    marginTop: '0.5rem',
   },
   activeButton: {
     border: '2px solid blue',
@@ -64,26 +69,51 @@ const useStyles = makeStyles({
     display: 'inline-block',
     width: '3rem',
     height: '3rem',
-    marginTop: '0.5rem'
+    marginTop: '0.5rem',
   },
   difficultyText: {
     display: 'inline-block',
     textAlign: 'center',
     fontSize: '1.6rem',
     width: '10rem',
-    marginLeft: '1rem'
+    marginLeft: '1rem',
   },
   buttonsContainer: {
     position: 'absolute',
     top: '10px',
-    right: '15px'
+    right: '8rem',
+    display: 'flex',
+  },
+  button: {
+    flexBasis: '3rem',
+    height: '3rem',
+    flexShrink: 0,
+    marginLeft: '1rem',
+    marginBottom: '0.5rem',
+    cursor: 'pointer',
+    backgroundSize: 'contain',
+    backgroundRepeat: 'no-repeat',
+  },
+  buttonGames: {
+    backgroundImage: `url(${gamesIcon})`,
+  },
+  buttonSettings: {
+    backgroundImage: `url(${settingsIcon})`,
+  },
+  modal: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    padding: '2rem',
+    minWidth: '350px',
   },
   container: {
     display: 'flex',
     marginTop: '2rem',
     alignItems: 'center',
     height: '100%',
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   levels: {
     display: 'flex',
@@ -99,11 +129,11 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     cursor: 'pointer',
     border: '2px solid transparent',
-    outline: 'none'
+    outline: 'none',
   },
   levelName: {
     fontSize: '2rem',
-    color: secondaryColor,    
+    color: secondaryColor,
   },
   levelName__a1: {
     backgroundColor: '#61E9FC',
@@ -126,7 +156,7 @@ const useStyles = makeStyles({
     borderRadius: '0px 0px 10px 10px',
   },
   activeLevelName: {
-    border: '2px solid blue'
+    border: '2px solid blue',
   },
   wordList: {
     display: 'flex',
@@ -165,7 +195,6 @@ const useStyles = makeStyles({
     color: 'white',
     backgroundColor: secondaryColor,
     borderRadius: '2rem',
-  
   },
   disabled: {
     color: 'grey',
@@ -178,152 +207,115 @@ const useStyles = makeStyles({
     outline: 'none',
   },
   hidden: {
-    display: 'none'
-  }
-})
+    display: 'none',
+  },
+  helperFlex: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+    alignItems: 'center'
+  },
+});
 
 const DictionaryPage: React.FC = () => {
   const dispatch = useDispatch();
-  const user = useSelector( (state: RootStateType) => state.userState.user);
+  const user = useSelector((state: RootStateType) => state.userState.user);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isWordListLoaded, setIsWordListLoaded] = useState(false);
+  const [settings, setSettings] = useState({
+    showTranslate: true,
+    showButtons: true,
+  });
+  const [modalOpened, setModalOpened] = useState(false);
   const [difficulty, setDifficulty] = useState('hard');
   const [currentGroup, setCurrentGroup] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
-  const [pagesCount, setPagesCount] = useState(1)
+  const [pagesCount, setPagesCount] = useState(1);
   const [currentWordsPerPage, setCurrentWordsPerPage] = useState(20);
-  const [wordsToRender, setWordsToRender] = useState([])
-  const [reRender, setRerender] = useState(true)
+  const [wordsToRender, setWordsToRender] = useState([]);
+  const [reRender, setRerender] = useState(true);
 
-  const service = new AggregateService;
-  const classes = useStyles({group: currentGroup});
+  const service = new AggregateService();
+  const classes = useStyles({ group: currentGroup });
 
   const forseRender = () => {
-    console.log('rerender ran')
-    setRerender(!reRender)
-  }
+    console.log('rerender ran');
+    setRerender(!reRender);
+  };
+
+  const handleGamesButtonClick = () => {
+    console.log('clicked games button');
+  };
+
+  const handleSettingsButtonClick = () => {
+    console.log('clicked settings butto');
+    setModalOpened(true);
+  };
+
+  const handleModalClose = () => {
+    setModalOpened(false);
+  };
 
   const handlePageChange = (data: any) => {
-    console.log('page variable is', data.selected)
+    console.log('page variable is', data.selected);
     setCurrentPage(data.selected);
   };
 
-  // export type AggregateParamsType = {
-  //   userId: string;
-  //   token: string;
-  //   page: number;
-  //   group?: number;
-  //   wordsPerPage: number;
-  // };
-
   type Params = {
-    page: number,
-    group: number,
-    wordsPerPage: number,
-    searchString: string
-  }
+    page: number;
+    group: number;
+    wordsPerPage: number;
+    searchString: string;
+  };
 
-  //  fetch words from backend 
-  const getWords = async ({page, group ,wordsPerPage, searchString}: Params): Promise<Array<Object>> => {
+  //  fetch words from backend
+  const getWords = async ({
+    page,
+    group,
+    wordsPerPage,
+    searchString,
+  }: Params): Promise<Array<Object>> => {
+    setIsWordListLoaded(false);
     const params = {
       userId: user.userId,
       token: user.token,
       page,
       group,
       wordsPerPage,
+    };
+    try {
+      console.log('fetching words inside getwords');
+      const response = await service.getAggregatedWordsList(
+        params,
+        searchString
+      );
+      const newWords: any = await response[0].paginatedResults.flat();
+      const totalCount: number = await response[0]?.totalCount[0]?.count;
+      if (!totalCount || totalCount < 1) setPagesCount(1);
+      else await setPagesCount(Math.ceil(totalCount / currentWordsPerPage));
+      setIsWordListLoaded(true);
+      return newWords;
+    } catch (e) {
+      console.log(e);
     }
-    try{
-      console.log('fetching words inside getwords')
-      const response = await service.getAggregatedWordsList(params, searchString)
-      const newWords: any = await response[0].paginatedResults.flat()
-      const totalCount: number = await response[0]?.totalCount[0]?.count
-      if (!totalCount || totalCount < 1) setPagesCount(1)
-      else await setPagesCount(Math.ceil(totalCount / currentWordsPerPage))      
-      return newWords
-    }
-    catch(e) {
-      console.log(e)
-    }
-    return []
-  }
+    return [];
+  };
 
   //  get words from API depending on difficulty, group, page
   useEffect(() => {
-    getWords({page: currentPage,group: currentGroup,wordsPerPage: currentWordsPerPage, searchString: difficulty})
-      .then( (words: any) => {
-        if (words.length < 1) {
-          setCurrentPage(0)
-
-        }
-        setWordsToRender(words)
-        setIsLoaded(true)
-      })
-  }, [difficulty, currentGroup, currentPage, reRender])
-  
-
-  // // load all words on the load
-  // useEffect(() => {
-  //   const params = {
-  //     userId: user.userId,
-  //     token: user.token,
-  //     page: 0,
-  //     group: 0,
-  //     wordsPerPage: 3600
-  //   }
-  //   dispatch(wordListRequested())
-  //   service.getAggregatedWordsList(params, 'all')
-  //     .then( (data: any) => {
-  //       const newWords: any = data[0].paginatedResults.flat()
-  //       setAllWords(newWords)
-  //       setIsLoaded(true)
-  //     })
-  //     .catch( (e: any) => console.log(e))
-  // },[])
-
-  // //  load words depending on difficulty and group
-  // useEffect(() => {
-  //   const params = {
-  //     userId: user.userId,
-  //     token: user.token,
-  //     page: 0,
-  //     group: 0,
-  //     wordsPerPage: 3600
-  //   }
-  //   console.log('before sending request')
-  //   dispatch(wordListRequested())
-  //   service.getAggregatedWordsList(params, difficulty)
-  //     .then( (data: any) => {
-  //       const newWords: any = data[0].paginatedResults.flat()
-  //       const newCount: any = data[0]?.totalCount[0]?.count
-  //       const filteredWords = newWords.filter((item: any, index: number) => {
-  //         if (item.group !== currentGroup) return false
-  //         return true
-  //       })
-  //       setPaginatedWords(filteredWords)
-  //     })
-  //     .catch( (e: any) => console.log(e))
-  // }, [difficulty, currentGroup])
-
-  // //  depending on paginated words and page of dictionary update currentWordList
-  // useEffect(() => {
-  //   console.log('paginatedWords useEffect')
-  //   if (paginatedWords.length < 1) {
-  //     console.log('there is no pagnated words')
-  //     return
-  //   }
-  //   console.log(paginatedWords)
-  //   const pagesCount = Math.ceil(paginatedWords.length / currentWordsPerPage)
-  //   console.log('pagesCount is ', pagesCount)
-  //   const startIndex = ( (currentPage + 1 * 20) - 20)
-  //   const endIndex = ( (currentPage + 1 * 20) - 1)
-  //   const wordsListPage = paginatedWords.filter((item, index) => {
-  //     if (index < startIndex) return false
-  //     if (index > endIndex) return false
-  //     return true
-  //   })
-  //   console.log('this is wordslistpage on page ', currentPage+1)
-  //   console.log(wordsListPage)
-  //   dispatch(wordListLoaded(wordsListPage))
-  // }, [paginatedWords, currentGroup, currentWordsPerPage])
+    getWords({
+      page: currentPage,
+      group: currentGroup,
+      wordsPerPage: currentWordsPerPage,
+      searchString: difficulty,
+    }).then((words: any) => {
+      if (words.length < 1) {
+        setCurrentPage(0);
+      }
+      setWordsToRender(words);
+      setIsLoaded(true);
+    });
+  }, [difficulty, currentGroup, currentPage, reRender]);
 
   const handleGroupChange = (
     e: React.MouseEvent<HTMLSpanElement, MouseEvent>
@@ -351,7 +343,7 @@ const DictionaryPage: React.FC = () => {
     }
   };
 
-  if (!isLoaded) return (<CircularProgress />)
+  if (!isLoaded) return <CircularProgress />;
   return (
     <Paper className={classes.root}>
       <span className={classes.hidden}>{currentPage}</span>
@@ -359,10 +351,13 @@ const DictionaryPage: React.FC = () => {
         Словарь
       </Typography>
       <Box className={classes.difficultyContainer}>
-        <div 
-        className={clsx({[classes.difficultyButton]: true, [classes.activeButton]: difficulty === 'learning'})}
-        onClick={() => setDifficulty('learning')}
-        aria-hidden={true}
+        <div
+          className={clsx({
+            [classes.difficultyButton]: true,
+            [classes.activeButton]: difficulty === 'all',
+          })}
+          onClick={() => setDifficulty('all')}
+          aria-hidden={true}
         >
           <img
             className={classes.difficultyIcon}
@@ -372,10 +367,13 @@ const DictionaryPage: React.FC = () => {
           />
           <div className={classes.difficultyText}>Изучаемые слова</div>
         </div>
-        <div 
-        className={clsx({[classes.difficultyButton]: true, [classes.activeButton]: difficulty === 'hard'})}
-        onClick={() => setDifficulty('hard')}
-        aria-hidden={true}
+        <div
+          className={clsx({
+            [classes.difficultyButton]: true,
+            [classes.activeButton]: difficulty === 'hard',
+          })}
+          onClick={() => setDifficulty('hard')}
+          aria-hidden={true}
         >
           <img
             className={classes.difficultyIcon}
@@ -385,10 +383,13 @@ const DictionaryPage: React.FC = () => {
           />
           <div className={classes.difficultyText}>Сложные слова</div>
         </div>
-        <div 
-        className={clsx({[classes.difficultyButton]: true, [classes.activeButton]: difficulty === 'deleted'})}
-        onClick={() => setDifficulty('deleted')}
-        aria-hidden={true}
+        <div
+          className={clsx({
+            [classes.difficultyButton]: true,
+            [classes.activeButton]: difficulty === 'deleted',
+          })}
+          onClick={() => setDifficulty('deleted')}
+          aria-hidden={true}
         >
           <img
             className={classes.difficultyIcon}
@@ -397,11 +398,65 @@ const DictionaryPage: React.FC = () => {
             aria-hidden="true"
           />
           <div className={classes.difficultyText}>Удаленные слова</div>
-        </div>        
+        </div>
       </Box>
-      <Box className={classes.buttonsContainer}>Buttons</Box>
+      <Box className={classes.buttonsContainer}>
+        <div
+          className={clsx(classes.button, classes.buttonGames)}
+          onClick={() => handleGamesButtonClick()}
+          aria-hidden={true}
+        />
+        <div
+          className={clsx(classes.button, classes.buttonSettings)}
+          onClick={() => handleSettingsButtonClick()}
+          aria-hidden={true}
+        />
+      </Box>
+      <Modal
+        open={modalOpened}
+        onClose={handleModalClose}
+        aria-labelledby="settings-modal"
+        aria-describedby="settings-modal"
+      >
+        <Paper className={classes.modal}>
+          <p className={classes.helperFlex}>
+            <Typography align="left" variant="h4" component="span">
+              Показывать перевод
+            </Typography>
+            <div>
+              <Switch
+                checked={settings.showTranslate}
+                color='secondary'
+                onChange={() => {
+                  setSettings({
+                    ...settings,
+                    showTranslate: !settings.showTranslate,
+                  });
+                }}
+              />
+            </div>
+          </p>
+          <p className={classes.helperFlex}>
+            <Typography align="left" variant="h4" component="span">
+              Показывать кнопки
+            </Typography>
+            <div>
+              <Switch
+                checked={settings.showButtons}
+                color='secondary'
+                onChange={() => {
+                  setSettings({
+                    ...settings,
+                    showButtons: !settings.showButtons,
+                  });
+                }}
+              />
+            </div>
+          </p>
+        </Paper>
+      </Modal>
       <div className={classes.container}>
-      <Box className={classes.levels} role="menu">
+        <Box className={classes.levels} role="menu">
           <div
             className={clsx({
               [classes.level]: true,
@@ -482,9 +537,17 @@ const DictionaryPage: React.FC = () => {
           </div>
         </Box>
         <div className={classes.wordList}>
-          {wordsToRender.length > 0 && 
-            wordsToRender.map( (item: any, index) => (<WordItem word={item} group={currentGroup} key={item.word} forseFetch={() => forseRender()} />) )
-          }
+          {isWordListLoaded &&
+            wordsToRender.length > 0 &&
+            wordsToRender.map((item: any, index) => (
+              <WordItem
+                word={item}
+                group={currentGroup}
+                key={item.word}
+                forseFetch={() => forseRender()}
+                settings={settings}
+              />
+            ))}
         </div>
       </div>
       <ReactPaginate
@@ -505,7 +568,7 @@ const DictionaryPage: React.FC = () => {
         <span className={classes.hidden}>{currentPage}</span>
       </ReactPaginate>
     </Paper>
-  )
-}
+  );
+};
 
-export default DictionaryPage
+export default DictionaryPage;

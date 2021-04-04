@@ -30,6 +30,7 @@ type Params = {
 const useStyles = makeStyles({
   wordContainer: {
     display: 'flex',
+    minHeight: '10rem',
     width: '95%',
     padding: 0,
     margin: 0,
@@ -115,7 +116,6 @@ const useStyles = makeStyles({
     marginLeft: '1rem',
     marginBottom: '0.5rem',
     cursor: 'pointer',
-    backgroundImage: `url(${hardIcon})`,
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
   },
@@ -169,9 +169,13 @@ type Props = {
   word: any;
   group: number;
   forseFetch: any;
+  settings: {
+    showTranslate: boolean,
+    showButtons: boolean
+  }
 };
 
-const WordItem: React.FC<Props> = ({ word, group, forseFetch }) => {
+const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
   const service = new UserWordsService();
   const user = useSelector((state: RootStateType) => state.userState.user);
   const classes = useStyles({ group, word });
@@ -190,34 +194,22 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch }) => {
       },
       /* eslint-enable */
     };
-    if (word?.userWord) {
-      console.log('updating word');
-      //  update word
-      try {
-        const response = await service.updateWord(params, {
-          difficulty: 'hard',
-          optional: {
-            learning: true,
-          },
-        });
-      } catch (e) {
-        console.log(e);
-      }
-      forseFetch();
-      return;
-    }
-    //  create word
-    console.log('creating word');
     try {
-      const response = await service.addWord(params);
-    } catch (e) {
-      console.log(e);
+      const response = await service.updateWord(params,{
+        difficulty: 'hard',
+        optional: {
+          learning: true
+        }      
+      })
+      console.log(response)
     }
+    catch(e) {
+      console.log(e)
+    }    
     forseFetch();
   };
 
   const deleteItem = async () => {
-    console.log('ran delete item');
     const params = {
       /* eslint-disable */
       userId: user.userId,
@@ -231,34 +223,22 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch }) => {
       },
       /* eslint-enable */
     };
-    console.log('wordid is ', params.wordId)
-    const response = await service.updateWord({
-      userId: user.userId,
-      wordId: user.userId,
-      token: user.token
-    }, {
-          difficulty: 'deleted',
-          optional: {
-            learning: true,
-          },
-        });
-    console.log(response)    
-
-    // try {
-    //   const response = await service.updateWord(params, {
-    //     difficulty: 'deleted',
-    //     optional: {
-    //       learning: true,
-    //     },
-    //   });
-    //   console.log(response);
-    // } catch (e) {
-    //   console.log(e);
-    // }
+    try {
+      const response = await service.updateWord(params,{
+        difficulty: 'deleted',
+        optional: {
+          learning: false
+        }      
+      })
+      console.log(response)
+    }
+    catch(e) {
+      console.log(e)
+    }    
+    forseFetch();
   };
 
   const returnItem = async () => {
-    console.log('ran return item');
     const params = {
       /* eslint-disable */
       userId: user.userId,
@@ -272,32 +252,19 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch }) => {
       },
       /* eslint-enable */
     };
-    // if (word?.userWord) {
-    //   console.log('updating word')
-    //   //  update word
-    //   try{
-    //     const response = await service.updateWord(params, {
-    //       difficulty: 'easy',
-    //       optional: {
-    //         learning: true
-    //       }
-    //     })
-    //   }
-    //   catch(e) {
-    //     console.log(e)
-    //   }
-    //   forseFetch()
-    //   return
-    // }
-    // //  create word
-    // console.log('creating word')
-    // try{
-    //   const response = await service.addWord(params)
-    // }
-    // catch(e) {
-    //   console.log(e)
-    // }
-    // forseFetch()
+    try {
+      const response = await service.updateWord(params,{
+        difficulty: 'easy',
+        optional: {
+          learning: true
+        }      
+      })
+      console.log(response)
+    }
+    catch(e) {
+      console.log(e)
+    }    
+    forseFetch();
   };
 
   return (
@@ -333,6 +300,7 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch }) => {
           </div>
         </div>
         <div className={classes.textContainer}>
+          {settings.showTranslate && (<>
           <div>
             <Typography align="left" variant="h4" component="span">
               {word.wordTranslate}
@@ -346,11 +314,12 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch }) => {
               {word.textExampleTranslate}
             </Typography>
           </div>
+          </>)}
         </div>
       </div>
 
       <div className={classes.infoContainer}>
-        <div className={classes.buttonsBox}>
+        {settings.showButtons && (<div className={classes.buttonsBox}>
           <div
             className={clsx(classes.button, classes.buttonHard)}
             onClick={() => addItemToHard()}
@@ -367,7 +336,7 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch }) => {
             aria-hidden={true}
           />
           {/* className={clsx({[classes.difficultyButton]: true, [classes.activeButton]: difficulty === 'all'})} */}
-        </div>
+        </div>)}
         <div className={classes.statsBox}>StatsBox</div>
       </div>
 
