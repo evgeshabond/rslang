@@ -15,8 +15,8 @@ const EbookPage: React.FC = () => {
   return (
     <div className={styles['ebook-container']}>
       <div className={styles['ebook-buttons-container']}>
-        <LinkButton link={mainPath.ebookPage} buttonName="Изучение" />
-        <LinkButton link={mainPath.ebookPage} buttonName="Словарь" />
+        <LinkButton link={mainPath.learnPage} buttonName="Изучение" />
+        <LinkButton link={mainPath.dictionaryPage} buttonName="Словарь" />
       </div>
       <div className={styles['ebook-buttons-container']}>
         <div onClick={clearQuizParam} aria-hidden="true">
