@@ -11,7 +11,7 @@ import { Typography } from '@material-ui/core';
 import { CurrentWordListType } from '../../actions/word-actions';
 import { RootStateType } from '../../reducer/root-reducer';
 import { addUserWord, userWordDeleted, getUserWordList } from '../../actions/user-words-action'
-import { getAggregatedWordsList } from '../../actions/aggregated-word-action';
+import UserWordsService from '../../services/user-words-service';
 
 //  icons
 import deleteIcon from '../../assets/images/delete.svg';

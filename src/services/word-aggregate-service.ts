@@ -68,6 +68,10 @@ export default class AggregateService {
           '{"$or":[{"userWord.difficulty":"hard"}, {"userWord.optional.learning":true}]}';
 
         break;
+      case 'learning': 
+        filter = 
+          '{"userWord.optional.learning":true}';  
+        break;  
       default:
         break;
     }

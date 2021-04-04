@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import ReactPaginate from 'react-paginate';
+//  redux
+import { useDispatch, useSelector } from 'react-redux'
 import clsx from 'clsx'
 
 //  material ui
@@ -7,14 +10,12 @@ import Paper from '@material-ui/core/Paper';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Typography } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
-
-//  redux
-import { useDispatch, useSelector } from 'react-redux'
+//  components
+import WordItem from '../../components/BookComponents/WordItem'
 
 //  types
 import { RootStateType } from '../../reducer/root-reducer';
 import { WordStateType } from '../../reducer/word-reducer';
-
 //  herlpers and services
 import AggregateService from '../../services/word-aggregate-service'
 
@@ -22,7 +23,6 @@ import AggregateService from '../../services/word-aggregate-service'
 import learningIcon from '../../assets/images/learning.svg'
 import hardIcon from '../../assets/images/hardWord.svg';
 import deletedIcon from '../../assets/images/delete.svg'
-
 // update theme object of material ui
 const primaryColor = '#FDEBFF';
 const secondaryColor = '#5B2467';
@@ -128,20 +128,84 @@ const useStyles = makeStyles({
   activeLevelName: {
     border: '2px solid blue'
   },
+  wordList: {
+    display: 'flex',
+    flexDirection: 'column',
+    // alignSelf: 'flex-start',
+    marginTop: '1rem',
+    width: '90%',
+    maxWidth: '1150px',
+    maxHeight: '60vh',
+    margin: '1rem',
+    overflowY: 'scroll',
+    willChange: 'transform',
+  },
+  pagination: {
+    height: '70px',
+    width: '600px',
+    margin: '1rem auto',
+    marginBottom: '3rem',
+    fontSize: '2rem',
+    listStyle: 'none',
+
+    '& li': {
+      display: 'inline-block',
+      marginLeft: '0.5rem',
+    },
+
+    '& a': {
+      width: '3rem',
+      height: '3rem',
+      cursor: 'pointer',
+      paddingLeft: '0.9rem',
+      paddingRight: '1rem',
+    },
+  },
+  activePage: {
+    color: 'white',
+    backgroundColor: secondaryColor,
+    borderRadius: '2rem',
+  
+  },
+  disabled: {
+    color: 'grey',
+
+    '& a': {
+      display: 'none',
+    },
+  },
+  activeLink: {
+    outline: 'none',
+  },
+  hidden: {
+    display: 'none'
+  }
 })
 
 const DictionaryPage: React.FC = () => {
-  const user = useSelector( (state: RootStateType) => state.userState.user)
-  const classes = useStyles();
-  const [isLoaded, setIsLoaded] = useState(false)
-  const [difficulty, setDifficulty] = useState('hard')
-  const [group, setGroup] = useState(0);
-  const currentState = useSelector( (state: RootStateType) => state)
-  const [allWords, setAllWords] = useState([])
-  const [allWordsCount, setAllWordsCount] = useState(0)
+  const dispatch = useDispatch();
+  const user = useSelector( (state: RootStateType) => state.userState.user);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [difficulty, setDifficulty] = useState('hard');
+  const [currentGroup, setCurrentGroup] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pagesCount, setPagesCount] = useState(1)
+  const [currentWordsPerPage, setCurrentWordsPerPage] = useState(20);
   const [wordsToRender, setWordsToRender] = useState([])
-  console.log(difficulty)
+  const [reRender, setRerender] = useState(true)
+
   const service = new AggregateService;
+  const classes = useStyles({group: currentGroup});
+
+  const forseRender = () => {
+    console.log('rerender ran')
+    setRerender(!reRender)
+  }
+
+  const handlePageChange = (data: any) => {
+    console.log('page variable is', data.selected)
+    setCurrentPage(data.selected);
+  };
 
   // export type AggregateParamsType = {
   //   userId: string;
@@ -151,32 +215,115 @@ const DictionaryPage: React.FC = () => {
   //   wordsPerPage: number;
   // };
 
+  type Params = {
+    page: number,
+    group: number,
+    wordsPerPage: number,
+    searchString: string
+  }
 
-  useEffect(() => {
+  //  fetch words from backend 
+  const getWords = async ({page, group ,wordsPerPage, searchString}: Params): Promise<Array<Object>> => {
     const params = {
       userId: user.userId,
       token: user.token,
-      page: 0,
+      page,
       group,
-      wordsPerPage: 3600
+      wordsPerPage,
     }
-    console.log('before sending request')
-    service.getAggregatedWordsList(params, 'all')
-      .then( (data: any) => {
-        const newWords: any = data[0].paginatedResults.flat()
-        const newCount: any = data[0]?.totalCount[0]?.count
-        if (newWords.length === allWords.length || newCount === allWordsCount) return
-        setAllWords(newWords)
-        setAllWordsCount(newCount)
+    try{
+      console.log('fetching words inside getwords')
+      const response = await service.getAggregatedWordsList(params, searchString)
+      const newWords: any = await response[0].paginatedResults.flat()
+      const totalCount: number = await response[0]?.totalCount[0]?.count
+      if (!totalCount || totalCount < 1) setPagesCount(1)
+      else await setPagesCount(Math.ceil(totalCount / currentWordsPerPage))      
+      return newWords
+    }
+    catch(e) {
+      console.log(e)
+    }
+    return []
+  }
+
+  //  get words from API depending on difficulty, group, page
+  useEffect(() => {
+    getWords({page: currentPage,group: currentGroup,wordsPerPage: currentWordsPerPage, searchString: difficulty})
+      .then( (words: any) => {
+        if (words.length < 1) {
+          setCurrentPage(0)
+
+        }
+        setWordsToRender(words)
         setIsLoaded(true)
       })
-      .catch( (e: any) => console.log(e))
-  }, [difficulty, group])
+  }, [difficulty, currentGroup, currentPage, reRender])
+  
 
-  useEffect(() => {
-    console.log('words or count changed')
-    console.log(allWords)
-  }, [allWords, allWordsCount])
+  // // load all words on the load
+  // useEffect(() => {
+  //   const params = {
+  //     userId: user.userId,
+  //     token: user.token,
+  //     page: 0,
+  //     group: 0,
+  //     wordsPerPage: 3600
+  //   }
+  //   dispatch(wordListRequested())
+  //   service.getAggregatedWordsList(params, 'all')
+  //     .then( (data: any) => {
+  //       const newWords: any = data[0].paginatedResults.flat()
+  //       setAllWords(newWords)
+  //       setIsLoaded(true)
+  //     })
+  //     .catch( (e: any) => console.log(e))
+  // },[])
+
+  // //  load words depending on difficulty and group
+  // useEffect(() => {
+  //   const params = {
+  //     userId: user.userId,
+  //     token: user.token,
+  //     page: 0,
+  //     group: 0,
+  //     wordsPerPage: 3600
+  //   }
+  //   console.log('before sending request')
+  //   dispatch(wordListRequested())
+  //   service.getAggregatedWordsList(params, difficulty)
+  //     .then( (data: any) => {
+  //       const newWords: any = data[0].paginatedResults.flat()
+  //       const newCount: any = data[0]?.totalCount[0]?.count
+  //       const filteredWords = newWords.filter((item: any, index: number) => {
+  //         if (item.group !== currentGroup) return false
+  //         return true
+  //       })
+  //       setPaginatedWords(filteredWords)
+  //     })
+  //     .catch( (e: any) => console.log(e))
+  // }, [difficulty, currentGroup])
+
+  // //  depending on paginated words and page of dictionary update currentWordList
+  // useEffect(() => {
+  //   console.log('paginatedWords useEffect')
+  //   if (paginatedWords.length < 1) {
+  //     console.log('there is no pagnated words')
+  //     return
+  //   }
+  //   console.log(paginatedWords)
+  //   const pagesCount = Math.ceil(paginatedWords.length / currentWordsPerPage)
+  //   console.log('pagesCount is ', pagesCount)
+  //   const startIndex = ( (currentPage + 1 * 20) - 20)
+  //   const endIndex = ( (currentPage + 1 * 20) - 1)
+  //   const wordsListPage = paginatedWords.filter((item, index) => {
+  //     if (index < startIndex) return false
+  //     if (index > endIndex) return false
+  //     return true
+  //   })
+  //   console.log('this is wordslistpage on page ', currentPage+1)
+  //   console.log(wordsListPage)
+  //   dispatch(wordListLoaded(wordsListPage))
+  // }, [paginatedWords, currentGroup, currentWordsPerPage])
 
   const handleGroupChange = (
     e: React.MouseEvent<HTMLSpanElement, MouseEvent>
@@ -185,28 +332,29 @@ const DictionaryPage: React.FC = () => {
     console.log(target.textContent);
     switch (target.textContent) {
       case 'A1':
-        setGroup(0);
+        setCurrentGroup(0);
         break;
       case 'A2':
-        setGroup(1);
+        setCurrentGroup(1);
         break;
       case 'A2+':
-        setGroup(2);
+        setCurrentGroup(2);
         break;
       case 'B1':
-        setGroup(3);
+        setCurrentGroup(3);
         break;
       case 'B2':
-        setGroup(4);
+        setCurrentGroup(4);
         break;
       case 'B2+':
-        setGroup(5);
+        setCurrentGroup(5);
     }
   };
 
   if (!isLoaded) return (<CircularProgress />)
   return (
     <Paper className={classes.root}>
+      <span className={classes.hidden}>{currentPage}</span>
       <Typography variant="h4" component="h3">
         Словарь
       </Typography>
@@ -258,7 +406,7 @@ const DictionaryPage: React.FC = () => {
             className={clsx({
               [classes.level]: true,
               [classes.levelName__a1]: true,
-              [classes.activeLevelName]: group === 0,
+              [classes.activeLevelName]: currentGroup === 0,
             })}
             role="button"
             tabIndex={0}
@@ -271,7 +419,7 @@ const DictionaryPage: React.FC = () => {
             className={clsx({
               [classes.level]: true,
               [classes.levelName__a2]: true,
-              [classes.activeLevelName]: group === 1,
+              [classes.activeLevelName]: currentGroup === 1,
             })}
             role="button"
             tabIndex={0}
@@ -284,7 +432,7 @@ const DictionaryPage: React.FC = () => {
             className={clsx({
               [classes.level]: true,
               [classes.levelName__a2plus]: true,
-              [classes.activeLevelName]: group === 2,
+              [classes.activeLevelName]: currentGroup === 2,
             })}
             role="button"
             tabIndex={0}
@@ -297,7 +445,7 @@ const DictionaryPage: React.FC = () => {
             className={clsx({
               [classes.level]: true,
               [classes.levelName__b1]: true,
-              [classes.activeLevelName]: group === 3,
+              [classes.activeLevelName]: currentGroup === 3,
             })}
             role="button"
             tabIndex={0}
@@ -310,7 +458,7 @@ const DictionaryPage: React.FC = () => {
             className={clsx({
               [classes.level]: true,
               [classes.levelName__b2]: true,
-              [classes.activeLevelName]: group === 4,
+              [classes.activeLevelName]: currentGroup === 4,
             })}
             role="button"
             tabIndex={0}
@@ -323,7 +471,7 @@ const DictionaryPage: React.FC = () => {
             className={clsx({
               [classes.level]: true,
               [classes.levelName__b2plus]: true,
-              [classes.activeLevelName]: group === 5,
+              [classes.activeLevelName]: currentGroup === 5,
             })}
             role="button"
             tabIndex={0}
@@ -333,8 +481,29 @@ const DictionaryPage: React.FC = () => {
             <span className={classes.levelName}>B2+</span>
           </div>
         </Box>
-        <div>Words</div>
+        <div className={classes.wordList}>
+          {wordsToRender.length > 0 && 
+            wordsToRender.map( (item: any, index) => (<WordItem word={item} group={currentGroup} key={item.word} forseFetch={() => forseRender()} />) )
+          }
+        </div>
       </div>
+      <ReactPaginate
+        previousLabel="<"
+        nextLabel=">"
+        breakLabel="..."
+        breakClassName="breakMe"
+        pageCount={pagesCount}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={5}
+        onPageChange={handlePageChange}
+        containerClassName={classes.pagination}
+        activeClassName={classes.activePage}
+        initialPage={currentPage}
+        disabledClassName={classes.disabled}
+        activeLinkClassName={classes.activeLink}
+      >
+        <span className={classes.hidden}>{currentPage}</span>
+      </ReactPaginate>
     </Paper>
   )
 }
