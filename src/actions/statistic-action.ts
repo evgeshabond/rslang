@@ -19,6 +19,11 @@ export const gameStatUpdate = (value: AllGameStatisticType) => ({
   payload: value,
 });
 
+// export const gameDateStatUpdate = (value: AllGameStatisticType) => ({
+//   type: GAME_STAT_UPDATE,
+//   payload: value,
+// });
+
 export const clearAllStatistic = () => ({
   type: CLEAR_ALL_STATISTIC,
 });
@@ -59,13 +64,35 @@ export const setStatistics = (params: {
   services
     .setStatistic(params)
     .then((data) => {
-      console.log(data);
       if (data.error) {
         dispatch(
           statisticError('ваша сессия истекла пожалуйста авторизуйтесь заново')
         );
       } else {
         dispatch(gameStatUpdate(data.optional.gameStatistic));
+      }
+    })
+    .catch((err) => {
+      console.error('fetch err action user', err);
+      dispatch(statisticError('проблема с доступом к серверу'));
+    });
+};
+
+export const getDateStatistic = (params: {
+  userId: string;
+  token: string;
+  gameType: string;
+}) => (dispatch: Dispatch<GameStatActionType>) => {
+  services
+    .getDateStatistic(params)
+    .then((data) => {
+      console.log('date stat res', data);
+      if (data.error) {
+        dispatch(
+          statisticError('ваша сессия истекла пожалуйста авторизуйтесь заново')
+        );
+      } else {
+        // dispatch(gameStatUpdate(data.optional.gameStatistic));
       }
     })
     .catch((err) => {

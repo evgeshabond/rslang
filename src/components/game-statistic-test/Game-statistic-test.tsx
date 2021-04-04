@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAggregatedWordsList } from '../../actions/aggregated-word-action';
-import { setStatistics } from '../../actions/statistic-action';
+import { getDateStatistic } from '../../actions/statistic-action';
 import {
   addUserWord,
   getUserWord,
@@ -42,15 +42,9 @@ export const GameTest: React.FC = () => {
       userId: user.userId,
       token: user.token,
       gameType: gameType.savanna,
-      body: {
-        date: Date.now(),
-        level: user.level,
-        know: 5,
-        dont_know: 2,
-      },
     };
 
-    dispatch(setStatistics(param));
+    dispatch(getDateStatistic(param));
   };
 
   const addwordToState = () => {
@@ -274,7 +268,7 @@ export const GameTest: React.FC = () => {
   const renderSprintStatistic = () => {
     if (gameStatistic.sprint) {
       return gameStatistic.sprint.total.map((item) => (
-        <div key={item.date}>
+        <div key={item.date.toString()}>
           <div>{item.know}</div>
           <div>{item.dont_know}</div>
         </div>

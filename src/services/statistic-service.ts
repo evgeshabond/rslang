@@ -1,15 +1,18 @@
-import { serverUrl, serverUrlLocal } from '../utils/constants';
+import { serverUrlLocal, serverUrl } from '../utils/constants';
 import { GameStatistic } from '../reducer/statistic-state-types';
 
 export default class StatisticService {
   getStatistic = async (params: { userId: string; token: string }) => {
-    const res = await fetch(`${serverUrl}users/${params.userId}/statistics`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${params.token}`,
-        Accept: 'application/json',
-      },
-    });
+    const res = await fetch(
+      `${serverUrlLocal}users/${params.userId}/statistics`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${params.token}`,
+          Accept: 'application/json',
+        },
+      }
+    );
     const data = await res.json();
     return data;
   };
@@ -30,7 +33,7 @@ export default class StatisticService {
       },
     };
     const res = await fetch(
-      `${serverUrl}users/${params.userId}/statistics/gameadd/${params.gameType}`,
+      `${serverUrlLocal}users/${params.userId}/statistics/gameadd/${params.gameType}`,
       {
         method: 'PUT',
         headers: {
@@ -39,6 +42,35 @@ export default class StatisticService {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(body),
+      }
+    );
+
+    if (res.status === 401) {
+      return {
+        error: {
+          errors: [{ message: 'Пользователь не найден' }],
+        },
+      };
+    }
+    const data = await res.json();
+    return data;
+  };
+
+  getDateStatistic = async (params: {
+    userId: string;
+    token: string;
+    gameType: string;
+  }) => {
+    const date = new Date();
+    const res = await fetch(
+      `${serverUrlLocal}users/${params.userId}/statistics/gamedata/${params.gameType}/date/${date}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${params.token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
       }
     );
 

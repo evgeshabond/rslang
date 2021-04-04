@@ -1,6 +1,6 @@
 export type GameStatistic = {
   _id?: string;
-  date: number;
+  date: Date;
   level: string;
   know: number;
   dont_know: number;

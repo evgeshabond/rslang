@@ -43,7 +43,7 @@ export const BottomBlock: React.FC = () => {
       token: user.token,
       gameType: gameType.constructors,
       body: {
-        date: Date.now(),
+        date: new Date(),
         level: user.level,
         know: learned,
         dont_know: dontKnow,
