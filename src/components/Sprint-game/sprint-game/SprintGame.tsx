@@ -2,33 +2,35 @@ import React, { useEffect, useState } from 'react';
 import useSound from 'use-sound';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './sprint-game.module.css';
-import { RootStateType } from '../../reducer/root-reducer';
+import { RootStateType } from '../../../reducer/root-reducer';
 import {
   sprintGameBallsCounter,
   sprintGameCheckPoints,
+  sprintGameListOfCorrectWords,
+  sprintGameListOfIncorrectWords,
   sprintGameRandomArray,
   sprintGameShuffledArray,
   sprintGameStatusChange,
   sprintGameTotalPoints,
-} from '../../actions/sprint-game-action';
-import { Timer } from './Timer';
-import { TitleGamePage } from './TitleGamePage';
-import { ReactComponent as Cat } from '../../assets/images/cat2.svg';
-import { ReactComponent as Timer1 } from '../../assets/images/timer1.svg';
-import { ReactComponent as Timer2 } from '../../assets/images/timer2.svg';
-import banner from '../../assets/images/sprint-top.png';
-import { fetchWordsList } from '../../actions/word-actions';
-import Balls from './Balls';
-import CheckPoints from './CheckPoints';
-import correctSound from '../../assets/sounds/src_music_correct.mp3';
-import wrongSound from '../../assets/sounds/src_music_wrong.wav';
-import countDown from '../../assets/sounds/countDown.wav';
-import correctImage from '../../assets/images/correct.svg';
-import inCorrectImage from '../../assets/images/incorrect.svg';
-import refreshIcon from '../../assets/images/refreshing.svg';
-import closeIcon from '../../assets/images/close.svg';
-
-import questionIcon from '../../assets/images/question.svg';
+} from '../../../actions/sprint-game-action';
+import { TitleGamePage } from '../title-page/TitleGamePage';
+import { ReactComponent as Cat } from '../../../assets/images/cat2.svg';
+import { ReactComponent as Timer1 } from '../../../assets/images/timer1.svg';
+import { ReactComponent as Timer2 } from '../../../assets/images/timer2.svg';
+import banner from '../../../assets/images/sprint-top.png';
+import { fetchWordsList } from '../../../actions/word-actions';
+import Balls from '../balls/Balls';
+import CheckPoints from '../check-points/CheckPoints';
+import correctSound from '../../../assets/sounds/src_music_correct.mp3';
+import wrongSound from '../../../assets/sounds/src_music_wrong.wav';
+import countDown from '../../../assets/sounds/countDown.wav';
+import correctImage from '../../../assets/images/correct.svg';
+import inCorrectImage from '../../../assets/images/incorrect.svg';
+import refreshIcon from '../../../assets/images/refreshing.svg';
+import closeIcon from '../../../assets/images/close.svg';
+import questionIcon from '../../../assets/images/question.svg';
+import FinishPage from '../finish-page/FinishPage';
+import { Timer } from '../timer/Timer';
 
 const SprintGame: React.FC = () => {
   const dispatch = useDispatch();
@@ -50,6 +52,8 @@ const SprintGame: React.FC = () => {
     randomArray,
     checkpoints,
     ballsCounter,
+    listOfCorrectWords,
+    listOfIncorrectWords,
   } = gameStatuses;
 
   const [wordCounter, setWordCounter] = useState(0);
@@ -62,8 +66,17 @@ const SprintGame: React.FC = () => {
   });
   const [playWrongSound] = useSound(wrongSound, { interrupt: true });
 
+  console.log(wordList);
+
   useEffect(() => {
-    dispatch(sprintGameStatusChange('play'));
+    if (wordList.length === 0) {
+      dispatch(fetchWordsList({ page: 0, group: 0 }));
+    }
+    dispatch(sprintGameRandomArray(createRandomArray()));
+  }, []);
+
+  useEffect(() => {
+    dispatch(sprintGameStatusChange('finish'));
     dispatch(sprintGameTotalPoints(0));
     dispatch(sprintGameBallsCounter(0));
     dispatch(sprintGameCheckPoints(0));
@@ -77,18 +90,14 @@ const SprintGame: React.FC = () => {
     return array;
   };
 
-  useEffect(() => {
-    if (wordList.length === 0) {
-      dispatch(fetchWordsList({ page: 0, group: 0 }));
-    }
-    dispatch(sprintGameRandomArray(createRandomArray()));
-  }, []);
+
 
   useEffect(() => {
     dispatch(
       sprintGameShuffledArray(wordList.slice().sort(() => Math.random() - 0.5))
     );
   }, [wordList]);
+  console.log(shuffledArray, 'shuffled')
 
   const renderTimerPage = () => (
     <div className={`${styles.game__wrapper} ${styles.timer__page}`}>
@@ -101,9 +110,11 @@ const SprintGame: React.FC = () => {
     </div>
   );
 
+
   const changeGameStats = () => {
     setCorrectAnswer(true);
     playCorrectSound();
+    dispatch(sprintGameListOfCorrectWords(shuffledArray[wordCounter].id));
     dispatch(sprintGameTotalPoints(totalPoints + currentPoints));
     dispatch(sprintGameCheckPoints(checkpoints < 3 ? checkpoints + 1 : 1));
     checkTheEndOfTheGame();
@@ -116,6 +127,7 @@ const SprintGame: React.FC = () => {
   };
 
   const cleanCurrentGameStats = () => {
+    dispatch(sprintGameListOfIncorrectWords(shuffledArray[wordCounter].id));
     setCorrectAnswer(false);
     playWrongSound();
     dispatch(sprintGameCheckPoints(0));
@@ -172,8 +184,7 @@ const SprintGame: React.FC = () => {
         <div className={styles.point}>
           <div className={styles.total__points}>{totalPoints}</div>
           <div className={styles.current__points}>
-            {currentPoints > 0 ? `+${currentPoints} ` : currentPoints}очков за
-            слово
+            {currentPoints > 0 ? currentPoints : currentPoints}очков за слово
           </div>
         </div>
 
@@ -240,30 +251,6 @@ const SprintGame: React.FC = () => {
     </div>
   );
 
-  const renderFinishPage = () => (
-    <div className={styles.finish_game__wrapper}>
-      <h3>Результаты</h3>
-      <div className={styles.result__wrapper}>
-        Вы набрали {totalPoints} очков! Это ваш лучший результат! Он на 100%
-        лучше предыдущего!
-      </div>
-      <div className={styles.details__wrapper}>
-        <div className={styles.correct_not_correct}>
-          <div className={styles.correct}>Правильно:</div>
-          <div className={styles.correct}>Неправильно:</div>
-        </div>
-    <div className={styles.words__wrapper}>
-        <div className={styles.correct_word_details}>1</div>
-        <div className={styles.incorrect_word_details}>1</div>
-        </div>
-        <div className={styles.result__buttons}>
-          <button type="button" className={styles.word_list}>К списку слов</button>
-          <button type="button" className={styles.repeat}>Повторить</button>
-        </div>
-      </div>
-    </div>
-  );
-
   return (
     <div className={styles.sprint__game}>
       {gameStatus === 'start' ? (
@@ -276,7 +263,7 @@ const SprintGame: React.FC = () => {
       ) : null}
       {gameStatus === 'timer' ? <div>{renderTimerPage()}</div> : null}
       {gameStatus === 'play' ? <div>{renderGamePage()}</div> : null}
-      {gameStatus === 'finish' ? <div>{renderFinishPage()}</div> : null}
+      {gameStatus === 'finish' ? <FinishPage /> : null}
     </div>
   );
 };

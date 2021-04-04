@@ -1,12 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { RootStateType } from '../../reducer/root-reducer';
-import ball2 from '../../assets/images/ball1.png';
-import ball1 from '../../assets/images/ball2.png';
-import ball4 from '../../assets/images/ball3.png';
-import ball3 from '../../assets/images/ball4.png';
+import { RootStateType } from '../../../reducer/root-reducer';
+import ball2 from '../../../assets/images/ball1.png';
+import ball1 from '../../../assets/images/ball2.png';
+import ball4 from '../../../assets/images/ball3.png';
+import ball3 from '../../../assets/images/ball4.png';
 import styles from './balls.module.css';
-
 
 const Balls: React.FC = () => {
   const ballsCounter = useSelector(

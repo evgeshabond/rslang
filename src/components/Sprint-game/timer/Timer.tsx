@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { sprintGameStatusChange } from '../../actions/sprint-game-action';
-import styles from './sprint-game.module.css';
+import { sprintGameStatusChange } from '../../../actions/sprint-game-action';
+import styles from '../sprint-game/sprint-game.module.css';
 
 type Props = {
   initialTimer: number;

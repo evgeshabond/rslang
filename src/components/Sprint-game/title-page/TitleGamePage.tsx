@@ -1,9 +1,9 @@
 import React from 'react';
-import { PlayButton } from '../button-icons/playBig-button/playBig-button';
+import { PlayButton } from '../../button-icons/playBig-button/playBig-button';
 
-import { ReactComponent as Cat1 } from '../../assets/images/cat1.svg';
-import { ReactComponent as Cat2 } from '../../assets/images/cat2.svg';
-import { ReactComponent as Cat3 } from '../../assets/images/cat3.svg';
+import { ReactComponent as Cat1 } from '../../../assets/images/cat1.svg';
+import { ReactComponent as Cat2 } from '../../../assets/images/cat2.svg';
+import { ReactComponent as Cat3 } from '../../../assets/images/cat3.svg';
 import styles from './title-game-page.module.css';
 
 type Props = {

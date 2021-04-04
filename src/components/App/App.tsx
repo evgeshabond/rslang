@@ -8,7 +8,7 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import UserPage from '../../pages/auth-page/User-page';
 import { mainPath } from '../../utils/constants';
-import SprintGame from '../sprint-game/SprintGame';
+import SprintGame from '../Sprint-game/sprint-game/SprintGame';
 import EbookPage from '../../pages/e-book-page/E-book-page';
 import ProfilePage from '../../pages/profile-page/Profile-page';
 import ConstructorGame from '../ConstructorGame/ConstructorGame';
