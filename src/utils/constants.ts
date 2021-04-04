@@ -4,6 +4,8 @@ export const mainPath = {
   wordList: '/wordlist',
   auth: '/user',
   ebookPage: '/ebookpage',
+  learnPage: '/ebookpage/learn',
+  dictionaryPage: '/ebookpage/dictionary',
   profilePAge: '/profile',
   constructorGame: '/constructorgame',
   langUrl: 'https://rslang-app.herokuapp.com/',
