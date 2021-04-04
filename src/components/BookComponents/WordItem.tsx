@@ -184,7 +184,7 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
     const params = {
       /* eslint-disable */
       userId: user.userId,
-      wordId: word._id,
+      wordId: word._id || word.id,
       token: user.token,
       body: {
         difficulty: 'hard',
@@ -213,7 +213,7 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
     const params = {
       /* eslint-disable */
       userId: user.userId,
-      wordId: word._id,
+      wordId: word._id || word.id,
       token: user.token,
       body: {
         difficulty: 'deleted',
@@ -242,7 +242,7 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
     const params = {
       /* eslint-disable */
       userId: user.userId,
-      wordId: word._id,
+      wordId: word._id || word.id,
       token: user.token,
       body: {
         difficulty: 'easy',
