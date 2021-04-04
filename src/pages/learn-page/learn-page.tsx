@@ -82,7 +82,7 @@ const useStyles = makeStyles({
   },
   buttonsContainer: {
     position: 'absolute',
-    top: '10px',
+    top: '25px',
     right: '8rem',
     display: 'flex',
   },
