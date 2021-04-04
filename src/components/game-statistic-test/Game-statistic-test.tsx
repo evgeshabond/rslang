@@ -56,7 +56,7 @@ export const GameTest: React.FC = () => {
   const addwordToState = () => {
     const params = {
       userId: user.userId,
-      wordId: wordList.currentWordList[1].id,
+      wordId: wordList.currentWordList[3].id,
       token: user.token,
     };
     dispatch(addUserWord(params));
@@ -65,7 +65,7 @@ export const GameTest: React.FC = () => {
   const getWordToState = () => {
     const param = {
       userId: user.userId,
-      wordId: wordList.currentWordList[1].id,
+      wordId: wordList.currentWordList[3].id,
       token: user.token,
     };
 
@@ -75,7 +75,7 @@ export const GameTest: React.FC = () => {
   const deleteWordToState = () => {
     const param = {
       userId: user.userId,
-      wordId: wordList.currentWordList[1].id,
+      wordId: wordList.currentWordList[3].id,
       token: user.token,
     };
 
@@ -98,7 +98,7 @@ export const GameTest: React.FC = () => {
   const toDeleted = () => {
     const params = {
       userId: user.userId,
-      wordId: wordList.currentWordList[1].id,
+      wordId: wordList.currentWordList[3].id,
       token: user.token,
     };
     dispatch(userWordDeleted(params));
@@ -107,7 +107,7 @@ export const GameTest: React.FC = () => {
   const toUnDeleted = () => {
     const params = {
       userId: user.userId,
-      wordId: wordList.currentWordList[1].id,
+      wordId: wordList.currentWordList[3].id,
       token: user.token,
     };
     dispatch(userWordUnDeleted(params));
@@ -116,7 +116,7 @@ export const GameTest: React.FC = () => {
   const toHard = () => {
     const params = {
       userId: user.userId,
-      wordId: wordList.currentWordList[1].id,
+      wordId: wordList.currentWordList[3].id,
       token: user.token,
     };
     dispatch(userWordToHard(params));
@@ -125,7 +125,7 @@ export const GameTest: React.FC = () => {
   const toEasy = () => {
     const params = {
       userId: user.userId,
-      wordId: wordList.currentWordList[1].id,
+      wordId: wordList.currentWordList[3].id,
       token: user.token,
     };
     dispatch(userWordToEasy(params));
@@ -134,7 +134,7 @@ export const GameTest: React.FC = () => {
   const toLearning = () => {
     const params = {
       userId: user.userId,
-      wordId: wordList.currentWordList[1].id,
+      wordId: wordList.currentWordList[3].id,
       token: user.token,
     };
     // dispatch(userWordToLearning(params));
@@ -152,7 +152,7 @@ export const GameTest: React.FC = () => {
   const addGameResult = () => {
     const params = {
       userId: user.userId,
-      wordId: wordList.currentWordList[1].id,
+      wordId: wordList.currentWordList[3].id,
       token: user.token,
     };
     const gameResult = {

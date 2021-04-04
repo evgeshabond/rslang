@@ -26,10 +26,10 @@ export default class UserWordsService {
     body?: {
       difficulty?: string;
       optional?: {
-        learning: boolean;
-        learned: boolean;
-        correctCount: number;
-        inCorrectCount: number;
+        learning?: boolean;
+        learned?: boolean;
+        correctCount?: number;
+        inCorrectCount?: number;
       };
     }
   ) => {
@@ -91,10 +91,10 @@ export default class UserWordsService {
     body: {
       difficulty?: string;
       optional?: {
-        learning: boolean;
-        learned: boolean;
-        correctCount: number;
-        inCorrectCount: number;
+        learning?: boolean;
+        learned?: boolean;
+        correctCount?: number;
+        inCorrectCount?: number;
       };
     }
   ) => {
