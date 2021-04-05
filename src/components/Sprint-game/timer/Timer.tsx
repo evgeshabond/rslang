@@ -18,15 +18,16 @@ export const Timer: React.FC<Props> = ({
   const dispatch = useDispatch();
 
   useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
     if (startTimer > 0) {
-      setTimeout(() => {
+       timer = setTimeout(() => {
         setStartTimer(startTimer - 1);
       }, 1000);
     } else {
       dispatch(sprintGameStatusChange(nextPage));
     }
     return () => {
-      clearTimeout();
+      clearTimeout(timer);
     };
   }, [startTimer]);
 

@@ -110,7 +110,6 @@ const SprintGame: React.FC = () => {
 
     setCorrectAnswer(true);
     playCorrectSound();
-    // dispatch(sprintGameListOfCorrectWords(shuffledArray[wordCounter].id));
     dispatch(sprintGameTotalPoints(totalPoints + currentPoints));
     dispatch(sprintGameCheckPoints(checkpoints < 3 ? checkpoints + 1 : 1));
     checkTheEndOfTheGame();
@@ -168,7 +167,7 @@ const SprintGame: React.FC = () => {
     <div className={`${styles.game__wrapper} ${styles.play}`}>
       <div className={styles.sidebar}>
         <div className={styles.watch__wrapper}>
-          <Timer initialTimer={600} nextPage="finish" timerFontSize="1.8rem" />
+          <Timer initialTimer={60} nextPage="finish" timerFontSize="1.8rem" />
           <Timer2 className={styles.timer2} />
         </div>
       </div>
@@ -181,8 +180,8 @@ const SprintGame: React.FC = () => {
       >
         <div className={styles.point}>
           <div className={styles.total__points}>{totalPoints}</div>
-          <div className={styles.current__points}>
-            {currentPoints > 0 ? currentPoints : currentPoints}очков за слово
+          <div className={styles.current__points}><span className={styles['point-number']}>
+            {currentPoints > 0 ? currentPoints : currentPoints}</span>очков за слово
           </div>
         </div>
 
@@ -227,7 +226,7 @@ const SprintGame: React.FC = () => {
         <button
           type="button"
           className={styles.refresh__button}
-          onClick={() => dispatch(sprintGameStatusChange('play'))}
+          onClick={() => dispatch(sprintGameStatusChange('timer'))}
         >
           <img src={refreshIcon} alt="refresh icon" />
         </button>
@@ -255,7 +254,6 @@ const SprintGame: React.FC = () => {
         <TitleGamePage
           gameTitle={gameTitle}
           gameDescription={gameDescription}
-          // catNumber={2}
           buttonClick={() => dispatch(sprintGameStatusChange('timer'))}
         />
       ) : null}

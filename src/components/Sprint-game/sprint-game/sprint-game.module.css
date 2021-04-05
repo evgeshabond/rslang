@@ -184,6 +184,10 @@ margin-bottom: 1.5rem;
   font-weight: 900;
   font-size: 2.4rem;
 }
+.point-number{
+  margin-right: 0.5rem;
+  
+}
 
 .check__points {
   height: 100px;
