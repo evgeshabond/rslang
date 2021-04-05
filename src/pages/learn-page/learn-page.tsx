@@ -3,7 +3,6 @@ import ReactPaginate from 'react-paginate';
 //  redux
 import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
-
 //  material ui
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -14,22 +13,13 @@ import Modal from '@material-ui/core/Modal';
 import Switch from '@material-ui/core/Switch';
 //  components
 import WordItem from '../../components/BookComponents/WordItem';
-
 //  types
 import { RootStateType } from '../../reducer/root-reducer';
-import { WordStateType } from '../../reducer/word-reducer';
 //  herlpers and services
-import AggregateService from '../../services/word-aggregate-service';
-import UserWordsService from '../../services/user-words-service';
-import LangService from '../../services/lang-service'
-
+import aggregatePage from '../../utils/aggregatePage';
 //  icons
-import learningIcon from '../../assets/images/learning.svg';
-import hardIcon from '../../assets/images/hardWord.svg';
-import deletedIcon from '../../assets/images/delete.svg';
 import gamesIcon from '../../assets/images/games.svg';
 import settingsIcon from '../../assets/images/settings.svg';
-
 // update theme object of material ui
 const primaryColor = '#FDEBFF';
 const secondaryColor = '#5B2467';
@@ -229,7 +219,6 @@ const LearnPage: React.FC = () => {
     showButtons: true,
   });
   const [pageIsDeleted, setPageIsDeleted] = useState(false)
-  const [allUserWords, setAllUserWords] = useState([])
   const [modalOpened, setModalOpened] = useState(false);
   const [difficulty, setDifficulty] = useState('hard');
   const [currentGroup, setCurrentGroup] = useState(0);
@@ -239,8 +228,6 @@ const LearnPage: React.FC = () => {
   const [wordsToRender, setWordsToRender] = useState([]);
   const [reRender, setRerender] = useState(true);
 
-  const langService = new LangService();
-  const userWordsService = new UserWordsService();
   const classes = useStyles({ group: currentGroup });
 
   const forseRender = () => {
@@ -265,70 +252,22 @@ const LearnPage: React.FC = () => {
     setCurrentPage(data.selected);
   };
 
-  //  fetch all userwords from backend
-  const getAllUserWords = async () => {
-    try {
-      const words = await userWordsService.getWordsList({
-        userId: user.userId,
-        token: user.token,
-      });
-      console.log(words)
-      return words;
-    } catch (e) {
-      console.log(e);
-    }
-    return []
-  };
-
-  type GetWordsPageProps = {
-    page: number,
-    group: number
-  }
-  //  get words Page
-  const getWordsPage = async ({
-    page,
-    group
-  }: GetWordsPageProps) => {
-    try {
-      const wordsPage = await langService.getWordList({page, group})
-      console.log(wordsPage)
-      return wordsPage
-    }
-    catch(e) {
-      console.log(e)
-    }
-    return []
-  }
-
-  //  get words from API depending on difficulty, group, page
   useEffect(() => {
-    getWordsPage({page: currentPage, group: currentGroup})
-      .then((wordsPage: any) => {
-        console.log('inside use effect. words page is')
-        console.log(wordsPage)
-        {
-          getAllUserWords()
-          .then((userWords: any) => {
-            console.log('inside use effect. words are')
-            console.log(userWords)
-            const updatedWordsList = wordsPage.map((word: any) => {              
-              const wordInfo = userWords.find((userWord: any) => word.id === userWord.wordId) 
-              // if (wordInfo.difficulty === 'deleted') return {...word}        
-              return {...word, userWord: {...wordInfo}}
-            })
-            if (updatedWordsList.every((updatedWord: any) => updatedWord.userWord.difficulty === 'deleted')) {
-              setPageIsDeleted(true)
-              return
-            }
-            setWordsToRender(updatedWordsList.filter( (updatedWord: any) => updatedWord.userWord.difficulty !== 'deleted') )
-            setIsLoaded(true)
-            setIsWordListLoaded(true)
-            setPageIsDeleted(false)
-          })
-          .catch((e) => console.log(e))
+    aggregatePage({page: currentPage, group: currentGroup, user})
+      .then((aggregatedWordsPage) => {
+        if (aggregatedWordsPage.every((updatedWord: any) => updatedWord.userWord.difficulty === 'deleted')) {
+          setPageIsDeleted(true)
+          setIsLoaded(true)
+          setIsWordListLoaded(true)
+          return
         }
+        setWordsToRender(aggregatedWordsPage.filter( (updatedWord: any) => updatedWord.userWord.difficulty !== 'deleted') )
+        setIsLoaded(true)
+        setIsWordListLoaded(true)
+        setPageIsDeleted(false)
       })
-  }, [difficulty, currentGroup, currentPage, reRender]);
+      .catch((e) => console.log(e))
+  }, [difficulty, currentGroup, currentPage, reRender])
 
   const handleGroupChange = (
     e: React.MouseEvent<HTMLSpanElement, MouseEvent>

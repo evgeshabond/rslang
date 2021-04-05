@@ -30,13 +30,21 @@ type Params = {
 const useStyles = makeStyles({
   wordContainer: {
     display: 'flex',
-    minHeight: '10rem',
     width: '95%',
     padding: 0,
     margin: 0,
     marginLeft: '1rem',
     marginBottom: '1rem',
     backgroundColor: (params: any) => getColor(params.group),
+    paddingRight: '1rem',
+  },
+  firstContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '14rem',
+    flexShrink: 0,
+    justifyContent: 'center',
+    
   },
   statusIconContainer: {
     width: '1.5rem',
@@ -74,12 +82,19 @@ const useStyles = makeStyles({
     backgroundImage: `url(${playIcon})`,
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
+    backgroundPositionX: '50%'
   },
   textContainerWrapper: {
     display: 'flex',
     flexBasis: '60rem',
     flexWrap: 'wrap',
     marginBottom: '1rem',
+  },
+  wordNameWrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '1rem' ,
+    textAlign: 'left'
   },
   textContainer: {
     display: 'flex',
@@ -131,6 +146,23 @@ const useStyles = makeStyles({
   helperMarginLeft: {
     marginLeft: '1rem',
   },
+  '@media (max-width: 600px)': {
+    firstContainer: {
+      flexDirection: 'column-reverse',
+      justifyContent: 'flex-end',
+      alignItems: 'space-between',
+      width: '7rem',  
+    },
+    playButton: {
+      marginLeft: 0
+    },
+    wordNameWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+      alingItems: 'flex-start',
+      gap: 0
+    }
+  },
 });
 
 type UserType = {
@@ -170,9 +202,9 @@ type Props = {
   group: number;
   forseFetch: any;
   settings: {
-    showTranslate: boolean,
-    showButtons: boolean
-  }
+    showTranslate: boolean;
+    showButtons: boolean;
+  };
 };
 
 const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
@@ -195,17 +227,16 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
       /* eslint-enable */
     };
     try {
-      const response = await service.updateWord(params,{
+      const response = await service.updateWord(params, {
         difficulty: 'hard',
         optional: {
-          learning: true
-        }      
-      })
-      console.log(response)
+          learning: true,
+        },
+      });
+      console.log(response);
+    } catch (e) {
+      console.log(e);
     }
-    catch(e) {
-      console.log(e)
-    }    
     forseFetch();
   };
 
@@ -224,17 +255,16 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
       /* eslint-enable */
     };
     try {
-      const response = await service.updateWord(params,{
+      const response = await service.updateWord(params, {
         difficulty: 'deleted',
         optional: {
-          learning: false
-        }      
-      })
-      console.log(response)
+          learning: false,
+        },
+      });
+      console.log(response);
+    } catch (e) {
+      console.log(e);
     }
-    catch(e) {
-      console.log(e)
-    }    
     forseFetch();
   };
 
@@ -253,39 +283,39 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
       /* eslint-enable */
     };
     try {
-      const response = await service.updateWord(params,{
+      const response = await service.updateWord(params, {
         difficulty: 'easy',
         optional: {
-          learning: true
-        }      
-      })
-      console.log(response)
+          learning: true,
+        },
+      });
+      console.log(response);
+    } catch (e) {
+      console.log(e);
     }
-    catch(e) {
-      console.log(e)
-    }    
     forseFetch();
   };
 
   return (
     <div key={word.id} className={classes.wordContainer}>
-      <div className={classes.statusIconContainer}>
-        {word?.userWord?.difficulty === 'hard' && (
-          <div className={classes.icon} />
-        )}
+      <div className={classes.firstContainer}>
+        <div className={classes.statusIconContainer}>
+          {word?.userWord?.difficulty === 'hard' && (
+            <div className={classes.icon} />
+          )}
+        </div>
+        <div className={classes.imageContainer} />
+        <div className={classes.playButton} aria-hidden={true} />
       </div>
-      <div className={classes.imageContainer} />
-      <div className={classes.playButton} aria-hidden={true} />
       <div className={classes.textContainerWrapper}>
         <div className={classes.textContainer}>
-          <div>
+          <div className={classes.wordNameWrapper}>
             <Typography variant="h4" component="span">
               {word.word}
             </Typography>
             <Typography
               variant="h4"
               component="span"
-              className={classes.helperMarginLeft}
             >
               {word.transcription}
             </Typography>
@@ -300,43 +330,47 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
           </div>
         </div>
         <div className={classes.textContainer}>
-          {settings.showTranslate && (<>
-          <div>
-            <Typography align="left" variant="h4" component="span">
-              {word.wordTranslate}
-            </Typography>
-          </div>
-          <div>
-            <Typography align="left" variant="body1" component="p">
-              {word.textMeaningTranslate}
-            </Typography>
-            <Typography align="left" variant="body1" component="p">
-              {word.textExampleTranslate}
-            </Typography>
-          </div>
-          </>)}
+          {settings.showTranslate && (
+            <>
+              <div>
+                <Typography align="left" variant="h4" component="span">
+                  {word.wordTranslate}
+                </Typography>
+              </div>
+              <div>
+                <Typography align="left" variant="body1" component="p">
+                  {word.textMeaningTranslate}
+                </Typography>
+                <Typography align="left" variant="body1" component="p">
+                  {word.textExampleTranslate}
+                </Typography>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
       <div className={classes.infoContainer}>
-        {settings.showButtons && (<div className={classes.buttonsBox}>
-          <div
-            className={clsx(classes.button, classes.buttonHard)}
-            onClick={() => addItemToHard()}
-            aria-hidden={true}
-          />
-          <div
-            className={clsx(classes.button, classes.buttonDelete)}
-            onClick={() => deleteItem()}
-            aria-hidden={true}
-          />
-          <div
-            className={clsx(classes.button, classes.buttonReturn)}
-            onClick={() => returnItem()}
-            aria-hidden={true}
-          />
-          {/* className={clsx({[classes.difficultyButton]: true, [classes.activeButton]: difficulty === 'all'})} */}
-        </div>)}
+        {settings.showButtons && (
+          <div className={classes.buttonsBox}>
+            <div
+              className={clsx(classes.button, classes.buttonHard)}
+              onClick={() => addItemToHard()}
+              aria-hidden={true}
+            />
+            <div
+              className={clsx(classes.button, classes.buttonDelete)}
+              onClick={() => deleteItem()}
+              aria-hidden={true}
+            />
+            <div
+              className={clsx(classes.button, classes.buttonReturn)}
+              onClick={() => returnItem()}
+              aria-hidden={true}
+            />
+            {/* className={clsx({[classes.difficultyButton]: true, [classes.activeButton]: difficulty === 'all'})} */}
+          </div>
+        )}
         <div className={classes.statsBox}>StatsBox</div>
       </div>
 
