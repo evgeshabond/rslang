@@ -1,26 +1,20 @@
-import React from 'react';
-import clsx from 'clsx';
-import { useDispatch, useSelector } from 'react-redux';
-
+import { Typography } from '@material-ui/core';
 //  material ui
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { Typography } from '@material-ui/core';
-import Box from '@material-ui/core/Box';
-
-//  helpers
-import getColor from '../../utils/getColor';
+import clsx from 'clsx';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { CurrentWordListType } from '../../actions/word-actions';
-import { serverUrl } from '../../utils/constants';
-import UserWordsService from '../../services/user-words-service';
-import { RootStateType } from '../../reducer/root-reducer';
-
+import deleteIcon from '../../assets/images/delete.svg';
 //  icons
 import hardIcon from '../../assets/images/hardWord.svg';
 import playIcon from '../../assets/images/play-big.svg';
-import deleteIcon from '../../assets/images/delete.svg';
 import returnIcon from '../../assets/images/return.svg';
+import { RootStateType } from '../../reducer/root-reducer';
+import UserWordsService from '../../services/user-words-service';
+import { serverUrl } from '../../utils/constants';
+//  helpers
+import getColor from '../../utils/getColor';
 
 type Params = {
   group: number;
@@ -30,9 +24,8 @@ type Params = {
 const useStyles = makeStyles({
   wordContainer: {
     display: 'flex',
-    minHeight: '10rem',
     width: '95%',
-    padding: 0,
+    paddingRight: '10px',
     margin: 0,
     marginLeft: '1rem',
     marginBottom: '1rem',
@@ -170,9 +163,9 @@ type Props = {
   group: number;
   forseFetch: any;
   settings: {
-    showTranslate: boolean,
-    showButtons: boolean
-  }
+    showTranslate: boolean;
+    showButtons: boolean;
+  };
 };
 
 const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
@@ -195,17 +188,16 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
       /* eslint-enable */
     };
     try {
-      const response = await service.updateWord(params,{
+      const response = await service.updateWord(params, {
         difficulty: 'hard',
         optional: {
-          learning: true
-        }      
-      })
-      console.log(response)
+          learning: true,
+        },
+      });
+      console.log(response);
+    } catch (e) {
+      console.log(e);
     }
-    catch(e) {
-      console.log(e)
-    }    
     forseFetch();
   };
 
@@ -224,17 +216,16 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
       /* eslint-enable */
     };
     try {
-      const response = await service.updateWord(params,{
+      const response = await service.updateWord(params, {
         difficulty: 'deleted',
         optional: {
-          learning: false
-        }      
-      })
-      console.log(response)
+          learning: false,
+        },
+      });
+      console.log(response);
+    } catch (e) {
+      console.log(e);
     }
-    catch(e) {
-      console.log(e)
-    }    
     forseFetch();
   };
 
@@ -253,17 +244,16 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
       /* eslint-enable */
     };
     try {
-      const response = await service.updateWord(params,{
+      const response = await service.updateWord(params, {
         difficulty: 'easy',
         optional: {
-          learning: true
-        }      
-      })
-      console.log(response)
+          learning: true,
+        },
+      });
+      console.log(response);
+    } catch (e) {
+      console.log(e);
     }
-    catch(e) {
-      console.log(e)
-    }    
     forseFetch();
   };
 
@@ -300,43 +290,47 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
           </div>
         </div>
         <div className={classes.textContainer}>
-          {settings.showTranslate && (<>
-          <div>
-            <Typography align="left" variant="h4" component="span">
-              {word.wordTranslate}
-            </Typography>
-          </div>
-          <div>
-            <Typography align="left" variant="body1" component="p">
-              {word.textMeaningTranslate}
-            </Typography>
-            <Typography align="left" variant="body1" component="p">
-              {word.textExampleTranslate}
-            </Typography>
-          </div>
-          </>)}
+          {settings.showTranslate && (
+            <>
+              <div>
+                <Typography align="left" variant="h4" component="span">
+                  {word.wordTranslate}
+                </Typography>
+              </div>
+              <div>
+                <Typography align="left" variant="body1" component="p">
+                  {word.textMeaningTranslate}
+                </Typography>
+                <Typography align="left" variant="body1" component="p">
+                  {word.textExampleTranslate}
+                </Typography>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
       <div className={classes.infoContainer}>
-        {settings.showButtons && (<div className={classes.buttonsBox}>
-          <div
-            className={clsx(classes.button, classes.buttonHard)}
-            onClick={() => addItemToHard()}
-            aria-hidden={true}
-          />
-          <div
-            className={clsx(classes.button, classes.buttonDelete)}
-            onClick={() => deleteItem()}
-            aria-hidden={true}
-          />
-          <div
-            className={clsx(classes.button, classes.buttonReturn)}
-            onClick={() => returnItem()}
-            aria-hidden={true}
-          />
-          {/* className={clsx({[classes.difficultyButton]: true, [classes.activeButton]: difficulty === 'all'})} */}
-        </div>)}
+        {settings.showButtons && (
+          <div className={classes.buttonsBox}>
+            <div
+              className={clsx(classes.button, classes.buttonHard)}
+              onClick={() => addItemToHard()}
+              aria-hidden={true}
+            />
+            <div
+              className={clsx(classes.button, classes.buttonDelete)}
+              onClick={() => deleteItem()}
+              aria-hidden={true}
+            />
+            <div
+              className={clsx(classes.button, classes.buttonReturn)}
+              onClick={() => returnItem()}
+              aria-hidden={true}
+            />
+            {/* className={clsx({[classes.difficultyButton]: true, [classes.activeButton]: difficulty === 'all'})} */}
+          </div>
+        )}
         <div className={classes.statsBox}>StatsBox</div>
       </div>
 

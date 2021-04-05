@@ -1,8 +1,13 @@
+import FullscreenIcon from '@material-ui/icons/Fullscreen';
+import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
 import React, { useEffect } from 'react';
+import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import { useDispatch, useSelector } from 'react-redux';
 import useSound from 'use-sound';
 import {
   addLearnedWord,
+  setComboCounter,
+  setFullScreenStatus,
   setLearnCount,
   setRoundEnd,
   setWordObj,
@@ -32,6 +37,7 @@ const ConstructorGame: React.FC = () => {
     learned,
     roundCount,
     chars,
+    comboCounter,
   } = useSelector((state: RootStateType) => state.constructorGameState);
 
   useEffect(() => {
@@ -109,20 +115,66 @@ const ConstructorGame: React.FC = () => {
 
     const currentChars = chars.map((char) => char[1]).join('');
     if (wordObj.word === currentChars && isRoundEnd) {
+      dispatch(setComboCounter(comboCounter + 1));
       dispatch(addLearnedWord(wordObj));
       dispatch(setLearnCount(learned + 1));
     }
   }, [isRoundEnd]);
 
+  const handle = useFullScreenHandle();
+
+  const isFullScreen = useSelector(
+    (state: RootStateType) => state.constructorGameState.isFullScreen
+  );
+
+  function fullScreenEnterHandler() {
+    dispatch(setFullScreenStatus(true));
+    handle.enter();
+  }
+  function fullScreenExitHandler() {
+    dispatch(setFullScreenStatus(false));
+    handle.exit();
+  }
+
   return constructorGameIsStarted ? (
-    <div className={styles['my-game']}>
+    <FullScreen handle={handle} className={styles['my-game']}>
       {wordObj ? (
         <>
+          {isFullScreen ? (
+            <button
+              className={styles['full-screen__button']}
+              type="button"
+              onClick={() => fullScreenExitHandler()}
+            >
+              <FullscreenExitIcon
+                className={styles['full-screen__icon']}
+                width="24px"
+                height="24px"
+              />
+            </button>
+          ) : (
+            <button
+              className={styles['full-screen__button']}
+              type="button"
+              onClick={() => fullScreenEnterHandler()}
+            >
+              <FullscreenIcon
+                className={styles['full-screen__icon']}
+                width="24px"
+                height="24px"
+              />
+            </button>
+          )}
+
           <TopBlock />
           {isRoundEnd ? (
             <button
               type="button"
-              className={styles['audio-button']}
+              className={
+                isFullScreen
+                  ? `${styles['audio-button']} ${styles['full-screen__audio-button']}`
+                  : `${styles['audio-button']}`
+              }
               onClick={() => wordSound()}
             >
               <AudioOn fill="#733999" />
@@ -147,7 +199,7 @@ const ConstructorGame: React.FC = () => {
       ) : (
         <Spinner />
       )}
-    </div>
+    </FullScreen>
   ) : (
     <StartScreen />
   );
