@@ -1,11 +1,13 @@
 import {
   CurrentWordListType,
+  GAME_START_TYPE,
   WordActionForReducer,
   WORD_LIST_ERROR,
   WORD_LIST_LOADED,
   WORD_LIST_LOADING,
   WORD_LOADED,
 } from '../actions/word-actions';
+import { GameStart } from '../utils/constants';
 
 export type WordStateType = {
   currentWordList: Array<CurrentWordListType>;
@@ -14,6 +16,7 @@ export type WordStateType = {
   fetchErr: null;
   pageNumber: number;
   groupNumber: number;
+  gameStart: GameStart;
 };
 
 const initialState: WordStateType = {
@@ -23,6 +26,7 @@ const initialState: WordStateType = {
   fetchErr: null,
   pageNumber: 0,
   groupNumber: 0,
+  gameStart: GameStart.Menu,
 };
 
 const wordReducer = (state = initialState, action: WordActionForReducer) => {
@@ -47,6 +51,11 @@ const wordReducer = (state = initialState, action: WordActionForReducer) => {
       return {
         ...state,
         currentWord: action.payload,
+      };
+    case GAME_START_TYPE:
+      return {
+        ...state,
+        gameStart: action.payload,
       };
 
     default:

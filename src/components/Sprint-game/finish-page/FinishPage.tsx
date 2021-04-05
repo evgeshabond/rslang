@@ -5,7 +5,9 @@ import {
   sprintGameListOfIncorrectWords,
 } from '../../../actions/sprint-game-action';
 import { RootStateType } from '../../../reducer/root-reducer';
+import { mainPath } from '../../../utils/constants';
 import styles from './finish-page.module.css';
+import { ReactComponent as AudioSvg } from '../../../assets/images/audioOn.svg';
 
 const FinishPage: React.FC = () => {
   const dispatch = useDispatch();
@@ -19,16 +21,31 @@ const FinishPage: React.FC = () => {
     dispatch(sprintGameListOfCorrectWords(''));
   }, []);
 
+  const soundHandler = (soundPath: string) => {
+    const sound = new Audio(`${mainPath.langUrl}${soundPath}`);
+
+    if (sound.volume) {
+      sound.currentTime = 0;
+      sound.play();
+    }
+  };
+
   const renderCorrectWordsList = () => (
-    <ul>
-      {learntWords.map((elem) => (
-        <li key={elem.id}>
-          {' '}
-          <button type="button" onClick={() => console.log('play')}>
-            p
+    <ul className={styles['correct-words-list']}>
+      {learntWords.map((wordObject) => (
+        <li key={wordObject.id} className={styles['words-wrapper']}>
+          <button
+            type="button"
+            onClick={() => soundHandler(wordObject.audio)}
+            className={styles['correct-word-sound']}
+          >
+            <AudioSvg />
           </button>
-          <span>
-            {elem.word}-<span>{elem.wordTranslate}</span>
+          <span className={styles['main-word']}>
+            {wordObject.word}-
+            <span className={styles.translation}>
+              {wordObject.wordTranslate}
+            </span>
           </span>
         </li>
       ))}
@@ -36,15 +53,21 @@ const FinishPage: React.FC = () => {
   );
 
   const renderIncorrectWordList = () => (
-    <ul>
-      {notLearntWords.map((elem) => (
-        <li key={elem.id}>
-          {' '}
-          <button type="button" onClick={() => console.log('play')}>
-            p
+    <ul className={styles['incorrect-words-list']}>
+      {notLearntWords.map((wordObject) => (
+        <li className={styles['words-wrapper']} key={wordObject.id}>
+          <button
+            type="button"
+            onClick={() => soundHandler(wordObject.audio)}
+            className={styles['incorrect-word-sound']}
+          >
+            <AudioSvg style={{ fill: 'red' }} />
           </button>
-          <span>
-            {elem.word}-<span>{elem.wordTranslate}</span>
+          <span className={styles['main-word']}>
+            {wordObject.word}-
+            <span className={styles.translation}>
+              {wordObject.wordTranslate}
+            </span>
           </span>
         </li>
       ))}
@@ -64,7 +87,6 @@ const FinishPage: React.FC = () => {
       <div className={styles['details-wrapper']}>
         <div className={styles['correct-not-correct']}>
           <div className={styles.correct}>Правильно: {learntWords.length} </div>
-         
         </div>
         <div className={styles['words-wrapper']}>
           <div className={styles['correct-word-details']}>
@@ -73,7 +95,9 @@ const FinishPage: React.FC = () => {
           <div className={styles.incorrect}>
             Неправильно: {notLearntWords.length}{' '}
           </div>
-          <div className={`${styles['incorrect-word-details']} ${styles['details-wrapper']}`}>
+          <div
+            className={`${styles['incorrect-word-details']} ${styles['details-wrapper']}`}
+          >
             {renderIncorrectWordList()}
           </div>
         </div>

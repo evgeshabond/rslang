@@ -5,6 +5,8 @@ export const mainPath = {
   auth: '/user',
   sprint: '/sprint',
   ebookPage: '/ebookpage',
+  learnPage: '/ebookpage/learn',
+  dictionaryPage: '/ebookpage/dictionary',
   profilePAge: '/profile',
   constructorGame: '/constructorgame',
   langUrl: 'https://rslang-app.herokuapp.com/',
@@ -29,6 +31,7 @@ export const gameType = {
 export const difficulty = {
   hard: 'hard',
   easy: 'easy',
+  deleted: 'deleted',
 };
 
 export const gameConstants = {
@@ -37,3 +40,11 @@ export const gameConstants = {
 
 export const serverUrl = 'https://rslang-app.herokuapp.com/';
 export const serverUrlLocal = 'http://localhost:3001/';
+
+// prettier-ignore
+export enum GameStart {
+  Menu = 'MENU',
+  Dictionary = 'DICTIONARY',
+  Book = 'BOOK',
+  Deleted= 'DELETED'
+}

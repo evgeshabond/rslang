@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import useSound from 'use-sound';
 import { useDispatch, useSelector } from 'react-redux';
-import styles from './sprint-game.module.css';
-import { RootStateType } from '../../../reducer/root-reducer';
+import useSound from 'use-sound';
 import {
   clearWords,
   sprintGameBallsCounter,
@@ -12,26 +10,28 @@ import {
   sprintGameSetNotLearntWords,
   sprintGameShuffledArray,
   sprintGameStatusChange,
-  sprintGameTotalPoints,
+  sprintGameTotalPoints
 } from '../../../actions/sprint-game-action';
-import { TitleGamePage } from '../title-page/TitleGamePage';
-import { ReactComponent as Cat } from '../../../assets/images/cat2.svg';
-import { ReactComponent as Timer1 } from '../../../assets/images/timer1.svg';
-import { ReactComponent as Timer2 } from '../../../assets/images/timer2.svg';
-import banner from '../../../assets/images/sprint-top.png';
 import { fetchWordsList } from '../../../actions/word-actions';
-import Balls from '../balls/Balls';
-import CheckPoints from '../check-points/CheckPoints';
-import correctSound from '../../../assets/sounds/src_music_correct.mp3';
-import wrongSound from '../../../assets/sounds/src_music_wrong.wav';
-import countDown from '../../../assets/sounds/countDown.wav';
+import { ReactComponent as Cat } from '../../../assets/images/cat2.svg';
+import closeIcon from '../../../assets/images/close.svg';
 import correctImage from '../../../assets/images/correct.svg';
 import inCorrectImage from '../../../assets/images/incorrect.svg';
-import refreshIcon from '../../../assets/images/refreshing.svg';
-import closeIcon from '../../../assets/images/close.svg';
 import questionIcon from '../../../assets/images/question.svg';
+import refreshIcon from '../../../assets/images/refreshing.svg';
+import banner from '../../../assets/images/sprint-top.png';
+import { ReactComponent as Timer1 } from '../../../assets/images/timer1.svg';
+import { ReactComponent as Timer2 } from '../../../assets/images/timer2.svg';
+import countDown from '../../../assets/sounds/countDown.wav';
+import correctSound from '../../../assets/sounds/src_music_correct.mp3';
+import wrongSound from '../../../assets/sounds/src_music_wrong.wav';
+import { RootStateType } from '../../../reducer/root-reducer';
+import Balls from '../balls/Balls';
+import CheckPoints from '../check-points/CheckPoints';
 import FinishPage from '../finish-page/FinishPage';
 import { Timer } from '../timer/Timer';
+import { TitleGamePage } from '../title-page/TitleGamePage';
+import styles from './sprint-game.module.css';
 
 const SprintGame: React.FC = () => {
   const dispatch = useDispatch();
@@ -65,7 +65,6 @@ const SprintGame: React.FC = () => {
   });
   const [playWrongSound] = useSound(wrongSound, { interrupt: true });
 
-  console.log(wordList);
 
   useEffect(() => {
     if (wordList.length === 0) {
@@ -75,7 +74,7 @@ const SprintGame: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(sprintGameStatusChange('finish'));
+    dispatch(sprintGameStatusChange('start'));
     dispatch(clearWords());
     dispatch(sprintGameTotalPoints(0));
     dispatch(sprintGameBallsCounter(0));
@@ -95,7 +94,6 @@ const SprintGame: React.FC = () => {
       sprintGameShuffledArray(wordList.slice().sort(() => Math.random() - 0.5))
     );
   }, [wordList]);
-  console.log(shuffledArray, 'shuffled');
 
   const renderTimerPage = () => (
     <div className={`${styles.game__wrapper} ${styles.timer__page}`}>
@@ -127,6 +125,8 @@ const SprintGame: React.FC = () => {
 
   const cleanCurrentGameStats = () => {
     dispatch(sprintGameSetNotLearntWords(shuffledArray[wordCounter]));
+    checkTheEndOfTheGame();
+
     setCorrectAnswer(false);
     playWrongSound();
     dispatch(sprintGameCheckPoints(0));
@@ -159,7 +159,8 @@ const SprintGame: React.FC = () => {
 
   const checkTheEndOfTheGame = () => {
     console.log(wordCounter, 'wordcounter');
-    if (wordCounter === 18) {
+    if (wordCounter === 5) {
+      
       dispatch(sprintGameStatusChange('finish'));
       console.log('i was here');
     }

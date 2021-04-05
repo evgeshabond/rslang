@@ -11,6 +11,10 @@ import { statisticReducer, StatisticStateType } from './statistic-reduser';
 import { userReducer, UserState } from './user-reducer';
 import { wordReducer, WordStateType } from './word-reducer';
 import { userWordsReducer, UserWordsStateType } from './user-words-reducer';
+import {
+  aggregatedWordsReducer,
+  AggregatedWordsStateType,
+} from './words-aggregated-reducer';
 
 export type RootStateType = {
   wordState: WordStateType;
@@ -21,7 +25,7 @@ export type RootStateType = {
   questionState: QuestionStateType;
   statisticState: StatisticStateType;
   userWordsState: UserWordsStateType;
-
+  aggregatedWordsState: AggregatedWordsStateType;
 };
 
 const rootReducer = combineReducers({
@@ -33,7 +37,7 @@ const rootReducer = combineReducers({
   questionState: questionReducer,
   statisticState: statisticReducer,
   userWordsState: userWordsReducer,
-
+  aggregatedWordsState: aggregatedWordsReducer,
 });
 
 export default rootReducer;

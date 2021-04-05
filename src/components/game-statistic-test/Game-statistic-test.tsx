@@ -1,15 +1,22 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { getAggregatedWordsList } from '../../actions/aggregated-word-action';
 import { setStatistics } from '../../actions/statistic-action';
 import {
   addUserWord,
   getUserWord,
   getUserWordList,
   removeUserWord,
-  updateUserWord,
+  userWordDeleted,
+  userWordToEasy,
+  userWordToHard,
+  userWordToLearnResult,
+  userWordUnDeleted,
 } from '../../actions/user-words-action';
+import { gameStartStatusChange } from '../../actions/word-actions';
 import { RootStateType } from '../../reducer/root-reducer';
-import { difficulty, gameType } from '../../utils/constants';
+import { filterQuery } from '../../services/word-aggregate-service';
+import { difficulty, GameStart, gameType } from '../../utils/constants';
 
 export const GameTest: React.FC = () => {
   const user = useSelector((state: RootStateType) => state.userState.user);
@@ -17,6 +24,15 @@ export const GameTest: React.FC = () => {
     (state: RootStateType) => state.statisticState.optional.gameStatistic
   );
   const wordList = useSelector((state: RootStateType) => state.wordState);
+  // state for game start
+  const gameStatus = useSelector(
+    (state: RootStateType) => state.wordState.gameStart
+  );
+  const userWordList = useSelector(
+    (state: RootStateType) =>
+      state.aggregatedWordsState.userAggregatedWords.paginatedResults
+  );
+
   const userWordState = useSelector(
     (state: RootStateType) => state.userWordsState
   );
@@ -40,14 +56,8 @@ export const GameTest: React.FC = () => {
   const addwordToState = () => {
     const params = {
       userId: user.userId,
-      wordId: wordList.currentWordList[0].id,
+      wordId: wordList.currentWordList[3].id,
       token: user.token,
-      body: {
-        difficulty: difficulty.easy,
-        optional: {
-          isDeleted: false,
-        },
-      },
     };
     dispatch(addUserWord(params));
   };
@@ -55,32 +65,17 @@ export const GameTest: React.FC = () => {
   const getWordToState = () => {
     const param = {
       userId: user.userId,
-      wordId: wordList.currentWordList[0].id,
+      wordId: wordList.currentWordList[3].id,
       token: user.token,
     };
 
     dispatch(getUserWord(param));
   };
 
-  const updateWordToState = () => {
-    const params = {
-      userId: user.userId,
-      wordId: wordList.currentWordList[1].id,
-      token: user.token,
-      body: {
-        difficulty: difficulty.easy,
-        optional: {
-          isDeleted: true,
-        },
-      },
-    };
-    dispatch(updateUserWord(params));
-  };
-
   const deleteWordToState = () => {
     const param = {
       userId: user.userId,
-      wordId: wordList.currentWordList[0].id,
+      wordId: wordList.currentWordList[3].id,
       token: user.token,
     };
 
@@ -96,6 +91,151 @@ export const GameTest: React.FC = () => {
     dispatch(getUserWordList(param));
   };
 
+  // /----------------
+  // update user word word
+  //  -----------------
+
+  const toDeleted = () => {
+    const params = {
+      userId: user.userId,
+      wordId: wordList.currentWordList[3].id,
+      token: user.token,
+    };
+    dispatch(userWordDeleted(params));
+  };
+
+  const toUnDeleted = () => {
+    const params = {
+      userId: user.userId,
+      wordId: wordList.currentWordList[3].id,
+      token: user.token,
+    };
+    dispatch(userWordUnDeleted(params));
+  };
+
+  const toHard = () => {
+    const params = {
+      userId: user.userId,
+      wordId: wordList.currentWordList[3].id,
+      token: user.token,
+    };
+    dispatch(userWordToHard(params));
+  };
+
+  const toEasy = () => {
+    const params = {
+      userId: user.userId,
+      wordId: wordList.currentWordList[3].id,
+      token: user.token,
+    };
+    dispatch(userWordToEasy(params));
+  };
+
+  const toLearning = () => {
+    const params = {
+      userId: user.userId,
+      wordId: wordList.currentWordList[3].id,
+      token: user.token,
+    };
+    // dispatch(userWordToLearning(params));
+  };
+
+  const toUnLearning = () => {
+    const params = {
+      userId: user.userId,
+      wordId: wordList.currentWordList[1].id,
+      token: user.token,
+    };
+    // dispatch(userWordToUnLearning(params));
+  };
+
+  const addGameResult = () => {
+    const params = {
+      userId: user.userId,
+      wordId: wordList.currentWordList[3].id,
+      token: user.token,
+    };
+    const gameResult = {
+      isCorrect: true,
+    };
+    dispatch(userWordToLearnResult(params, gameResult));
+  };
+
+  // aggregate buttons
+  //  const filterQuery = {
+  //   deletedWord: 'deleted',
+  //   allWords: 'all',
+  //   hardWords: 'hard',
+  //   easyAndWithoutTypesWords: 'easy',
+  //   learnedWordsAndHardWords: 'learned',
+  // };
+
+  const getAggregateAll = () => {
+    const params = {
+      userId: user.userId,
+      token: user.token,
+      page: 0,
+      group: 0, // не обязательное поле по умолчанию будет 0
+      wordsPerPage: 20,
+    };
+    dispatch(getAggregatedWordsList(params, filterQuery.allWords));
+  };
+
+  const getAggregatedelete = () => {
+    const params = {
+      userId: user.userId,
+      token: user.token,
+      page: 0,
+      group: 0, // не обязательное поле по умолчанию будет 0
+      wordsPerPage: 20,
+    };
+    dispatch(getAggregatedWordsList(params, filterQuery.deletedWord));
+  };
+
+  const getAggregateEasy = () => {
+    const params = {
+      userId: user.userId,
+      token: user.token,
+      page: 0,
+      group: 0, // не обязательное поле по умолчанию будет 0
+      wordsPerPage: 20,
+    };
+    dispatch(
+      getAggregatedWordsList(params, filterQuery.easyAndWithoutTypesWords)
+    );
+  };
+
+  const getAggregateHard = () => {
+    const params = {
+      userId: user.userId,
+      token: user.token,
+      page: 0,
+      group: 0, // не обязательное поле по умолчанию будет 0
+      wordsPerPage: 20,
+    };
+    dispatch(getAggregatedWordsList(params, filterQuery.hardWords));
+  };
+
+  const getAggregateLearning = () => {
+    const params = {
+      userId: user.userId,
+      token: user.token,
+      page: 0,
+      group: 0, // не обязательное поле по умолчанию будет 0
+      wordsPerPage: 20,
+    };
+    dispatch(
+      getAggregatedWordsList(params, filterQuery.learnedWordsAndHardWords)
+    );
+  };
+
+  // ------------------
+  // game status change
+  // =======================
+
+  const gameStatusChange = () => {
+    dispatch(gameStartStatusChange(GameStart.Book));
+  };
   // const renderSavanaStatistic = () => {
   //   if (gameStatistic.savanna) {
   //     return gameStatistic.savanna.total.map((item) => (
@@ -150,11 +290,7 @@ export const GameTest: React.FC = () => {
       <h3>savanna</h3>
       <input type="button" value="add word to back" onClick={addwordToState} />
       <input type="button" value="get word to state" onClick={getWordToState} />
-      <input
-        type="button"
-        value="update word to state"
-        onClick={updateWordToState}
-      />
+
       <input
         type="button"
         value="delete word from back"
@@ -165,6 +301,52 @@ export const GameTest: React.FC = () => {
         value="get userList words"
         onClick={getUserAllWord}
       />
+      <h3>update word</h3>
+      <input type="button" value="update delete" onClick={toDeleted} />
+      <input type="button" value="update unDelete" onClick={toUnDeleted} />
+      <input type="button" value="update toHard" onClick={toHard} />
+      <input type="button" value="update toEasy" onClick={toEasy} />
+      <input type="button" value="update toLearning" onClick={toLearning} />
+      <input type="button" value="update toUnLearning" onClick={toUnLearning} />
+
+      <input
+        type="button"
+        value="update toUnLearning"
+        onClick={addGameResult}
+      />
+      <h3>Aggregate</h3>
+      <div>
+        <input type="button" value="get all" onClick={getAggregateAll} />
+      </div>
+      <div>
+        <input type="button" value="get delete" onClick={getAggregatedelete} />
+      </div>
+
+      <div>
+        <input type="button" value="get easy" onClick={getAggregateEasy} />
+      </div>
+
+      <div>
+        <input type="button" value="get hard" onClick={getAggregateHard} />
+      </div>
+
+      <div>
+        <input
+          type="button"
+          value="get learning"
+          onClick={getAggregateLearning}
+        />
+      </div>
+
+      <h3>game status change</h3>
+      <div>
+        <input
+          type="button"
+          value="game status change"
+          onClick={gameStatusChange}
+        />
+      </div>
+
       {/* <div>{renderSavanaStatistic()}</div>
       <h3>sprint</h3>
       <div>{renderSprintStatistic()}</div>
