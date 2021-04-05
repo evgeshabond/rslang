@@ -22,7 +22,7 @@
   align-items: center;
   position: absolute;
   top: 20px;
-  right: 106px;
+  right: 146px;
   width: 30px;
   height: 30px;
   background-color: inherit;
@@ -35,12 +35,40 @@
   box-shadow: -8px -8px 16px #ffffff, 8px 8px 16px #b4c1d5;
 }
 
+.full-screen__audio-button {
+  right: 106px;
+}
+
 .cat_sleeping {
   position: absolute;
   bottom: 0;
   right: 0;
   width: 210px;
   height: 142px;
+}
+
+.full-screen__button {
+  position: absolute;
+  right: 66px;
+  top: 20px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 30px;
+  width: 30px;
+
+  background-color: rgb(115, 57, 153);
+  border-radius: 50%;
+  border: none;
+
+  color: white;
+}
+
+svg.full-screen__icon {
+  width: 24px;
+  height: 24px;
 }
 
 @media screen and (max-width: 680px) {

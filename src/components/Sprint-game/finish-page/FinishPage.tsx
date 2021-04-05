@@ -84,24 +84,26 @@ const FinishPage: React.FC = () => {
           <span className={styles['points-number']}> {totalPoints} </span>очков!
         </p>
       </div>
+
       <div className={styles['details-wrapper']}>
-        <div className={styles['correct-not-correct']}>
-          <div className={styles.correct}>Правильно: {learntWords.length} </div>
+        <div className={styles.correct}>Правильно: {learntWords.length} </div>
+
+        <div className={styles['correct-word-details']}>
+          {renderCorrectWordsList()}
         </div>
-        <div className={styles['words-wrapper']}>
-          <div className={styles['correct-word-details']}>
-            {renderCorrectWordsList()}
-          </div>
-          <div className={styles.incorrect}>
-            Неправильно: {notLearntWords.length}{' '}
-          </div>
-          <div
-            className={`${styles['incorrect-word-details']} ${styles['details-wrapper']}`}
-          >
-            {renderIncorrectWordList()}
-          </div>
+        <div className={styles['words-separator']}> </div>
+
+        <div className={styles.incorrect}>
+          Неправильно: {notLearntWords.length}
+        </div>
+
+        <div
+          className={`${styles['incorrect-word-details']} ${styles['details-wrapper']}`}
+        >
+          {renderIncorrectWordList()}
         </div>
       </div>
+
       <div className={styles['result-buttons']}>
         <button type="button" className={styles['word-list']}>
           Назад

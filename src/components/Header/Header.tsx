@@ -1,16 +1,18 @@
+import { createStyles, makeStyles, Theme, Zoom } from '@material-ui/core';
+import Tooltip from '@material-ui/core/Tooltip';
 import React, { useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { RootStateType } from '../../reducer/root-reducer';
 import * as actions from '../../actions/menu-actions';
-import styles from './Header.module.css';
-import { MenuState } from '../../reducer/menu-reducer';
+import infoImg from '../../assets/images/info.svg';
 import profileImg from '../../assets/images/profile.svg';
 import settingsImg from '../../assets/images/settings.svg';
 import teamImg from '../../assets/images/team.svg';
-import infoImg from '../../assets/images/info.svg';
-import { mainPath } from '../../utils/constants';
+import { MenuState } from '../../reducer/menu-reducer';
+import { RootStateType } from '../../reducer/root-reducer';
 import { UserState } from '../../reducer/user-reducer';
+import { mainPath } from '../../utils/constants';
+import styles from './Header.module.css';
 
 type MapDispatchToProps = {
   topMenuOpen: (value: boolean) => actions.MenuOpenActionType;
@@ -18,9 +20,22 @@ type MapDispatchToProps = {
 
 type Props = MapDispatchToProps & MenuState & UserState;
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    customWidth: {
+      fontSize: '2rem',
+      color: '#5b2467',
+      backgroundColor: '#fdebff',
+      border: '1px solid #5b2467',
+      marginTop: '0px',
+    },
+  })
+);
+
 const Header: React.FC<Props> = ({ topMenuIsOpen, topMenuOpen, isLogin }) => {
   const topMenu = useRef(null);
   const buttonsContainer = useRef(null);
+  const classes = useStyles();
 
   useEffect(() => {
     if (topMenu && topMenuIsOpen) {
@@ -48,28 +63,65 @@ const Header: React.FC<Props> = ({ topMenuIsOpen, topMenuOpen, isLogin }) => {
           <div
             className={`${styles['up-button']} ${styles['button_margin-small']}`}
           >
-            <Link to={isLogin ? mainPath.profilePAge : mainPath.auth}>
-              <img src={profileImg} alt="profile" />
-            </Link>
+            <Tooltip
+              classes={{
+                tooltip: classes.customWidth,
+              }}
+              placement="bottom"
+              title="Профиль"
+              TransitionComponent={Zoom}
+            >
+              <Link to={isLogin ? mainPath.profilePAge : mainPath.auth}>
+                <img src={profileImg} alt="profile" />
+              </Link>
+            </Tooltip>
           </div>
           <div
             className={`${styles['bottom-button']} ${styles['button_margin-big']}`}
           >
-            <Link to={mainPath.main}>
-              <img src={teamImg} alt="about team" />
-            </Link>
+            <Tooltip
+              placement="bottom"
+              classes={{
+                tooltip: classes.customWidth,
+              }}
+              title="О команде"
+              TransitionComponent={Zoom}
+            >
+              <Link to={mainPath.main}>
+                <img src={teamImg} alt="about team" />
+              </Link>
+            </Tooltip>
           </div>
           <div
             className={`${styles['bottom-button']} ${styles['button_margin-small']}`}
           >
-            <Link to={mainPath.main}>
-              <img src={infoImg} alt="info" />
-            </Link>
+            <Tooltip
+              placement="bottom"
+              classes={{
+                tooltip: classes.customWidth,
+              }}
+              title="Инфо"
+              TransitionComponent={Zoom}
+            >
+              <Link to={mainPath.main}>
+                <img src={infoImg} alt="info" />
+              </Link>
+            </Tooltip>
           </div>
+
           <div className={styles['up-button']}>
-            <Link to={mainPath.main}>
-              <img src={settingsImg} alt="settings" />
-            </Link>
+            <Tooltip
+              placement="bottom"
+              classes={{
+                tooltip: classes.customWidth,
+              }}
+              title="Настройки"
+              TransitionComponent={Zoom}
+            >
+              <Link to={mainPath.main}>
+                <img src={settingsImg} alt="settings" />
+              </Link>
+            </Tooltip>
           </div>
         </div>
       </div>
