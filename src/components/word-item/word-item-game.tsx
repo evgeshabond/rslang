@@ -13,9 +13,12 @@ type Props = {
 
 const WordItem: React.FC<Props> = ({ word, buttonClick }) => {
   const dispatch = useDispatch();
-  const wordUserAnswer = useSelector((state: RootStateType) => state.audioGameState.wordUserAnswer);
-  const correctWord = useSelector((state: RootStateType) => state.audioGameState.wordRight);
-  const isAnswer = useSelector((state: RootStateType) => state.audioGameState.isAnswerSelected);
+  const wordUserAnswer = useSelector((state: RootStateType) =>
+    state.audioGameState.wordUserAnswer);
+  const correctWord = useSelector((state: RootStateType) =>
+    state.audioGameState.wordRight);
+  const isAnswer = useSelector((state: RootStateType) =>
+    state.audioGameState.isAnswerSelected);
 
 
   return (

@@ -129,9 +129,6 @@
   display: inline-block;
   background: url(../../assets/images/arrow.svg) no-repeat bottom center;
   transition: all 0.15s ease;
-  /* background-position-x: 50%;
-  background-position-y: bottom;
-  line-height: 0; */
 }
 
 .btn__container {

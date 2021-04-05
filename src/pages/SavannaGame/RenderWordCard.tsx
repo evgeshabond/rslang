@@ -62,7 +62,7 @@ const RenderWordCard: React.FC = () => {
 
       <div className={styles.word__list}>
         {currentWords.map((word: CurrentWordListType, index: number) => (
-          <WordItem buttonClick={() => console.log('yyyy')}
+          <WordItem buttonClick={() => { checkUserAnswer(word.word); }}
             key={word.id} word={word} />
         ))}
       </div>

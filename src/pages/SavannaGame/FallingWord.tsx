@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   CurrentWordListType,
@@ -12,6 +12,7 @@ import { mainPath } from '../../utils/constants';
 import { PlayButton } from '../../components/button-icons/playBig-button/playBig-button';
 import { audioGameStart, wordUserAnswer, wordRight, isAnswerSelected } from '../../actions/audioGame-actions';
 import { shuffle } from '../../utils/shuffle';
+import { savannaGameStart } from '../../actions/savanna-game-actions';
 
 
 const FallingWord: React.FC = () => {
@@ -48,17 +49,34 @@ const FallingWord: React.FC = () => {
   }, [currentWords])
 
 
-  const checkUserAnswer = (word: string) => {
-    if (userAnswer.length === 0) {
-      dispatch(wordUserAnswer(word));
+  const [isMove, setIsMove] = useState(false);
+  const [position, setPosition] = useState(0);
+
+  useEffect(() => {
+    if (isPlaying) {
+      moveDown();
     }
-    dispatch(isAnswerSelected(true));
+  }, [])
+
+  const moveDown = () => {
+    // console.log(e.target.offsetTop);
+    // console.log(e.target.clientHeight);
+    // const offsetTop = e.target;
+    setIsMove(true);
+    for (let i = 0; i < 337; i += 6) {
+      setPosition(i)
+    }
   }
 
+  // className={`${styles.word__item}  ${wordUserAnswer !== correctWord.word && wordUserAnswer === word.word ? styles.word__item__wrong : ''} ${(wordUserAnswer === correctWord.word && wordUserAnswer === word.word) ? styles.word__item__right : ''} `}
+
   return (
-    <div className={styles.falling__word}>
+    <button type='button' className={`${styles.falling__word}
+     ${(isAnswer && userAnswer === rightWord.word) ? styles.word__stop : ''}
+     ${(isAnswer && userAnswer != rightWord.word) ? styles.word__stop__wrong : ''}`}
+      style={{ transform: `translateY(${position}px)` }}>
       {rightWord.word}
-    </div>
+    </button>
   )
 }
 

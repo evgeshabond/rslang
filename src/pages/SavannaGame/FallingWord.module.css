@@ -20,10 +20,34 @@
   vertical-align: middle;
   margin: 10px;
 
-  /* position: absolute;
-  transform-origin: 50% bottom;
-  transition: all 0.3s ease;
-  transform: translate(-50%);
-  display: inline-block;
-  left: 50%; */
+  transition: 1.5s all;
+  transition-delay: 1s;
 }
+
+.falling__word:focus {
+  outline: none;
+}
+
+.word__stop {
+  transition: 0.1s all;
+  background: #fdebff;
+}
+
+.word__stop__wrong {
+  transition: 0.1s all;
+  background: #fdebff;
+  color: tomato;
+}
+
+.word__stop::before {
+  background: url(../../assets/images/arrow.svg) no-repeat;
+  transition: all 0.15s ease;
+  content: '';
+  display: inline-block;
+}
+
+/* color = `hsl(${Math.random() * 50 + 200}, 70%, 50%)`; // Цвет 
+        particle.style.boxShadow = `0 0 ${Math.floor(Math.random() * 10 + 10)}px ${color}`; // Тень
+        particle.style.background = color;
+        particle.style.borderRadius = '50%'; // Радиус
+        width = height = Math.random() * 5 + 4; // Размеры */
