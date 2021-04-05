@@ -355,7 +355,7 @@ const LearnPage: React.FC = () => {
     <Paper className={classes.root}>
       <span className={classes.hidden}>{currentPage}</span>
       <Typography variant="h4" component="h3">
-        Словарь
+        Электронный учебник
       </Typography>
       <Box className={classes.buttonsContainer}>
         <div

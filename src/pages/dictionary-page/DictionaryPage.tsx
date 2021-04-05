@@ -275,7 +275,6 @@ const DictionaryPage: React.FC = () => {
     wordsPerPage,
     searchString,
   }: Params): Promise<Array<Object>> => {
-    setIsWordListLoaded(false);
     const params = {
       userId: user.userId,
       token: user.token,
