@@ -228,6 +228,7 @@ const LearnPage: React.FC = () => {
     showTranslate: true,
     showButtons: true,
   });
+  const [pageIsDeleted, setPageIsDeleted] = useState(false)
   const [allUserWords, setAllUserWords] = useState([])
   const [modalOpened, setModalOpened] = useState(false);
   const [difficulty, setDifficulty] = useState('hard');
@@ -315,9 +316,14 @@ const LearnPage: React.FC = () => {
               // if (wordInfo.difficulty === 'deleted') return {...word}        
               return {...word, userWord: {...wordInfo}}
             })
+            if (updatedWordsList.every((updatedWord: any) => updatedWord.userWord.difficulty === 'deleted')) {
+              setPageIsDeleted(true)
+              return
+            }
             setWordsToRender(updatedWordsList.filter( (updatedWord: any) => updatedWord.userWord.difficulty !== 'deleted') )
             setIsLoaded(true)
             setIsWordListLoaded(true)
+            setPageIsDeleted(false)
           })
           .catch((e) => console.log(e))
         }
@@ -493,7 +499,12 @@ const LearnPage: React.FC = () => {
             <span className={classes.levelName}>B2+</span>
           </div>
         </Box>
-        <div className={classes.wordList}>
+        {pageIsDeleted && (<Box>
+          <Typography variant="h4" component="p" align='center'>
+          Данная страница удалена, так как все слова добавлены в удаленные.
+          </Typography>
+          </Box>)}
+        {!pageIsDeleted && (<div className={classes.wordList}>
           {isWordListLoaded &&
             wordsToRender.length > 0 &&
             wordsToRender.map((item: any, index) => (
@@ -505,7 +516,7 @@ const LearnPage: React.FC = () => {
                 settings={settings}
               />
             ))}
-        </div>
+        </div>)}
       </div>
       <ReactPaginate
         previousLabel="<"
