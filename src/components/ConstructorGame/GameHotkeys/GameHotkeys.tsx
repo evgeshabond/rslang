@@ -1,7 +1,7 @@
-import React from 'react';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import Popover from '@material-ui/core/Popover';
 import Button from '@material-ui/core/Button';
+import Popover from '@material-ui/core/Popover';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import React from 'react';
 import { ReactComponent as SettingsIcon } from '../../../assets/images/settings-small.svg';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme: Theme) =>
     hotkeys: {
       position: 'absolute',
       top: '20px',
-      right: '66px',
+      right: '106px',
       width: '30px',
       minWidth: '30px',
       height: '30px',

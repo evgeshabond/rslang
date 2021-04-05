@@ -16,17 +16,12 @@ export const TopBlock: React.FC = () => {
   const { amountOfRounds } = gameConstants;
   const dispatch = useDispatch();
 
-  const wordObj = useSelector(
-    (state: RootStateType) => state.constructorGameState.wordObj
-  );
-
-  const isRoundEnd = useSelector(
-    (state: RootStateType) => state.constructorGameState.constructorRoundStatus
-  );
-
-  const roundCount = useSelector(
-    (state: RootStateType) => state.constructorGameState.roundCount
-  );
+  const {
+    wordObj,
+    roundCount,
+    isFullScreen,
+    constructorRoundStatus: isRoundEnd,
+  } = useSelector((state: RootStateType) => state.constructorGameState);
 
   const endGameHandler = () => {
     dispatch(constructorGameStart(false));
@@ -62,7 +57,7 @@ export const TopBlock: React.FC = () => {
       >
         <ExitButton />
       </button>
-      <GameHotkeys />
+      {isFullScreen ? null : <GameHotkeys />}
     </>
   );
 };
