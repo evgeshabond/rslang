@@ -38,6 +38,7 @@ import settingsIcon from '../../assets/images/settings.svg';
 import { setLevelVisibility } from '../../actions/menu-actions';
 import aggregatePage from '../../utils/aggregatePage';
 import { CurrentWordListType, wordListLoaded } from '../../actions/word-actions';
+import { mainPath } from '../../utils/constants';
 
 
 // update theme object of material ui
@@ -289,18 +290,43 @@ const DictionaryPage: React.FC = () => {
     console.log(wordsToRender)
     let gameWordList = [...wordsToRender]
     console.log('gamewordlist is ', gameWordList)
-    // //  add words from 3 first pages
-    for (let i=0; i< 3; i++) {      
-      const wordsToAdd: any = await aggregatePage({page: i, group: 0, user});
-      //  if word is already in list dont add
-      wordsToAdd.forEach((wordToAdd: any) => {
-        const dublicateWord = gameWordList.find((word: any) => word.id === wordToAdd.id)
-        if (dublicateWord) {          
-        } else {
-          gameWordList.push(wordToAdd)
-        }
-      })   
+    //  add more words
+    if (currentPage > 0) {
+      //  add words from previous pages of dictinary
+      try{
+        const wordsToAdd: any = await getUpdatedWords({
+          page: (currentPage - 1),
+          group: currentGroup,
+          wordsPerPage: currentWordsPerPage,
+          searchString: difficulty
+        })
+        wordsToAdd.forEach((wordToAdd: any) => {
+          const dublicateWord = gameWordList.find((word: any) => word.id === wordToAdd.id)
+          if (dublicateWord) {          
+          } else {
+            gameWordList.push(wordToAdd)
+          }
+        }) 
+      }
+      catch(e) {
+        console.log(e)
+      }
+    } 
+    else {
+      // add words from 3 first pages of the group
+      for (let i=0; i < 3; i++) {      
+        const wordsToAdd: any = await aggregatePage({page: i, group: currentGroup, user});
+        //  if word is already in list dont add
+        wordsToAdd.forEach((wordToAdd: any) => {
+          const dublicateWord = gameWordList.find((word: any) => word.id === wordToAdd.id)
+          if (dublicateWord) {          
+          } else {
+            gameWordList.push(wordToAdd)
+          }
+        })   
+      }
     }
+    
     console.log('gamewordlist after loop is ', gameWordList)
     // //  remove deleted words if called not from deleted difficulty
     if (difficulty !== 'deleted' && !!difficulty) {
@@ -366,6 +392,7 @@ const DictionaryPage: React.FC = () => {
       if (!totalCount || totalCount < 1) setPagesCount(1);
       else await setPagesCount(Math.ceil(totalCount / currentWordsPerPage));
       setIsWordListLoaded(true);
+      console.log('inside getWords. words are ', newWords)
       return newWords;
     } catch (e) {
       console.log(e);
@@ -373,31 +400,48 @@ const DictionaryPage: React.FC = () => {
     return [];
   };
 
-  useEffect(() => {
-    console.log('words to render changed', wordsToRender)
-  }, [wordsToRender])
-
-  //  get words from API depending on difficulty, group, page
-  useEffect(() => {
-    getWords({
-      page: currentPage,
-      group: currentGroup,
-      wordsPerPage: currentWordsPerPage,
-      searchString: difficulty,
-    }).then((words: any) => {
+  //  fetch words and rename _id to id
+  const getUpdatedWords = async ({page, group, wordsPerPage, searchString}: Params) => {
+    try{
+      const words = await getWords({page, group, wordsPerPage, searchString})
       if (words.length < 1) {
-        setCurrentPage(0);
+        return([]);
       }
       /* eslint-disable */
       const updatedWords = words.map((item: any) => {
         if (item?._id) return {...item, id: item._id}
         return item
       })      
+      return updatedWords
+      /* eslint-enable */
+    }
+    catch(e) {
+      console.log(e)
+    }
+    return []
+  }
+
+  useEffect(() => {
+    console.log('words to render changed', wordsToRender)
+  }, [wordsToRender])
+
+  //  get words from API depending on difficulty, group, page
+  useEffect(() => {
+    getUpdatedWords({
+    page: currentPage,
+    group: currentGroup,
+    wordsPerPage: currentWordsPerPage,
+    searchString: difficulty,
+    })
+    .then((updatedWords: any) => {
+      if (updatedWords.length < 1) {
+        setCurrentPage(0);
+      }
       setWordsToRender(updatedWords);
       setIsLoaded(true);
-      /* eslint-enable */
-    });
-  }, [difficulty, currentGroup, currentPage, reRender]);
+    })
+    .catch(e => console.log(e))    
+  }, [difficulty, currentGroup, currentPage, reRender])
 
   const handleGroupChange = (
     e: React.MouseEvent<HTMLSpanElement, MouseEvent>
@@ -436,9 +480,9 @@ const DictionaryPage: React.FC = () => {
         <div
           className={clsx({
             [classes.difficultyButton]: true,
-            [classes.activeButton]: difficulty === 'all',
+            [classes.activeButton]: difficulty === 'learning',
           })}
-          onClick={() => setDifficulty('all')}
+          onClick={() => setDifficulty('learning')}
           aria-hidden={true}
         >
           <img
@@ -548,7 +592,7 @@ const DictionaryPage: React.FC = () => {
           <List>
             <ListItem
               button
-              onClick={() => handleGameChoose('savannah')}
+              onClick={() => handleGameChoose('/savannagame')}
               key="savannah"
             >
               <Typography align="center" variant="h4" component="p">
@@ -557,7 +601,7 @@ const DictionaryPage: React.FC = () => {
             </ListItem>
             <ListItem
               button
-              onClick={() => handleGameChoose('audiocall')}
+              onClick={() => handleGameChoose('/audiohame')}
               key="audiocall"
             >
               <Typography align="center" variant="h4" component="p">
@@ -566,7 +610,7 @@ const DictionaryPage: React.FC = () => {
             </ListItem>
             <ListItem
               button
-              onClick={() => handleGameChoose('sprint')}
+              onClick={() => handleGameChoose('/sprint-game')}
               key="sprint"
             >
               <Typography align="center" variant="h4" component="p">
@@ -575,7 +619,7 @@ const DictionaryPage: React.FC = () => {
             </ListItem>
             <ListItem
               button
-              onClick={() => handleGameChoose('/constructorgame')}
+              onClick={() => handleGameChoose(mainPath.constructorGame)}
               key="constructor"
             >
               <Typography align="center" variant="h4" component="p">
