@@ -19,7 +19,7 @@ import successSound from '../../assets/sounds/src_music_correct.mp3';
 import wrongSound from '../../assets/sounds/src_music_wrong.wav';
 import { shuffle } from '../../utils/shuffle';
 import RenderWordCard from './RenderWordCard';
-import { ReactComponent as CatSavanna } from "../../assets/images/cat-savanna.svg";
+import CatSavanna from "../../assets/images/CAT_gif_0.05.gif";
 import StartScreen from "./StartScreen";
 import WordInfo from './WordInfo';
 import NextBtn from './NextBtn';
@@ -27,6 +27,8 @@ import { LevelIcon } from "../../components/button-icons/level-icons/level-icons
 import SettingsBtn from './SettingsBtn';
 import LevelInfo from './LevelInfo';
 import LifeInfo from './LifeInfo';
+import FallingWord from './FallingWord';
+
 
 const SavannaGame: React.FC = () => {
   const isPlaying = useSelector((state: RootStateType) => state.savannaGameState.savannaGameStart);
@@ -98,10 +100,8 @@ const SavannaGame: React.FC = () => {
         <LevelInfo />
         {currentWords.length === 0 ? <Spinner /> : <RenderWordCard />}
         <LifeInfo />
-
       </div>
-
-      <CatSavanna className={styles.cat__image} />
+      <img className={styles.cat__image} src={CatSavanna} alt="loading..." />
     </div>
   ) : (
     <StartScreen />

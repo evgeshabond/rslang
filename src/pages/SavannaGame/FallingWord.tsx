@@ -7,15 +7,14 @@ import {
 import { RootStateType } from '../../reducer/root-reducer';
 import Spinner from '../../components/Spinner/Spinner';
 import { WordItem } from '../../components/word-item/word-item-game';
-import styles from './SavannaGame.module.css';
+import styles from './FallingWord.module.css';
 import { mainPath } from '../../utils/constants';
 import { PlayButton } from '../../components/button-icons/playBig-button/playBig-button';
 import { audioGameStart, wordUserAnswer, wordRight, isAnswerSelected } from '../../actions/audioGame-actions';
 import { shuffle } from '../../utils/shuffle';
-import FallingWord from './FallingWord';
 
 
-const RenderWordCard: React.FC = () => {
+const FallingWord: React.FC = () => {
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -57,19 +56,10 @@ const RenderWordCard: React.FC = () => {
   }
 
   return (
-    <div className={styles.falling__word__container} >
-      <FallingWord />
-
-      <div className={styles.word__list}>
-        {currentWords.map((word: CurrentWordListType, index: number) => (
-          <WordItem buttonClick={() => console.log('yyyy')}
-            key={word.id} word={word} />
-        ))}
-      </div>
-
+    <div className={styles.falling__word}>
+      {rightWord.word}
     </div>
-
   )
 }
 
-export default RenderWordCard;
+export default FallingWord;

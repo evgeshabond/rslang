@@ -49,7 +49,7 @@ const StartScreen: React.FC = () => {
   return (
     <div className={styles.game__wrapper}>
       <div className={styles.game__startSreen}>
-        <ControlledSelect />
+        {/* <ControlledSelect /> */}
         <div className={styles.game__title}>Аудиовызов</div>
         <div className={styles.game__decription}>Тренировка улучшает
         восприятие английской речи на слух.

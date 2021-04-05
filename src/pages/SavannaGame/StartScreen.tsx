@@ -53,10 +53,9 @@ const StartScreen: React.FC = () => {
         {/* <ControlledSelect /> */}
         <div className={styles.game__title}>Саванна</div>
         <div className={styles.game__decription}>Тренировка Саванна развивает
-        словарный запас. Выберите правильный первод слова.</div>
+        словарный запас. Выберите правильный перeвод слова.</div>
         < PlayButton buttonClick={() => { dispatch(savannaGameStart(true)); playGame(); }} />
       </div>
-      <CatAudio className={styles.cat__image} />
     </div>
   )
 }

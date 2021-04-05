@@ -1,0 +1,29 @@
+.falling__word {
+  align-self: center;
+  cursor: pointer;
+  border: none;
+  user-select: none;
+  width: 200px;
+  height: 50px;
+  border-radius: 30px;
+  color: #5b2467;
+  background-color: #c6d8e7;
+  /* box-shadow:  -12px -12px 24px #FFF,  12px 12px 24px #B4C1D5; */
+  border: none;
+  font-family: Roboto;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 50px;
+  letter-spacing: 0em;
+  text-align: center;
+  vertical-align: middle;
+  margin: 10px;
+
+  /* position: absolute;
+  transform-origin: 50% bottom;
+  transition: all 0.3s ease;
+  transform: translate(-50%);
+  display: inline-block;
+  left: 50%; */
+}
