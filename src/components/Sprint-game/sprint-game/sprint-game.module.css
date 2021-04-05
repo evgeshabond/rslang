@@ -54,9 +54,10 @@ p {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 1.5rem;
+  /* margin-top: 1.5rem; */
   /* margin-bottom: 1.2rem; */
 }
+.prepare{margin-top: 1rem;}
 
 .game__wrapper.play {
   display: flex;
@@ -126,6 +127,10 @@ img.side__buttons {
   align-items: center;
   margin-bottom: 1.8rem;
   margin-top: 3rem;
+}
+
+.watch__wrapper >svg{
+margin-bottom: 1.5rem;
 }
 .timer2 {
   position: absolute;

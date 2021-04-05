@@ -10,7 +10,7 @@ import {
   sprintGameSetNotLearntWords,
   sprintGameShuffledArray,
   sprintGameStatusChange,
-  sprintGameTotalPoints
+  sprintGameTotalPoints,
 } from '../../../actions/sprint-game-action';
 import { fetchWordsList } from '../../../actions/word-actions';
 import { ReactComponent as Cat } from '../../../assets/images/cat2.svg';
@@ -65,7 +65,6 @@ const SprintGame: React.FC = () => {
   });
   const [playWrongSound] = useSound(wrongSound, { interrupt: true });
 
-
   useEffect(() => {
     if (wordList.length === 0) {
       dispatch(fetchWordsList({ page: 0, group: 0 }));
@@ -101,7 +100,7 @@ const SprintGame: React.FC = () => {
         <Timer initialTimer={5} nextPage="play" timerFontSize="6.4rem" />
         <Timer1 className={styles.first__timer} />
       </div>
-      <p>Приготовьтесь!</p>
+      <p className={styles.prepare}>Приготовьтесь!</p>
       <Cat className={styles.cat__img} />
     </div>
   );
@@ -160,7 +159,6 @@ const SprintGame: React.FC = () => {
   const checkTheEndOfTheGame = () => {
     console.log(wordCounter, 'wordcounter');
     if (wordCounter === 5) {
-      
       dispatch(sprintGameStatusChange('finish'));
       console.log('i was here');
     }
@@ -170,7 +168,7 @@ const SprintGame: React.FC = () => {
     <div className={`${styles.game__wrapper} ${styles.play}`}>
       <div className={styles.sidebar}>
         <div className={styles.watch__wrapper}>
-          <Timer initialTimer={60} nextPage="finish" timerFontSize="1.8rem" />
+          <Timer initialTimer={600} nextPage="finish" timerFontSize="1.8rem" />
           <Timer2 className={styles.timer2} />
         </div>
       </div>

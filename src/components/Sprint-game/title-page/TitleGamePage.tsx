@@ -6,7 +6,6 @@ import { RootStateType } from '../../../reducer/root-reducer';
 import ControlledSelect from '../../ControlledSelect/ControlledSelect';
 import styles from './title-game-page.module.css';
 
-
 type Props = {
   gameTitle: string;
   gameDescription: string;
@@ -18,11 +17,10 @@ export const TitleGamePage: React.FC<Props> = ({
   gameDescription,
   buttonClick,
 }) => {
-
   const isLevelVisible = useSelector(
     (state: RootStateType) => state.menuState.isLevelVisible
   );
-  
+
   return (
     <div className={styles.game__wrapper}>
       <h2>{gameTitle}</h2>
