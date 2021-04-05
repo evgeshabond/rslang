@@ -9,6 +9,7 @@ export const loadState = () => {
     return JSON.parse(serializedState);
   } catch (err) {
     console.error('cannot load state from localStore');
+
     return undefined;
   }
 };
