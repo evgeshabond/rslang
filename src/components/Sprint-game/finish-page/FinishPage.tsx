@@ -1,19 +1,22 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
 import {
   sprintGameListOfCorrectWords,
   sprintGameListOfIncorrectWords,
+  sprintGameStatusChange,
 } from '../../../actions/sprint-game-action';
+import { ReactComponent as AudioSvg } from '../../../assets/images/audioOn.svg';
 import { RootStateType } from '../../../reducer/root-reducer';
 import { mainPath } from '../../../utils/constants';
 import styles from './finish-page.module.css';
-import { ReactComponent as AudioSvg } from '../../../assets/images/audioOn.svg';
 
 const FinishPage: React.FC = () => {
   const dispatch = useDispatch();
   const gameStatuses = useSelector(
     (state: RootStateType) => state.sprintGameState
   );
+  const history = useHistory();
   const { totalPoints, learntWords, notLearntWords } = gameStatuses;
 
   useEffect(() => {
@@ -42,11 +45,11 @@ const FinishPage: React.FC = () => {
             <AudioSvg />
           </button>
           <span className={styles['main-word']}>
-            {wordObject.word}-
+            {wordObject.word}</span>-
             <span className={styles.translation}>
               {wordObject.wordTranslate}
             </span>
-          </span>
+          
         </li>
       ))}
     </ul>
@@ -61,14 +64,14 @@ const FinishPage: React.FC = () => {
             onClick={() => soundHandler(wordObject.audio)}
             className={styles['incorrect-word-sound']}
           >
-            <AudioSvg style={{ fill: 'red' }} />
+            <AudioSvg />
           </button>
           <span className={styles['main-word']}>
-            {wordObject.word}-
+            {wordObject.word}</span>-
             <span className={styles.translation}>
               {wordObject.wordTranslate}
             </span>
-          </span>
+
         </li>
       ))}
     </ul>
@@ -105,10 +108,15 @@ const FinishPage: React.FC = () => {
       </div>
 
       <div className={styles['result-buttons']}>
-        <button type="button" className={styles['word-list']}>
+        <Link
+          to="/"
+          onClick={() => history.goBack()}
+          className={styles['go-back']}
+        >
           Назад
-        </button>
-        <button type="button" className={styles.repeat}>
+        </Link>
+
+        <button type="button" className={styles.repeat} onClick={()=>dispatch(sprintGameStatusChange('play'))}>
           Повторить
         </button>
       </div>
