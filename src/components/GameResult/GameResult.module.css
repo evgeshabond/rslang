@@ -107,6 +107,8 @@
   box-shadow: -2px -2px 4px #ffffff, 2px 2px 4px #d3a9d8;
   border-radius: 10px;
   border: none;
+  transition: 0.2s;
+  cursor: pointer;
 }
 
 .button__wrapper {
@@ -117,4 +119,9 @@
 
 .line {
   margin: 10px 0;
+}
+
+.restart:hover {
+  background-color: #f7d4f7;
+  transition: 0.2s;
 }

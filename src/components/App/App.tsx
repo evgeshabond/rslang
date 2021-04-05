@@ -8,6 +8,7 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import UserPage from '../../pages/auth-page/User-page';
 import { mainPath } from '../../utils/constants';
+import SprintGame from '../Sprint-game/sprint-game/SprintGame';
 import EbookPage from '../../pages/e-book-page/E-book-page';
 import LearnPage from '../../pages/learn-page/learn-page'
 import DictionaryPage from '../../pages/dictionary-page/DictionaryPage'
@@ -29,6 +30,7 @@ const App: React.FC = () => (
             <Route path={mainPath.gamePage} component={GamePage} />
             <Route path={mainPath.wordList} component={WordsList} />
             <Route path={mainPath.auth} component={UserPage} />
+            <Route path={mainPath.sprint} component={SprintGame} />
             <Route path={mainPath.ebookPage} component={EbookPage} exact />
             <Route path={mainPath.learnPage} component={LearnPage} />
             <Route path={mainPath.dictionaryPage} component={DictionaryPage} />
