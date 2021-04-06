@@ -23,12 +23,9 @@ export type RootStateType = {
   wordState: WordStateType;
   userState: UserState;
   menuState: MenuState;
-<<<<<<< HEAD
   audioGameState: AudioGameState;
   savannaGameState: SavannaGameState;
-=======
   sprintGameState: SprintGameStateType;
->>>>>>> e9648678e6b913cdbef042b7c66f44e1223ae2b0
   constructorGameState: ConstructorGameStartState;
   questionState: QuestionStateType;
   statisticState: StatisticStateType;
