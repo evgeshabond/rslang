@@ -37,12 +37,9 @@ const rootReducer = combineReducers({
   wordState: wordReducer,
   userState: userReducer,
   menuState: menuReducer,
-<<<<<<< HEAD
   audioGameState: audioGameReducer,
   savannaGameState: savannaGameReducer,
-=======
   sprintGameState: sprintGameReducer,
->>>>>>> e9648678e6b913cdbef042b7c66f44e1223ae2b0
   constructorGameState: constructorGameReducer,
   questionState: questionReducer,
   statisticState: statisticReducer,
