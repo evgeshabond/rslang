@@ -31,9 +31,12 @@ export const BottomBlock: React.FC = () => {
 
   const user = useSelector((state: RootStateType) => state.userState.user);
 
+  // useEffect(() => {
+  //   console.log(wordObj);
+  // }, []);
+
   useEffect(() => {
     dispatch(setComboArray(comboCounter));
-    console.log(comboCounter);
   }, [comboCounter]);
 
   useEffect(() => {
