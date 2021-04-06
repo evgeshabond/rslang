@@ -1,52 +1,44 @@
+import FullscreenIcon from '@material-ui/icons/Fullscreen';
+import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
 import React, { useEffect } from 'react';
+import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import { useDispatch, useSelector } from 'react-redux';
 import useSound from 'use-sound';
-import styles from './ConstructorGame.module.css';
-import { ReactComponent as CatSleeping } from '../../assets/images/cat-sleeping.svg';
+import {
+  addLearnedWord,
+  setComboCounter,
+  setFullScreenStatus,
+  setLearnCount,
+  setRoundEnd,
+  setWordObj,
+  updateCharsPosition,
+} from '../../actions/constructor-game-actions';
 import { ReactComponent as AudioOn } from '../../assets/images/audioOn.svg';
+import { ReactComponent as CatSleeping } from '../../assets/images/cat-sleeping.svg';
 import { RootStateType } from '../../reducer/root-reducer';
 import { mainPath } from '../../utils/constants';
-import {
-  setRoundEnd,
-  updateCharsPosition,
-  setWordObj,
-  setLearnCount,
-} from '../../actions/constructor-game-actions';
 import { shuffle } from '../../utils/shuffle';
-import { StartScreen } from './Start-screen/Start-screen';
-import { DragEndDrop } from './DragEndDrop/DragEndDrop';
-import { BottomBlock } from './BottomBlock/BottomBlock';
-import { TopBlock } from './TopBlock/TopBlock';
 import Spinner from '../Spinner/Spinner';
+import { BottomBlock } from './BottomBlock/BottomBlock';
+import styles from './ConstructorGame.module.css';
+import { DragEndDrop } from './DragEndDrop/DragEndDrop';
+import { StartScreen } from './Start-screen/Start-screen';
+import { TopBlock } from './TopBlock/TopBlock';
 
 type WordObjectType = { [key: string]: string };
 
 const ConstructorGame: React.FC = () => {
   const dispatch = useDispatch();
 
-  const shuffledWordList = useSelector(
-    (state: RootStateType) => state.constructorGameState.shuffledWordList
-  );
-
-  const wordObj = useSelector(
-    (state: RootStateType) => state.constructorGameState.wordObj
-  );
-
-  const isRoundEnd = useSelector(
-    (state: RootStateType) => state.constructorGameState.constructorRoundStatus
-  );
-
-  const learned = useSelector(
-    (state: RootStateType) => state.constructorGameState.learned
-  );
-
-  const roundCount = useSelector(
-    (state: RootStateType) => state.constructorGameState.roundCount
-  );
-
-  const chars = useSelector(
-    (state: RootStateType) => state.constructorGameState.chars
-  );
+  const {
+    shuffledWordList,
+    wordObj,
+    constructorRoundStatus: isRoundEnd,
+    learned,
+    roundCount,
+    chars,
+    comboCounter,
+  } = useSelector((state: RootStateType) => state.constructorGameState);
 
   useEffect(() => {
     dispatch(setWordObj(shuffledWordList[roundCount]));
@@ -123,22 +115,69 @@ const ConstructorGame: React.FC = () => {
 
     const currentChars = chars.map((char) => char[1]).join('');
     if (wordObj.word === currentChars && isRoundEnd) {
+      dispatch(setComboCounter(comboCounter + 1));
+      dispatch(addLearnedWord(wordObj));
       dispatch(setLearnCount(learned + 1));
     }
   }, [isRoundEnd]);
 
+  const handle = useFullScreenHandle();
+
+  const isFullScreen = useSelector(
+    (state: RootStateType) => state.constructorGameState.isFullScreen
+  );
+
+  function fullScreenEnterHandler() {
+    dispatch(setFullScreenStatus(true));
+    handle.enter();
+  }
+  function fullScreenExitHandler() {
+    dispatch(setFullScreenStatus(false));
+    handle.exit();
+  }
+
   return constructorGameIsStarted ? (
-    <div className={styles['my-game']}>
+    <FullScreen handle={handle} className={styles['my-game']}>
       {wordObj ? (
         <>
+          {isFullScreen ? (
+            <button
+              className={styles['full-screen__button']}
+              type="button"
+              onClick={() => fullScreenExitHandler()}
+            >
+              <FullscreenExitIcon
+                className={styles['full-screen__icon']}
+                width="24px"
+                height="24px"
+              />
+            </button>
+          ) : (
+            <button
+              className={styles['full-screen__button']}
+              type="button"
+              onClick={() => fullScreenEnterHandler()}
+            >
+              <FullscreenIcon
+                className={styles['full-screen__icon']}
+                width="24px"
+                height="24px"
+              />
+            </button>
+          )}
+
           <TopBlock />
           {isRoundEnd ? (
             <button
               type="button"
-              className={styles['audio-button']}
+              className={
+                isFullScreen
+                  ? `${styles['audio-button']} ${styles['full-screen__audio-button']}`
+                  : `${styles['audio-button']}`
+              }
               onClick={() => wordSound()}
             >
-              <AudioOn />
+              <AudioOn fill="#733999" />
             </button>
           ) : null}
           <DragEndDrop />
@@ -160,7 +199,7 @@ const ConstructorGame: React.FC = () => {
       ) : (
         <Spinner />
       )}
-    </div>
+    </FullScreen>
   ) : (
     <StartScreen />
   );

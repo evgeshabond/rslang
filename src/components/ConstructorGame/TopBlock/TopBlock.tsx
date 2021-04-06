@@ -1,30 +1,33 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootStateType } from '../../../reducer/root-reducer';
-import styles from './TopBlock.module.css';
+import {
+  clearWords,
+  constructorGameStart,
+  setResultPageState,
+} from '../../../actions/constructor-game-actions';
+import { setLevelVisibility } from '../../../actions/menu-actions';
 import { ReactComponent as ExitButton } from '../../../assets/images/exit-button-mini.svg';
-import { constructorGameStart } from '../../../actions/constructor-game-actions';
-import GameHotkeys from '../GameHotkeys/GameHotkeys';
+import { RootStateType } from '../../../reducer/root-reducer';
 import { gameConstants } from '../../../utils/constants';
+import GameHotkeys from '../GameHotkeys/GameHotkeys';
+import styles from './TopBlock.module.css';
 
 export const TopBlock: React.FC = () => {
   const { amountOfRounds } = gameConstants;
   const dispatch = useDispatch();
 
-  const wordObj = useSelector(
-    (state: RootStateType) => state.constructorGameState.wordObj
-  );
-
-  const isRoundEnd = useSelector(
-    (state: RootStateType) => state.constructorGameState.constructorRoundStatus
-  );
-
-  const roundCount = useSelector(
-    (state: RootStateType) => state.constructorGameState.roundCount
-  );
+  const {
+    wordObj,
+    roundCount,
+    isFullScreen,
+    constructorRoundStatus: isRoundEnd,
+  } = useSelector((state: RootStateType) => state.constructorGameState);
 
   const endGameHandler = () => {
     dispatch(constructorGameStart(false));
+    dispatch(setResultPageState(false));
+    dispatch(setLevelVisibility(true));
+    clearWords();
   };
 
   return (
@@ -54,7 +57,7 @@ export const TopBlock: React.FC = () => {
       >
         <ExitButton />
       </button>
-      <GameHotkeys />
+      {isFullScreen ? null : <GameHotkeys />}
     </>
   );
 };

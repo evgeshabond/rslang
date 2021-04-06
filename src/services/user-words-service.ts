@@ -1,4 +1,4 @@
-// import { serverUrlLocal } from '../utils/constants';
+// import { serverUrl, serverUrl } from '../utils/constants';
 import { difficulty, serverUrl } from '../utils/constants';
 
 export default class UserWordsService {
@@ -22,27 +22,26 @@ export default class UserWordsService {
       userId: string;
       wordId: string;
       token: string;
-      body: {
-        difficulty?: string;
-        optional?: {
-          learning?: boolean;
-        };
-      };
     },
-    unCheckErr?: boolean
+    body?: {
+      difficulty?: string;
+      optional?: {
+        learning?: boolean;
+        learned?: boolean;
+        correctCount?: number;
+        inCorrectCount?: number;
+      };
+    }
   ) => {
-    const body = {
-      difficulty: difficulty.easy,
+    const initialBody = {
+      difficulty: body?.difficulty || difficulty.easy,
       optional: {
-        learning: false,
+        learning: body?.optional?.learning || false,
+        learned: body?.optional?.learned || false,
+        correctCount: body?.optional?.correctCount || 0,
+        inCorrectCount: body?.optional?.inCorrectCount || 0,
       },
     };
-    if (params.body.difficulty) {
-      body.difficulty = params.body.difficulty;
-    }
-    if (params.body.optional?.learning) {
-      body.optional.learning = params.body.optional.learning;
-    }
 
     const res = await fetch(
       `${serverUrl}users/${params.userId}/words/${params.wordId}`,
@@ -53,15 +52,13 @@ export default class UserWordsService {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(body),
+        body: JSON.stringify(initialBody),
       }
     );
-    if (!unCheckErr) {
-      this.checkErr(res.status);
-      const data = await res.json();
-      return data;
-    }
-    return null;
+
+    this.checkErr(res.status);
+    const data = await res.json();
+    return data;
   };
 
   getWord = async (params: {
@@ -95,11 +92,12 @@ export default class UserWordsService {
       difficulty?: string;
       optional?: {
         learning?: boolean;
+        learned?: boolean;
+        correctCount?: number;
+        inCorrectCount?: number;
       };
     }
   ) => {
-    await this.addWord({ ...params, body }, true);
-
     const res = await fetch(
       `${serverUrl}users/${params.userId}/words/${params.wordId}`,
       {
@@ -112,6 +110,51 @@ export default class UserWordsService {
         body: JSON.stringify(body),
       }
     );
+
+    if (res.status === 404) {
+      const data = await this.addWord(params, body);
+      return data;
+    }
+    this.checkErr(res.status);
+    const data = await res.json();
+    return data;
+  };
+
+  updateLearnWord = async (
+    params: {
+      userId: string;
+      wordId: string;
+      token: string;
+    },
+    gameResult: {
+      isCorrect: boolean;
+    }
+  ) => {
+    const res = await fetch(
+      `${serverUrl}users/${params.userId}/learn/${params.wordId}`,
+      {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${params.token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ optional: gameResult }),
+      }
+    );
+    if (res.status === 404) {
+      const initialBody = {
+        difficulty: difficulty.easy,
+        optional: {
+          learning: true,
+          learned: gameResult.isCorrect,
+          correctCount: gameResult.isCorrect ? 1 : 0,
+          inCorrectCount: gameResult.isCorrect ? 0 : 1,
+        },
+      };
+      const data = await this.addWord(params, initialBody);
+      return data;
+    }
     this.checkErr(res.status);
     const data = await res.json();
     return data;

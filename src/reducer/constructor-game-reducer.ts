@@ -1,12 +1,20 @@
 import {
-  CONSTRUCTOR_GAME_PLAY_STATUS,
+  ADD_LEARNED_WORD,
+  ADD_NOT_LEARNED_WORD,
+  CLEAR_WORDS,
   ConstructorGameActionType,
-  CONSTRUCTOR_SHUFFLED_LIST,
+  CONSTRUCTOR_GAME_PLAY_STATUS,
+  CONSTRUCTOR_GAME_RESULT_STATUS,
   CONSTRUCTOR_ROUND_STATUS,
+  CONSTRUCTOR_SHUFFLED_LIST,
+  RESET_COMBO,
   UPDATE_CHARS_POSITION,
+  UPDATE_COMBO_ARRAY,
+  UPDATE_COMBO_COUNTER,
+  UPDATE_FULLSCREEN_STATUS,
+  UPDATE_LEARNED_COUNT,
   UPDATE_ROUND_COUNT,
   UPDATE_WORD_OBJ,
-  UPDATE_LEARNED_COUNT,
 } from '../actions/constructor-game-actions';
 import { CurrentWordListType } from '../actions/word-actions';
 
@@ -18,6 +26,12 @@ export type ConstructorGameStartState = {
   roundCount: number;
   wordObj: CurrentWordListType;
   learned: number;
+  isResultPage: boolean;
+  learnedWords: Array<CurrentWordListType>;
+  notLearnedWords: Array<CurrentWordListType>;
+  comboCounter: number;
+  comboArray: number[];
+  isFullScreen: boolean;
 };
 
 const initialState: ConstructorGameStartState = {
@@ -25,8 +39,14 @@ const initialState: ConstructorGameStartState = {
   shuffledWordList: [],
   constructorRoundStatus: false,
   chars: [['', '']],
-  roundCount: 0,
+  roundCount: 1,
   learned: 0,
+  learnedWords: [],
+  notLearnedWords: [],
+  isResultPage: false,
+  comboCounter: 0,
+  comboArray: [],
+  isFullScreen: false,
   wordObj: {
     id: '0',
     group: 0,
@@ -64,6 +84,44 @@ const constructorGameReducer = (
       return { ...state, wordObj: action.payload };
     case UPDATE_LEARNED_COUNT:
       return { ...state, learned: action.payload };
+    case CONSTRUCTOR_GAME_RESULT_STATUS:
+      return { ...state, isResultPage: action.payload };
+    case ADD_LEARNED_WORD:
+      return {
+        ...state,
+        learnedWords: [...state.learnedWords, action.payload],
+      };
+    case ADD_NOT_LEARNED_WORD:
+      return {
+        ...state,
+        notLearnedWords: [...state.notLearnedWords, action.payload],
+      };
+    case CLEAR_WORDS:
+      return {
+        ...state,
+        notLearnedWords: [],
+        learnedWords: [],
+      };
+    case UPDATE_COMBO_COUNTER:
+      return {
+        ...state,
+        comboCounter: action.payload,
+      };
+    case RESET_COMBO:
+      return {
+        ...state,
+        comboCounter: 0,
+      };
+    case UPDATE_COMBO_ARRAY:
+      return {
+        ...state,
+        comboArray: [...state.comboArray, action.payload],
+      };
+    case UPDATE_FULLSCREEN_STATUS:
+      return {
+        ...state,
+        isFullScreen: action.payload,
+      };
     default:
       return state;
   }

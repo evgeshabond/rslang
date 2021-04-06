@@ -15,6 +15,9 @@ const initialState = {
     difficulty: difficulty.easy,
     optional: {
       learning: false,
+      learned: false,
+      correctCount: 0,
+      inCorrectCount: 0,
     },
   },
   userWordsList: [],

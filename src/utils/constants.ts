@@ -3,7 +3,10 @@ export const mainPath = {
   gamePage: '/gamepage',
   wordList: '/wordlist',
   auth: '/user',
+  sprint: '/sprint',
   ebookPage: '/ebookpage',
+  learnPage: '/ebookpage/learn',
+  dictionaryPage: '/ebookpage/dictionary',
   profilePAge: '/profile',
   audioGame: '/audiogame',
   savannaGame: '/savanna',
@@ -12,6 +15,7 @@ export const mainPath = {
   langUrl: 'https://rslang-app.herokuapp.com/',
   questionPage: '/quiz',
   userStatistic: '/statistic',
+
 };
 
 export const authErrorPath = {

@@ -65,9 +65,13 @@ export default class AggregateService {
         break;
       case filterQuery.learnedWordsAndHardWords:
         filter =
-          '{"$or":[{"userWord.difficulty":"hard"}, {"userWord.optional.learning":true}]}';
+          '{"$and":[{"$or":[{"userWord.difficulty":"hard"},{"userWord.optional.learning":true}]},{"userWord.difficulty":{"$ne":"deleted"}}]}';
 
         break;
+      case 'learning': 
+        filter = 
+          '{"userWord.optional.learning":true}';  
+        break;  
       default:
         break;
     }
