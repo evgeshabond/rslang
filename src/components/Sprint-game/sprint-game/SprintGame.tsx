@@ -1,3 +1,4 @@
+import { request } from 'node:http';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import useSound from 'use-sound';
@@ -5,6 +6,7 @@ import {
   clearWords,
   sprintGameBallsCounter,
   sprintGameCheckPoints,
+  sprintGameCurrentPoints,
   sprintGameRandomArray,
   sprintGameSetLearntWords,
   sprintGameSetNotLearntWords,
@@ -56,14 +58,13 @@ const SprintGame: React.FC = () => {
   } = gameStatuses;
 
   const [wordCounter, setWordCounter] = useState(0);
-  const getRandomNumber = (num: number) => Math.floor(Math.random() * num);
   const [wordToGuess, setWordToGuess] = useState('');
-  const [startCountDown] = useSound(countDown);
   const [correctAnswer, setCorrectAnswer] = useState(true);
   const [playCorrectSound] = useSound(correctSound, {
     interrupt: true,
   });
   const [playWrongSound] = useSound(wrongSound, { interrupt: true });
+  const getRandomNumber = (num: number) => Math.floor(Math.random() * num);
 
   useEffect(() => {
     if (wordList.length === 0) {
@@ -107,12 +108,12 @@ const SprintGame: React.FC = () => {
 
   const changeGameStats = () => {
     dispatch(sprintGameSetLearntWords(shuffledArray[wordCounter]));
-
+    changeCurrentPoints();
     setCorrectAnswer(true);
     playCorrectSound();
     dispatch(sprintGameTotalPoints(totalPoints + currentPoints));
     dispatch(sprintGameCheckPoints(checkpoints < 3 ? checkpoints + 1 : 1));
-    checkTheEndOfTheGame();
+    // checkTheEndOfTheGame();
     if (checkpoints === 2) {
       dispatch(sprintGameBallsCounter(ballsCounter + 1));
       if (ballsCounter === 4) {
@@ -123,12 +124,10 @@ const SprintGame: React.FC = () => {
 
   const cleanCurrentGameStats = () => {
     dispatch(sprintGameSetNotLearntWords(shuffledArray[wordCounter]));
-    checkTheEndOfTheGame();
-
+    // checkTheEndOfTheGame();
     setCorrectAnswer(false);
     playWrongSound();
     dispatch(sprintGameCheckPoints(0));
-    // dispatch(sprintGameBallsCounter(0));
   };
 
   const checkTheWordRight = () => {
@@ -137,6 +136,7 @@ const SprintGame: React.FC = () => {
     } else {
       cleanCurrentGameStats();
     }
+    checkTheEndOfTheGame();
     setWordCounter(wordCounter + 1);
   };
 
@@ -146,20 +146,38 @@ const SprintGame: React.FC = () => {
     } else {
       cleanCurrentGameStats();
     }
+    checkTheEndOfTheGame();
     setWordCounter(wordCounter + 1);
   };
 
+  const changeCurrentPoints = () => {
+    if (ballsCounter === 0) {
+      dispatch(sprintGameCurrentPoints(50));
+    } else if (ballsCounter === 1) {
+      dispatch(sprintGameCurrentPoints(60));
+    } else if (ballsCounter === 2) {
+      dispatch(sprintGameCurrentPoints(70));
+    } else if (ballsCounter === 3) {
+      dispatch(sprintGameCurrentPoints(80));
+    } else if (ballsCounter === 4) {
+      dispatch(sprintGameCurrentPoints(100));
+    }
+  };
+
   useEffect(() => {
-    getRandomNumber(2) === 0
-      ? setWordToGuess(shuffledArray[wordCounter].wordTranslate)
-      : setWordToGuess(shuffledArray[randomArray[wordCounter]].wordTranslate);
+    console.log(wordCounter, 'error here');
+    console.log(shuffledArray, 'array');
+    console.log();
+    if (wordCounter < shuffledArray.length) {
+      getRandomNumber(2) === 0
+        ? setWordToGuess(shuffledArray[wordCounter].wordTranslate)
+        : setWordToGuess(shuffledArray[randomArray[wordCounter]].wordTranslate);
+    }
   }, [wordCounter]);
 
   const checkTheEndOfTheGame = () => {
-    console.log(wordCounter, 'wordcounter');
-    if (wordCounter === 5) {
+    if (wordCounter === shuffledArray.length - 1) {
       dispatch(sprintGameStatusChange('finish'));
-      console.log('i was here');
     }
   };
 
@@ -180,8 +198,11 @@ const SprintGame: React.FC = () => {
       >
         <div className={styles.point}>
           <div className={styles.total__points}>{totalPoints}</div>
-          <div className={styles.current__points}><span className={styles['point-number']}>
-            {currentPoints > 0 ? currentPoints : currentPoints}</span>очков за слово
+          <div className={styles.current__points}>
+            <span className={styles['point-number']}>
+              {currentPoints > 0 ? currentPoints : currentPoints}
+            </span>
+            очков за слово
           </div>
         </div>
 
@@ -226,7 +247,7 @@ const SprintGame: React.FC = () => {
         <button
           type="button"
           className={styles.refresh__button}
-          onClick={() => dispatch(sprintGameStatusChange('timer'))}
+          onClick={() => dispatch(sprintGameStatusChange('timer '))}
         >
           <img src={refreshIcon} alt="refresh icon" />
         </button>
