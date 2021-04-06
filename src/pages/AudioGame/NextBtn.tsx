@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import useSound from 'use-sound';
 import {
   CurrentWordListType,
   fetchWordsList,
@@ -12,6 +13,7 @@ import { mainPath } from '../../utils/constants';
 import { PlayButton } from '../../components/button-icons/playBig-button/playBig-button';
 import { audioGameStart, wordUserAnswer, wordRight, isAnswerSelected, currentPlayWords } from '../../actions/audioGame-actions';
 import { shuffle } from '../../utils/shuffle';
+import wrongSound from '../../assets/sounds/src_music_wrong.wav';
 
 
 const NextBtn: React.FC = () => {
@@ -28,6 +30,7 @@ const NextBtn: React.FC = () => {
   const isAnswer = useSelector((state: RootStateType) => state.audioGameState.isAnswerSelected);
   const currentWords = useSelector((state: RootStateType) => state.audioGameState.currentPlayWords);
   const stepCounter = useSelector((state: RootStateType) => state.audioGameState.stepCounter);
+  const [playWrongAnswer] = useSound(wrongSound);
 
 
   const playGame = () => {
@@ -41,6 +44,12 @@ const NextBtn: React.FC = () => {
     dispatch(currentPlayWords(currentPlayList))
   }
 
+  const dontKnowANswer = () => {
+    playWrongAnswer();
+    dispatch(wordUserAnswer(rightWord.word));
+    // dispatch(isAnswerSelected(true));
+  }
+
   return isAnswer ? (
     <div>
       {(stepCounter === 10) ? (<div>
@@ -52,7 +61,7 @@ const NextBtn: React.FC = () => {
       }
     </div>
   ) : (
-    <button onClick={() => { dispatch(isAnswerSelected(true)); }} type='button' className={styles.playing__btn}>
+    <button onClick={() => { dontKnowANswer() }} type='button' className={styles.playing__btn}>
       Не знаю
     </button >
   )

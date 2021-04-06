@@ -200,7 +200,7 @@
   content: attr(data-title);
   position: absolute;
   left: 70%;
-  top: 25%;
+  top: 10%;
   z-index: 1;
   background: var(--btnBackColor);
   opacity: 0.8;

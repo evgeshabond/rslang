@@ -67,9 +67,6 @@ const FallingWord: React.FC = () => {
       setPosition(i)
     }
   }
-
-  // className={`${styles.word__item}  ${wordUserAnswer !== correctWord.word && wordUserAnswer === word.word ? styles.word__item__wrong : ''} ${(wordUserAnswer === correctWord.word && wordUserAnswer === word.word) ? styles.word__item__right : ''} `}
-
   return (
     <button type='button' className={`${styles.falling__word}
      ${(isAnswer && userAnswer === rightWord.word) ? styles.word__stop : ''}

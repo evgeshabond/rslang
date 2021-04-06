@@ -39,7 +39,7 @@
   color: tomato;
 }
 
-.word__stop::before {
+.word__stop::after {
   background: url(../../assets/images/arrow.svg) no-repeat;
   transition: all 0.15s ease;
   content: '';
