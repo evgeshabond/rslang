@@ -41,18 +41,18 @@ export const BottomBlock: React.FC = () => {
     const param = {
       userId: user.userId,
       token: user.token,
+    };
+    const body = {
+      date: new Date(),
       gameType: gameType.constructors,
-      body: {
-        date: new Date(),
-        level: user.level,
-        know: learned,
-        dont_know: dontKnow,
-      },
+      know: learned,
+      dont_know: dontKnow,
+      combo: 0,
     };
 
     if (roundCount === amountOfRounds) {
-      console.log('Know', param.body.know, 'Dont know', param.body.dont_know);
-      dispatch(setStatistics(param));
+      console.log('Know', body.know, 'Dont know', body.dont_know);
+      // dispatch(setStatistics(param, body));
     }
   }, [roundCount]);
 

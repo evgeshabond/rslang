@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { serverUrlLocal, serverUrl } from '../utils/constants';
 import { GameStatistic } from '../reducer/statistic-state-types';
 
@@ -17,23 +18,24 @@ export default class StatisticService {
     return data;
   };
 
-  setStatistic = async (params: {
-    userId: string;
-    token: string;
-    gameType: string;
-    body: GameStatistic;
-  }) => {
-    const body = {
+  setStatistic = async (
+    params: {
+      userId: string;
+      token: string;
+    },
+    body: GameStatistic
+  ) => {
+    const bodyFetch = {
       optional: {
         gameStatistic: {
-          [params.gameType]: {
-            total: [params.body],
+          [body.gameType]: {
+            total: [body],
           },
         },
       },
     };
     const res = await fetch(
-      `${serverUrlLocal}users/${params.userId}/statistics/gameadd/${params.gameType}`,
+      `${serverUrlLocal}users/${params.userId}/statistics/gameadd/${body.gameType}`,
       {
         method: 'PUT',
         headers: {
@@ -41,7 +43,7 @@ export default class StatisticService {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(body),
+        body: JSON.stringify(bodyFetch),
       }
     );
 
@@ -56,14 +58,16 @@ export default class StatisticService {
     return data;
   };
 
-  getDateStatistic = async (params: {
-    userId: string;
-    token: string;
-    gameType: string;
-  }) => {
-    const date = new Date();
+  getTodayStatistic = async (
+    params: {
+      userId: string;
+      token: string;
+    },
+    gameType: string
+  ) => {
+    const today = moment().startOf('day');
     const res = await fetch(
-      `${serverUrlLocal}users/${params.userId}/statistics/gamedata/${params.gameType}/date/${date}`,
+      `${serverUrlLocal}users/${params.userId}/statistics/gamedata/${today}/gameType/${gameType}`,
       {
         method: 'GET',
         headers: {

@@ -1,7 +1,10 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAggregatedWordsList } from '../../actions/aggregated-word-action';
-import { getDateStatistic } from '../../actions/statistic-action';
+import {
+  getTodayStatistic,
+  setStatistics,
+} from '../../actions/statistic-action';
 import {
   addUserWord,
   getUserWord,
@@ -13,7 +16,10 @@ import {
   userWordToLearnResult,
   userWordUnDeleted,
 } from '../../actions/user-words-action';
-import { gameStartStatusChange } from '../../actions/word-actions';
+import {
+  fetchWordsList,
+  gameStartStatusChange,
+} from '../../actions/word-actions';
 import { RootStateType } from '../../reducer/root-reducer';
 import { filterQuery } from '../../services/word-aggregate-service';
 import { difficulty, GameStart, gameType } from '../../utils/constants';
@@ -37,14 +43,33 @@ export const GameTest: React.FC = () => {
     (state: RootStateType) => state.userWordsState
   );
   const dispatch = useDispatch();
+  const getStat = () => {
+    const param = {
+      userId: user.userId,
+      token: user.token,
+    };
+
+    dispatch(getTodayStatistic(param));
+  };
+  const getWordList = () => {
+    dispatch(fetchWordsList({ page: 1, group: 2 }));
+  };
+
   const sendStat = () => {
     const param = {
       userId: user.userId,
       token: user.token,
-      gameType: gameType.savanna,
+    };
+    const body = {
+      date: new Date(),
+      gameType: gameType.constructors,
+      know: 6,
+      dont_know: 3,
+      combo: 5,
+      wordsId: ['11', '2', '31', '4', '51'],
     };
 
-    dispatch(getDateStatistic(param));
+    dispatch(setStatistics(param, body));
   };
 
   const addwordToState = () => {
@@ -169,7 +194,7 @@ export const GameTest: React.FC = () => {
       userId: user.userId,
       token: user.token,
       page: 0,
-      group: 0, // не обязательное поле по умолчанию будет 0
+      group: 1, // не обязательное поле по умолчанию будет 0
       wordsPerPage: 20,
     };
     dispatch(getAggregatedWordsList(params, filterQuery.allWords));
@@ -279,8 +304,10 @@ export const GameTest: React.FC = () => {
 
   return (
     <div>
+      <input type="button" value="send stat" onClick={getWordList} />
       <div>game test</div>
       <input type="button" value="send stat" onClick={sendStat} />
+      <input type="button" value="get stat" onClick={getStat} />
       <h3>savanna</h3>
       <input type="button" value="add word to back" onClick={addwordToState} />
       <input type="button" value="get word to state" onClick={getWordToState} />

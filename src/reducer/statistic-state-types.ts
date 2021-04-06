@@ -1,9 +1,19 @@
 export type GameStatistic = {
   _id?: string;
   date: Date;
-  level: string;
+  gameType: string;
   know: number;
   dont_know: number;
+  combo: number;
+  wordsId: Array<string>;
+};
+
+export type TodayGameStatisticType = {
+  correctAvg: number;
+  gameCount: number;
+  gameType: Array<string>;
+  maxCombo: number;
+  wordsCountArr: Array<string>;
 };
 
 export type AllGameStatisticType = {
