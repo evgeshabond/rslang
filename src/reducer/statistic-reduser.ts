@@ -7,10 +7,14 @@ import {
   TODAY_SAVANNA_STATISTIC,
   TODAY_SPRINT_STATISTIC,
   CLEAR_TODAY_STATISTIC,
+  TODAY_GAME_STATISTIC,
+  TOTAL_STATISTIC,
 } from '../actions/statistic-action';
 import {
   AllGameStatisticType,
   TodayGameStatisticType,
+  TodayTotalGamesStatisticType,
+  TotalStatisticType,
 } from './statistic-state-types';
 
 export type StatisticStateType = {
@@ -23,7 +27,8 @@ export type StatisticStateType = {
     audiocall: TodayGameStatisticType;
     constructors: TodayGameStatisticType;
   };
-  gameTotal: {};
+  totalToday: TodayTotalGamesStatisticType;
+  totalStatistic: Array<TotalStatisticType>;
   errorMsg: string;
 };
 
@@ -45,6 +50,10 @@ const initialState = {
         total: [],
       },
     },
+  },
+  totalToday: {
+    learnedWordCount: 0,
+    correctAvg: 0,
   },
   gameToday: {},
   errorMsg: '',
@@ -68,7 +77,6 @@ export const statisticReducer = (
         errorMsg: action.payload,
       };
     case TODAY_SAVANNA_STATISTIC:
-      console.log(action.payload);
       return {
         ...state,
         gameToday: { ...state.gameToday, savanna: action.payload },
@@ -92,6 +100,16 @@ export const statisticReducer = (
       return {
         ...state,
         gameToday: {},
+      };
+    case TODAY_GAME_STATISTIC:
+      return {
+        ...state,
+        totalToday: action.payload,
+      };
+    case TOTAL_STATISTIC:
+      return {
+        ...state,
+        totalStatistic: action.payload,
       };
     case CLEAR_ALL_STATISTIC:
       return initialState;

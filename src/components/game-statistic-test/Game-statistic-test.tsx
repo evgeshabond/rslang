@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAggregatedWordsList } from '../../actions/aggregated-word-action';
 import {
   getTodayStatistic,
+  getTotalStatistics,
   setStatistics,
 } from '../../actions/statistic-action';
 import {
@@ -55,18 +56,26 @@ export const GameTest: React.FC = () => {
     dispatch(fetchWordsList({ page: 1, group: 2 }));
   };
 
+  const getTotalStat = () => {
+    const param = {
+      userId: user.userId,
+      token: user.token,
+    };
+
+    dispatch(getTotalStatistics(param));
+  };
+
   const sendStat = () => {
     const param = {
       userId: user.userId,
       token: user.token,
     };
     const body = {
-      date: new Date(),
-      gameType: gameType.constructors,
-      know: 6,
+      gameType: gameType.savanna,
+      know: 5,
       dont_know: 3,
-      combo: 5,
-      wordsId: ['11', '2', '31', '4', '51'],
+      combo: 2,
+      wordsId: ['1', '2', '3', '4', '5'],
     };
 
     dispatch(setStatistics(param, body));
@@ -293,7 +302,7 @@ export const GameTest: React.FC = () => {
   const renderSprintStatistic = () => {
     if (gameStatistic.sprint) {
       return gameStatistic.sprint.total.map((item) => (
-        <div key={item.date.toString()}>
+        <div key={item.date!.toString()}>
           <div>{item.know}</div>
           <div>{item.dont_know}</div>
         </div>
@@ -308,6 +317,7 @@ export const GameTest: React.FC = () => {
       <div>game test</div>
       <input type="button" value="send stat" onClick={sendStat} />
       <input type="button" value="get stat" onClick={getStat} />
+      <input type="button" value="get total stat" onClick={getTotalStat} />
       <h3>savanna</h3>
       <input type="button" value="add word to back" onClick={addwordToState} />
       <input type="button" value="get word to state" onClick={getWordToState} />

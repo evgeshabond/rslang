@@ -1,8 +1,11 @@
 import { Dispatch } from 'redux';
+import moment from 'moment';
 import {
   AllGameStatisticType,
   GameStatistic,
   TodayGameStatisticType,
+  TodayTotalGamesStatisticType,
+  TotalStatisticType,
 } from '../reducer/statistic-state-types';
 import StatisticService from '../services/statistic-service';
 import { gameType } from '../utils/constants';
@@ -14,11 +17,18 @@ export const TODAY_SAVANNA_STATISTIC = 'TODAY_SAVANNA_STATISTIC';
 export const TODAY_SPRINT_STATISTIC = 'TODAY_SPRINT_STATISTIC';
 export const TODAY_AUDIOCALL_STATISTIC = 'TODAY_AUDIOCALL_STATISTIC';
 export const TODAY_CONSTRUCTORS_STATISTIC = 'TODAY_CONSTRUCTORS_STATISTIC';
+export const TODAY_GAME_STATISTIC = 'TODAY_GAME_STATISTIC';
 export const CLEAR_TODAY_STATISTIC = 'CLEAR_TODAY_STATISTIC';
+export const TOTAL_STATISTIC = 'TOTAL_STATISTIC';
 
 export type GameStatActionType = {
   type: string;
-  payload: AllGameStatisticType | string | TodayGameStatisticType;
+  payload:
+    | AllGameStatisticType
+    | string
+    | TodayGameStatisticType
+    | TodayTotalGamesStatisticType
+    | Array<TotalStatisticType>;
 };
 
 export const gameStatUpdate = (value: AllGameStatisticType) => ({
@@ -62,6 +72,18 @@ export const clearTodayStatistic = () => ({
   payload: '',
 });
 
+export const totalStatisticAdd = (value: Array<TotalStatisticType>) => ({
+  type: TOTAL_STATISTIC,
+  payload: value,
+});
+
+export const todayTotalGameStatistic = (
+  value: TodayTotalGamesStatisticType
+) => ({
+  type: TODAY_GAME_STATISTIC,
+  payload: value,
+});
+
 const services = new StatisticService();
 
 export const getStatistics = (params: { userId: string; token: string }) => (
@@ -91,8 +113,10 @@ export const setStatistics = (
   },
   body: GameStatistic
 ) => (dispatch: Dispatch<GameStatActionType>) => {
+  const today = moment().startOf('day');
+  const todayBody = { ...body, date: moment(today).toDate() };
   services
-    .setStatistic(params, body)
+    .setStatistic(params, todayBody)
     .then((data) => {
       if (data.error) {
         dispatch(
@@ -112,50 +136,107 @@ export const getTodayStatistic = (params: {
   userId: string;
   token: string;
 }) => (dispatch: Dispatch<GameStatActionType>) => {
-  Promise.all([
-    services.getTodayStatistic(params, gameType.savanna).catch((err) => {
+  services
+    .getTodayStatistic(params)
+    .catch((err) => {
       console.error('fetch err action user', err);
       dispatch(statisticError('проблема с доступом к серверу'));
-    }),
-    services.getTodayStatistic(params, gameType.sprint).catch((err) => {
-      console.error('fetch err action user', err);
-      dispatch(statisticError('проблема с доступом к серверу'));
-    }),
-    services.getTodayStatistic(params, gameType.audiocall).catch((err) => {
-      console.error('fetch err action user', err);
-      dispatch(statisticError('проблема с доступом к серверу'));
-    }),
-    services.getTodayStatistic(params, gameType.constructors).catch((err) => {
-      console.error('fetch err action user', err);
-      dispatch(statisticError('проблема с доступом к серверу'));
-    }),
-  ]).then((values) => {
-    console.log(values);
-    dispatch(clearTodayStatistic());
-    if (values[0] === undefined || values[0].error) {
-      return;
-    }
-    values.forEach((data: Array<TodayGameStatisticType>) => {
-      dispatch(statisticError(''));
-      if (data.length === 0) {
+    })
+    .then((values) => {
+      if (!values) {
         return;
       }
-      switch (data[0].gameType[0]) {
-        case gameType.savanna:
-          dispatch(getTodayStatisticSavanna(data[0]));
-          break;
-        case gameType.sprint:
-          dispatch(getTodayStatisticSprint(data[0]));
-          break;
-        case gameType.audiocall:
-          dispatch(getTodayStatisticAudiocall(data[0]));
-          break;
-        case gameType.constructors:
-          dispatch(getTodayStatisticConstructors(data[0]));
-          break;
-        default:
-          break;
-      }
+      let totalWordCountArr: Array<string> = [];
+      const sumCorrectAvg: Array<number> = [];
+      values.forEach((data: TodayGameStatisticType) => {
+        let wordCount = 0;
+        if (data.wordsCountArr) {
+          wordCount = Array.from(new Set(data.wordsCountArr)).length;
+          totalWordCountArr = totalWordCountArr.concat(data.wordsCountArr);
+          sumCorrectAvg.push(data.correctAvg);
+        }
+
+        switch (data.gameType) {
+          case gameType.audiocall:
+            dispatch(
+              getTodayStatisticAudiocall({
+                ...data,
+                learnedWordCount: wordCount,
+              })
+            );
+            break;
+          case gameType.savanna:
+            dispatch(
+              getTodayStatisticSavanna({
+                ...data,
+                learnedWordCount: wordCount,
+              })
+            );
+            break;
+          case gameType.constructors:
+            dispatch(
+              getTodayStatisticConstructors({
+                ...data,
+                learnedWordCount: wordCount,
+              })
+            );
+            break;
+          case gameType.sprint:
+            dispatch(
+              getTodayStatisticSprint({
+                ...data,
+                learnedWordCount: wordCount,
+              })
+            );
+            break;
+          default:
+            break;
+        }
+      });
+
+      const learnedWordCount = Array.from(new Set(totalWordCountArr)).length;
+      const correctAvg = Math.round(
+        sumCorrectAvg.reduce((sum, item) => sum + item) / sumCorrectAvg.length
+      );
+      dispatch(todayTotalGameStatistic({ learnedWordCount, correctAvg }));
+      dispatch(statisticError(''));
     });
-  });
+};
+
+export const getTotalStatistics = (params: {
+  userId: string;
+  token: string;
+}) => (dispatch: Dispatch<GameStatActionType>) => {
+  services
+    .getTotalStatistic(params)
+    .then((data) => {
+      if (!data) {
+        return;
+      }
+      if (data.error) {
+        dispatch(
+          statisticError('ваша сессия истекла пожалуйста авторизуйтесь заново')
+        );
+      } else {
+        let totalWordCount = 0;
+        const totalStat = data.map((item: TotalStatisticType) => {
+          const newData = item;
+          let wordCount = 0;
+
+          if (item.wordsCountArr) {
+            wordCount = Array.from(new Set(item.wordsCountArr)).length;
+          }
+          totalWordCount += wordCount;
+          newData.wordsCount = wordCount;
+          newData.totalWordCount = totalWordCount;
+          return newData;
+        });
+        dispatch(totalStatisticAdd(totalStat));
+        dispatch(statisticError(''));
+      }
+    })
+    .catch((err) => {
+      console.error('fetch err action user', err);
+      dispatch(statisticError('проблема с доступом к серверу'));
+    });
 };

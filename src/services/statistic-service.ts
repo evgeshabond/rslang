@@ -1,19 +1,16 @@
 import moment from 'moment';
-import { serverUrlLocal, serverUrl } from '../utils/constants';
+import { serverUrl } from '../utils/constants';
 import { GameStatistic } from '../reducer/statistic-state-types';
 
 export default class StatisticService {
   getStatistic = async (params: { userId: string; token: string }) => {
-    const res = await fetch(
-      `${serverUrlLocal}users/${params.userId}/statistics`,
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${params.token}`,
-          Accept: 'application/json',
-        },
-      }
-    );
+    const res = await fetch(`${serverUrl}users/${params.userId}/statistics`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${params.token}`,
+        Accept: 'application/json',
+      },
+    });
     const data = await res.json();
     return data;
   };
@@ -28,14 +25,12 @@ export default class StatisticService {
     const bodyFetch = {
       optional: {
         gameStatistic: {
-          [body.gameType]: {
-            total: [body],
-          },
+          total: [body],
         },
       },
     };
     const res = await fetch(
-      `${serverUrlLocal}users/${params.userId}/statistics/gameadd/${body.gameType}`,
+      `${serverUrl}users/${params.userId}/statistics/gameadd/${body.gameType}`,
       {
         method: 'PUT',
         headers: {
@@ -58,16 +53,34 @@ export default class StatisticService {
     return data;
   };
 
-  getTodayStatistic = async (
-    params: {
-      userId: string;
-      token: string;
-    },
-    gameType: string
-  ) => {
-    const today = moment().startOf('day');
+  getTodayStatistic = async (params: { userId: string; token: string }) => {
+    const today = moment().startOf('day').format();
     const res = await fetch(
-      `${serverUrlLocal}users/${params.userId}/statistics/gamedata/${today}/gameType/${gameType}`,
+      `${serverUrl}users/${params.userId}/statistics/gamedata/${today}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${params.token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (res.status === 401) {
+      return {
+        error: {
+          errors: [{ message: 'Пользователь не найден' }],
+        },
+      };
+    }
+    const data = await res.json();
+    return data;
+  };
+
+  getTotalStatistic = async (params: { userId: string; token: string }) => {
+    const res = await fetch(
+      `${serverUrl}users/${params.userId}/statistics/gametotal`,
       {
         method: 'GET',
         headers: {

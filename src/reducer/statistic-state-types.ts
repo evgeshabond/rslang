@@ -1,6 +1,6 @@
 export type GameStatistic = {
   _id?: string;
-  date: Date;
+  date?: Date | moment.Moment;
   gameType: string;
   know: number;
   dont_know: number;
@@ -11,9 +11,22 @@ export type GameStatistic = {
 export type TodayGameStatisticType = {
   correctAvg: number;
   gameCount: number;
-  gameType: Array<string>;
+  gameType: string;
   maxCombo: number;
   wordsCountArr: Array<string>;
+  learnedWordCount?: number;
+};
+
+export type TodayTotalGamesStatisticType = {
+  learnedWordCount: number;
+  correctAvg: number;
+};
+
+export type TotalStatisticType = {
+  date: Date;
+  wordsCountArr: Array<string>;
+  wordsCount?: number;
+  totalWordCount?: number;
 };
 
 export type AllGameStatisticType = {
