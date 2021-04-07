@@ -180,8 +180,11 @@ const SprintGame: React.FC = () => {
       >
         <div className={styles.point}>
           <div className={styles.total__points}>{totalPoints}</div>
-          <div className={styles.current__points}><span className={styles['point-number']}>
-            {currentPoints > 0 ? currentPoints : currentPoints}</span>очков за слово
+          <div className={styles.current__points}>
+            <span className={styles['point-number']}>
+              {currentPoints > 0 ? currentPoints : currentPoints}
+            </span>
+            очков за слово
           </div>
         </div>
 
