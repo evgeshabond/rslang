@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   addNotLearnedWord,
   constructorGameStart,
+  resetCombo,
+  setComboArray,
   setResultPageState,
   setRoundCount,
   setRoundEnd,
@@ -18,22 +20,24 @@ export const BottomBlock: React.FC = () => {
   const { amountOfRounds } = gameConstants;
   const dispatch = useDispatch();
 
-  const isRoundEnd = useSelector(
-    (state: RootStateType) => state.constructorGameState.constructorRoundStatus
-  );
-
-  const wordObj = useSelector(
-    (state: RootStateType) => state.constructorGameState.wordObj
-  );
-
-  const roundCount = useSelector(
-    (state: RootStateType) => state.constructorGameState.roundCount
-  );
-  const learned = useSelector(
-    (state: RootStateType) => state.constructorGameState.learned
-  );
+  const {
+    constructorRoundStatus: isRoundEnd,
+    wordObj,
+    roundCount,
+    learned,
+    comboCounter,
+    comboArray,
+  } = useSelector((state: RootStateType) => state.constructorGameState);
 
   const user = useSelector((state: RootStateType) => state.userState.user);
+
+  // useEffect(() => {
+  //   console.log(wordObj);
+  // }, []);
+
+  useEffect(() => {
+    dispatch(setComboArray(comboCounter));
+  }, [comboCounter]);
 
   useEffect(() => {
     const dontKnow = amountOfRounds - learned;
@@ -45,9 +49,13 @@ export const BottomBlock: React.FC = () => {
     const body = {
       date: new Date(),
       gameType: gameType.constructors,
-      know: learned,
-      dont_know: dontKnow,
-      combo: 0,
+      body: {
+        date: Date.now(),
+        level: user.level,
+        know: learned,
+        dont_know: dontKnow,
+        combo: Math.max(...comboArray),
+      },
     };
 
     if (roundCount === amountOfRounds) {
@@ -64,9 +72,21 @@ export const BottomBlock: React.FC = () => {
 
     dispatch(setRoundCount(roundCount + 1));
     dispatch(setRoundEnd(false));
+
+    // const params = {
+    //   userId: user.userId,
+    //   wordId: wordObj.id,
+    //   token: user.token,
+    // };
+    // const gameResult = {
+    //   isCorrect: true,
+    // };
+
+    // dispatch(userWordToLearnResult(params, gameResult));
   };
 
   const dontKnowHandler = () => {
+    dispatch(resetCombo());
     dispatch(addNotLearnedWord(wordObj));
     dispatch(setRoundEnd(true));
   };

@@ -23,7 +23,6 @@ const menuReducer = (state = initialState, action: MenuOpenActionType) => {
     case BOTTOM_MENU_STATUS:
       return { ...state, bottomMenuIsOpen: action.payload };
     case LEVEL_VISIBILITY_STATUS:
-      console.log('setting visibility');
       return { ...state, isLevelVisible: action.payload };
     default:
       return state;

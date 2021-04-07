@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import {
   clearWords,
   constructorGameStart,
@@ -17,6 +17,7 @@ import styles from './GameResult.module.css';
 
 export const GameResult: React.FC = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const currentWordList = useSelector(
     (state: RootStateType) => state.wordState.currentWordList
@@ -96,8 +97,12 @@ export const GameResult: React.FC = () => {
         </ul>
       </div>
       <div className={styles.button__wrapper}>
-        <Link to={mainPath.ebookPage} className={styles.restart}>
-          К списку слов
+        <Link
+          to="/"
+          onClick={() => history.goBack()}
+          className={styles.restart}
+        >
+          Назад
         </Link>
         <button
           className={styles.restart}
