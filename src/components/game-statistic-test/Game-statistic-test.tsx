@@ -23,26 +23,26 @@ import {
 } from '../../actions/word-actions';
 import { RootStateType } from '../../reducer/root-reducer';
 import { filterQuery } from '../../services/word-aggregate-service';
-import { difficulty, GameStart, gameType } from '../../utils/constants';
+import { GameStart, gameType } from '../../utils/constants';
 
 export const GameTest: React.FC = () => {
   const user = useSelector((state: RootStateType) => state.userState.user);
-  const gameStatistic = useSelector(
-    (state: RootStateType) => state.statisticState.optional.gameStatistic
-  );
+  // const gameStatistic = useSelector(
+  //   (state: RootStateType) => state.statisticState.optional.gameStatistic
+  // );
   const wordList = useSelector((state: RootStateType) => state.wordState);
   // state for game start
-  const gameStatus = useSelector(
-    (state: RootStateType) => state.wordState.gameStart
-  );
-  const userWordList = useSelector(
-    (state: RootStateType) =>
-      state.aggregatedWordsState.userAggregatedWords.paginatedResults
-  );
+  // const gameStatus = useSelector(
+  //   (state: RootStateType) => state.wordState.gameStart
+  // );
+  // const userWordList = useSelector(
+  //   (state: RootStateType) =>
+  //     state.aggregatedWordsState.userAggregatedWords.paginatedResults
+  // );
 
-  const userWordState = useSelector(
-    (state: RootStateType) => state.userWordsState
-  );
+  // const userWordState = useSelector(
+  //   (state: RootStateType) => state.userWordsState
+  // );
   const dispatch = useDispatch();
   const getStat = () => {
     const param = {
@@ -160,20 +160,20 @@ export const GameTest: React.FC = () => {
   };
 
   const toLearning = () => {
-    const params = {
-      userId: user.userId,
-      wordId: wordList.currentWordList[3].id,
-      token: user.token,
-    };
+    // const params = {
+    //   userId: user.userId,
+    //   wordId: wordList.currentWordList[3].id,
+    //   token: user.token,
+    // };
     // dispatch(userWordToLearning(params));
   };
 
   const toUnLearning = () => {
-    const params = {
-      userId: user.userId,
-      wordId: wordList.currentWordList[1].id,
-      token: user.token,
-    };
+    // const params = {
+    //   userId: user.userId,
+    //   wordId: wordList.currentWordList[1].id,
+    //   token: user.token,
+    // };
     // dispatch(userWordToUnLearning(params));
   };
 
@@ -298,18 +298,6 @@ export const GameTest: React.FC = () => {
   //   }
   //   return null;
   // };
-
-  const renderSprintStatistic = () => {
-    if (gameStatistic.sprint) {
-      return gameStatistic.sprint.total.map((item) => (
-        <div key={item.date!.toString()}>
-          <div>{item.know}</div>
-          <div>{item.dont_know}</div>
-        </div>
-      ));
-    }
-    return null;
-  };
 
   return (
     <div>

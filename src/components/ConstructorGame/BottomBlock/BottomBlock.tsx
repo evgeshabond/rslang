@@ -59,7 +59,7 @@ export const BottomBlock: React.FC = () => {
     };
 
     if (roundCount === amountOfRounds) {
-      console.log('Know', body.know, 'Dont know', body.dont_know);
+      // console.log('Know', body.know, 'Dont know', body.dont_know);
       // dispatch(setStatistics(param, body));
     }
   }, [roundCount]);
