@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import styles from './AudioGame.module.css';
 import { mainPath } from '../../utils/constants';
 import { audioGameStart, wordUserAnswer, wordRight, isAnswerSelected, currentPlayWords } from '../../actions/audioGame-actions';
-import { AudioOnButton } from '../../components/button-icons/audiOn-button/audioOn-button';
 import { removeTagsFromString } from '../../utils/removeTagsFromString';
 import { RootStateType } from '../../reducer/root-reducer';
+import { AudioOnSizeButton } from '../../components/button-icons/audiOn-button/audioOn-Size';
 
 
 const WordInfo: React.FC = () => {
@@ -22,7 +22,6 @@ const WordInfo: React.FC = () => {
   useEffect(() => {
     playSoundWord();
   }, [play])
-
 
   const playSoundWord = () => {
     if ((isPlaying && Object.keys(rightWord).length > 0)) {
@@ -40,12 +39,12 @@ const WordInfo: React.FC = () => {
         />
       </div>
       <div className={styles.word__sound}>
-        <AudioOnButton buttonClick={() => playSoundWord()} />
+        <AudioOnSizeButton size={20} buttonClick={() => playSoundWord()} />
         <span className={styles.game__text}>{rightWord.word}
           {rightWord.transcription}</span>
       </div>
       <div className={styles.word__context}>
-        <AudioOnButton buttonClick={() => playExample()} />
+        <AudioOnSizeButton size={20} buttonClick={() => playExample()} />
         <span className={styles.game__text}>
           {removeTagsFromString(rightWord.textExample)} </span>
       </div>

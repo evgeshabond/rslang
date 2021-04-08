@@ -47,7 +47,7 @@ const NextBtn: React.FC = () => {
   const dontKnowANswer = () => {
     playWrongAnswer();
     dispatch(wordUserAnswer(rightWord.word));
-    // dispatch(isAnswerSelected(true));
+    dispatch(isAnswerSelected(true))
   }
 
   return isAnswer ? (

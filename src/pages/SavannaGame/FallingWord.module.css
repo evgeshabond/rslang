@@ -34,6 +34,7 @@
 }
 
 .word__stop__wrong {
+  z-index: 100;
   transition: 0.1s all;
   background: #fdebff;
   color: tomato;
