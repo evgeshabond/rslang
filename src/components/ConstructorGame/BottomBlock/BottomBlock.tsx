@@ -38,10 +38,6 @@ export const BottomBlock: React.FC = () => {
 
   const user = useSelector((state: RootStateType) => state.userState.user);
 
-  // useEffect(() => {
-  //   dispatch(setComboArray(comboCounter));
-  // }, [comboCounter]);
-
   useEffect(() => {
     const dontKnow = amountOfRounds - learned;
 
