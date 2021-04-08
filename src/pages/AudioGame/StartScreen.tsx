@@ -49,7 +49,7 @@ const StartScreen: React.FC = () => {
   return (
     <div className={styles.game__wrapper}>
       <div className={styles.game__startSreen}>
-        {/* <ControlledSelect /> */}
+
         <div className={styles.game__title}>Аудиовызов</div>
         <div className={styles.game__decription}>Тренировка улучшает
         восприятие английской речи на слух.
@@ -57,6 +57,7 @@ const StartScreen: React.FC = () => {
     которое услышите</div>
         < PlayButton buttonClick={() => { dispatch(audioGameStart(true)); playGame(); }} />
       </div>
+      <ControlledSelect />
       <CatAudio className={styles.cat__image} />
     </div>
   )

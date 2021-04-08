@@ -23,7 +23,7 @@ import StartScreen from "./StartScreen";
 import WordInfo from './WordInfo';
 import NextBtn from './NextBtn';
 import { LevelIcon } from '../../components/button-icons/level-icons/level-icons';
-import { AudioOnSizeButton } from '../../components/button-icons/audiOn-button/audioOn-Size';
+import { ReactComponent as AudioOnSizeButton } from '../../assets/images/audioOn.svg';
 
 
 const AudioGame: React.FC = () => {
@@ -120,8 +120,8 @@ const AudioGame: React.FC = () => {
       {isAnswer ? (
         <WordInfo />
       ) : (
-        <AudioOnSizeButton size={50}
-          buttonClick={() => playSoundWord()} />
+        <AudioOnSizeButton width='40px' height='40px' className={styles.audio__btn}
+          onClick={() => playSoundWord()} />
       )}
       {currentWords.length === 0 ? <Spinner /> : <RenderWordCard />}
       <NextBtn />
