@@ -10,7 +10,6 @@ import {
   setFullScreenStatus,
   setLearnCount,
   setRoundEnd,
-  setUsedWordsIds,
   setWordCorrectness,
   setWordObj,
   updateCharsPosition,
@@ -103,7 +102,6 @@ const ConstructorGame: React.FC = () => {
     if (wordObj.word === currentChars) {
       dispatch(setRoundEnd(true));
       wordSound();
-      // dispatch(setUsedWordsIds(wordObj.id));
     }
   }, [wordObj, chars]);
 
@@ -135,9 +133,10 @@ const ConstructorGame: React.FC = () => {
     dispatch(setFullScreenStatus(true));
     handle.enter();
   }
+
   function fullScreenExitHandler() {
-    dispatch(setFullScreenStatus(false));
     handle.exit();
+    dispatch(setFullScreenStatus(false));
   }
 
   return constructorGameIsStarted ? (
