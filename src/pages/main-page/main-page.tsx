@@ -1,9 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styles from './main-page.module.css';
 import buttonStyles from '../../components/button-main/button-main.module.css';
-import { mainPath } from '../../utils/constants';
 import { MainCat } from '../../components/cats-img/main-cat/Main-cat';
+<<<<<<< HEAD
 import { AudioOnButton } from '../../components/button-icons/audiOn-button/audioOn-button';
 import { CloseButton } from '../../components/button-icons/close-button/close-button';
 import { HeardIcon } from '../../components/button-icons/heard-icon/heard-icon';
@@ -62,8 +61,38 @@ const MainPage: React.FC = () => {
         <LevelIcon type={1} number={2} />
       </div>
       <MainCat />
+=======
+import { mainPath } from '../../utils/constants';
+import styles from './main-page.module.css';
+
+const MainPage: React.FC = () => (
+  <div className={styles['main-wrapper']}>
+    <div className={styles['main-header']}>
+      Самый быстрый способ
+      <br /> выучить английский язык
     </div>
-  );
-};
+    <div className={styles['main-text']}>
+      Какой? Естественный подход к изучению реального языка. Заходите и
+      попробуйте!
+>>>>>>> 22b5fffa2f61113ea9c17e06c007b60ecd956b57
+    </div>
+    <div className={styles['main-button-container']}>
+      <Link
+        to={mainPath.ebookPage}
+        className={`${buttonStyles['main-button']} ${styles['padding-top__10']}`}
+      >
+        Приступить
+      </Link>
+      <Link
+        to={mainPath.userStatistic}
+        className={`${buttonStyles['main-button']} ${styles['padding-top__10']}`}
+      >
+        Узнать больше
+      </Link>
+    </div>
+
+    <MainCat />
+  </div>
+);
 
 export { MainPage };

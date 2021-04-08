@@ -28,6 +28,7 @@
   background-color: inherit;
   border: none;
   cursor: pointer;
+  transition: box-shadow 0.3s ease;
 }
 
 .audio-button:hover {
@@ -62,8 +63,15 @@
   background-color: rgb(115, 57, 153);
   border-radius: 50%;
   border: none;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
 
   color: white;
+}
+
+.full-screen__button:hover {
+  border-radius: 50%;
+  box-shadow: -8px -8px 16px #ffffff, 8px 8px 16px #b4c1d5;
 }
 
 svg.full-screen__icon {
