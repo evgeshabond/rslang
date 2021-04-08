@@ -1,16 +1,20 @@
 import {
   ADD_LEARNED_WORD,
   ADD_NOT_LEARNED_WORD,
+  ADD_USED_WORDS_IDS,
   CLEAR_WORDS,
+  CLEAR_WORDS_IDS,
   ConstructorGameActionType,
   CONSTRUCTOR_GAME_PLAY_STATUS,
   CONSTRUCTOR_GAME_RESULT_STATUS,
   CONSTRUCTOR_ROUND_STATUS,
   CONSTRUCTOR_SHUFFLED_LIST,
   RESET_COMBO,
+  RESET_COMBO_COUNTER,
   UPDATE_CHARS_POSITION,
   UPDATE_COMBO_ARRAY,
   UPDATE_COMBO_COUNTER,
+  UPDATE_CORRECT_WORD_STATUS,
   UPDATE_FULLSCREEN_STATUS,
   UPDATE_LEARNED_COUNT,
   UPDATE_ROUND_COUNT,
@@ -32,6 +36,8 @@ export type ConstructorGameStartState = {
   comboCounter: number;
   comboArray: number[];
   isFullScreen: boolean;
+  isWinning: boolean;
+  usedWordsIds: string[];
 };
 
 const initialState: ConstructorGameStartState = {
@@ -47,6 +53,8 @@ const initialState: ConstructorGameStartState = {
   comboCounter: 0,
   comboArray: [],
   isFullScreen: false,
+  isWinning: false,
+  usedWordsIds: [],
   wordObj: {
     id: '0',
     group: 0,
@@ -107,10 +115,15 @@ const constructorGameReducer = (
         ...state,
         comboCounter: action.payload,
       };
-    case RESET_COMBO:
+    case RESET_COMBO_COUNTER:
       return {
         ...state,
         comboCounter: 0,
+      };
+    case RESET_COMBO:
+      return {
+        ...state,
+        comboArray: [],
       };
     case UPDATE_COMBO_ARRAY:
       return {
@@ -121,6 +134,21 @@ const constructorGameReducer = (
       return {
         ...state,
         isFullScreen: action.payload,
+      };
+    case UPDATE_CORRECT_WORD_STATUS:
+      return {
+        ...state,
+        isWinning: action.payload,
+      };
+    case ADD_USED_WORDS_IDS:
+      return {
+        ...state,
+        usedWordsIds: [...state.usedWordsIds, action.payload],
+      };
+    case CLEAR_WORDS_IDS:
+      return {
+        ...state,
+        usedWordsIds: [],
       };
     default:
       return state;

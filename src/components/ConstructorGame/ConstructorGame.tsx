@@ -10,6 +10,8 @@ import {
   setFullScreenStatus,
   setLearnCount,
   setRoundEnd,
+  setUsedWordsIds,
+  setWordCorrectness,
   setWordObj,
   updateCharsPosition,
 } from '../../actions/constructor-game-actions';
@@ -101,6 +103,7 @@ const ConstructorGame: React.FC = () => {
     if (wordObj.word === currentChars) {
       dispatch(setRoundEnd(true));
       wordSound();
+      // dispatch(setUsedWordsIds(wordObj.id));
     }
   }, [wordObj, chars]);
 
@@ -118,6 +121,7 @@ const ConstructorGame: React.FC = () => {
       dispatch(setComboCounter(comboCounter + 1));
       dispatch(addLearnedWord(wordObj));
       dispatch(setLearnCount(learned + 1));
+      dispatch(setWordCorrectness(true));
     }
   }, [isRoundEnd]);
 

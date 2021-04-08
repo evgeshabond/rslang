@@ -2,14 +2,19 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   addNotLearnedWord,
+  clearWordsIds,
   constructorGameStart,
   resetCombo,
+  resetComboCounter,
   setComboArray,
   setResultPageState,
   setRoundCount,
   setRoundEnd,
+  setUsedWordsIds,
+  setWordCorrectness,
 } from '../../../actions/constructor-game-actions';
 import { setStatistics } from '../../../actions/statistic-action';
+import { userWordToLearnResult } from '../../../actions/user-words-action';
 import { RootStateType } from '../../../reducer/root-reducer';
 import { gameConstants, gameType } from '../../../utils/constants';
 import { removeTagsAndWordInside } from '../../../utils/removeTagsAndWordInside';
@@ -27,17 +32,15 @@ export const BottomBlock: React.FC = () => {
     learned,
     comboCounter,
     comboArray,
+    isWinning,
+    usedWordsIds,
   } = useSelector((state: RootStateType) => state.constructorGameState);
 
   const user = useSelector((state: RootStateType) => state.userState.user);
 
   // useEffect(() => {
-  //   console.log(wordObj);
-  // }, []);
-
-  useEffect(() => {
-    dispatch(setComboArray(comboCounter));
-  }, [comboCounter]);
+  //   dispatch(setComboArray(comboCounter));
+  // }, [comboCounter]);
 
   useEffect(() => {
     const dontKnow = amountOfRounds - learned;
@@ -46,21 +49,19 @@ export const BottomBlock: React.FC = () => {
       userId: user.userId,
       token: user.token,
     };
-    const body = {
-      date: new Date(),
+    const gameStatistic = {
       gameType: gameType.constructors,
-      body: {
-        date: Date.now(),
-        level: user.level,
-        know: learned,
-        dont_know: dontKnow,
-        combo: Math.max(...comboArray),
-      },
+      level: user.level || 1,
+      know: learned,
+      dont_know: dontKnow,
+      combo: Math.max(...comboArray),
+      wordsId: usedWordsIds,
     };
 
     if (roundCount === amountOfRounds) {
-      // console.log('Know', body.know, 'Dont know', body.dont_know);
-      // dispatch(setStatistics(param, body));
+      dispatch(setStatistics(param, gameStatistic));
+      dispatch(clearWordsIds());
+      dispatch(resetCombo());
     }
   }, [roundCount]);
 
@@ -70,25 +71,29 @@ export const BottomBlock: React.FC = () => {
       dispatch(setResultPageState(true));
     }
 
+    dispatch(setUsedWordsIds(wordObj.id));
     dispatch(setRoundCount(roundCount + 1));
     dispatch(setRoundEnd(false));
+    dispatch(setComboArray(comboCounter));
 
-    // const params = {
-    //   userId: user.userId,
-    //   wordId: wordObj.id,
-    //   token: user.token,
-    // };
-    // const gameResult = {
-    //   isCorrect: true,
-    // };
+    const params = {
+      userId: user.userId,
+      wordId: wordObj.id,
+      token: user.token,
+    };
 
-    // dispatch(userWordToLearnResult(params, gameResult));
+    const roundResult = {
+      isCorrect: isWinning,
+    };
+
+    dispatch(userWordToLearnResult(params, roundResult));
   };
 
   const dontKnowHandler = () => {
-    dispatch(resetCombo());
+    dispatch(resetComboCounter());
     dispatch(addNotLearnedWord(wordObj));
     dispatch(setRoundEnd(true));
+    dispatch(setWordCorrectness(false));
   };
 
   return isRoundEnd ? (
