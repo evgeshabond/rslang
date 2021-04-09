@@ -115,11 +115,11 @@ const Header: React.FC<Props> = ({ topMenuIsOpen, topMenuOpen, isLogin }) => {
               classes={{
                 tooltip: classes.customWidth,
               }}
-              title="Настройки"
+              title="Статистика"
               TransitionComponent={Zoom}
             >
-              <Link to={mainPath.main}>
-                <img src={settingsImg} alt="settings" />
+              <Link to={mainPath.statistic}>
+                <img src={settingsImg} alt="statistic" />
               </Link>
             </Tooltip>
           </div>
