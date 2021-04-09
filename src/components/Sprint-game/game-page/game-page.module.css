@@ -6,8 +6,9 @@
   box-sizing: border-box;
   /* padding: 30px; */
   min-height: 570px;
-  min-width: 1022px;
+  max-width: 1022px;
   /* margin-top: auto; */
+  min-width: 780px;
 }
 .game__field {
   max-width: 710px;
@@ -31,8 +32,9 @@
   right: -100px;
 }
 .side__buttons {
+  margin-top: 20px;
   width: 120px;
-  display: flex;
+  /* display: flex; */
   justify-content: space-between;
 }
 img.side__buttons {
@@ -43,10 +45,10 @@ img.side__buttons {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
   height: 100%;
   /* margin-right: 40px; */
-  margin: 40px;
+  margin: 50px 30px 30px 50px;
 }
 .watch__wrapper {
   position: relative;
@@ -126,6 +128,7 @@ img.side__buttons {
   display: flex;
   justify-content: center;
   height: 30px;
+  position: relative;
 }
 .lines {
   height: 1px;
@@ -144,7 +147,7 @@ img.side__buttons {
   background-color: transparent;
   /* border-radius: 100%; */
   border: none;
-  margin-top: 15px;
+  /* margin-top: 15px; */
 }
 
 .full-screen-game {
@@ -156,6 +159,7 @@ img.side__buttons {
   background-color: #fdebff;
   border-radius: 50px;
   max-width: 1022px;
+  min-width: 500px;
   width: 80%;
   min-height: 560px;
   text-align: center;
@@ -164,8 +168,10 @@ img.side__buttons {
 
 .full-screen__button {
   position: absolute;
-  right: 66px;
-  top: 20px;
+  /* right: 66px; */
+  /* top: 20px; */
+  margin-right: 15px;
+
 
   display: flex;
   justify-content: center;
@@ -184,4 +190,15 @@ img.side__buttons {
 svg.full-screen__icon {
   width: 24px;
   height: 24px;
+}
+
+
+@media (max-width:780px) {
+  .game__field{
+    min-width: 350px;
+  }
+
+  .full-screen-game{
+    min-width: 400px;
+  }
 }

@@ -8,7 +8,7 @@ img {
 
   cursor: pointer;
 }
-.sprint__game{
+.sprint__game {
   width: 100%;
   margin: 0 auto;
   display: flex;
@@ -18,7 +18,7 @@ img {
   min-height: 560px;
   /* height: 80%; */
   max-width: 1022px;
-  width: 100%;
+  width: 80%;
   background-color: #fdebff;
   font-family: 'Roboto';
   display: flex;
@@ -48,6 +48,7 @@ p {
 .cat__img {
   position: absolute;
   right: -100px;
+  bottom:117px;
 }
 .cat__img1 {
   position: absolute;
