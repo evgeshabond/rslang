@@ -1,14 +1,21 @@
+import {
+  createStyles,
+  makeStyles,
+  Theme,
+  Tooltip,
+  Zoom,
+} from '@material-ui/core';
 import React, { useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { RootStateType } from '../../reducer/root-reducer';
-import styles from './Footer.module.css';
 import * as actions from '../../actions/menu-actions';
-import { MenuState } from '../../reducer/menu-reducer';
-import gamesImg from '../../assets/images/games.svg';
 import ebookImg from '../../assets/images/e-book.svg';
+import gamesImg from '../../assets/images/games.svg';
 import statisticImg from '../../assets/images/statistic.svg';
+import { MenuState } from '../../reducer/menu-reducer';
+import { RootStateType } from '../../reducer/root-reducer';
 import { mainPath } from '../../utils/constants';
+import styles from './Footer.module.css';
 
 type MapDispatchToProps = {
   bottomMenuOpen: (value: boolean) => actions.MenuOpenActionType;
@@ -16,9 +23,25 @@ type MapDispatchToProps = {
 
 type Props = MapDispatchToProps & MenuState;
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    button: {
+      margin: theme.spacing(1),
+    },
+    customWidth: {
+      fontSize: '2rem',
+      color: '#5b2467',
+      backgroundColor: '#fdebff',
+      border: '1px solid #5b2467',
+      marginBottom: '50px',
+    },
+  })
+);
+
 const Footer: React.FC<Props> = ({ bottomMenuIsOpen, bottomMenuOpen }) => {
   const bottomMenu = useRef(null);
   const buttonsContainer = useRef(null);
+  const classes = useStyles();
 
   useEffect(() => {
     if (bottomMenu && bottomMenuIsOpen) {
@@ -45,28 +68,64 @@ const Footer: React.FC<Props> = ({ bottomMenuIsOpen, bottomMenuOpen }) => {
           <div
             className={`${styles['bottom-button']} ${styles['button_margin-small']}`}
           >
-            <Link to={mainPath.gamePage}>
-              <img src={gamesImg} alt="games" />
-            </Link>
+            <Tooltip
+              placement="top"
+              classes={{
+                tooltip: classes.customWidth,
+              }}
+              title="Игры"
+              TransitionComponent={Zoom}
+            >
+              <Link to={mainPath.gamePage}>
+                <img src={gamesImg} alt="games" />
+              </Link>
+            </Tooltip>
           </div>
           <div
             className={`${styles['up-button']} ${styles['button_margin-big']}`}
           >
-            <Link to={mainPath.ebookPage}>
-              <img src={ebookImg} alt="ebook" />
-            </Link>
+            <Tooltip
+              placement="top"
+              classes={{
+                tooltip: classes.customWidth,
+              }}
+              title="Учебник"
+              TransitionComponent={Zoom}
+            >
+              <Link to={mainPath.ebookPage}>
+                <img src={ebookImg} alt="ebook" />
+              </Link>
+            </Tooltip>
           </div>
           <div
             className={`${styles['up-button']} ${styles['button_margin-small']}`}
           >
-            <Link to={mainPath.main}>
-              <img src={ebookImg} alt="main" />
-            </Link>
+            <Tooltip
+              placement="top"
+              classes={{
+                tooltip: classes.customWidth,
+              }}
+              title="Учебник"
+              TransitionComponent={Zoom}
+            >
+              <Link to={mainPath.main}>
+                <img src={ebookImg} alt="main" />
+              </Link>
+            </Tooltip>
           </div>
           <div className={styles['bottom-button']}>
-            <Link to={mainPath.main}>
-              <img src={statisticImg} alt="statistic" />
-            </Link>
+            <Tooltip
+              placement="top"
+              classes={{
+                tooltip: classes.customWidth,
+              }}
+              title="Главная"
+              TransitionComponent={Zoom}
+            >
+              <Link to={mainPath.main}>
+                <img src={statisticImg} alt="statistic" />
+              </Link>
+            </Tooltip>
           </div>
         </div>
       </div>

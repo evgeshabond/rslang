@@ -1,7 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAggregatedWordsList } from '../../actions/aggregated-word-action';
-import { setStatistics } from '../../actions/statistic-action';
+import {
+  getTodayStatistic,
+  getTotalStatistics,
+  setStatistics,
+} from '../../actions/statistic-action';
 import {
   addUserWord,
   getUserWord,
@@ -13,44 +17,68 @@ import {
   userWordToLearnResult,
   userWordUnDeleted,
 } from '../../actions/user-words-action';
-import { gameStartStatusChange } from '../../actions/word-actions';
+import {
+  fetchWordsList,
+  gameStartStatusChange,
+} from '../../actions/word-actions';
 import { RootStateType } from '../../reducer/root-reducer';
 import { filterQuery } from '../../services/word-aggregate-service';
-import { difficulty, GameStart, gameType } from '../../utils/constants';
+import { GameStart, gameType } from '../../utils/constants';
 
 export const GameTest: React.FC = () => {
   const user = useSelector((state: RootStateType) => state.userState.user);
-  const gameStatistic = useSelector(
-    (state: RootStateType) => state.statisticState.optional.gameStatistic
-  );
+  // const gameStatistic = useSelector(
+  //   (state: RootStateType) => state.statisticState.optional.gameStatistic
+  // );
   const wordList = useSelector((state: RootStateType) => state.wordState);
   // state for game start
-  const gameStatus = useSelector(
-    (state: RootStateType) => state.wordState.gameStart
-  );
-  const userWordList = useSelector(
-    (state: RootStateType) =>
-      state.aggregatedWordsState.userAggregatedWords.paginatedResults
-  );
+  // const gameStatus = useSelector(
+  //   (state: RootStateType) => state.wordState.gameStart
+  // );
+  // const userWordList = useSelector(
+  //   (state: RootStateType) =>
+  //     state.aggregatedWordsState.userAggregatedWords.paginatedResults
+  // );
 
-  const userWordState = useSelector(
-    (state: RootStateType) => state.userWordsState
-  );
+  // const userWordState = useSelector(
+  //   (state: RootStateType) => state.userWordsState
+  // );
   const dispatch = useDispatch();
+  const getStat = () => {
+    const param = {
+      userId: user.userId,
+      token: user.token,
+    };
+
+    dispatch(getTodayStatistic(param));
+  };
+  const getWordList = () => {
+    dispatch(fetchWordsList({ page: 1, group: 2 }));
+  };
+
+  const getTotalStat = () => {
+    const param = {
+      userId: user.userId,
+      token: user.token,
+    };
+
+    dispatch(getTotalStatistics(param));
+  };
+
   const sendStat = () => {
     const param = {
       userId: user.userId,
       token: user.token,
+    };
+    const body = {
       gameType: gameType.savanna,
-      body: {
-        date: Date.now(),
-        level: user.level,
-        know: 5,
-        dont_know: 2,
-      },
+      know: 5,
+      dont_know: 3,
+      combo: 2,
+      wordsId: ['1', '2', '3', '4', '5'],
     };
 
-    dispatch(setStatistics(param));
+    dispatch(setStatistics(param, body));
   };
 
   const addwordToState = () => {
@@ -132,20 +160,20 @@ export const GameTest: React.FC = () => {
   };
 
   const toLearning = () => {
-    const params = {
-      userId: user.userId,
-      wordId: wordList.currentWordList[3].id,
-      token: user.token,
-    };
+    // const params = {
+    //   userId: user.userId,
+    //   wordId: wordList.currentWordList[3].id,
+    //   token: user.token,
+    // };
     // dispatch(userWordToLearning(params));
   };
 
   const toUnLearning = () => {
-    const params = {
-      userId: user.userId,
-      wordId: wordList.currentWordList[1].id,
-      token: user.token,
-    };
+    // const params = {
+    //   userId: user.userId,
+    //   wordId: wordList.currentWordList[1].id,
+    //   token: user.token,
+    // };
     // dispatch(userWordToUnLearning(params));
   };
 
@@ -175,7 +203,7 @@ export const GameTest: React.FC = () => {
       userId: user.userId,
       token: user.token,
       page: 0,
-      group: 0, // не обязательное поле по умолчанию будет 0
+      group: 1, // не обязательное поле по умолчанию будет 0
       wordsPerPage: 20,
     };
     dispatch(getAggregatedWordsList(params, filterQuery.allWords));
@@ -271,22 +299,13 @@ export const GameTest: React.FC = () => {
   //   return null;
   // };
 
-  const renderSprintStatistic = () => {
-    if (gameStatistic.sprint) {
-      return gameStatistic.sprint.total.map((item) => (
-        <div key={item.date}>
-          <div>{item.know}</div>
-          <div>{item.dont_know}</div>
-        </div>
-      ));
-    }
-    return null;
-  };
-
   return (
     <div>
+      <input type="button" value="send stat" onClick={getWordList} />
       <div>game test</div>
       <input type="button" value="send stat" onClick={sendStat} />
+      <input type="button" value="get stat" onClick={getStat} />
+      <input type="button" value="get total stat" onClick={getTotalStat} />
       <h3>savanna</h3>
       <input type="button" value="add word to back" onClick={addwordToState} />
       <input type="button" value="get word to state" onClick={getWordToState} />
