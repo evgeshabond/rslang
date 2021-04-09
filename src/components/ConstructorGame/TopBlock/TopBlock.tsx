@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   clearWords,
   constructorGameStart,
+  setFullScreenStatus,
   setResultPageState,
 } from '../../../actions/constructor-game-actions';
 import { setLevelVisibility } from '../../../actions/menu-actions';
@@ -28,6 +29,10 @@ export const TopBlock: React.FC = () => {
     dispatch(setResultPageState(false));
     dispatch(setLevelVisibility(true));
     clearWords();
+
+    if (isFullScreen) {
+      dispatch(setFullScreenStatus(false));
+    }
   };
 
   return (

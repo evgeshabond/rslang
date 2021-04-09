@@ -37,6 +37,9 @@ export const BottomBlock: React.FC = () => {
   } = useSelector((state: RootStateType) => state.constructorGameState);
 
   const user = useSelector((state: RootStateType) => state.userState.user);
+  const isLevelVisible = useSelector(
+    (state: RootStateType) => state.menuState.isLevelVisible
+  );
 
   useEffect(() => {
     const dontKnow = amountOfRounds - learned;
@@ -55,9 +58,14 @@ export const BottomBlock: React.FC = () => {
     };
 
     if (roundCount === amountOfRounds) {
-      dispatch(setStatistics(param, gameStatistic));
       dispatch(clearWordsIds());
       dispatch(resetCombo());
+
+      if (isLevelVisible) {
+        return;
+      }
+      console.log('Sending end of game');
+      dispatch(setStatistics(param, gameStatistic));
     }
   }, [roundCount]);
 
@@ -82,6 +90,10 @@ export const BottomBlock: React.FC = () => {
       isCorrect: isWinning,
     };
 
+    if (isLevelVisible) {
+      return;
+    }
+    console.log('Sending end of round');
     dispatch(userWordToLearnResult(params, roundResult));
   };
 
