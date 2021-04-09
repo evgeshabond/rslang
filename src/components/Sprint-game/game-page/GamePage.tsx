@@ -5,6 +5,7 @@ import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import { useDispatch, useSelector } from 'react-redux';
 import useSound from 'use-sound';
 import {
+  setCorrectAnswer,
   setFullScreenStatus,
   sprintGameBallsCounter,
   sprintGameCheckPoints,
@@ -46,11 +47,11 @@ const GamePage: React.FC = () => {
     randomArray,
     checkpoints,
     wordCounter,
+    correctAnswer,
     isFullScreen,
   } = gameStatus;
 
   const [wordToGuess, setWordToGuess] = useState('');
-  const [correctAnswer, setCorrectAnswer] = useState(true);
   const [playCorrectSound] = useSound(correctSound, {
     interrupt: true,
   });
@@ -72,7 +73,7 @@ const GamePage: React.FC = () => {
   const changeGameStats = () => {
     dispatch(sprintGameSetLearntWords(shuffledArray[wordCounter]));
     changeCurrentPoints();
-    setCorrectAnswer(true);
+    dispatch(setCorrectAnswer(true));
     playCorrectSound();
     dispatch(sprintGameTotalPoints(totalPoints + currentPoints));
     dispatch(sprintGameCheckPoints(checkpoints < 3 ? checkpoints + 1 : 1));
@@ -102,8 +103,7 @@ const GamePage: React.FC = () => {
   };
   const cleanCurrentGameStats = () => {
     dispatch(sprintGameSetNotLearntWords(shuffledArray[wordCounter]));
-
-    setCorrectAnswer(false);
+    dispatch(setCorrectAnswer(false));
     playWrongSound();
     dispatch(sprintGameCheckPoints(0));
   };

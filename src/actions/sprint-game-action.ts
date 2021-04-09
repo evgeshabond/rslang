@@ -16,12 +16,13 @@ export const SPRINT_GAME_NOT_LEARNT_WORDS = 'SPRINT_GAME_NOT_LEARNT_WORDS';
 export const CLEAR_WORDS = 'CLEAR_WORDS';
 export const UPDATE_FULLSCREEN_STATUS = 'UPDATE_FULLSCREEN_STATUS';
 export const SPRINT_GAME_WORD_COUNTER = 'SPRINT_GAME_WORD_COUNTER';
+export const SPRINT_GAME_CORRECT_ANSWER ='SPRINT_GAME_CORRECT_ANSWER';
 
 export type SprintGameStatusChangeActionType = {
   type: string;
   payload: string;
 };
-
+ 
 export const sprintGameStatusChange = (value: string) => ({
   type: 'SPRINT_GAME_STATUS_CHANGE',
   payload: value,
@@ -88,3 +89,8 @@ export const setFullScreenStatus = (value: boolean) => ({
   type: 'UPDATE_FULLSCREEN_STATUS',
   payload: value,
 });
+
+export const setCorrectAnswer = (value: boolean) =>({
+  type: 'SPRINT_GAME_CORRECT_ANSWER',
+  payload: value,
+})

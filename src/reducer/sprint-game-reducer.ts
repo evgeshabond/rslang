@@ -10,6 +10,7 @@ import {
   SPRINT_GAME_LEARNT_WORDS,
   SPRINT_GAME_WORD_COUNTER,
   CLEAR_WORDS,
+  SPRINT_GAME_CORRECT_ANSWER,
   SPRINT_GAME_NOT_LEARNT_WORDS,
   UPDATE_FULLSCREEN_STATUS,
 } from '../actions/sprint-game-action';
@@ -25,6 +26,7 @@ export type SprintGameStateType = {
   ballsCounter: number;
   checkpoints: number;
   isFullScreen: boolean;
+  correctAnswer: boolean;
   learntWords: CurrentWordListType[];
   notLearntWords: CurrentWordListType[];
 };
@@ -39,6 +41,7 @@ const initialState = {
   ballsCounter: 0,
   checkpoints: 0,
   isFullScreen: false,
+  correctAnswer: true,
   learntWords: [],
   notLearntWords: [],
 };
@@ -64,6 +67,8 @@ export const sprintGameReducer = (
       return { ...state, ballsCounter: action.payload };
     case SPRINT_GAME_WORD_COUNTER:
       return { ...state, wordCounter: action.payload };
+    case SPRINT_GAME_CORRECT_ANSWER:
+      return { ...state, correctAnswer: action.payload };
     case SPRINT_GAME_LEARNT_WORDS:
       return {
         ...state,
