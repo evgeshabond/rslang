@@ -30,7 +30,6 @@ const useStyles = makeStyles({
     marginLeft: '1rem',
     marginBottom: '1rem',
     backgroundColor: (params: any) => getColor(params.group),
-    paddingRight: '1rem',
   },
   firstContainer: {
     display: 'flex',
