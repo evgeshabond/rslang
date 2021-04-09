@@ -14,6 +14,7 @@ export const SPRINT_GAME_LIST_OF_INCORRECT_WORDS =
 export const SPRINT_GAME_LEARNT_WORDS = 'SPRINT_GAME_LEARNT_WORDS';
 export const SPRINT_GAME_NOT_LEARNT_WORDS = 'SPRINT_GAME_NOT_LEARNT_WORDS';
 export const CLEAR_WORDS = 'CLEAR_WORDS';
+export const UPDATE_FULLSCREEN_STATUS ='UPDATE_FULLSCREEN_STATUS';
 
 export type SprintGameStatusChangeActionType = {
   type: string;
@@ -76,4 +77,9 @@ export const sprintGameSetNotLearntWords = (value: CurrentWordListType) => ({
 
 export const clearWords = () => ({
   type: CLEAR_WORDS,
+});
+
+export const setFullScreenStatus = (value: boolean) =>({
+  type:'UPDATE_FULLSCREEN_STATUS',
+  payload: value,
 });

@@ -10,6 +10,7 @@ import {
   SPRINT_GAME_LEARNT_WORDS,
   CLEAR_WORDS,
   SPRINT_GAME_NOT_LEARNT_WORDS,
+  UPDATE_FULLSCREEN_STATUS,
 } from '../actions/sprint-game-action';
 import { CurrentWordListType } from '../actions/word-actions';
 
@@ -27,10 +28,9 @@ export type SprintGameStateType = {
   checkpoints: number;
   listType: string;
   correct: boolean;
+  isFullScreen: boolean;
   learntWords: CurrentWordListType[];
   notLearntWords: CurrentWordListType[];
- 
-  
 };
 
 const initialState = {
@@ -47,9 +47,9 @@ const initialState = {
   checkpoints: 0,
   listType: '',
   correct: false,
+  isFullScreen: false,
   learntWords: [],
   notLearntWords: [],
- 
 };
 
 export const sprintGameReducer = (
@@ -72,15 +72,22 @@ export const sprintGameReducer = (
     case SPRINT_GAME_BALLS_COUNTER:
       return { ...state, ballsCounter: action.payload };
 
-      case SPRINT_GAME_LEARNT_WORDS:
-        return {
-          ...state, learntWords: [...state.learntWords, action.payload],
-        }  
-        case SPRINT_GAME_NOT_LEARNT_WORDS:
-        return {
-          ...state, notLearntWords: [...state.notLearntWords, action.payload],
-        }
-        case CLEAR_WORDS:
+    case SPRINT_GAME_LEARNT_WORDS:
+      return {
+        ...state,
+        learntWords: [...state.learntWords, action.payload],
+      };
+    case SPRINT_GAME_NOT_LEARNT_WORDS:
+      return {
+        ...state,
+        notLearntWords: [...state.notLearntWords, action.payload],
+      };
+    case UPDATE_FULLSCREEN_STATUS:
+      return {
+        ...state,
+        isFullScreen: action.payload,
+      };
+    case CLEAR_WORDS:
       return {
         ...state,
         notLearntWords: [],
