@@ -7,10 +7,14 @@ import {
   CONSTRUCTOR_GAME_RESULT_STATUS,
   CONSTRUCTOR_ROUND_STATUS,
   CONSTRUCTOR_SHUFFLED_LIST,
+  RESET_COMBO,
   UPDATE_CHARS_POSITION,
+  UPDATE_COMBO_ARRAY,
+  UPDATE_COMBO_COUNTER,
+  UPDATE_FULLSCREEN_STATUS,
   UPDATE_LEARNED_COUNT,
   UPDATE_ROUND_COUNT,
-  UPDATE_WORD_OBJ
+  UPDATE_WORD_OBJ,
 } from '../actions/constructor-game-actions';
 import { CurrentWordListType } from '../actions/word-actions';
 
@@ -25,6 +29,9 @@ export type ConstructorGameStartState = {
   isResultPage: boolean;
   learnedWords: Array<CurrentWordListType>;
   notLearnedWords: Array<CurrentWordListType>;
+  comboCounter: number;
+  comboArray: number[];
+  isFullScreen: boolean;
 };
 
 const initialState: ConstructorGameStartState = {
@@ -37,6 +44,9 @@ const initialState: ConstructorGameStartState = {
   learnedWords: [],
   notLearnedWords: [],
   isResultPage: false,
+  comboCounter: 0,
+  comboArray: [],
+  isFullScreen: false,
   wordObj: {
     id: '0',
     group: 0,
@@ -92,10 +102,29 @@ const constructorGameReducer = (
         notLearnedWords: [],
         learnedWords: [],
       };
+    case UPDATE_COMBO_COUNTER:
+      return {
+        ...state,
+        comboCounter: action.payload,
+      };
+    case RESET_COMBO:
+      return {
+        ...state,
+        comboCounter: 0,
+      };
+    case UPDATE_COMBO_ARRAY:
+      return {
+        ...state,
+        comboArray: [...state.comboArray, action.payload],
+      };
+    case UPDATE_FULLSCREEN_STATUS:
+      return {
+        ...state,
+        isFullScreen: action.payload,
+      };
     default:
       return state;
   }
 };
 
 export { constructorGameReducer };
-

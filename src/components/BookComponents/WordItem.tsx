@@ -1,26 +1,20 @@
-import React from 'react';
-import clsx from 'clsx';
-import { useDispatch, useSelector } from 'react-redux';
-
+import { Typography } from '@material-ui/core';
 //  material ui
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { Typography } from '@material-ui/core';
-import Box from '@material-ui/core/Box';
-
-//  helpers
-import getColor from '../../utils/getColor';
+import clsx from 'clsx';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { CurrentWordListType } from '../../actions/word-actions';
-import { serverUrl } from '../../utils/constants';
-import UserWordsService from '../../services/user-words-service';
-import { RootStateType } from '../../reducer/root-reducer';
-
+import deleteIcon from '../../assets/images/delete.svg';
 //  icons
 import hardIcon from '../../assets/images/hardWord.svg';
 import playIcon from '../../assets/images/play-big.svg';
-import deleteIcon from '../../assets/images/delete.svg';
 import returnIcon from '../../assets/images/return.svg';
+import { RootStateType } from '../../reducer/root-reducer';
+import UserWordsService from '../../services/user-words-service';
+import { serverUrl } from '../../utils/constants';
+//  helpers
+import getColor from '../../utils/getColor';
 
 type Params = {
   group: number;
@@ -31,7 +25,7 @@ const useStyles = makeStyles({
   wordContainer: {
     display: 'flex',
     width: '95%',
-    padding: 0,
+    paddingRight: '10px',
     margin: 0,
     marginLeft: '1rem',
     marginBottom: '1rem',
