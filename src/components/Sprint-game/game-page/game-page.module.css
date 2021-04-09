@@ -139,11 +139,12 @@ img.side__buttons {
   position: absolute;
   bottom: 31%;
 }
-.refresh__button,
+
 .close__button {
   background-color: transparent;
   /* border-radius: 100%; */
   border: none;
+  margin-top: 15px;
 }
 
 .full-screen-game {

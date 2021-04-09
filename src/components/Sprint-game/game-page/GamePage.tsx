@@ -64,15 +64,6 @@ const GamePage: React.FC = () => {
   const [playWrongSound] = useSound(wrongSound, { interrupt: true });
   const getRandomNumber = (num: number) => Math.floor(Math.random() * num);
 
-  // const createRandomArray = (wordListArray: CurrentWordListType[]) => {
-  //   const array = [];
-  //   for (let i = 0; i < wordListArray.length; i++) {
-  //     array.push(getRandomNumber(wordListArray.length));
-  //   }
-  //   console.log(array, 'random');
-  //   return array;
-  // };
-
   useEffect(() => {
     if (shuffledArray) {
       if (wordCounter < shuffledArray.length) {
@@ -165,7 +156,7 @@ const GamePage: React.FC = () => {
     >
       <div className={styles.sidebar}>
         <div className={styles.watch__wrapper}>
-          <Timer initialTimer={60} nextPage="finish" timerFontSize="1.8rem" />
+          <Timer initialTimer={600} nextPage="finish" timerFontSize="1.8rem" />
           <Timer2 className={styles.timer2} />
         </div>
       </div>

@@ -47,7 +47,7 @@ const SprintGame: React.FC = () => {
   return (
     <div className={styles.sprint__game}>
       {gameStatus === 'start' ? <TitleGamePage /> : null}
-      {gameStatus === 'timer' ? <div>{renderTimerPage()}</div> : null}
+      {gameStatus === 'timer' ? renderTimerPage() : null}
       {gameStatus === 'play' ? <GamePage /> : null}
       {gameStatus === 'finish' ? <FinishPage /> : null}
     </div>
