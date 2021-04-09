@@ -382,6 +382,7 @@ const LearnPage: React.FC = () => {
           setIsWordListLoaded(true);
           return;
         }
+        console.log('filtered words',aggregatedWordsPage)
         setWordsToRender(
           aggregatedWordsPage.filter(
             (updatedWord: any) => updatedWord.userWord.difficulty !== 'deleted'

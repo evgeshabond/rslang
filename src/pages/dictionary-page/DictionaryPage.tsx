@@ -283,7 +283,10 @@ const DictionaryPage: React.FC = () => {
 
   const handleGamesButtonClick = () => {
     setDialogOpened(true);
+    console.log(historyCopy)
   };
+
+
 
   const handleGameChoose = async (gamePath: string) => {
     /* eslint-disable */
@@ -337,9 +340,16 @@ const DictionaryPage: React.FC = () => {
         return true
       })
     }
+    else {
+      gameWordList = gameWordList.filter((word) => {
+        if (word?.userWord?.difficulty === 'deleted') return true
+        return false
+      })
+    }
     console.log('gamewordlist after deleting is ', gameWordList)
     // //  remove all elements after 20th
     gameWordList.length = 20
+    gameWordList = gameWordList.filter((item) => item)
     console.log('gameWordList after removnig all after 20 is ', gameWordList)    
     dispatch(setResultPageState(false));
     dispatch(setLevelVisibility(false));

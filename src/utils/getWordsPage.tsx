@@ -1,4 +1,3 @@
-import LangService from "../services/lang-service"
 import { serverUrl } from './constants';
 
 const getWordList = async (listProps: { page: number; group: number }) => {
