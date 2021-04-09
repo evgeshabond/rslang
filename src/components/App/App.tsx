@@ -10,7 +10,7 @@ import UserPage from '../../pages/auth-page/User-page';
 import { mainPath } from '../../utils/constants';
 import SprintGame from '../Sprint-game/sprint-game/SprintGame';
 import EbookPage from '../../pages/e-book-page/E-book-page';
-import LearnPage from '../../pages/learn-page/learn-page'
+import LearnPage from '../../pages/learn-page/LearnPage'
 import DictionaryPage from '../../pages/dictionary-page/DictionaryPage'
 import ProfilePage from '../../pages/profile-page/Profile-page';
 import ConstructorGame from '../ConstructorGame/ConstructorGame';
