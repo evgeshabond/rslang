@@ -488,9 +488,9 @@ const DictionaryPage: React.FC = () => {
         <div
           className={clsx({
             [classes.difficultyButton]: true,
-            [classes.activeButton]: difficulty === 'all',
+            [classes.activeButton]: difficulty === 'learning',
           })}
-          onClick={() => setDifficulty('all')}
+          onClick={() => setDifficulty('learning')}
           aria-hidden={true}
         >
           <img
