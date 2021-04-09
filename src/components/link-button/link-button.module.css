@@ -16,6 +16,6 @@
   padding: 5px;
 }
 
-.link-button:active {
+.link-button:hover {
   box-shadow: inset -5px -5px 10px #ffffff, inset 5px 5px 10px #b4c1d5;
 }

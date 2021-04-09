@@ -31,9 +31,12 @@ export const BottomBlock: React.FC = () => {
 
   const user = useSelector((state: RootStateType) => state.userState.user);
 
+  // useEffect(() => {
+  //   console.log(wordObj);
+  // }, []);
+
   useEffect(() => {
     dispatch(setComboArray(comboCounter));
-    console.log(comboCounter);
   }, [comboCounter]);
 
   useEffect(() => {
@@ -42,6 +45,9 @@ export const BottomBlock: React.FC = () => {
     const param = {
       userId: user.userId,
       token: user.token,
+    };
+    const body = {
+      date: new Date(),
       gameType: gameType.constructors,
       body: {
         date: Date.now(),
@@ -53,8 +59,8 @@ export const BottomBlock: React.FC = () => {
     };
 
     if (roundCount === amountOfRounds) {
-      console.log('Know', param.body.know, 'Dont know', param.body.dont_know);
-      dispatch(setStatistics(param));
+      // console.log('Know', body.know, 'Dont know', body.dont_know);
+      // dispatch(setStatistics(param, body));
     }
   }, [roundCount]);
 

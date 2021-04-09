@@ -10,7 +10,6 @@
   position: relative;
   margin-right: 50px;
   margin-left: 50px;
-  padding-right: 50px;
 }
 
 .main-button-container {
@@ -39,7 +38,6 @@
   font-size: 1.8rem;
   line-height: 2.1rem;
   text-align: center;
-  text-transform: capitalize;
   color: rgba(91, 36, 103, 0.8);
   word-wrap: break-word;
   margin: 0 2rem;
