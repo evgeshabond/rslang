@@ -39,6 +39,7 @@ import { setLevelVisibility } from '../../actions/menu-actions';
 import aggregatePage from '../../utils/aggregatePage';
 import { CurrentWordListType, wordListLoaded } from '../../actions/word-actions';
 import { mainPath } from '../../utils/constants';
+import { setResultPageState } from '../../actions/constructor-game-actions';
 
 
 // update theme object of material ui
@@ -340,9 +341,10 @@ const DictionaryPage: React.FC = () => {
     // //  remove all elements after 20th
     gameWordList.length = 20
     console.log('gameWordList after removnig all after 20 is ', gameWordList)    
-    dispatch(setLevelVisibility(false))
-    dispatch(wordListLoaded(gameWordList))
-    historyCopy.push(gamePath)
+    dispatch(setResultPageState(false));
+    dispatch(setLevelVisibility(false));
+    dispatch(wordListLoaded(gameWordList));
+    historyCopy.push(gamePath);
     /* eslint-enable */
   }
 
