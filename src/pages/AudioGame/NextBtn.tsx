@@ -11,7 +11,7 @@ import { WordItem } from '../../components/word-item/word-item-game';
 import styles from './AudioGame.module.css';
 import { mainPath } from '../../utils/constants';
 import { PlayButton } from '../../components/button-icons/playBig-button/playBig-button';
-import { audioGameStart, wordUserAnswer, wordRight, isAnswerSelected, currentPlayWords } from '../../actions/audioGame-actions';
+import { audioGameStart, wordUserAnswer, wordRight, isAnswerSelected, currentPlayWords, isPressDontknow } from '../../actions/audioGame-actions';
 import { shuffle } from '../../utils/shuffle';
 import wrongSound from '../../assets/sounds/src_music_wrong.wav';
 
@@ -23,19 +23,29 @@ const NextBtn: React.FC = () => {
     dispatch(fetchWordsList({ page: 0, group: 0 }))
   }, []);
 
-  const isPlaying = useSelector((state: RootStateType) => state.audioGameState.audioGameStart);
-  const wordList = useSelector((state: RootStateType) => state.wordState.currentWordList);
-  const userAnswer = useSelector((state: RootStateType) => state.audioGameState.wordUserAnswer);
-  const rightWord = useSelector((state: RootStateType) => state.audioGameState.wordRight);
-  const isAnswer = useSelector((state: RootStateType) => state.audioGameState.isAnswerSelected);
-  const currentWords = useSelector((state: RootStateType) => state.audioGameState.currentPlayWords);
-  const stepCounter = useSelector((state: RootStateType) => state.audioGameState.stepCounter);
+  const isPlaying = useSelector((state: RootStateType) =>
+    state.audioGameState.audioGameStart);
+  const wordList = useSelector((state: RootStateType) =>
+    state.wordState.currentWordList);
+  const userAnswer = useSelector((state: RootStateType) =>
+    state.audioGameState.wordUserAnswer);
+  const rightWord = useSelector((state: RootStateType) =>
+    state.audioGameState.wordRight);
+  const isAnswer = useSelector((state: RootStateType) =>
+    state.audioGameState.isAnswerSelected);
+  const currentWords = useSelector((state: RootStateType) =>
+    state.audioGameState.currentPlayWords);
+  const stepCounter = useSelector((state: RootStateType) =>
+    state.audioGameState.stepCounter);
+  const isDontknow = useSelector((state: RootStateType) =>
+    state.audioGameState.isPressDontknow);
   const [playWrongAnswer] = useSound(wrongSound);
 
 
   const playGame = () => {
     dispatch(wordUserAnswer(''));
     dispatch(isAnswerSelected(false));
+    dispatch(isPressDontknow(false));
     if (wordList === undefined) {
       return;
     }
@@ -46,6 +56,7 @@ const NextBtn: React.FC = () => {
 
   const dontKnowANswer = () => {
     playWrongAnswer();
+    dispatch(isPressDontknow(true));
     dispatch(wordUserAnswer(rightWord.word));
     dispatch(isAnswerSelected(true))
   }

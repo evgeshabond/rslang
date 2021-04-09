@@ -1,10 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import useSound from 'use-sound';
 import { useDispatch, useSelector } from 'react-redux';
+import FullscreenIcon from '@material-ui/icons/Fullscreen';
+import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
+import { useFullScreenHandle } from 'react-full-screen';
 import { RootStateType } from '../../reducer/root-reducer';
 import styles from './AudioGame.module.css';
 import { PlayButton } from '../../components/button-icons/playBig-button/playBig-button';
-import { audioGameStart, wordUserAnswer, wordRight, isAnswerSelected, currentPlayWords } from '../../actions/audioGame-actions';
+import { audioGameStart, wordUserAnswer, wordRight, isAnswerSelected, currentPlayWords, isFullScreen } from '../../actions/audioGame-actions';
 import ControlledSelect from '../../components/ControlledSelect/ControlledSelect';
 import { shuffle } from '../../utils/shuffle';
 import { mainPath } from '../../utils/constants';
@@ -21,6 +24,9 @@ const StartScreen: React.FC = () => {
   const rightWord = useSelector((state: RootStateType) => state.audioGameState.wordRight);
   const isAnswer = useSelector((state: RootStateType) => state.audioGameState.isAnswerSelected);
   const currentWords = useSelector((state: RootStateType) => state.audioGameState.currentPlayWords);
+  const fullScreen = useSelector((state: RootStateType) =>
+    state.audioGameState.isFullScreen);
+  const handle = useFullScreenHandle();
   const [play] = useSound(`${mainPath.langUrl}${rightWord.audio}`, { interrupt: true });
 
   useEffect(() => {
@@ -37,6 +43,7 @@ const StartScreen: React.FC = () => {
   const playGame = () => {
     dispatch(wordUserAnswer(''));
     dispatch(isAnswerSelected(false));
+    // dispatch(isFullScreen(false));
     if (wordList === undefined) {
       return;
     }
@@ -49,15 +56,14 @@ const StartScreen: React.FC = () => {
   return (
     <div className={styles.game__wrapper}>
       <div className={styles.game__startSreen}>
-
         <div className={styles.game__title}>Аудиовызов</div>
         <div className={styles.game__decription}>Тренировка улучшает
         восприятие английской речи на слух.
         Выберите из предложенных вариантов ответа правильный перевод слова,
     которое услышите</div>
         < PlayButton buttonClick={() => { dispatch(audioGameStart(true)); playGame(); }} />
+        <ControlledSelect />
       </div>
-      <ControlledSelect />
       <CatAudio className={styles.cat__image} />
     </div>
   )

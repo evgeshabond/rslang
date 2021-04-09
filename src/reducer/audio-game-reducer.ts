@@ -5,13 +5,17 @@ import {
   WORD_RIGHT,
   IS_ANSWER_SELECTED,
   CURRENT_PLAY_WORDS,
-  STEP_COUNTER
+  STEP_COUNTER,
+  IS_FULL_SCREEN,
+  IS_PRESS_DONTKNOW,
 } from '../actions/audioGame-actions';
 
 import { CurrentWordListType } from '../actions/word-actions';
 
 export type AudioGameState = {
+  isPressDontknow: boolean;
   audioGameStart: boolean;
+  isFullScreen: boolean;
   wordUserAnswer:string;
   wordRight: CurrentWordListType;
   isAnswerSelected: boolean;
@@ -20,7 +24,9 @@ export type AudioGameState = {
 };
 
 const initialState: AudioGameState = {
+  isPressDontknow: false,
   stepCounter:0,
+  isFullScreen: false,
   audioGameStart: false,
   isAnswerSelected: false,
   wordUserAnswer: '',
@@ -43,12 +49,17 @@ const initialState: AudioGameState = {
   }
 };
 
-const audioGameReducer = (state = initialState, action: AudioGameStartActionType) => {
+const audioGameReducer = (state = initialState,
+   action: AudioGameStartActionType) => {
   switch (action.type) {
     case STEP_COUNTER:
       return { ...state, stepCounter: action.payload };
     case AUDIO_GAME_STATUS:
       return { ...state, audioGameStart: action.payload };
+    case IS_FULL_SCREEN:
+      return { ...state, isFullScreen: action.payload };
+    case IS_PRESS_DONTKNOW:
+      return { ...state, isPressDontknow: action.payload };
     case WORD_USER_ANSWER:
       return { ...state, wordUserAnswer: action.payload };
     case WORD_RIGHT:

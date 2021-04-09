@@ -12,7 +12,7 @@ import { RootStateType } from '../../reducer/root-reducer';
 import Spinner from '../../components/Spinner/Spinner';
 import styles from './AudioGame.module.css';
 import { mainPath } from '../../utils/constants';
-import { audioGameStart, isAnswerSelected, currentPlayWords } from '../../actions/audioGame-actions';
+import { audioGameStart, isAnswerSelected, currentPlayWords, isFullScreen, isPressDontknow } from '../../actions/audioGame-actions';
 import { CloseButton } from '../../components/button-icons/close-button/close-button';
 import { QuestionButton } from '../../components/button-icons/question-button/question-button';
 import successSound from '../../assets/sounds/src_music_correct.mp3';
@@ -41,12 +41,16 @@ const AudioGame: React.FC = () => {
     state.audioGameState.currentPlayWords);
   const stepCounter = useSelector((state: RootStateType) =>
     state.audioGameState.stepCounter);
+  const fullScreen = useSelector((state: RootStateType) =>
+    state.audioGameState.isFullScreen);
+  const isDontknow = useSelector((state: RootStateType) =>
+    state.audioGameState.isPressDontknow);
 
   const [countStep, setCountStep] = useState(0);
-
   const [play] = useSound(`${mainPath.langUrl}${rightWord.audio}`, { interrupt: true });
   const [playSuccessAnswer] = useSound(successSound);
   const [playWrongAnswer] = useSound(wrongSound);
+  const handle = useFullScreenHandle();
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -85,49 +89,72 @@ const AudioGame: React.FC = () => {
     if (!isAnswer) {
       return
     }
-    if (userAnswer === rightWord.word) {
+    if (userAnswer === rightWord.word && !isDontknow) {
       playSuccessAnswer();
     }
     playWrongAnswer()
   }, [userAnswer])
 
-  // const handle = useFullScreenHandle();
-  // const [fullScreen, setFullScreen] = useState(true);
-  // function fullScreenEnterHandler() {
-  //   setFullScreen(true);
-  //   handle.enter();
-  // }
-  // function fullScreenExitHandler() {
-  //   setFullScreen(false);
-  //   handle.exit();
-  // }
+
+  function fullScreenEnterHandler() {
+    dispatch(isFullScreen(true))
+    handle.enter();
+  }
+  function fullScreenExitHandler() {
+    dispatch(isFullScreen(false))
+    handle.exit();
+  }
 
   return isPlaying ? (
-    // <FullScreen handle={handle} >
-    <div className={styles.game__content}>
-      {/* <LevelIcon number={4} type={0} buttonClick={() => console.log('info')} /> */}
-      <div className={styles.btn__container}>
+    <FullScreen handle={handle} className={styles.fullScreen__container} >
+      <div className={fullScreen ? styles.game__content__fullScreen : styles.game__content}>
+        <div className={styles.btn__container}>
+          <div className={styles.hint} data-title="Выберите перевод услышанного слова">
+            <QuestionButton buttonClick={() => console.log('info')} />
+          </div>
+          {fullScreen ? (
+            <button
+              className={styles['full-screen__button']}
+              type="button"
+              onClick={() => fullScreenExitHandler()}
+            >
+              <FullscreenExitIcon
+                className={styles['full-screen__icon']}
+                width="24px"
+                height="24px"
+              />
+            </button>
+          ) : (
+            <button
+              className={styles['full-screen__button']}
+              type="button"
+              onClick={() => fullScreenEnterHandler()}
+            >
+              <FullscreenIcon
+                className={styles['full-screen__icon']}
+                width="24px"
+                height="24px"
+              />
+            </button>
+          )}
 
-        <div className={styles.hint} data-title="Выберите перевод услышанного слова">
-          <QuestionButton buttonClick={() => console.log('info')} />
+          <CloseButton buttonClick={() => {
+            dispatch(audioGameStart(false));
+            dispatch(isAnswerSelected(false));
+            fullScreenExitHandler();
+          }} />
         </div>
-
-        <CloseButton buttonClick={() => {
-          dispatch(audioGameStart(false));
-          dispatch(isAnswerSelected(false));
-        }} />
+        {isAnswer ? (
+          <WordInfo />
+        ) : (
+          <AudioOnSizeButton width='60px' height='60px' className={styles.audio__btn}
+            onClick={() => playSoundWord()} />
+        )}
+        {currentWords.length === 0 ? <Spinner /> : <RenderWordCard />}
+        <NextBtn />
+        <CatAudio className={styles.cat__image} />
       </div>
-      {isAnswer ? (
-        <WordInfo />
-      ) : (
-        <AudioOnSizeButton width='40px' height='40px' className={styles.audio__btn}
-          onClick={() => playSoundWord()} />
-      )}
-      {currentWords.length === 0 ? <Spinner /> : <RenderWordCard />}
-      <NextBtn />
-      <CatAudio className={styles.cat__image} />
-    </div>
-    // </FullScreen >
+    </FullScreen >
   ) : (
     <StartScreen />
 
