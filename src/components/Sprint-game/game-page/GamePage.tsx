@@ -16,7 +16,9 @@ import {
   sprintGameStatusChange,
   sprintGameTotalPoints,
 } from '../../../actions/sprint-game-action';
-import { fetchWordsList } from '../../../actions/word-actions';
+import {
+  CurrentWordListType
+} from '../../../actions/word-actions';
 import closeIcon from '../../../assets/images/close.svg';
 import correctImage from '../../../assets/images/correct.svg';
 import inCorrectImage from '../../../assets/images/incorrect.svg';
@@ -52,6 +54,8 @@ const GamePage: React.FC = () => {
   const [wordCounter, setWordCounter] = useState(0);
   const [wordToGuess, setWordToGuess] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState(true);
+  
+  
 
   const [playCorrectSound] = useSound(correctSound, {
     interrupt: true,
@@ -60,41 +64,24 @@ const GamePage: React.FC = () => {
   const [playWrongSound] = useSound(wrongSound, { interrupt: true });
   const getRandomNumber = (num: number) => Math.floor(Math.random() * num);
 
-  useEffect(() => {
-    dispatch(
-      sprintGameShuffledArray(wordList.slice().sort(() => Math.random() - 0.5))
-    );
-    console.log('shuffled created,');
-  }, [wordList]);
-  //   useEffect(() => {
-  //     dispatch(sprintGameStatusChange('start'));
-  //     dispatch(clearWords());
-  //     dispatch(sprintGameTotalPoints(0));
-  //     dispatch(sprintGameBallsCounter(0));
-  //     dispatch(sprintGameCheckPoints(0));
-  //   }, []);
-  console.log('PLAY!');
-  useEffect(() => {
-    if (wordList.length === 0) {
-      dispatch(fetchWordsList({ page: 0, group: 0 }));
-      console.log('fetching default');
-    }
-    dispatch(sprintGameRandomArray(createRandomArray()));
-  }, []);
-
-  const createRandomArray = () => {
-    const array = [];
-    for (let i = 0; i < wordList.length; i++) {
-      array.push(getRandomNumber(wordList.length));
-    }
-    return array;
-  };
+  // const createRandomArray = (wordListArray: CurrentWordListType[]) => {
+  //   const array = [];
+  //   for (let i = 0; i < wordListArray.length; i++) {
+  //     array.push(getRandomNumber(wordListArray.length));
+  //   }
+  //   console.log(array, 'random');
+  //   return array;
+  // };
 
   useEffect(() => {
-    if (wordCounter < shuffledArray.length) {
-      getRandomNumber(2) === 0
-        ? setWordToGuess(shuffledArray[wordCounter].wordTranslate)
-        : setWordToGuess(shuffledArray[randomArray[wordCounter]].wordTranslate);
+    if (shuffledArray) {
+      if (wordCounter < shuffledArray.length) {
+        getRandomNumber(2) === 0
+          ? setWordToGuess(shuffledArray[wordCounter].wordTranslate)
+          : setWordToGuess(
+              shuffledArray[randomArray[wordCounter]].wordTranslate
+            );
+      }
     }
   }, [wordCounter]);
 
@@ -205,7 +192,7 @@ const GamePage: React.FC = () => {
         </div>
         <div className={styles.guess__word}>
           <div className={styles.the__word}>
-            {shuffledArray[wordCounter].word}
+            {shuffledArray ? shuffledArray[wordCounter].word : null}
           </div>{' '}
           -<div className={styles.translation}>{wordToGuess}</div>
         </div>

@@ -9,7 +9,7 @@ img {
   cursor: pointer;
 }
 .game__wrapper {
-  min-height: 440px;
+  min-height: 560px;
   /* height: 80%; */
   min-width: 1022px;
   width: 100%;

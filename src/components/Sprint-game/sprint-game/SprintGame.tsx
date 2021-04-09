@@ -5,7 +5,7 @@ import {
   sprintGameBallsCounter,
   sprintGameCheckPoints,
   sprintGameStatusChange,
-  sprintGameTotalPoints
+  sprintGameTotalPoints,
 } from '../../../actions/sprint-game-action';
 import { ReactComponent as Cat } from '../../../assets/images/cat2.svg';
 import { ReactComponent as Timer1 } from '../../../assets/images/timer1.svg';
@@ -23,13 +23,7 @@ const SprintGame: React.FC = () => {
     (state: RootStateType) => state.sprintGameState
   );
 
-  const {
-    gameTitle,
-    gameDescription,
-    gameStatus,
-  } = gameStatuses;
-
-
+  const { gameTitle, gameDescription, gameStatus } = gameStatuses;
 
   const renderTimerPage = () => (
     <div className={`${styles.game__wrapper} ${styles.timer__page}`}>
@@ -52,13 +46,7 @@ const SprintGame: React.FC = () => {
 
   return (
     <div className={styles.sprint__game}>
-      {gameStatus === 'start' ? (
-        <TitleGamePage
-          gameTitle={gameTitle}
-          gameDescription={gameDescription}
-          buttonClick={() => dispatch(sprintGameStatusChange('timer'))}
-        />
-      ) : null}
+      {gameStatus === 'start' ? <TitleGamePage /> : null}
       {gameStatus === 'timer' ? <div>{renderTimerPage()}</div> : null}
       {gameStatus === 'play' ? <GamePage /> : null}
       {gameStatus === 'finish' ? <FinishPage /> : null}

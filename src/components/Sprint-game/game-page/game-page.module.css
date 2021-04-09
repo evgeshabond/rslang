@@ -17,12 +17,14 @@
   max-height: 460px;
   background-color: #ffff;
   border-radius: 30px;
-  margin: 0 1.5rem;
+  /* margin: 0 1.5rem; */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 2rem 2rem 3.5rem;
-  margin-top: 35px;
+  /* margin-top: 35px; */
+  margin-top: auto;
+  margin-bottom: auto;
 }
 .cat__img1 {
   position: absolute;
@@ -68,6 +70,7 @@ img.side__buttons {
   align-items: center;
   justify-content: center;
   font-size: 2.5rem;
+  color: #733999;
 }
 
 .green__button,
