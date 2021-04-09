@@ -17,10 +17,6 @@ import { shuffle } from '../../utils/shuffle';
 const RenderWordCard: React.FC = () => {
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchWordsList({ page: 0, group: 0 }))
-  }, []);
-
   const isPlaying = useSelector((state: RootStateType) =>
     state.audioGameState.audioGameStart);
   const wordList = useSelector((state: RootStateType) =>

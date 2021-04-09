@@ -93,7 +93,7 @@
   height: 44rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
   border-radius: 50px;
   background: #fdebff;
@@ -153,7 +153,7 @@
 }
 
 .word__info {
-  max-width: 60rem;
+  min-width: 50rem;
   height: 19.3rem;
   display: flex;
   flex-direction: column;
@@ -208,10 +208,6 @@
   font-size: 11px;
   padding: 5px 10px;
   border-radius: 30px;
-}
-
-.full-screen__audio-button {
-  right: 106px;
 }
 
 .cat_sleeping {

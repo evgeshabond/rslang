@@ -24,6 +24,7 @@ import WordInfo from './WordInfo';
 import NextBtn from './NextBtn';
 import { LevelIcon } from '../../components/button-icons/level-icons/level-icons';
 import { ReactComponent as AudioOnSizeButton } from '../../assets/images/audioOn.svg';
+import SettingsBtn from './SettingsBtn';
 
 
 const AudioGame: React.FC = () => {
@@ -54,14 +55,10 @@ const AudioGame: React.FC = () => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(fetchWordsList({ page: 0, group: 0 }))
-  }, [])
-
-  useEffect(() =>
-    () => {
-      setCountStep(0);
-      dispatch(currentPlayWords([]));
-    }, [])
+    if (wordList.length === 0) {
+      dispatch(fetchWordsList({ page: 0, group: 0 }));
+    }
+  }, []);
 
   useEffect(() => {
     if (countStep === 10) (
@@ -76,7 +73,6 @@ const AudioGame: React.FC = () => {
     if (isPlaying) {
       playSoundWord();
     }
-    console.log('ef Sound/', play)
   }, [play])
 
   const playSoundWord = () => {
@@ -95,55 +91,21 @@ const AudioGame: React.FC = () => {
     playWrongAnswer()
   }, [userAnswer])
 
+  useEffect(() => {
+    if (fullScreen) {
+      handle.enter();
+      return;
+    }
+    if (isPlaying) {
+      handle.exit();
+    }
 
-  function fullScreenEnterHandler() {
-    dispatch(isFullScreen(true))
-    handle.enter();
-  }
-  function fullScreenExitHandler() {
-    dispatch(isFullScreen(false))
-    handle.exit();
-  }
+  }, [fullScreen])
 
   return isPlaying ? (
     <FullScreen handle={handle} className={styles.fullScreen__container} >
       <div className={fullScreen ? styles.game__content__fullScreen : styles.game__content}>
-        <div className={styles.btn__container}>
-          <div className={styles.hint} data-title="Выберите перевод услышанного слова">
-            <QuestionButton buttonClick={() => console.log('info')} />
-          </div>
-          {fullScreen ? (
-            <button
-              className={styles['full-screen__button']}
-              type="button"
-              onClick={() => fullScreenExitHandler()}
-            >
-              <FullscreenExitIcon
-                className={styles['full-screen__icon']}
-                width="24px"
-                height="24px"
-              />
-            </button>
-          ) : (
-            <button
-              className={styles['full-screen__button']}
-              type="button"
-              onClick={() => fullScreenEnterHandler()}
-            >
-              <FullscreenIcon
-                className={styles['full-screen__icon']}
-                width="24px"
-                height="24px"
-              />
-            </button>
-          )}
-
-          <CloseButton buttonClick={() => {
-            dispatch(audioGameStart(false));
-            dispatch(isAnswerSelected(false));
-            fullScreenExitHandler();
-          }} />
-        </div>
+        <SettingsBtn />
         {isAnswer ? (
           <WordInfo />
         ) : (
@@ -157,7 +119,6 @@ const AudioGame: React.FC = () => {
     </FullScreen >
   ) : (
     <StartScreen />
-
   )
 };
 

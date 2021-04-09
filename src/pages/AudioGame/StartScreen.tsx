@@ -7,7 +7,7 @@ import { useFullScreenHandle } from 'react-full-screen';
 import { RootStateType } from '../../reducer/root-reducer';
 import styles from './AudioGame.module.css';
 import { PlayButton } from '../../components/button-icons/playBig-button/playBig-button';
-import { audioGameStart, wordUserAnswer, wordRight, isAnswerSelected, currentPlayWords, isFullScreen } from '../../actions/audioGame-actions';
+import { audioGameStart, wordUserAnswer, wordRight, isAnswerSelected, currentPlayWords, isFullScreen, stepCounter } from '../../actions/audioGame-actions';
 import ControlledSelect from '../../components/ControlledSelect/ControlledSelect';
 import { shuffle } from '../../utils/shuffle';
 import { mainPath } from '../../utils/constants';
@@ -18,14 +18,22 @@ import { ReactComponent as CatAudio } from '../../assets/images/cat-audio-game.s
 const StartScreen: React.FC = () => {
   const dispatch = useDispatch();
 
-  const isPlaying = useSelector((state: RootStateType) => state.audioGameState.audioGameStart);
-  const wordList = useSelector((state: RootStateType) => state.wordState.currentWordList);
-  const userAnswer = useSelector((state: RootStateType) => state.audioGameState.wordUserAnswer);
-  const rightWord = useSelector((state: RootStateType) => state.audioGameState.wordRight);
-  const isAnswer = useSelector((state: RootStateType) => state.audioGameState.isAnswerSelected);
-  const currentWords = useSelector((state: RootStateType) => state.audioGameState.currentPlayWords);
+  const isPlaying = useSelector((state: RootStateType) =>
+    state.audioGameState.audioGameStart);
+  const wordList = useSelector((state: RootStateType) =>
+    state.wordState.currentWordList);
+  const userAnswer = useSelector((state: RootStateType) =>
+    state.audioGameState.wordUserAnswer);
+  const rightWord = useSelector((state: RootStateType) =>
+    state.audioGameState.wordRight);
+  const isAnswer = useSelector((state: RootStateType) =>
+    state.audioGameState.isAnswerSelected);
+  const currentWords = useSelector((state: RootStateType) =>
+    state.audioGameState.currentPlayWords);
   const fullScreen = useSelector((state: RootStateType) =>
     state.audioGameState.isFullScreen);
+  const roundCounter = useSelector((state: RootStateType) =>
+    state.audioGameState.stepCounter);
   const handle = useFullScreenHandle();
   const [play] = useSound(`${mainPath.langUrl}${rightWord.audio}`, { interrupt: true });
 
@@ -40,32 +48,31 @@ const StartScreen: React.FC = () => {
     }
   }
 
-  const playGame = () => {
+  const startGame = () => {
+    console.log('start', wordList);
     dispatch(wordUserAnswer(''));
     dispatch(isAnswerSelected(false));
-    // dispatch(isFullScreen(false));
+    dispatch(stepCounter(0));
     if (wordList === undefined) {
       return;
     }
-    const currentPlayList = shuffle(wordList).filter((item: Object, index: number) => index < 5);
-    dispatch(currentPlayWords(currentPlayList))
-    console.log('current', currentWords)
-    // setCountStep(CountStep => countStep + 1);
+    const currentPlayList = shuffle(wordList)
+      .filter((item: Object, index: number) => index < 5);
+    dispatch(currentPlayWords(currentPlayList));
   }
 
   return (
-    <div className={styles.game__wrapper}>
-      <div className={styles.game__startSreen}>
-        <div className={styles.game__title}>Аудиовызов</div>
-        <div className={styles.game__decription}>Тренировка улучшает
-        восприятие английской речи на слух.
-        Выберите из предложенных вариантов ответа правильный перевод слова,
+    <div className={styles.game__content}>
+      <div className={styles.game__title}>Аудиовызов</div>
+      <div className={styles.game__decription}>Тренировка улучшает
+      восприятие английской речи на слух.
+      Выберите из предложенных вариантов ответа правильный перевод слова,
     которое услышите</div>
-        < PlayButton buttonClick={() => { dispatch(audioGameStart(true)); playGame(); }} />
-        <ControlledSelect />
-      </div>
+      < PlayButton buttonClick={() => { dispatch(audioGameStart(true)); startGame(); }} />
+      <ControlledSelect />
       <CatAudio className={styles.cat__image} />
     </div>
+
   )
 }
 export default StartScreen;

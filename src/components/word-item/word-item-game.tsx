@@ -22,7 +22,7 @@ const WordItem: React.FC<Props> = ({ word, buttonClick }) => {
 
 
   return (
-    < button type='button' onClick={buttonClick} className={`${styles.word__item}  ${wordUserAnswer !== correctWord.word && wordUserAnswer === word.word ? styles.word__item__wrong : ''} ${(wordUserAnswer === correctWord.word && wordUserAnswer === word.word) ? styles.word__item__right : ''} `}>
+    < button type='button' onClick={buttonClick} className={`${styles.word__item}  ${wordUserAnswer !== correctWord.word && wordUserAnswer === word.word ? styles.word__item__wrong : ''} ${(isAnswer && correctWord.word === word.word) ? styles.word__item__right : ''} `}>
       { word.wordTranslate}
     </button >
   )

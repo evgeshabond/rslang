@@ -11,17 +11,13 @@ import { WordItem } from '../../components/word-item/word-item-game';
 import styles from './AudioGame.module.css';
 import { mainPath } from '../../utils/constants';
 import { PlayButton } from '../../components/button-icons/playBig-button/playBig-button';
-import { audioGameStart, wordUserAnswer, wordRight, isAnswerSelected, currentPlayWords, isPressDontknow } from '../../actions/audioGame-actions';
+import { audioGameStart, wordUserAnswer, wordRight, isAnswerSelected, currentPlayWords, isPressDontknow, stepCounter } from '../../actions/audioGame-actions';
 import { shuffle } from '../../utils/shuffle';
 import wrongSound from '../../assets/sounds/src_music_wrong.wav';
 
 
 const NextBtn: React.FC = () => {
-
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchWordsList({ page: 0, group: 0 }))
-  }, []);
 
   const isPlaying = useSelector((state: RootStateType) =>
     state.audioGameState.audioGameStart);
@@ -35,23 +31,26 @@ const NextBtn: React.FC = () => {
     state.audioGameState.isAnswerSelected);
   const currentWords = useSelector((state: RootStateType) =>
     state.audioGameState.currentPlayWords);
-  const stepCounter = useSelector((state: RootStateType) =>
+  const roundCounter = useSelector((state: RootStateType) =>
     state.audioGameState.stepCounter);
   const isDontknow = useSelector((state: RootStateType) =>
     state.audioGameState.isPressDontknow);
   const [playWrongAnswer] = useSound(wrongSound);
 
 
+
   const playGame = () => {
-    dispatch(wordUserAnswer(''));
-    dispatch(isAnswerSelected(false));
-    dispatch(isPressDontknow(false));
+    console.log('playgame', wordList);
     if (wordList === undefined) {
       return;
     }
+    dispatch(wordUserAnswer(''));
+    dispatch(isAnswerSelected(false));
+    dispatch(isPressDontknow(false));
     const currentPlayList = shuffle(wordList)
       .filter((item: Object, index: number) => index < 5);
-    dispatch(currentPlayWords(currentPlayList))
+    dispatch(currentPlayWords(currentPlayList));
+    dispatch(stepCounter(roundCounter + 1));
   }
 
   const dontKnowANswer = () => {
@@ -63,9 +62,11 @@ const NextBtn: React.FC = () => {
 
   return isAnswer ? (
     <div>
-      {(stepCounter === 10) ? (<div>
-        Показать результат
-      </div>) :
+      {(roundCounter === 9) ? (
+        <button type="button" className={styles.playing__btn}>
+          Показать результат
+        </button>
+      ) :
         (<button aria-label='word-btn' type="button" className={styles.add__aswer} onClick={() => {
           playGame()
         }} />)
