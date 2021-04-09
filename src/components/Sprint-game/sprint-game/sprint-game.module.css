@@ -48,12 +48,12 @@ p {
 .cat__img {
   position: absolute;
   right: -100px;
-  bottom:117px;
+  /* bottom:117px; */
 }
-.cat__img1 {
+/* .cat__img1 {
   position: absolute;
   right: -100px;
-}
+} */
 
 .timer {
   color: #733999;

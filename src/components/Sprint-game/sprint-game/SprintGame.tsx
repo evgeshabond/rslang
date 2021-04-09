@@ -23,7 +23,7 @@ const SprintGame: React.FC = () => {
     (state: RootStateType) => state.sprintGameState
   );
 
-  const { gameTitle, gameDescription, gameStatus } = gameStatuses;
+  const { gameStatus } = gameStatuses;
 
   const renderTimerPage = () => (
     <div className={`${styles.game__wrapper} ${styles.timer__page}`}>

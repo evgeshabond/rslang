@@ -8,6 +8,7 @@ import {
   SPRINT_GAME_CHECK_POINTS,
   SPRINT_GAME_BALLS_COUNTER,
   SPRINT_GAME_LEARNT_WORDS,
+  SPRINT_GAME_WORD_COUNTER,
   CLEAR_WORDS,
   SPRINT_GAME_NOT_LEARNT_WORDS,
   UPDATE_FULLSCREEN_STATUS,
@@ -15,38 +16,28 @@ import {
 import { CurrentWordListType } from '../actions/word-actions';
 
 export type SprintGameStateType = {
-  gameDescription: string;
-  gameTitle: string;
   gameStatus: string;
   shuffledArray: CurrentWordListType[];
   randomArray: number[];
+  wordCounter: number;
   totalPoints: number;
   currentPoints: number;
-  level: number;
-  timer: number;
   ballsCounter: number;
   checkpoints: number;
-  listType: string;
-  correct: boolean;
   isFullScreen: boolean;
   learntWords: CurrentWordListType[];
   notLearntWords: CurrentWordListType[];
 };
 
 const initialState = {
-  gameTitle: 'СПРИНТ',
-  gameDescription: `Это тренировка для повторения заученных слов из вашего словаря. Выберите соответствует ли перевод предложенному слову.`,
   gameStatus: 'start',
   shuffledArray: [],
   randomArray: [],
+  wordCounter: 0,
   totalPoints: 0,
   currentPoints: 50,
-  level: 0,
-  timer: 60,
   ballsCounter: 0,
   checkpoints: 0,
-  listType: '',
-  correct: false,
   isFullScreen: false,
   learntWords: [],
   notLearntWords: [],
@@ -71,7 +62,8 @@ export const sprintGameReducer = (
       return { ...state, checkpoints: action.payload };
     case SPRINT_GAME_BALLS_COUNTER:
       return { ...state, ballsCounter: action.payload };
-
+    case SPRINT_GAME_WORD_COUNTER:
+      return { ...state, wordCounter: action.payload };
     case SPRINT_GAME_LEARNT_WORDS:
       return {
         ...state,

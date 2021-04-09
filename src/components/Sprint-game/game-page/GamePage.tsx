@@ -9,16 +9,12 @@ import {
   sprintGameBallsCounter,
   sprintGameCheckPoints,
   sprintGameCurrentPoints,
-  sprintGameRandomArray,
   sprintGameSetLearntWords,
   sprintGameSetNotLearntWords,
-  sprintGameShuffledArray,
   sprintGameStatusChange,
   sprintGameTotalPoints,
+  sprintGameWordCounter,
 } from '../../../actions/sprint-game-action';
-import {
-  CurrentWordListType
-} from '../../../actions/word-actions';
 import closeIcon from '../../../assets/images/close.svg';
 import correctImage from '../../../assets/images/correct.svg';
 import inCorrectImage from '../../../assets/images/incorrect.svg';
@@ -49,18 +45,15 @@ const GamePage: React.FC = () => {
     totalPoints,
     randomArray,
     checkpoints,
+    wordCounter,
     isFullScreen,
   } = gameStatus;
-  const [wordCounter, setWordCounter] = useState(0);
+
   const [wordToGuess, setWordToGuess] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState(true);
-  
-  
-
   const [playCorrectSound] = useSound(correctSound, {
     interrupt: true,
   });
-
   const [playWrongSound] = useSound(wrongSound, { interrupt: true });
   const getRandomNumber = (num: number) => Math.floor(Math.random() * num);
 
@@ -83,7 +76,6 @@ const GamePage: React.FC = () => {
     playCorrectSound();
     dispatch(sprintGameTotalPoints(totalPoints + currentPoints));
     dispatch(sprintGameCheckPoints(checkpoints < 3 ? checkpoints + 1 : 1));
-    // checkTheEndOfTheGame();
     if (checkpoints === 2) {
       dispatch(sprintGameBallsCounter(ballsCounter + 1));
       if (ballsCounter === 4) {
@@ -110,7 +102,7 @@ const GamePage: React.FC = () => {
   };
   const cleanCurrentGameStats = () => {
     dispatch(sprintGameSetNotLearntWords(shuffledArray[wordCounter]));
-    // checkTheEndOfTheGame();
+
     setCorrectAnswer(false);
     playWrongSound();
     dispatch(sprintGameCheckPoints(0));
@@ -123,7 +115,7 @@ const GamePage: React.FC = () => {
       cleanCurrentGameStats();
     }
     checkTheEndOfTheGame();
-    setWordCounter(wordCounter + 1);
+    dispatch(sprintGameWordCounter(wordCounter + 1));
   };
 
   const checkTheWordWrong = () => {
@@ -133,7 +125,7 @@ const GamePage: React.FC = () => {
       cleanCurrentGameStats();
     }
     checkTheEndOfTheGame();
-    setWordCounter(wordCounter + 1);
+    dispatch(sprintGameWordCounter(wordCounter + 1));
   };
 
   const changeCurrentPoints = () => {
@@ -156,7 +148,7 @@ const GamePage: React.FC = () => {
     >
       <div className={styles.sidebar}>
         <div className={styles.watch__wrapper}>
-          <Timer initialTimer={600} nextPage="finish" timerFontSize="1.8rem" />
+          <Timer initialTimer={60} nextPage="finish" timerFontSize="1.8rem" />
           <Timer2 className={styles.timer2} />
         </div>
       </div>
