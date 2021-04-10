@@ -87,7 +87,7 @@ const Header: React.FC<Props> = ({ topMenuIsOpen, topMenuOpen, isLogin }) => {
               title="О команде"
               TransitionComponent={Zoom}
             >
-              <Link to={mainPath.main}>
+              <Link to={mainPath.aboutUs}>
                 <img src={teamImg} alt="about team" />
               </Link>
             </Tooltip>

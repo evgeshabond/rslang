@@ -1,0 +1,24 @@
+.wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+
+  width: 80%;
+  max-width: 1022px;
+  min-height: 560px;
+
+  background-color: #fdebff;
+  border-radius: 50px;
+
+  text-align: left;
+  text-indent: 3rem;
+  color: #5b2467;
+}
+
+.text {
+  margin: 10px 0;
+  max-width: 90%;
+}

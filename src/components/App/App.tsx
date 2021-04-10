@@ -18,6 +18,7 @@ import GitLinks from '../GitLinks/GitLinks';
 import { QuestionPage } from '../../pages/question-page/Question-page';
 import { GameTest } from '../game-statistic-test/Game-statistic-test';
 import { StatisticPage } from '../../pages/statistic-page/Statistic-page';
+import { AboutUs } from '../../pages/about-us/About-us';
 
 const App: React.FC = () => (
   <Router basename="/">
@@ -43,6 +44,7 @@ const App: React.FC = () => (
             <Route path={mainPath.questionPage} component={QuestionPage} />
             <Route path={mainPath.testStatistic} component={GameTest} />
             <Route path={mainPath.statistic} component={StatisticPage} />
+            <Route path={mainPath.aboutUs} component={AboutUs} />
           </Switch>
         </main>
         <Footer />
