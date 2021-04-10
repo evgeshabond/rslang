@@ -11,8 +11,8 @@ export const mainPath = {
   constructorGame: '/constructorgame',
   langUrl: 'https://rslang-app.herokuapp.com/',
   questionPage: '/quiz',
-  userStatistic: '/statistic',
-
+  testStatistic: '/testStatistic',
+  statistic: '/statistic',
 };
 
 export const authErrorPath = {

@@ -10,6 +10,7 @@ import {
   setFullScreenStatus,
   setLearnCount,
   setRoundEnd,
+  setWordCorrectness,
   setWordObj,
   updateCharsPosition,
 } from '../../actions/constructor-game-actions';
@@ -41,7 +42,7 @@ const ConstructorGame: React.FC = () => {
   } = useSelector((state: RootStateType) => state.constructorGameState);
 
   useEffect(() => {
-    dispatch(setWordObj(shuffledWordList[roundCount]));
+    dispatch(setWordObj(shuffledWordList[roundCount - 1]));
   }, [shuffledWordList, roundCount]);
 
   const [wordSound] = useSound(
@@ -65,7 +66,10 @@ const ConstructorGame: React.FC = () => {
     }
     const wordArray = wordObj.word.split('');
 
-    const shuffledWordArray = shuffle(wordArray);
+    let shuffledWordArray: string[] = shuffle(wordArray);
+    if (shuffledWordArray.join('') === wordArray.join('')) {
+      shuffledWordArray = shuffle(wordArray);
+    }
 
     const wordObject: WordObjectType = {};
     shuffledWordArray.forEach((char, index) => {
@@ -118,6 +122,7 @@ const ConstructorGame: React.FC = () => {
       dispatch(setComboCounter(comboCounter + 1));
       dispatch(addLearnedWord(wordObj));
       dispatch(setLearnCount(learned + 1));
+      dispatch(setWordCorrectness(true));
     }
   }, [isRoundEnd]);
 
@@ -131,9 +136,10 @@ const ConstructorGame: React.FC = () => {
     dispatch(setFullScreenStatus(true));
     handle.enter();
   }
+
   function fullScreenExitHandler() {
-    dispatch(setFullScreenStatus(false));
     handle.exit();
+    dispatch(setFullScreenStatus(false));
   }
 
   return constructorGameIsStarted ? (
