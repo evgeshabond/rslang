@@ -73,7 +73,6 @@ export const BottomBlock: React.FC = () => {
       ) {
         return;
       }
-      console.log('Sending end of game');
       dispatch(setStatistics(param, gameStatistic));
     }
   }, [roundCount]);
@@ -105,7 +104,6 @@ export const BottomBlock: React.FC = () => {
     ) {
       return;
     }
-    console.log('Sending end of round');
     dispatch(userWordToLearnResult(params, roundResult));
   };
 
