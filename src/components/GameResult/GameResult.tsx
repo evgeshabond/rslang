@@ -11,28 +11,21 @@ import {
 } from '../../actions/constructor-game-actions';
 import { ReactComponent as AudioOn } from '../../assets/images/audioOn.svg';
 import { RootStateType } from '../../reducer/root-reducer';
-import { mainPath } from '../../utils/constants';
+import { gameConstants, mainPath } from '../../utils/constants';
 import { shuffle } from '../../utils/shuffle';
 import styles from './GameResult.module.css';
 
 export const GameResult: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const { amountOfRounds } = gameConstants;
 
   const currentWordList = useSelector(
     (state: RootStateType) => state.wordState.currentWordList
   );
 
-  const learned = useSelector(
-    (state: RootStateType) => state.constructorGameState.learned
-  );
-
-  const learnedWords = useSelector(
-    (state: RootStateType) => state.constructorGameState.learnedWords
-  );
-
-  const notLearnedWords = useSelector(
-    (state: RootStateType) => state.constructorGameState.notLearnedWords
+  const { learned, learnedWords, notLearnedWords } = useSelector(
+    (state: RootStateType) => state.constructorGameState
   );
 
   const restartHandler = () => {
@@ -78,7 +71,10 @@ export const GameResult: React.FC = () => {
         </ul>
         <hr className={styles.line} />
         <h2 className={`${styles['sub-title']} ${styles['sub-title_wasted']}`}>
-          Неправильно: {10 - learned}
+          Неправильно:{' '}
+          {currentWordList.length < amountOfRounds
+            ? currentWordList.length - learned
+            : amountOfRounds - learned}
         </h2>
         <ul className={styles.list}>
           {notLearnedWords.map((wordObject) => (

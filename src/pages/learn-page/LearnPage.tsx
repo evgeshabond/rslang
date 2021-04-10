@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
+import { useHistory } from 'react-router-dom';
 //  redux
 import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
@@ -8,7 +9,14 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { Typography } from '@material-ui/core';
+import {
+  Dialog,
+  DialogTitle,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+} from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Modal from '@material-ui/core/Modal';
 import Switch from '@material-ui/core/Switch';
@@ -20,8 +28,6 @@ import { RootStateType } from '../../reducer/root-reducer';
 import { WordStateType } from '../../reducer/word-reducer';
 //  herlpers and services
 import AggregateService from '../../services/word-aggregate-service';
-import UserWordsService from '../../services/user-words-service';
-import LangService from '../../services/lang-service'
 
 //  icons
 import learningIcon from '../../assets/images/learning.svg';
@@ -29,6 +35,14 @@ import hardIcon from '../../assets/images/hardWord.svg';
 import deletedIcon from '../../assets/images/delete.svg';
 import gamesIcon from '../../assets/images/games.svg';
 import settingsIcon from '../../assets/images/settings.svg';
+import { setLevelVisibility } from '../../actions/menu-actions';
+import aggregatePage from '../../utils/aggregatePage';
+import {
+  CurrentWordListType,
+  wordListLoaded,
+} from '../../actions/word-actions';
+import { mainPath } from '../../utils/constants';
+import { constructorGameStart, setResultPageState } from '../../actions/constructor-game-actions';
 
 // update theme object of material ui
 const primaryColor = '#FDEBFF';
@@ -82,7 +96,7 @@ const useStyles = makeStyles({
   },
   buttonsContainer: {
     position: 'absolute',
-    top: '10px',
+    top: '25px',
     right: '8rem',
     display: 'flex',
   },
@@ -109,6 +123,10 @@ const useStyles = makeStyles({
     transform: 'translate(-50%, -50%)',
     padding: '2rem',
     minWidth: '350px',
+    backgroundColor: 'white',
+  },
+  dialog: {
+    fontSize: '1.6rem',
   },
   container: {
     display: 'flex',
@@ -228,18 +246,39 @@ const LearnPage: React.FC = () => {
     showTranslate: true,
     showButtons: true,
   });
-  const [allUserWords, setAllUserWords] = useState([])
+  const [pageIsDeleted, setPageIsDeleted] = useState(false);
   const [modalOpened, setModalOpened] = useState(false);
+  const [dialogOpened, setDialogOpened] = useState(false);
   const [difficulty, setDifficulty] = useState('hard');
   const [currentGroup, setCurrentGroup] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [pagesCount, setPagesCount] = useState(30);
   const [currentWordsPerPage, setCurrentWordsPerPage] = useState(20);
-  const [wordsToRender, setWordsToRender] = useState([]);
+  const [wordsToRender, setWordsToRender] = useState([
+    {
+      id: '',
+      group: 0,
+      page: 0,
+      word: '',
+      image: '',
+      audio: '',
+      audioMeaning: '',
+      audioExample: '',
+      textMeaning: '',
+      textExample: '',
+      transcription: '',
+      wordTranslate: '',
+      textMeaningTranslate: '',
+      textExampleTranslate: '',
+      userWord: {
+        difficulty: '',
+      },
+    },
+  ]);
   const [reRender, setRerender] = useState(true);
 
-  const langService = new LangService();
-  const userWordsService = new UserWordsService();
+  const service = new AggregateService();
+  const historyCopy = useHistory();
   const classes = useStyles({ group: currentGroup });
 
   const forseRender = () => {
@@ -248,7 +287,43 @@ const LearnPage: React.FC = () => {
   };
 
   const handleGamesButtonClick = () => {
-    console.log('clicked games button');
+    setDialogOpened(true);
+
+    dispatch(constructorGameStart(false));
+  };
+
+  const handleGameChoose = async (gamePath: string) => {
+    /* eslint-disable */
+
+    let gameWordList = [...wordsToRender];
+    for (let i = 0; i < 3; i++) {
+      const wordsToAdd: any = await aggregatePage({
+        page: i,
+        group: currentGroup,
+        user,
+      });
+      //  if word is already in list dont add
+      wordsToAdd.forEach((wordToAdd: any) => {
+        const dublicateWord = gameWordList.find(
+          (word: any) => word.id === wordToAdd.id
+        );
+        if (dublicateWord) {
+        } else {
+          if (true) gameWordList.push(wordToAdd);
+        }
+      });
+    }
+    //  delete empty default object and deleted
+    gameWordList = gameWordList.filter(
+      (item) => item.id !== '' && item.userWord.difficulty !== 'deleted'
+    );
+    //  remove all elements after 20th
+    gameWordList.length = 20;
+    dispatch(setResultPageState(false));
+    dispatch(setLevelVisibility(false));
+    dispatch(wordListLoaded(gameWordList));
+    historyCopy.push(gamePath);
+    /* eslint-enable */
   };
 
   const handleSettingsButtonClick = () => {
@@ -263,66 +338,6 @@ const LearnPage: React.FC = () => {
     console.log('page variable is', data.selected);
     setCurrentPage(data.selected);
   };
-
-  //  fetch all userwords from backend
-  const getAllUserWords = async () => {
-    try {
-      const words = await userWordsService.getWordsList({
-        userId: user.userId,
-        token: user.token,
-      });
-      console.log(words)
-      return words;
-    } catch (e) {
-      console.log(e);
-    }
-    return []
-  };
-
-  type GetWordsPageProps = {
-    page: number,
-    group: number
-  }
-  //  get words Page
-  const getWordsPage = async ({
-    page,
-    group
-  }: GetWordsPageProps) => {
-    try {
-      const wordsPage = await langService.getWordList({page, group})
-      console.log(wordsPage)
-      return wordsPage
-    }
-    catch(e) {
-      console.log(e)
-    }
-    return []
-  }
-
-  //  get words from API depending on difficulty, group, page
-  useEffect(() => {
-    getWordsPage({page: currentPage, group: currentGroup})
-      .then((wordsPage: any) => {
-        console.log('inside use effect. words page is')
-        console.log(wordsPage)
-        {
-          getAllUserWords()
-          .then((userWords: any) => {
-            console.log('inside use effect. words are')
-            console.log(userWords)
-            const updatedWordsList = wordsPage.map((word: any) => {              
-              const wordInfo = userWords.find((userWord: any) => word.id === userWord.wordId) 
-              // if (wordInfo.difficulty === 'deleted') return {...word}        
-              return {...word, userWord: {...wordInfo}}
-            })
-            setWordsToRender(updatedWordsList.filter( (updatedWord: any) => updatedWord.userWord.difficulty !== 'deleted') )
-            setIsLoaded(true)
-            setIsWordListLoaded(true)
-          })
-          .catch((e) => console.log(e))
-        }
-      })
-  }, [difficulty, currentGroup, currentPage, reRender]);
 
   const handleGroupChange = (
     e: React.MouseEvent<HTMLSpanElement, MouseEvent>
@@ -350,12 +365,46 @@ const LearnPage: React.FC = () => {
     }
   };
 
+  type Params = {
+    page: number;
+    group: number;
+    wordsPerPage: number;
+    searchString: string;
+  };
+
+  //  get words from API depending on difficulty, group, page
+  useEffect(() => {
+    aggregatePage({ page: currentPage, group: currentGroup, user })
+      .then((aggregatedWordsPage) => {
+        if (
+          aggregatedWordsPage.every(
+            (updatedWord: any) => updatedWord.userWord.difficulty === 'deleted'
+          )
+        ) {
+          setPageIsDeleted(true);
+          setIsLoaded(true);
+          setIsWordListLoaded(true);
+          return;
+        }
+        console.log('filtered words', aggregatedWordsPage);
+        setWordsToRender(
+          aggregatedWordsPage.filter(
+            (updatedWord: any) => updatedWord.userWord.difficulty !== 'deleted'
+          )
+        );
+        setIsLoaded(true);
+        setIsWordListLoaded(true);
+        setPageIsDeleted(false);
+      })
+      .catch((e) => console.log(e));
+  }, [difficulty, currentGroup, currentPage, reRender]);
+
   if (!isLoaded) return <CircularProgress />;
   return (
     <Paper className={classes.root}>
       <span className={classes.hidden}>{currentPage}</span>
       <Typography variant="h4" component="h3">
-        Словарь
+        Электронный учебник
       </Typography>
       <Box className={classes.buttonsContainer}>
         <div
@@ -412,6 +461,57 @@ const LearnPage: React.FC = () => {
           </div>
         </Paper>
       </Modal>
+      <Dialog
+        open={dialogOpened}
+        onClose={() => setDialogOpened(false)}
+        classes={{
+          root: classes.dialog,
+        }}
+      >
+        <DialogTitle id="simple-dialog-title">
+          <Typography align="left" variant="h3" component="p">
+            Выберите игру
+          </Typography>
+        </DialogTitle>
+        <List>
+          <ListItem
+            button
+            onClick={() => handleGameChoose('/savannagame')}
+            key="savannah"
+          >
+            <Typography align="center" variant="h4" component="p">
+              Саванна
+            </Typography>
+          </ListItem>
+          <ListItem
+            button
+            onClick={() => handleGameChoose('/audiohame')}
+            key="audiocall"
+          >
+            <Typography align="center" variant="h4" component="p">
+              Аудиовызов
+            </Typography>
+          </ListItem>
+          <ListItem
+            button
+            onClick={() => handleGameChoose('/sprint-game')}
+            key="sprint"
+          >
+            <Typography align="center" variant="h4" component="p">
+              Спринт
+            </Typography>
+          </ListItem>
+          <ListItem
+            button
+            onClick={() => handleGameChoose(mainPath.constructorGame)}
+            key="constructor"
+          >
+            <Typography align="center" variant="h4" component="p">
+              Конструктор слов
+            </Typography>
+          </ListItem>
+        </List>
+      </Dialog>
       <div className={classes.container}>
         <Box className={classes.levels} role="menu">
           <div
@@ -493,19 +593,28 @@ const LearnPage: React.FC = () => {
             <span className={classes.levelName}>B2+</span>
           </div>
         </Box>
-        <div className={classes.wordList}>
-          {isWordListLoaded &&
-            wordsToRender.length > 0 &&
-            wordsToRender.map((item: any, index) => (
-              <WordItem
-                word={item}
-                group={currentGroup}
-                key={item.word}
-                forseFetch={() => forseRender()}
-                settings={settings}
-              />
-            ))}
-        </div>
+        {pageIsDeleted && (
+          <Box>
+            <Typography variant="h4" component="p" align="center">
+              Данная страница удалена, так как все слова добавлены в удаленные.
+            </Typography>
+          </Box>
+        )}
+        {!pageIsDeleted && (
+          <div className={classes.wordList}>
+            {isWordListLoaded &&
+              wordsToRender.length > 0 &&
+              wordsToRender.map((item: any, index) => (
+                <WordItem
+                  word={item}
+                  group={currentGroup}
+                  key={item.word}
+                  forseFetch={() => forseRender()}
+                  settings={settings}
+                />
+              ))}
+          </div>
+        )}
       </div>
       <ReactPaginate
         previousLabel="<"

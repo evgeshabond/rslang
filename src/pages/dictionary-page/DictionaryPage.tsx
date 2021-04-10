@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
+import { useHistory } from 'react-router-dom';
 //  redux
 import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
@@ -8,7 +9,14 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { Typography } from '@material-ui/core';
+import {
+  Dialog,
+  DialogTitle,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+} from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Modal from '@material-ui/core/Modal';
 import Switch from '@material-ui/core/Switch';
@@ -27,6 +35,17 @@ import hardIcon from '../../assets/images/hardWord.svg';
 import deletedIcon from '../../assets/images/delete.svg';
 import gamesIcon from '../../assets/images/games.svg';
 import settingsIcon from '../../assets/images/settings.svg';
+import { setLevelVisibility } from '../../actions/menu-actions';
+import aggregatePage from '../../utils/aggregatePage';
+import {
+  CurrentWordListType,
+  wordListLoaded,
+} from '../../actions/word-actions';
+import { mainPath } from '../../utils/constants';
+import {
+  constructorGameStart,
+  setResultPageState,
+} from '../../actions/constructor-game-actions';
 
 // update theme object of material ui
 const primaryColor = '#FDEBFF';
@@ -80,7 +99,7 @@ const useStyles = makeStyles({
   },
   buttonsContainer: {
     position: 'absolute',
-    top: '10px',
+    top: '25px',
     right: '8rem',
     display: 'flex',
   },
@@ -107,6 +126,10 @@ const useStyles = makeStyles({
     transform: 'translate(-50%, -50%)',
     padding: '2rem',
     minWidth: '350px',
+    backgroundColor: 'white',
+  },
+  dialog: {
+    fontSize: '1.6rem',
   },
   container: {
     display: 'flex',
@@ -213,7 +236,7 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'space-between',
     width: '100%',
-    alignItems: 'center'
+    alignItems: 'center',
   },
 });
 
@@ -227,15 +250,37 @@ const DictionaryPage: React.FC = () => {
     showButtons: true,
   });
   const [modalOpened, setModalOpened] = useState(false);
+  const [dialogOpened, setDialogOpened] = useState(false);
   const [difficulty, setDifficulty] = useState('hard');
   const [currentGroup, setCurrentGroup] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [pagesCount, setPagesCount] = useState(1);
   const [currentWordsPerPage, setCurrentWordsPerPage] = useState(20);
-  const [wordsToRender, setWordsToRender] = useState([]);
+  const [wordsToRender, setWordsToRender] = useState([
+    {
+      id: '',
+      group: 0,
+      page: 0,
+      word: '',
+      image: '',
+      audio: '',
+      audioMeaning: '',
+      audioExample: '',
+      textMeaning: '',
+      textExample: '',
+      transcription: '',
+      wordTranslate: '',
+      textMeaningTranslate: '',
+      textExampleTranslate: '',
+      userWord: {
+        difficulty: '',
+      },
+    },
+  ]);
   const [reRender, setRerender] = useState(true);
 
   const service = new AggregateService();
+  const historyCopy = useHistory();
   const classes = useStyles({ group: currentGroup });
 
   const forseRender = () => {
@@ -244,7 +289,85 @@ const DictionaryPage: React.FC = () => {
   };
 
   const handleGamesButtonClick = () => {
-    console.log('clicked games button');
+    setDialogOpened(true);
+    console.log(historyCopy);
+
+    dispatch(constructorGameStart(false));
+  };
+
+  const handleGameChoose = async (gamePath: string) => {
+    /* eslint-disable */
+    console.log('words to rendder are');
+    console.log(wordsToRender);
+    let gameWordList = [...wordsToRender];
+    console.log('gamewordlist is ', gameWordList);
+    //  add more words
+    if (currentPage > 0) {
+      //  add words from previous pages of dictinary
+      try {
+        const wordsToAdd: any = await getUpdatedWords({
+          page: currentPage - 1,
+          group: currentGroup,
+          wordsPerPage: currentWordsPerPage,
+          searchString: difficulty,
+        });
+        wordsToAdd.forEach((wordToAdd: any) => {
+          const dublicateWord = gameWordList.find(
+            (word: any) => word.id === wordToAdd.id
+          );
+          if (dublicateWord) {
+          } else {
+            gameWordList.push(wordToAdd);
+          }
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      // add words from 3 first pages of the group
+      for (let i = 0; i < 3; i++) {
+        const wordsToAdd: any = await aggregatePage({
+          page: i,
+          group: currentGroup,
+          user,
+        });
+        //  if word is already in list dont add
+        wordsToAdd.forEach((wordToAdd: any) => {
+          const dublicateWord = gameWordList.find(
+            (word: any) => word.id === wordToAdd.id
+          );
+          if (dublicateWord) {
+          } else {
+            gameWordList.push(wordToAdd);
+          }
+        });
+      }
+    }
+
+    console.log('gamewordlist after loop is ', gameWordList);
+    // //  remove deleted words if called not from deleted difficulty
+    if (difficulty !== 'deleted' && !!difficulty) {
+      gameWordList = gameWordList.filter((word: any) => {
+        if (!word?.userWord?.difficulty) return true;
+        if (word?.userWord?.difficulty === 'deleted') return false;
+        return true;
+      });
+    } else {
+      gameWordList = gameWordList.filter((word) => {
+        if (word?.userWord?.difficulty === 'deleted') return true;
+        return false;
+      });
+    }
+    console.log('gamewordlist after deleting is ', gameWordList);
+    // //  remove all elements after 20th
+    gameWordList.length = 20;
+    gameWordList = gameWordList.filter((item) => item);
+    console.log('gameWordList after removnig all after 20 is ', gameWordList);
+    dispatch(setResultPageState(false));
+    dispatch(setLevelVisibility(false));
+    dispatch(wordListLoaded(gameWordList));
+    historyCopy.push(gamePath);
+    /* eslint-enable */
   };
 
   const handleSettingsButtonClick = () => {
@@ -275,7 +398,6 @@ const DictionaryPage: React.FC = () => {
     wordsPerPage,
     searchString,
   }: Params): Promise<Array<Object>> => {
-    setIsWordListLoaded(false);
     const params = {
       userId: user.userId,
       token: user.token,
@@ -294,7 +416,33 @@ const DictionaryPage: React.FC = () => {
       if (!totalCount || totalCount < 1) setPagesCount(1);
       else await setPagesCount(Math.ceil(totalCount / currentWordsPerPage));
       setIsWordListLoaded(true);
+      console.log('inside getWords. words are ', newWords);
       return newWords;
+    } catch (e) {
+      console.log(e);
+    }
+    return [];
+  };
+
+  //  fetch words and rename _id to id
+  const getUpdatedWords = async ({
+    page,
+    group,
+    wordsPerPage,
+    searchString,
+  }: Params) => {
+    try {
+      const words = await getWords({ page, group, wordsPerPage, searchString });
+      if (words.length < 1) {
+        return [];
+      }
+      /* eslint-disable */
+      const updatedWords = words.map((item: any) => {
+        if (item?._id) return { ...item, id: item._id };
+        return item;
+      });
+      return updatedWords;
+      /* eslint-enable */
     } catch (e) {
       console.log(e);
     }
@@ -303,18 +451,20 @@ const DictionaryPage: React.FC = () => {
 
   //  get words from API depending on difficulty, group, page
   useEffect(() => {
-    getWords({
+    getUpdatedWords({
       page: currentPage,
       group: currentGroup,
       wordsPerPage: currentWordsPerPage,
       searchString: difficulty,
-    }).then((words: any) => {
-      if (words.length < 1) {
-        setCurrentPage(0);
-      }
-      setWordsToRender(words);
-      setIsLoaded(true);
-    });
+    })
+      .then((updatedWords: any) => {
+        if (updatedWords.length < 1) {
+          setCurrentPage(0);
+        }
+        setWordsToRender(updatedWords);
+        setIsLoaded(true);
+      })
+      .catch((e) => console.log(e));
   }, [difficulty, currentGroup, currentPage, reRender]);
 
   const handleGroupChange = (
@@ -354,9 +504,9 @@ const DictionaryPage: React.FC = () => {
         <div
           className={clsx({
             [classes.difficultyButton]: true,
-            [classes.activeButton]: difficulty === 'all',
+            [classes.activeButton]: difficulty === 'learning',
           })}
-          onClick={() => setDifficulty('all')}
+          onClick={() => setDifficulty('learning')}
           aria-hidden={true}
         >
           <img
@@ -419,14 +569,14 @@ const DictionaryPage: React.FC = () => {
         aria-describedby="settings-modal"
       >
         <Paper className={classes.modal}>
-          <p className={classes.helperFlex}>
+          <div className={classes.helperFlex}>
             <Typography align="left" variant="h4" component="span">
               Показывать перевод
             </Typography>
             <div>
               <Switch
                 checked={settings.showTranslate}
-                color='secondary'
+                color="secondary"
                 onChange={() => {
                   setSettings({
                     ...settings,
@@ -435,15 +585,15 @@ const DictionaryPage: React.FC = () => {
                 }}
               />
             </div>
-          </p>
-          <p className={classes.helperFlex}>
+          </div>
+          <div className={classes.helperFlex}>
             <Typography align="left" variant="h4" component="span">
               Показывать кнопки
             </Typography>
             <div>
               <Switch
                 checked={settings.showButtons}
-                color='secondary'
+                color="secondary"
                 onChange={() => {
                   setSettings({
                     ...settings,
@@ -452,9 +602,60 @@ const DictionaryPage: React.FC = () => {
                 }}
               />
             </div>
-          </p>
+          </div>
         </Paper>
       </Modal>
+      <Dialog
+        open={dialogOpened}
+        onClose={() => setDialogOpened(false)}
+        classes={{
+          root: classes.dialog,
+        }}
+      >
+        <DialogTitle id="simple-dialog-title">
+          <Typography align="left" variant="h3" component="p">
+            Выберите игру
+          </Typography>
+        </DialogTitle>
+        <List>
+          <ListItem
+            button
+            onClick={() => handleGameChoose('/savannagame')}
+            key="savannah"
+          >
+            <Typography align="center" variant="h4" component="p">
+              Саванна
+            </Typography>
+          </ListItem>
+          <ListItem
+            button
+            onClick={() => handleGameChoose('/audiohame')}
+            key="audiocall"
+          >
+            <Typography align="center" variant="h4" component="p">
+              Аудиовызов
+            </Typography>
+          </ListItem>
+          <ListItem
+            button
+            onClick={() => handleGameChoose('/sprint-game')}
+            key="sprint"
+          >
+            <Typography align="center" variant="h4" component="p">
+              Спринт
+            </Typography>
+          </ListItem>
+          <ListItem
+            button
+            onClick={() => handleGameChoose(mainPath.constructorGame)}
+            key="constructor"
+          >
+            <Typography align="center" variant="h4" component="p">
+              Конструктор слов
+            </Typography>
+          </ListItem>
+        </List>
+      </Dialog>
       <div className={classes.container}>
         <Box className={classes.levels} role="menu">
           <div

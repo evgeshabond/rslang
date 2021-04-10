@@ -10,8 +10,8 @@ import UserPage from '../../pages/auth-page/User-page';
 import { mainPath } from '../../utils/constants';
 import SprintGame from '../Sprint-game/sprint-game/SprintGame';
 import EbookPage from '../../pages/e-book-page/E-book-page';
-import LearnPage from '../../pages/learn-page/learn-page'
-import DictionaryPage from '../../pages/dictionary-page/DictionaryPage'
+import LearnPage from '../../pages/learn-page/LearnPage';
+import DictionaryPage from '../../pages/dictionary-page/DictionaryPage';
 import ProfilePage from '../../pages/profile-page/Profile-page';
 import AudioGame from '../../pages/AudioGame/AudioGame';
 
@@ -19,7 +19,11 @@ import ConstructorGame from '../ConstructorGame/ConstructorGame';
 import GitLinks from '../GitLinks/GitLinks';
 import { QuestionPage } from '../../pages/question-page/Question-page';
 import { GameTest } from '../game-statistic-test/Game-statistic-test';
+<<<<<<< HEAD
 import SavannaGame from '../../pages/SavannaGame/SavannaGame';
+=======
+import { StatisticPage } from '../../pages/statistic-page/Statistic-page';
+>>>>>>> 436d19767f189f6dd44dcd6a97db86773a42af07
 
 const App: React.FC = () => (
   <Router basename="/">
@@ -48,7 +52,8 @@ const App: React.FC = () => (
               component={ConstructorGame}
             />
             <Route path={mainPath.questionPage} component={QuestionPage} />
-            <Route path={mainPath.userStatistic} component={GameTest} />
+            <Route path={mainPath.testStatistic} component={GameTest} />
+            <Route path={mainPath.statistic} component={StatisticPage} />
           </Switch>
         </main>
 
