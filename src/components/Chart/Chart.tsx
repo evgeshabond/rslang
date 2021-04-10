@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React, { useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,7 +23,8 @@ export const ChartComponent: React.FC = () => {
   }, []);
 
   const dates = totalStatistic.map((stats) =>
-    ((stats.date as unknown) as string).slice(0, 10)
+    // ((stats.date as unknown) as string).slice(0, 10)
+    moment(stats.date).format('L')
   );
 
   const totalWordCount = totalStatistic.map((stats) => stats.totalWordCount);
