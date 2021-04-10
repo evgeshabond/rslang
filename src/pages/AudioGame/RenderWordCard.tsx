@@ -1,17 +1,12 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  CurrentWordListType,
-  fetchWordsList,
+  CurrentWordListType
 } from '../../actions/word-actions';
 import { RootStateType } from '../../reducer/root-reducer';
-import Spinner from '../../components/Spinner/Spinner';
 import { WordItem } from '../../components/word-item/word-item-game';
 import styles from './AudioGame.module.css';
-import { mainPath } from '../../utils/constants';
-import { PlayButton } from '../../components/button-icons/playBig-button/playBig-button';
-import { audioGameStart, wordUserAnswer, wordRight, isAnswerSelected, listRightWords, listWrongWords } from '../../actions/audioGame-actions';
-import { shuffle } from '../../utils/shuffle';
+import { wordUserAnswer, wordRight, isAnswerSelected, listRightWords, listWrongWords } from '../../actions/audioGame-actions';
 
 
 const RenderWordCard: React.FC = () => {

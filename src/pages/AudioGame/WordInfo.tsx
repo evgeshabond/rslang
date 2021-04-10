@@ -9,8 +9,6 @@ import { AudioOnSizeButton } from '../../components/button-icons/audiOn-button/a
 
 
 const WordInfo: React.FC = () => {
-  const dispatch = useDispatch();
-
   const isPlaying = useSelector((state: RootStateType) =>
     state.audioGameState.audioGameStart);
   const rightWord = useSelector((state: RootStateType) =>
@@ -49,8 +47,6 @@ const WordInfo: React.FC = () => {
       </div>
     </div>
   )
-
-
 }
 
 export default WordInfo;

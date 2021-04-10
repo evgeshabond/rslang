@@ -1,20 +1,14 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import useSound from 'use-sound';
 import { useDispatch, useSelector } from 'react-redux';
-import FullscreenIcon from '@material-ui/icons/Fullscreen';
-import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import {
-  CurrentWordListType,
   fetchWordsList,
 } from '../../actions/word-actions';
 import { RootStateType } from '../../reducer/root-reducer';
 import Spinner from '../../components/Spinner/Spinner';
 import styles from './AudioGame.module.css';
 import { mainPath } from '../../utils/constants';
-import { audioGameStart, isAnswerSelected, currentPlayWords, isFullScreen, isPressDontknow } from '../../actions/audioGame-actions';
-import { CloseButton } from '../../components/button-icons/close-button/close-button';
-import { QuestionButton } from '../../components/button-icons/question-button/question-button';
 import successSound from '../../assets/sounds/src_music_correct.mp3';
 import wrongSound from '../../assets/sounds/src_music_wrong.wav';
 import RenderWordCard from './RenderWordCard';
@@ -22,7 +16,6 @@ import { ReactComponent as CatAudio } from '../../assets/images/cat-audio-game.s
 import StartScreen from "./StartScreen";
 import WordInfo from './WordInfo';
 import NextBtn from './NextBtn';
-import { LevelIcon } from '../../components/button-icons/level-icons/level-icons';
 import { ReactComponent as AudioOnSizeButton } from '../../assets/images/audioOn.svg';
 import SettingsBtn from './SettingsBtn';
 
@@ -40,14 +33,11 @@ const AudioGame: React.FC = () => {
     state.audioGameState.isAnswerSelected);
   const currentWords = useSelector((state: RootStateType) =>
     state.audioGameState.currentPlayWords);
-  const stepCounter = useSelector((state: RootStateType) =>
-    state.audioGameState.stepCounter);
   const fullScreen = useSelector((state: RootStateType) =>
     state.audioGameState.isFullScreen);
   const isDontknow = useSelector((state: RootStateType) =>
     state.audioGameState.isPressDontknow);
 
-  const [countStep, setCountStep] = useState(0);
   const [play] = useSound(`${mainPath.langUrl}${rightWord.audio}`, { interrupt: true });
   const [playSuccessAnswer] = useSound(successSound);
   const [playWrongAnswer] = useSound(wrongSound);
@@ -59,15 +49,6 @@ const AudioGame: React.FC = () => {
       dispatch(fetchWordsList({ page: 0, group: 0 }));
     }
   }, []);
-
-  useEffect(() => {
-    if (countStep === 10) (
-      <div className={styles.game__content}>
-        Результат
-      </div>
-    )
-  }, [countStep])
-
 
   useEffect(() => {
     if (isPlaying) {
