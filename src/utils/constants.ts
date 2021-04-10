@@ -12,7 +12,7 @@ export const mainPath = {
   langUrl: 'https://rslang-app.herokuapp.com/',
   questionPage: '/quiz',
   userStatistic: '/statistic',
-
+  dashboardPage: '/dashboard',
 };
 
 export const authErrorPath = {

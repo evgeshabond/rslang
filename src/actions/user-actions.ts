@@ -225,6 +225,7 @@ export const updateUser = (params: {
         dispatch(userDataLoading(false));
       } else {
         dispatch(userFotoUpdate(data.foto64));
+        dispatch(userLevelUpdate(data.level));
         dispatch(userDataLoading(false));
       }
     })

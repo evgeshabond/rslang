@@ -1,6 +1,7 @@
 import { Dispatch } from 'react';
 import AggregateService, {
   AggregateParamsType,
+  filterQuery,
 } from '../services/word-aggregate-service';
 import { CurrentWordListType } from './word-actions';
 
@@ -8,6 +9,9 @@ export const USER_AGGREGATED_WORD_LOADED = 'USER_AGGREGATED_WORD_LOADED';
 export const USER_AGGREGATED_WORD_LOADING = 'USER_AGGREGATED_WORD_LOADING';
 export const USER_AGGREGATED_WORD_ERROR = 'USER_AGGREGATED_WORD_ERROR';
 export const USER_AGGREGATED_WORD = 'USER_AGGREGATED_WORD';
+export const USER_LEARNING_WORD = 'USER_LEARNING_WORD';
+export const USER_HARD_WORD = 'USER_HARD_WORD';
+export const USER_DELETED_WORD = 'USER_DELETED_WORD';
 
 export type AggregatedWordListResultType = {
   paginatedResults: Array<CurrentWordListType>;
@@ -37,6 +41,11 @@ export type UserAggregatedWordAType = {
   payload: unknown;
 };
 
+export type UserWordCountAType = {
+  type: string;
+  payload: number;
+};
+
 export const userAggregatedWordLoaded = (
   value: AggregatedWordListResultType
 ) => ({
@@ -59,11 +68,27 @@ export const userAggregatedWord = (value: any) => ({
   payload: value,
 });
 
+export const userLearningWordCount = (value: number) => ({
+  type: USER_LEARNING_WORD,
+  payload: value,
+});
+
+export const userHardWordCount = (value: number) => ({
+  type: USER_HARD_WORD,
+  payload: value,
+});
+
+export const userDeletedWordCount = (value: number) => ({
+  type: USER_DELETED_WORD,
+  payload: value,
+});
+
 export type UserAggregatedWordActionForReducer =
   | UserAggregatedWordLoadedAType
   | UserAggregatedWordRequestAType
   | UserAggregatedWordFetchErrAType
-  | UserAggregatedWordAType;
+  | UserAggregatedWordAType
+  | UserWordCountAType;
 
 export type UserAggregatedWordsActions =
   | UserAggregatedWordActionForReducer
@@ -77,9 +102,20 @@ export const getAggregatedWordsList = (
   filterType: string
 ) => (dispatch: Dispatch<UserAggregatedWordActionForReducer>) => {
   dispatch(userAggregatedWordRequested());
+
   service
     .getAggregatedWordsList(params, filterType)
-    .then((data) => dispatch(userAggregatedWordLoaded(data[0])))
+    .then((data) => {
+      dispatch(userAggregatedWordLoaded(data[0]));
+      const count = data[0].totalCount[0] ? data[0].totalCount[0].count : 0;
+      if (filterType === filterQuery.learnedWordsAndHardWords) {
+        dispatch(userLearningWordCount(count));
+      } else if (filterType === filterQuery.deletedWord) {
+        dispatch(userDeletedWordCount(count));
+      } else if (filterType === filterQuery.hardWords) {
+        dispatch(userHardWordCount(count));
+      }
+    })
     .catch((err) => dispatch(userAggregatedWordFetchErr(err.message)));
 };
 

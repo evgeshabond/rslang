@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.block-wrapper {
+  display: flex;
+  flex-direction: column;
+  background: #fdebff;
+  border-radius: 50px;
+  min-width: 293px;
+  min-height: 390px;
+  padding: 10px;
+  margin: 5px;
+}

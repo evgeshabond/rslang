@@ -14,13 +14,14 @@ import { serverUrl } from '../../utils/constants';
 import Spinner from '../Spinner/Spinner';
 
 import { CatPaw } from '../cat-paw/Cat-paw';
-import { userLevelUpdate } from '../../actions/user-actions';
+import { updateUser, userLevelUpdate } from '../../actions/user-actions';
 import { QuizStart } from '../../reducer/question-reducer';
 
 const EnLevelQuiz: React.FC = () => {
   const questionState = useSelector(
     (state: RootStateType) => state.questionState
   );
+  const user = useSelector((state: RootStateType) => state.userState.user);
 
   const { questions, currentQ, loading, answersArr } = questionState;
   const dispatch = useDispatch();
@@ -54,7 +55,14 @@ const EnLevelQuiz: React.FC = () => {
     } else {
       level = 'B2+';
     }
-    dispatch(userLevelUpdate(level));
+    const params = {
+      userId: user.userId,
+      token: user.token,
+      body: {
+        level,
+      },
+    };
+    dispatch(updateUser(params));
     dispatch(testStart(QuizStart.Result));
   };
 
