@@ -67,7 +67,10 @@ export const BottomBlock: React.FC = () => {
       dispatch(clearWordsIds());
       dispatch(resetCombo());
 
-      if (isLevelVisible) {
+      if (
+        isLevelVisible ||
+        currentWordList[0].userWord?.difficulty === 'deleted'
+      ) {
         return;
       }
       console.log('Sending end of game');
@@ -96,7 +99,10 @@ export const BottomBlock: React.FC = () => {
       isCorrect: isWinning,
     };
 
-    if (isLevelVisible) {
+    if (
+      isLevelVisible ||
+      currentWordList[0].userWord?.difficulty === 'deleted'
+    ) {
       return;
     }
     console.log('Sending end of round');
