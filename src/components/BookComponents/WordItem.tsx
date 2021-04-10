@@ -31,6 +31,14 @@ const useStyles = makeStyles({
     marginBottom: '1rem',
     backgroundColor: (params: any) => getColor(params.group),
   },
+  firstContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '14rem',
+    flexShrink: 0,
+    justifyContent: 'center',
+    
+  },
   statusIconContainer: {
     width: '1.5rem',
     height: '1.5rem',
@@ -67,12 +75,19 @@ const useStyles = makeStyles({
     backgroundImage: `url(${playIcon})`,
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
+    backgroundPositionX: '50%'
   },
   textContainerWrapper: {
     display: 'flex',
     flexBasis: '60rem',
     flexWrap: 'wrap',
     marginBottom: '1rem',
+  },
+  wordNameWrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '1rem' ,
+    textAlign: 'left'
   },
   textContainer: {
     display: 'flex',
@@ -123,6 +138,23 @@ const useStyles = makeStyles({
   },
   helperMarginLeft: {
     marginLeft: '1rem',
+  },
+  '@media (max-width: 600px)': {
+    firstContainer: {
+      flexDirection: 'column-reverse',
+      justifyContent: 'flex-end',
+      alignItems: 'space-between',
+      width: '7rem',  
+    },
+    playButton: {
+      marginLeft: 0
+    },
+    wordNameWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+      alingItems: 'flex-start',
+      gap: 0
+    }
   },
 });
 
@@ -259,23 +291,24 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
 
   return (
     <div key={word.id} className={classes.wordContainer}>
-      <div className={classes.statusIconContainer}>
-        {word?.userWord?.difficulty === 'hard' && (
-          <div className={classes.icon} />
-        )}
+      <div className={classes.firstContainer}>
+        <div className={classes.statusIconContainer}>
+          {word?.userWord?.difficulty === 'hard' && (
+            <div className={classes.icon} />
+          )}
+        </div>
+        <div className={classes.imageContainer} />
+        <div className={classes.playButton} aria-hidden={true} />
       </div>
-      <div className={classes.imageContainer} />
-      <div className={classes.playButton} aria-hidden={true} />
       <div className={classes.textContainerWrapper}>
         <div className={classes.textContainer}>
-          <div>
+          <div className={classes.wordNameWrapper}>
             <Typography variant="h4" component="span">
               {word.word}
             </Typography>
             <Typography
               variant="h4"
               component="span"
-              className={classes.helperMarginLeft}
             >
               {word.transcription}
             </Typography>
