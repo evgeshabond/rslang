@@ -22,10 +22,7 @@ export const ChartComponent: React.FC = () => {
     dispatch(getTotalStatistics(param));
   }, []);
 
-  const dates = totalStatistic.map((stats) =>
-    // ((stats.date as unknown) as string).slice(0, 10)
-    moment(stats.date).format('L')
-  );
+  const dates = totalStatistic.map((stats) => moment(stats.date).format('L'));
 
   const totalWordCount = totalStatistic.map((stats) => stats.totalWordCount);
 
