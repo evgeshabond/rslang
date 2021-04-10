@@ -66,7 +66,11 @@ const ConstructorGame: React.FC = () => {
     }
     const wordArray = wordObj.word.split('');
 
-    const shuffledWordArray = shuffle(wordArray);
+    let shuffledWordArray: string[] = shuffle(wordArray);
+    if (shuffledWordArray.join('') === wordArray.join('')) {
+      console.log('Reshuffling!');
+      shuffledWordArray = shuffle(wordArray);
+    }
 
     const wordObject: WordObjectType = {};
     shuffledWordArray.forEach((char, index) => {
