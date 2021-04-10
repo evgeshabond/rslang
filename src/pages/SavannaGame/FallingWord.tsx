@@ -12,7 +12,7 @@ import { mainPath } from '../../utils/constants';
 import { PlayButton } from '../../components/button-icons/playBig-button/playBig-button';
 import { audioGameStart, wordUserAnswer, wordRight, isAnswerSelected } from '../../actions/audioGame-actions';
 import { shuffle } from '../../utils/shuffle';
-import { savannaGameStart } from '../../actions/savanna-game-actions';
+import { isWordMove, savannaGameStart, wordPosition } from '../../actions/savanna-game-actions';
 
 
 const FallingWord: React.FC = () => {
@@ -35,6 +35,12 @@ const FallingWord: React.FC = () => {
   const currentWords = useSelector((state: RootStateType) =>
     state.savannaGameState.currentPlayWords);
 
+  const isMove = useSelector((state: RootStateType) =>
+    state.savannaGameState.isWordMove);
+
+  const position = useSelector((state: RootStateType) =>
+    state.savannaGameState.wordPosition);
+
   const getRandomInt = (min: number, max: number) => (
     Math.floor(Math.random() * (max - min + 1)) + min
   )
@@ -48,10 +54,6 @@ const FallingWord: React.FC = () => {
 
   }, [currentWords])
 
-
-  const [isMove, setIsMove] = useState(false);
-  const [position, setPosition] = useState(0);
-
   useEffect(() => {
     if (isPlaying) {
       moveDown();
@@ -62,15 +64,16 @@ const FallingWord: React.FC = () => {
     // console.log(e.target.offsetTop);
     // console.log(e.target.clientHeight);
     // const offsetTop = e.target;
-    setIsMove(true);
+    dispatch(isWordMove(true));
+
     for (let i = 0; i < 337; i += 6) {
-      setPosition(i)
+      dispatch(wordPosition(i))
     }
   }
   return (
     <button type='button' className={`${styles.falling__word}
      ${(isAnswer && userAnswer.word === rightWord.word) ? styles.word__stop : ''}
-     ${(isAnswer && userAnswer.word != rightWord.word) ? styles.word__stop__wrong : ''}`}
+     ${(isAnswer && userAnswer.word !== rightWord.word) ? styles.word__stop__wrong : ''}`}
       style={{ transform: `translateY(${position}px)` }}>
       {rightWord.word}
     </button>

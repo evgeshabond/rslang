@@ -12,10 +12,6 @@ import { wordUserAnswer, wordRight, isAnswerSelected, listRightWords, listWrongW
 const RenderWordCard: React.FC = () => {
 
   const dispatch = useDispatch();
-  const isPlaying = useSelector((state: RootStateType) =>
-    state.audioGameState.audioGameStart);
-  const wordList = useSelector((state: RootStateType) =>
-    state.wordState.currentWordList);
   const userAnswer = useSelector((state: RootStateType) =>
     state.audioGameState.wordUserAnswer);
   const rightWord = useSelector((state: RootStateType) =>
@@ -26,9 +22,6 @@ const RenderWordCard: React.FC = () => {
     state.audioGameState.currentPlayWords);
   const isDontknow = useSelector((state: RootStateType) =>
     state.audioGameState.isPressDontknow);
-
-  const rightWords = useSelector((state: RootStateType) =>
-    state.audioGameState.listRightWords);
 
   const getRandomInt = (min: number, max: number) => (
     Math.floor(Math.random() * (max - min + 1)) + min
@@ -42,7 +35,6 @@ const RenderWordCard: React.FC = () => {
     dispatch(wordRight(random));
 
   }, [currentWords])
-
 
   useEffect(() => {
     if (Object.keys(userAnswer).length === 0 && !isAnswer) {

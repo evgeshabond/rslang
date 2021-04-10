@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { audioGameStart } from '../../actions/audioGame-actions';
 import {
   clearWords,
   constructorGameStart,
@@ -23,6 +24,10 @@ const GamePage: React.FC = () => {
     dispatch(setLevelVisibility(true));
   };
 
+  const openAudioGameHandler = () => {
+    dispatch(audioGameStart(false));
+  }
+
   useEffect(() => {
     dispatch(gameStartStatusChange(GameStart.Menu));
   }, []);
@@ -32,7 +37,7 @@ const GamePage: React.FC = () => {
       <h2 className={rootStyles.title}>Мини-игры</h2>
       <div className={rootStyles['ebook-buttons-container']}>
         <LinkButton link={mainPath.savannaGame} buttonName="Саванна" />
-        <LinkButton link={mainPath.audioGame} buttonName="Аудиовызов" />
+        <LinkButton link={mainPath.audioGame} clickHandler={() => openAudioGameHandler()} buttonName="Аудиовызов" />
       </div>
       <div className={rootStyles['ebook-buttons-container']}>
         <LinkButton link={mainPath.sprint} buttonName="Спринт" />

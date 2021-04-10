@@ -21,8 +21,9 @@ import StartScreen from "./StartScreen";
 import WordInfo from './WordInfo';
 import NextBtn from './NextBtn';
 import { LevelIcon } from "../../components/button-icons/level-icons/level-icons";
-import { savannaGameStart } from '../../actions/savanna-game-actions';
+import { savannaGameStart, wordPosition } from '../../actions/savanna-game-actions';
 import { PauseButton } from '../../components/button-icons/pause-button/pause-button';
+import { AudioOnSizeButton } from '../../components/button-icons/audiOn-button/audioOn-Size';
 
 const SettingsBtn: React.FC = () => {
   const dispatch = useDispatch();
@@ -33,11 +34,22 @@ const SettingsBtn: React.FC = () => {
   const isAnswer = useSelector((state: RootStateType) => state.savannaGameState.isAnswerSelected);
   const currentWords = useSelector((state: RootStateType) => state.savannaGameState.currentPlayWords);
   const stepCounter = useSelector((state: RootStateType) => state.savannaGameState.stepCounter);
+  const isMove = useSelector((state: RootStateType) =>
+    state.savannaGameState.isWordMove);
+
+  const position = useSelector((state: RootStateType) =>
+    state.savannaGameState.wordPosition);
+
+  const getClose = () => {
+    dispatch(savannaGameStart(false));
+    dispatch(isAnswerSelected(false));
+    dispatch(wordPosition(0));
+  }
 
 
   return (
     <div className={styles.btn__container}>
-      <AudioOnButton buttonClick={() => console.log('info')} />
+      <AudioOnSizeButton size={30} buttonClick={() => console.log('info')} />
       <PauseButton buttonClick={() => console.log('info')} />
       <div className={styles.hint} data-title="Выберите перевод падающего слова">
         <QuestionButton buttonClick={() => console.log('info')} />
@@ -45,10 +57,7 @@ const SettingsBtn: React.FC = () => {
       <div>
         FS
       </div>
-      <CloseButton buttonClick={() => {
-        dispatch(savannaGameStart(false));
-        dispatch(isAnswerSelected(false));
-      }} />
+      <CloseButton buttonClick={() => getClose()} />
     </div>
 
   )

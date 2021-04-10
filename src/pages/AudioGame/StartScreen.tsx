@@ -4,7 +4,7 @@ import useSound from 'use-sound';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFullScreenHandle } from 'react-full-screen';
 import { RootStateType } from '../../reducer/root-reducer';
-import styles from './Results.module.css';
+import styles from './AudioGame.module.css';
 import { PlayButton } from '../../components/button-icons/playBig-button/playBig-button';
 import { audioGameStart, isAnswerSelected, currentPlayWords, isFullScreen, stepCounter, clearWords, isShowResults } from '../../actions/audioGame-actions';
 import ControlledSelect from '../../components/ControlledSelect/ControlledSelect';

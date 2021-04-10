@@ -39,8 +39,6 @@ const SavannaGame: React.FC = () => {
   const currentWords = useSelector((state: RootStateType) => state.savannaGameState.currentPlayWords);
   const stepCounter = useSelector((state: RootStateType) => state.savannaGameState.stepCounter);
 
-  const [countStep, setCountStep] = useState(0);
-
   const [play] = useSound(`${mainPath.langUrl}${rightWord.audio}`, { interrupt: true });
   const [playSuccessAnswer] = useSound(successSound);
   const [playWrongAnswer] = useSound(wrongSound);
@@ -55,6 +53,18 @@ const SavannaGame: React.FC = () => {
   )
 
   // next round
+
+  useEffect(() => {
+    // if (isAnswer) {
+    const timer = setTimeout(() =>
+      playGame()
+      , 3000);
+    return () => clearTimeout(timer);
+    // }
+  }, [isAnswer])
+
+
+
   const playGame = () => {
 
     dispatch(isAnswerSelected(false));
@@ -63,23 +73,16 @@ const SavannaGame: React.FC = () => {
     }
     const currentPlayList = shuffle(wordList).filter((item: Object, index: number) => index < 4);
     dispatch(currentPlayWords(currentPlayList))
+    // dispatch(stepCounter(roundCounter + 1));
     console.log('current', currentWords)
-    setCountStep(CountStep => countStep + 1);
+
   }
 
   useEffect(() =>
     () => {
-      setCountStep(0);
+
       dispatch(currentPlayWords([]));
     }, [])
-
-  useEffect(() => {
-    if (countStep === 10) (
-      <div className={styles.game__content}>
-        Результат
-      </div>
-    )
-  }, [countStep])
 
 
   useEffect(() => {
