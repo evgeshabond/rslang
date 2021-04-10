@@ -22,3 +22,8 @@
   margin: 10px 0;
   max-width: 90%;
 }
+
+.title {
+  text-align: center;
+  font-size: 3.6rem;
+}
