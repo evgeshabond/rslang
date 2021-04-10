@@ -42,7 +42,7 @@ const ConstructorGame: React.FC = () => {
   } = useSelector((state: RootStateType) => state.constructorGameState);
 
   useEffect(() => {
-    dispatch(setWordObj(shuffledWordList[roundCount]));
+    dispatch(setWordObj(shuffledWordList[roundCount - 1]));
   }, [shuffledWordList, roundCount]);
 
   const [wordSound] = useSound(

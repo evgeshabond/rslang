@@ -25,6 +25,12 @@ export const BottomBlock: React.FC = () => {
   const { amountOfRounds } = gameConstants;
   const dispatch = useDispatch();
 
+  const currentWordList = useSelector(
+    (state: RootStateType) => state.wordState.currentWordList
+  );
+  const totalRounds =
+    currentWordList.length < 10 ? currentWordList.length : amountOfRounds;
+
   const {
     constructorRoundStatus: isRoundEnd,
     wordObj,
@@ -42,7 +48,7 @@ export const BottomBlock: React.FC = () => {
   );
 
   useEffect(() => {
-    const dontKnow = amountOfRounds - learned;
+    const dontKnow = totalRounds - learned;
 
     const param = {
       userId: user.userId,
@@ -57,7 +63,7 @@ export const BottomBlock: React.FC = () => {
       wordsId: usedWordsIds,
     };
 
-    if (roundCount === amountOfRounds) {
+    if (roundCount === totalRounds) {
       dispatch(clearWordsIds());
       dispatch(resetCombo());
 
@@ -70,7 +76,7 @@ export const BottomBlock: React.FC = () => {
   }, [roundCount]);
 
   const nextRoundHandler = () => {
-    if (roundCount === amountOfRounds) {
+    if (roundCount === totalRounds) {
       dispatch(constructorGameStart(false));
       dispatch(setResultPageState(true));
     }
@@ -121,7 +127,7 @@ export const BottomBlock: React.FC = () => {
         type="button"
         onClick={() => nextRoundHandler()}
       >
-        {roundCount === amountOfRounds ? `Результаты` : `Далее`}
+        {roundCount === totalRounds ? `Результаты` : `Далее`}
       </button>
     </>
   ) : (
