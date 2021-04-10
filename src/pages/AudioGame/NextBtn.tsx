@@ -6,6 +6,9 @@ import styles from './AudioGame.module.css';
 import { audioGameStart, wordUserAnswer, isAnswerSelected, currentPlayWords, isPressDontknow, stepCounter, isShowResults } from '../../actions/audioGame-actions';
 import { shuffle } from '../../utils/shuffle';
 import wrongSound from '../../assets/sounds/src_music_wrong.wav';
+import { gameType } from '../../utils/constants';
+import { setStatistics } from '../../actions/statistic-action';
+import { GameStatistic } from '../../reducer/statistic-state-types';
 
 
 const NextBtn: React.FC = () => {
@@ -18,7 +21,47 @@ const NextBtn: React.FC = () => {
     state.audioGameState.isAnswerSelected);
   const roundCounter = useSelector((state: RootStateType) =>
     state.audioGameState.stepCounter);
+  const rightWords = useSelector((state: RootStateType) =>
+    state.audioGameState.listRightWords);
+  const listWrongWords = useSelector((state: RootStateType) =>
+    state.audioGameState.listWrongWords);
+  const listLearnWords = useSelector((state: RootStateType) =>
+    state.audioGameState.listLearnWords);
+  const isResults = useSelector((state: RootStateType) =>
+    state.audioGameState.isShowResults);
+  // const statistic = useSelector(state => state.GameStatistic);
+
   const [playWrongAnswer] = useSound(wrongSound);
+
+  const user = useSelector((state: RootStateType) => state.userState.user);
+
+  useEffect(() => {
+
+    const param = {
+      userId: user.userId,
+      token: user.token,
+    };
+    const gameStatistic = {
+      gameType: gameType.audiocall,
+      level: user.level || 1,
+      know: rightWords.length,
+      dont_know: listWrongWords.length,
+      combo: 5,  //     
+      wordsId: listLearnWords,
+    };
+
+    if (roundCounter === 10) {
+      // dispatch(clearWordsIds());
+
+      // if (
+      //   isLevelVisible ||
+      //   currentWordList[0].userWord?.difficulty === 'deleted'
+      // ) {
+      //   return;
+      // }
+      dispatch(setStatistics(param, gameStatistic));
+    }
+  }, [isResults]); // зависимость от конца игры
 
   const playGame = () => {
     if (wordList === undefined) {
@@ -42,6 +85,7 @@ const NextBtn: React.FC = () => {
   const showResults = () => {
     dispatch(isShowResults(true));
     dispatch(audioGameStart(false))
+    dispatch(stepCounter(roundCounter + 1));
   }
 
   return isAnswer ? (

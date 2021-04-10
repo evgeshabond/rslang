@@ -6,7 +6,7 @@ import {
 import { RootStateType } from '../../reducer/root-reducer';
 import { WordItem } from '../../components/word-item/word-item-game';
 import styles from './AudioGame.module.css';
-import { wordUserAnswer, wordRight, isAnswerSelected, listRightWords, listWrongWords } from '../../actions/audioGame-actions';
+import { wordUserAnswer, wordRight, isAnswerSelected, listRightWords, setWrongWords, setLearnWords } from '../../actions/audioGame-actions';
 
 
 const RenderWordCard: React.FC = () => {
@@ -22,6 +22,12 @@ const RenderWordCard: React.FC = () => {
     state.audioGameState.currentPlayWords);
   const isDontknow = useSelector((state: RootStateType) =>
     state.audioGameState.isPressDontknow);
+  const listLearnWords = useSelector((state: RootStateType) =>
+    state.audioGameState.listLearnWords);
+  const roundCounter = useSelector((state: RootStateType) =>
+    state.audioGameState.stepCounter);
+  const isResults = useSelector((state: RootStateType) =>
+    state.audioGameState.isShowResults);
 
   const getRandomInt = (min: number, max: number) => (
     Math.floor(Math.random() * (max - min + 1)) + min
@@ -31,8 +37,14 @@ const RenderWordCard: React.FC = () => {
     if (currentWords.length === 0) {
       return;
     }
-    const random = currentWords[getRandomInt(0, currentWords.length - 1)];
+    let random;
+    do {
+      random = currentWords[getRandomInt(0, currentWords.length - 1)];
+    }
+    while (listLearnWords.includes(random.id));
+
     dispatch(wordRight(random));
+    dispatch(setLearnWords(random.id));
 
   }, [currentWords])
 
@@ -44,9 +56,9 @@ const RenderWordCard: React.FC = () => {
       dispatch(listRightWords(rightWord));
     }
     else {
-      dispatch(listWrongWords(rightWord))
+      dispatch(setWrongWords(rightWord))
     }
-  }, [userAnswer.word])
+  }, [roundCounter, isResults])
 
   const checkUserAnswer = (word: CurrentWordListType) => {
     if (!isAnswer) {

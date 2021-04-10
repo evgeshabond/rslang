@@ -58,7 +58,7 @@ const FallingWord: React.FC = () => {
     if (isPlaying) {
       moveDown();
     }
-  }, [])
+  }, [isAnswer])
 
   const moveDown = () => {
     // console.log(e.target.offsetTop);

@@ -19,11 +19,8 @@ import ConstructorGame from '../ConstructorGame/ConstructorGame';
 import GitLinks from '../GitLinks/GitLinks';
 import { QuestionPage } from '../../pages/question-page/Question-page';
 import { GameTest } from '../game-statistic-test/Game-statistic-test';
-<<<<<<< HEAD
 import SavannaGame from '../../pages/SavannaGame/SavannaGame';
-=======
 import { StatisticPage } from '../../pages/statistic-page/Statistic-page';
->>>>>>> 436d19767f189f6dd44dcd6a97db86773a42af07
 
 const App: React.FC = () => (
   <Router basename="/">

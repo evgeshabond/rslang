@@ -6,7 +6,7 @@ import { useFullScreenHandle } from 'react-full-screen';
 import { RootStateType } from '../../reducer/root-reducer';
 import styles from './AudioGame.module.css';
 import { PlayButton } from '../../components/button-icons/playBig-button/playBig-button';
-import { audioGameStart, isAnswerSelected, currentPlayWords, isFullScreen, stepCounter, clearWords, isShowResults } from '../../actions/audioGame-actions';
+import { audioGameStart, isAnswerSelected, currentPlayWords, isFullScreen, stepCounter, clearWords, isShowResults, setLearnWords, wordUserAnswer } from '../../actions/audioGame-actions';
 import ControlledSelect from '../../components/ControlledSelect/ControlledSelect';
 import { shuffle } from '../../utils/shuffle';
 import { mainPath } from '../../utils/constants';
@@ -24,6 +24,11 @@ const StartScreen: React.FC = () => {
     state.audioGameState.wordRight);
   const isResults = useSelector((state: RootStateType) =>
     state.audioGameState.isShowResults);
+  const listLearnWords = useSelector((state: RootStateType) =>
+    state.audioGameState.listLearnWords);
+  const userAnswer = useSelector((state: RootStateType) =>
+    state.audioGameState.wordUserAnswer);
+
 
   const [play] = useSound(`${mainPath.langUrl}${rightWord.audio}`, { interrupt: true });
 
@@ -42,7 +47,9 @@ const StartScreen: React.FC = () => {
     dispatch(isShowResults(false))
     dispatch(isAnswerSelected(false));
     dispatch(stepCounter(0));
-    dispatch(clearWords())
+    // dispatch(wordUserAnswer())
+    dispatch(clearWords());
+
 
     if (wordList === undefined) {
       return;

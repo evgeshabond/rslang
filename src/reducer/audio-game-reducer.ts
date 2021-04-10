@@ -1,3 +1,4 @@
+import { wordListLoaded , CurrentWordListType } from "../actions/word-actions";
 import {
   AUDIO_GAME_STATUS,
   AudioGameStartActionType,
@@ -9,14 +10,16 @@ import {
   IS_FULL_SCREEN,
   IS_PRESS_DONTKNOW,
   IS_SHOW_RESULTS,
-  LIST_WRONG_WORDS,
+  UPDATE_WRONG_WORDS,
   LIST_RIGHT_WORDS,
   CLEAR_WORDS,
+  ADD_LEARN_WORDS,
 } from '../actions/audioGame-actions';
 
-import { CurrentWordListType } from '../actions/word-actions';
+
 
 export type AudioGameState = {
+  listLearnWords: string [];
   listWrongWords:Array<CurrentWordListType>;
   listRightWords:Array<CurrentWordListType>;
   isShowResults:boolean;
@@ -31,6 +34,7 @@ export type AudioGameState = {
 };
 
 const initialState: AudioGameState = {
+  listLearnWords: [],
   listWrongWords:[],
   listRightWords:[],
   isShowResults:false,
@@ -82,14 +86,21 @@ const audioGameReducer = (state = initialState,
         ...state,
         listRightWords: [],
         listWrongWords: [],
+        listLearnWords:[],
+        wordUserAnswer:{}
         
       };
     case LIST_RIGHT_WORDS:
       return {
         ...state,
         listRightWords: [...state.listRightWords, action.payload],
-      };     
-    case LIST_WRONG_WORDS:
+      }; 
+    case ADD_LEARN_WORDS:     
+      return {
+        ...state,
+        listLearnWords: [...state.listLearnWords, action.payload],
+      };
+    case UPDATE_WRONG_WORDS:
       return {
         ...state,
         listWrongWords: [...state.listWrongWords, action.payload],

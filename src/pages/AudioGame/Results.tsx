@@ -118,7 +118,7 @@ const Results: React.FC = () => {
       <div className={styles.button__wrapper}>
         <Link
           to="/"
-          onClick={() => history.goBack()}
+          onClick={() => { history.goBack(); dispatch(audioGameStart(false)); dispatch(isShowResults(false)) }}
           className={styles.restart}
         >
           Назад

@@ -9,8 +9,8 @@ import ControlledSelect from "../../components/ControlledSelect/ControlledSelect
 import { shuffle } from '../../utils/shuffle';
 import { mainPath } from '../../utils/constants';
 import { ReactComponent as CatAudio } from '../../assets/images/cat-audio-game.svg';
-import { savannaGameStart } from '../../actions/savanna-game-actions';
-// import RenderWordCard from './RenderWordCard';
+import { clearWords, savannaGameStart, stepCounter } from '../../actions/savanna-game-actions';
+
 
 
 const StartScreen: React.FC = () => {
@@ -21,6 +21,8 @@ const StartScreen: React.FC = () => {
   const rightWord = useSelector((state: RootStateType) => state.savannaGameState.wordRight);
   const isAnswer = useSelector((state: RootStateType) => state.savannaGameState.isAnswerSelected);
   const currentWords = useSelector((state: RootStateType) => state.savannaGameState.currentPlayWords);
+  const isResults = useSelector((state: RootStateType) =>
+    state.savannaGameState.isShowResults);
   const [play] = useSound(`${mainPath.langUrl}${rightWord.audio}`, { interrupt: true });
 
   useEffect(() => {
@@ -34,26 +36,33 @@ const StartScreen: React.FC = () => {
     }
   }
 
-  const playGame = () => {
-    // dispatch(wordUserAnswer(''));
+  const startGame = () => {
     dispatch(isAnswerSelected(false));
+    dispatch(isAnswerSelected(false));
+    dispatch(stepCounter(0));
+    dispatch(clearWords());
     if (wordList === undefined) {
       return;
     }
     const currentPlayList = shuffle(wordList).filter((item: Object, index: number) => index < 4);
-    dispatch(currentPlayWords(currentPlayList))
-    console.log('current', currentWords)
-
+    dispatch(currentPlayWords(currentPlayList));
   }
 
   return (
-    <div className={styles.game__wrapper}>
-      <div className={styles.game__startSreen}>
-        <div className={styles.game__title}>Саванна</div>
-        <div className={styles.game__decription}>Тренировка Саванна развивает
+    <div className={styles.game__content}>
+      {   isResults ? (
+        <div>
+          Результат
+        </div>
+      ) : (
+        <div>
+          <div className={styles.game__title}>Саванна</div>
+          <div className={styles.game__decription}>Тренировка Саванна развивает
         словарный запас. Выберите правильный перeвод слова.</div>
-        < PlayButton buttonClick={() => { dispatch(savannaGameStart(true)); playGame(); }} />
-      </div>
+          < PlayButton buttonClick={() => { dispatch(savannaGameStart(true)); startGame(); }} />
+
+        </div>)}
+
     </div>
   )
 }

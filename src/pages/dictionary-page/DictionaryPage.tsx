@@ -46,6 +46,7 @@ import {
   constructorGameStart,
   setResultPageState,
 } from '../../actions/constructor-game-actions';
+import { audioGameStart } from '../../actions/audioGame-actions';
 
 // update theme object of material ui
 const primaryColor = '#FDEBFF';
@@ -366,6 +367,7 @@ const DictionaryPage: React.FC = () => {
     dispatch(setResultPageState(false));
     dispatch(setLevelVisibility(false));
     dispatch(wordListLoaded(gameWordList));
+    dispatch(audioGameStart(false));
     historyCopy.push(gamePath);
     /* eslint-enable */
   };
@@ -629,7 +631,7 @@ const DictionaryPage: React.FC = () => {
           </ListItem>
           <ListItem
             button
-            onClick={() => handleGameChoose('/audiohame')}
+            onClick={() => handleGameChoose('/audiogame')}
             key="audiocall"
           >
             <Typography align="center" variant="h4" component="p">

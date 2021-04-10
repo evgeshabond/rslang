@@ -55,12 +55,15 @@ const SavannaGame: React.FC = () => {
   // next round
 
   useEffect(() => {
-    // if (isAnswer) {
-    const timer = setTimeout(() =>
-      playGame()
-      , 3000);
+    let timer: ReturnType<typeof setTimeout>;
+    if (isAnswer) {
+      timer = setTimeout(() =>
+        playGame()
+        , 3000);
+
+    }
     return () => clearTimeout(timer);
-    // }
+
   }, [isAnswer])
 
 
