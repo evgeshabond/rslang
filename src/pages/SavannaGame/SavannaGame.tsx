@@ -56,7 +56,7 @@ const SavannaGame: React.FC = () => {
 
   // next round
   const playGame = () => {
-    dispatch(wordUserAnswer(''));
+
     dispatch(isAnswerSelected(false));
     if (wordList === undefined) {
       return;
@@ -84,7 +84,7 @@ const SavannaGame: React.FC = () => {
 
   useEffect(() => {
     if (isAnswer) {
-      if (userAnswer === rightWord.word) {
+      if (userAnswer.word === rightWord.word) {
         playSuccessAnswer();
       }
       else {

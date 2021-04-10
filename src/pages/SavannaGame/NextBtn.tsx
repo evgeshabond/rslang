@@ -31,7 +31,7 @@ const NextBtn: React.FC = () => {
 
 
   const playGame = () => {
-    dispatch(wordUserAnswer(''));
+    // dispatch(wordUserAnswer(''));
     dispatch(isAnswerSelected(false));
     if (wordList === undefined) {
       return;

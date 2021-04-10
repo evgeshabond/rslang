@@ -24,7 +24,7 @@ const savannaGameStart = (value: boolean) => ({
   payload: value
 })
 
-const wordUserAnswer=(value: string)=>({
+const wordUserAnswer=(value: CurrentWordListType)=>({
   type: WORD_USER_ANSWER,
   payload:value
 })

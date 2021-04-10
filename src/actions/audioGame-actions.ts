@@ -8,6 +8,30 @@ const CURRENT_PLAY_WORDS='CURRENT_PLAY_WORDS';
 const STEP_COUNTER='STEP_COUNTER';
 const IS_FULL_SCREEN='IS_FULL_SCREEN';
 const IS_PRESS_DONTKNOW='IS_PRESS_DONTKNOW';
+const IS_SHOW_RESULTS= 'IS_SHOW_RESULTS';
+const LIST_WRONG_WORDS='LIST_WRONG_WORDS';
+const LIST_RIGHT_WORDS='LIST_RIGHT_WORDS';
+const CLEAR_WORDS='CLEAR_WORDS';
+
+
+const clearWords = () => ({
+  type: CLEAR_WORDS,
+});
+
+const listWrongWords= (value: CurrentWordListType) => ({
+  type: LIST_WRONG_WORDS,
+  payload: value,
+});
+
+const listRightWords= (value: CurrentWordListType) => ({
+  type: LIST_RIGHT_WORDS,
+  payload: value,
+});
+
+const isShowResults= (value: boolean) => ({
+  type:IS_SHOW_RESULTS,
+  payload: value,
+});
 
 const isPressDontknow= (value: boolean) => ({
   type:IS_PRESS_DONTKNOW,
@@ -18,7 +42,6 @@ const isFullScreen= (value: boolean) => ({
   type:IS_FULL_SCREEN,
   payload: value,
 })
-
 
 
 const stepCounter= (value: number) => ({
@@ -37,7 +60,7 @@ const audioGameStart = (value: boolean) => ({
   payload: value
 })
 
-const wordUserAnswer=(value: string)=>({
+const wordUserAnswer=(value: CurrentWordListType)=>({
   type: WORD_USER_ANSWER,
   payload:value
 })
@@ -62,6 +85,7 @@ export type AudioGameStartActionType = {
   | string
   | CurrentWordListType
   | Array<CurrentWordListType>
+ 
 };
 
 
@@ -73,5 +97,9 @@ export {
   currentPlayWords, CURRENT_PLAY_WORDS,
   stepCounter, STEP_COUNTER,
   isFullScreen, IS_FULL_SCREEN,
-  isPressDontknow, IS_PRESS_DONTKNOW
+  isPressDontknow, IS_PRESS_DONTKNOW,
+  isShowResults,IS_SHOW_RESULTS,
+  listWrongWords, LIST_WRONG_WORDS,
+  listRightWords, LIST_RIGHT_WORDS,  
+  clearWords, CLEAR_WORDS
  }

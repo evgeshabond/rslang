@@ -3,7 +3,6 @@ import useSound from 'use-sound';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './AudioGame.module.css';
 import { mainPath } from '../../utils/constants';
-import { audioGameStart, wordUserAnswer, wordRight, isAnswerSelected, currentPlayWords } from '../../actions/audioGame-actions';
 import { removeTagsFromString } from '../../utils/removeTagsFromString';
 import { RootStateType } from '../../reducer/root-reducer';
 import { AudioOnSizeButton } from '../../components/button-icons/audiOn-button/audioOn-Size';
@@ -21,7 +20,7 @@ const WordInfo: React.FC = () => {
 
   useEffect(() => {
     playSoundWord();
-  }, [play])
+  }, [rightWord])
 
   const playSoundWord = () => {
     if ((isPlaying && Object.keys(rightWord).length > 0)) {

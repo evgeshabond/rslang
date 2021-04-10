@@ -49,8 +49,8 @@ const RenderWordCard: React.FC = () => {
   }, [currentWords])
 
 
-  const checkUserAnswer = (word: string) => {
-    if (userAnswer.length === 0) {
+  const checkUserAnswer = (word: CurrentWordListType) => {
+    if (Object.keys(userAnswer).length === 0) {
       dispatch(wordUserAnswer(word));
     }
     dispatch(isAnswerSelected(true));
@@ -62,7 +62,7 @@ const RenderWordCard: React.FC = () => {
 
       <div className={styles.word__list}>
         {currentWords.map((word: CurrentWordListType, index: number) => (
-          <WordItem buttonClick={() => { checkUserAnswer(word.word); }}
+          <WordItem buttonClick={() => { checkUserAnswer(word); }}
             key={word.id} word={word} />
         ))}
       </div>

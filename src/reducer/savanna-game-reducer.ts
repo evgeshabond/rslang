@@ -12,7 +12,7 @@ import { CurrentWordListType } from '../actions/word-actions';
 
 export type SavannaGameState = {
   savannaGameStart: boolean;
-  wordUserAnswer:string;
+  wordUserAnswer:CurrentWordListType;
   wordRight: CurrentWordListType;
   isAnswerSelected: boolean;
   currentPlayWords: Array<CurrentWordListType>;
@@ -23,7 +23,22 @@ const initialState: SavannaGameState = {
   stepCounter:0,
   savannaGameStart: false,
   isAnswerSelected: false,
-  wordUserAnswer: '',
+  wordUserAnswer: {
+    id: '0',
+    group: 0,
+    page: 0,
+    word: '',
+    image: '',
+    audio: '',
+    audioMeaning: '',
+    audioExample: '',
+    textMeaning: '',
+    textExample: '',
+    transcription: '',
+    wordTranslate: '',
+    textMeaningTranslate: '',
+    textExampleTranslate: '',
+  },
   currentPlayWords: [],
   wordRight: {
     id: '0',

@@ -10,7 +10,7 @@ import { WordItem } from '../../components/word-item/word-item-game';
 import styles from './AudioGame.module.css';
 import { mainPath } from '../../utils/constants';
 import { PlayButton } from '../../components/button-icons/playBig-button/playBig-button';
-import { audioGameStart, wordUserAnswer, wordRight, isAnswerSelected } from '../../actions/audioGame-actions';
+import { audioGameStart, wordUserAnswer, wordRight, isAnswerSelected, listRightWords, listWrongWords } from '../../actions/audioGame-actions';
 import { shuffle } from '../../utils/shuffle';
 
 
@@ -29,6 +29,11 @@ const RenderWordCard: React.FC = () => {
     state.audioGameState.isAnswerSelected);
   const currentWords = useSelector((state: RootStateType) =>
     state.audioGameState.currentPlayWords);
+  const isDontknow = useSelector((state: RootStateType) =>
+    state.audioGameState.isPressDontknow);
+
+  const rightWords = useSelector((state: RootStateType) =>
+    state.audioGameState.listRightWords);
 
   const getRandomInt = (min: number, max: number) => (
     Math.floor(Math.random() * (max - min + 1)) + min
@@ -44,8 +49,20 @@ const RenderWordCard: React.FC = () => {
   }, [currentWords])
 
 
-  const checkUserAnswer = (word: string) => {
-    if (userAnswer.length === 0) {
+  useEffect(() => {
+    if (Object.keys(userAnswer).length === 0 && !isAnswer) {
+      return
+    }
+    if (!isDontknow && userAnswer.word === rightWord.word) {
+      dispatch(listRightWords(rightWord));
+    }
+    else {
+      dispatch(listWrongWords(rightWord))
+    }
+  }, [userAnswer.word])
+
+  const checkUserAnswer = (word: CurrentWordListType) => {
+    if (!isAnswer) {
       dispatch(wordUserAnswer(word));
     }
     dispatch(isAnswerSelected(true));
@@ -55,7 +72,7 @@ const RenderWordCard: React.FC = () => {
     <div className={styles.word__list}>
       {currentWords.map((word: CurrentWordListType, index: number) => (
 
-        <WordItem buttonClick={() => { checkUserAnswer(word.word); }}
+        <WordItem buttonClick={() => { checkUserAnswer(word); }}
           key={word.id} word={word} />
       ))}
     </div>

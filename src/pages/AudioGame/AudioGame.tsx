@@ -85,11 +85,11 @@ const AudioGame: React.FC = () => {
     if (!isAnswer) {
       return
     }
-    if (userAnswer === rightWord.word && !isDontknow) {
+    if (userAnswer.word === rightWord.word && !isDontknow) {
       playSuccessAnswer();
     }
     playWrongAnswer()
-  }, [userAnswer])
+  }, [userAnswer.word])
 
   useEffect(() => {
     if (fullScreen) {
