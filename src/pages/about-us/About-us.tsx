@@ -17,8 +17,8 @@ export const AboutUs: React.FC = () => (
         <div className={styles.text__wrapper}>
           <h3 className={styles.name}>Роман:</h3>
           <p className={styles.text}>
-            Разработка мини-игры "Конструктор", страницы "О Команде".
-            Подключение "Графика", "Выбор уровня", "FullScreen".
+            Разработка мини-игры "Конструктор", страниц "Cтартовой" и "О
+            Команде". Подключение "Графика", "Выбор уровня", "FullScreen".
           </p>
           <a
             className={styles.link}
