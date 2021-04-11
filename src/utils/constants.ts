@@ -14,6 +14,8 @@ export const mainPath = {
   dashboardPage: '/dashboard',
   testStatistic: '/testStatistic',
   statistic: '/statistic',
+  aboutUs: '/aboutUs',
+  startPage: '/startPage',
 };
 
 export const authErrorPath = {
