@@ -1,24 +1,31 @@
 .start {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+
   background-color: #fdebff;
   border-radius: 50px;
-  max-width: 1022px;
+
   width: 80%;
   min-height: 560px;
+
   text-align: center;
-  padding: 40px 5px 5px;
+  padding: 24px 20px 14px;
 
   font-family: Roboto;
   font-style: normal;
   font-weight: 500;
 
-  overflow-y: auto;
-
   color: #733999;
+}
+
+.start__wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1022px;
+  min-height: 560px;
+  max-height: 680px;
+  overflow-y: auto;
 }
 
 .title {
