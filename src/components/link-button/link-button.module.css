@@ -14,8 +14,14 @@
   align-items: center;
   word-wrap: break-word;
   padding: 5px;
+
+  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 .link-button:hover {
-  box-shadow: inset -5px -5px 10px #ffffff, inset 5px 5px 10px #b4c1d5;
+  background-color: #ffd1fb;
+}
+
+.link-button:active {
+  box-shadow: inset -3px -3px 6px #ffffff, inset 3px 3px 6px #d3a9d8;
 }
