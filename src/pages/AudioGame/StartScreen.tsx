@@ -28,6 +28,9 @@ const StartScreen: React.FC = () => {
     state.audioGameState.listLearnWords);
   const userAnswer = useSelector((state: RootStateType) =>
     state.audioGameState.wordUserAnswer);
+  const isLevelVisible = useSelector(
+    (state: RootStateType) => state.menuState.isLevelVisible
+  );
 
 
   const [play] = useSound(`${mainPath.langUrl}${rightWord.audio}`, { interrupt: true });
@@ -47,10 +50,7 @@ const StartScreen: React.FC = () => {
     dispatch(isShowResults(false))
     dispatch(isAnswerSelected(false));
     dispatch(stepCounter(0));
-    // dispatch(wordUserAnswer())
     dispatch(clearWords());
-
-
     if (wordList === undefined) {
       return;
     }
@@ -71,7 +71,7 @@ const StartScreen: React.FC = () => {
           Выберите из предложенных вариантов ответа правильный перевод слова,
     которое услышите</div>
           < PlayButton buttonClick={() => { dispatch(audioGameStart(true)); startGame(); }} />
-          <ControlledSelect />
+          {isLevelVisible ? <ControlledSelect /> : null}
         </div>)}
 
       <CatAudio className={styles.cat__image} />

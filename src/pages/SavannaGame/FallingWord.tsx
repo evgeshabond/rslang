@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import useSound from 'use-sound';
+
 import {
   CurrentWordListType,
   fetchWordsList,
@@ -12,7 +14,9 @@ import { mainPath } from '../../utils/constants';
 import { PlayButton } from '../../components/button-icons/playBig-button/playBig-button';
 import { audioGameStart, wordUserAnswer, wordRight, isAnswerSelected } from '../../actions/audioGame-actions';
 import { shuffle } from '../../utils/shuffle';
-import { isWordMove, savannaGameStart, wordPosition } from '../../actions/savanna-game-actions';
+import { isWordFalled, isWordMove, savannaGameStart, wordPosition } from '../../actions/savanna-game-actions';
+import successSound from '../../assets/sounds/src_music_correct.mp3';
+import wrongSound from '../../assets/sounds/src_music_wrong.wav';
 
 
 const FallingWord: React.FC = () => {
@@ -34,12 +38,18 @@ const FallingWord: React.FC = () => {
     state.savannaGameState.isAnswerSelected);
   const currentWords = useSelector((state: RootStateType) =>
     state.savannaGameState.currentPlayWords);
+  const stepCounter = useSelector((state: RootStateType) =>
+    state.savannaGameState.stepCounter);
+
 
   const isMove = useSelector((state: RootStateType) =>
     state.savannaGameState.isWordMove);
 
   const position = useSelector((state: RootStateType) =>
     state.savannaGameState.wordPosition);
+
+  const [playSuccessAnswer] = useSound(successSound);
+  const [playWrongAnswer] = useSound(wrongSound);
 
   const getRandomInt = (min: number, max: number) => (
     Math.floor(Math.random() * (max - min + 1)) + min
@@ -56,20 +66,46 @@ const FallingWord: React.FC = () => {
 
   useEffect(() => {
     if (isPlaying) {
+      console.log('movestart', position)
       moveDown();
     }
-  }, [isAnswer])
+  }, [isPlaying])
+
+  // useEffect(() => {
+  //   if (position >= 336) {
+  //     showAnswer()
+  //   }
+  // }, [position])
+  useEffect(() => {
+    for (let i = 0; i < 337; i += 6) {
+
+      dispatch(wordPosition(i))
+    }
+  }, [position])
 
   const moveDown = () => {
+    console.log('movedown', position)
     // console.log(e.target.offsetTop);
     // console.log(e.target.clientHeight);
     // const offsetTop = e.target;
     dispatch(isWordMove(true));
 
     for (let i = 0; i < 337; i += 6) {
+
       dispatch(wordPosition(i))
     }
   }
+
+  const showAnswer = () => {
+    playWrongAnswer();
+    dispatch(isWordFalled(true));
+    dispatch(isWordMove(false));
+    dispatch(wordUserAnswer(rightWord));
+    dispatch(isAnswerSelected(true))
+  }
+
+
+
   return (
     <button type='button' className={`${styles.falling__word}
      ${(isAnswer && userAnswer.word === rightWord.word) ? styles.word__stop : ''}

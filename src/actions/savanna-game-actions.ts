@@ -14,9 +14,15 @@ const LIST_RIGHT_WORDS='LIST_RIGHT_WORDS';
 const CLEAR_WORDS='CLEAR_WORDS';
 const IS_WORD_MOVE='IS_WORD_MOVE';
 const WORD_POSITION='WORD_POSITION';
+const IS_WORD_FALLED='IS_WORD_FALLED';
 
 const wordPosition= (value: number) => ({
   type: WORD_POSITION,
+  payload: value,
+});
+
+const isWordFalled= (value: boolean) => ({
+  type: IS_WORD_FALLED,
   payload: value,
 });
 
@@ -113,5 +119,6 @@ export {
   listRightWords, LIST_RIGHT_WORDS,  
   clearWords, CLEAR_WORDS,
   isWordMove, IS_WORD_MOVE,
-  wordPosition,WORD_POSITION
+  wordPosition,WORD_POSITION,
+  isWordFalled, IS_WORD_FALLED
  }

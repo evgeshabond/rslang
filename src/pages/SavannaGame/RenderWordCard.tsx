@@ -13,6 +13,7 @@ import { PlayButton } from '../../components/button-icons/playBig-button/playBig
 import { audioGameStart, wordUserAnswer, wordRight, isAnswerSelected } from '../../actions/audioGame-actions';
 import { shuffle } from '../../utils/shuffle';
 import FallingWord from './FallingWord';
+import { currentPlayWords, isWordFalled, isWordMove, stepCounter, wordPosition } from '../../actions/savanna-game-actions';
 
 
 const RenderWordCard: React.FC = () => {
@@ -34,12 +35,18 @@ const RenderWordCard: React.FC = () => {
     state.savannaGameState.isAnswerSelected);
   const currentWords = useSelector((state: RootStateType) =>
     state.savannaGameState.currentPlayWords);
+  const roundCounter = useSelector((state: RootStateType) =>
+    state.savannaGameState.stepCounter);
+  const position = useSelector((state: RootStateType) =>
+    state.savannaGameState.wordPosition);
+
 
   const getRandomInt = (min: number, max: number) => (
     Math.floor(Math.random() * (max - min + 1)) + min
   )
 
   useEffect(() => {
+    dispatch(wordPosition(0));
     if (currentWords.length === 0) {
       return;
     }
@@ -48,12 +55,52 @@ const RenderWordCard: React.FC = () => {
 
   }, [currentWords])
 
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+    if (isAnswer) {
+      timer = setTimeout(() =>
+        playGame()
+        , 3000);
+
+    }
+    return () => clearTimeout(timer);
+
+  }, [isAnswer])
+
+  const playGame = () => {
+    console.log('playgame', position);
+    dispatch(isWordFalled(false));
+
+    dispatch(isAnswerSelected(false));
+    if (wordList === undefined) {
+      return;
+    }
+    const currentPlayList = shuffle(wordList).filter((item: Object, index: number) => index < 4);
+    dispatch(currentPlayWords(currentPlayList))
+    dispatch(stepCounter(roundCounter + 1));
+    // console.log('current', currentWords)
+
+  }
+
+  // useEffect(() => {
+  //   if (Object.keys(userAnswer).length === 0 && !isAnswer) {
+  //     return
+  //   }
+  //   if (!isDontknow && userAnswer.word === rightWord.word) {
+  //     dispatch(listRightWords(rightWord));
+  //   }
+  //   else {
+  //     dispatch(setWrongWords(rightWord))
+  //   }
+  // }, [roundCounter, isResults])
 
   const checkUserAnswer = (word: CurrentWordListType) => {
     if (Object.keys(userAnswer).length === 0) {
       dispatch(wordUserAnswer(word));
     }
     dispatch(isAnswerSelected(true));
+    dispatch(isWordMove(false));
+    // dispatch(wordPosition(0));
   }
 
   return (

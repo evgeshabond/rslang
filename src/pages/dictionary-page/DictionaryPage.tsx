@@ -47,6 +47,7 @@ import {
   setResultPageState,
 } from '../../actions/constructor-game-actions';
 import { audioGameStart } from '../../actions/audioGame-actions';
+import { savannaGameStart } from '../../actions/savanna-game-actions';
 
 // update theme object of material ui
 const primaryColor = '#FDEBFF';
@@ -368,6 +369,7 @@ const DictionaryPage: React.FC = () => {
     dispatch(setLevelVisibility(false));
     dispatch(wordListLoaded(gameWordList));
     dispatch(audioGameStart(false));
+    dispatch(savannaGameStart(false));
     historyCopy.push(gamePath);
     /* eslint-enable */
   };

@@ -9,7 +9,7 @@ export const mainPath = {
   dictionaryPage: '/ebookpage/dictionary',
   profilePAge: '/profile',
   audioGame: '/audiogame',
-  savannaGame: '/savanna',
+  savannaGame: '/savannagame',
   serverUrl: 'https://rslang-app.herokuapp.com/',
   constructorGame: '/constructorgame',
   langUrl: 'https://rslang-app.herokuapp.com/',

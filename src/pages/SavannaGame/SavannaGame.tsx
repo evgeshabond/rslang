@@ -28,6 +28,7 @@ import SettingsBtn from './SettingsBtn';
 import LevelInfo from './LevelInfo';
 import LifeInfo from './LifeInfo';
 import FallingWord from './FallingWord';
+import { isWordMove, wordPosition } from '../../actions/savanna-game-actions';
 
 
 const SavannaGame: React.FC = () => {
@@ -48,56 +49,23 @@ const SavannaGame: React.FC = () => {
     dispatch(fetchWordsList({ page: 0, group: 0 }))
   }, [])
 
-  const getRandomInt = (min: number, max: number) => (
-    Math.floor(Math.random() * (max - min + 1)) + min
-  )
-
   // next round
 
-  useEffect(() => {
-    let timer: ReturnType<typeof setTimeout>;
-    if (isAnswer) {
-      timer = setTimeout(() =>
-        playGame()
-        , 3000);
-
-    }
-    return () => clearTimeout(timer);
-
-  }, [isAnswer])
 
 
 
-  const playGame = () => {
 
-    dispatch(isAnswerSelected(false));
-    if (wordList === undefined) {
-      return;
-    }
-    const currentPlayList = shuffle(wordList).filter((item: Object, index: number) => index < 4);
-    dispatch(currentPlayWords(currentPlayList))
-    // dispatch(stepCounter(roundCounter + 1));
-    console.log('current', currentWords)
-
-  }
-
-  useEffect(() =>
-    () => {
-
-      dispatch(currentPlayWords([]));
-    }, [])
 
 
   useEffect(() => {
-    if (isAnswer) {
-      if (userAnswer.word === rightWord.word) {
-        playSuccessAnswer();
-      }
-      else {
-        playWrongAnswer()
-      }
+    if (!isAnswer) {
+      return
     }
-  }, [userAnswer])
+    if (userAnswer.word === rightWord.word) {
+      playSuccessAnswer();
+    }
+    playWrongAnswer()
+  }, [userAnswer.word])
 
   return isPlaying ? (
     <div className={styles.game__content}>

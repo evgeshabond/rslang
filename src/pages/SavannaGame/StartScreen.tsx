@@ -9,20 +9,27 @@ import ControlledSelect from "../../components/ControlledSelect/ControlledSelect
 import { shuffle } from '../../utils/shuffle';
 import { mainPath } from '../../utils/constants';
 import { ReactComponent as CatAudio } from '../../assets/images/cat-audio-game.svg';
-import { clearWords, savannaGameStart, stepCounter } from '../../actions/savanna-game-actions';
-
-
+import { clearWords, isWordFalled, savannaGameStart, stepCounter, wordPosition } from '../../actions/savanna-game-actions';
 
 const StartScreen: React.FC = () => {
   const dispatch = useDispatch();
-  const isPlaying = useSelector((state: RootStateType) => state.savannaGameState.savannaGameStart);
-  const wordList = useSelector((state: RootStateType) => state.wordState.currentWordList);
-  const userAnswer = useSelector((state: RootStateType) => state.savannaGameState.wordUserAnswer);
-  const rightWord = useSelector((state: RootStateType) => state.savannaGameState.wordRight);
-  const isAnswer = useSelector((state: RootStateType) => state.savannaGameState.isAnswerSelected);
-  const currentWords = useSelector((state: RootStateType) => state.savannaGameState.currentPlayWords);
+  const isPlaying = useSelector((state: RootStateType) =>
+    state.savannaGameState.savannaGameStart);
+  const wordList = useSelector((state: RootStateType) =>
+    state.wordState.currentWordList);
+  const userAnswer = useSelector((state: RootStateType) =>
+    state.savannaGameState.wordUserAnswer);
+  const rightWord = useSelector((state: RootStateType) =>
+    state.savannaGameState.wordRight);
+  const isAnswer = useSelector((state: RootStateType) =>
+    state.savannaGameState.isAnswerSelected);
+  const currentWords = useSelector((state: RootStateType) =>
+    state.savannaGameState.currentPlayWords);
   const isResults = useSelector((state: RootStateType) =>
     state.savannaGameState.isShowResults);
+  const isLevelVisible = useSelector(
+    (state: RootStateType) => state.menuState.isLevelVisible
+  );
   const [play] = useSound(`${mainPath.langUrl}${rightWord.audio}`, { interrupt: true });
 
   useEffect(() => {
@@ -38,9 +45,10 @@ const StartScreen: React.FC = () => {
 
   const startGame = () => {
     dispatch(isAnswerSelected(false));
-    dispatch(isAnswerSelected(false));
+    dispatch(wordPosition(0))
     dispatch(stepCounter(0));
     dispatch(clearWords());
+    dispatch(isWordFalled(false));
     if (wordList === undefined) {
       return;
     }
@@ -49,21 +57,21 @@ const StartScreen: React.FC = () => {
   }
 
   return (
-    <div className={styles.game__content}>
-      {   isResults ? (
+    <div className={styles.game__wrapper}>
+      {isResults ? (
         <div>
           Результат
         </div>
       ) : (
-        <div>
+        <div className={styles.game__startSreen}>
           <div className={styles.game__title}>Саванна</div>
           <div className={styles.game__decription}>Тренировка Саванна развивает
         словарный запас. Выберите правильный перeвод слова.</div>
           < PlayButton buttonClick={() => { dispatch(savannaGameStart(true)); startGame(); }} />
-
+          {isLevelVisible ? <ControlledSelect /> : null}
         </div>)}
-
     </div>
   )
+
 }
 export default StartScreen;
