@@ -285,11 +285,9 @@ const DictionaryPage: React.FC = () => {
   const [modalOpened, setModalOpened] = useState(false);
   const [dialogOpened, setDialogOpened] = useState(false);
   const [difficulty, setDifficulty] = useState(getDifficulty());
-
   const [currentGroup, setCurrentGroup] = useState(getGroup());
   const [currentPage, setCurrentPage] = useState(getPage());
-
-  const [currentWordsPerPage, setCurrentWordsPerPage] = useState(20);
+  const [currentWordsPerPage, setCurrentWordsPerPage] = useState(5);
   const [wordsToRender, setWordsToRender] = useState([
     {
       id: '',
@@ -323,15 +321,11 @@ const DictionaryPage: React.FC = () => {
 
   const handleGamesButtonClick = () => {
     setDialogOpened(true);
-    console.log(historyCopy)
   };
 
   const handleGameChoose = async (gamePath: string) => {
     /* eslint-disable */
-    console.log('words to rendder are');
-    console.log(wordsToRender);
     let gameWordList = [...wordsToRender];
-    console.log('gamewordlist is ', gameWordList);
     //  add more words
     if (currentPage > 0) {
       //  add words from previous pages of dictinary
@@ -375,7 +369,6 @@ const DictionaryPage: React.FC = () => {
       }
     }
 
-    console.log('gamewordlist after loop is ', gameWordList);
     // //  remove deleted words if called not from deleted difficulty
     if (difficulty !== 'deleted' && !!difficulty) {
       gameWordList = gameWordList.filter((word: any) => {
@@ -389,11 +382,9 @@ const DictionaryPage: React.FC = () => {
         return false;
       });
     }
-    console.log('gamewordlist after deleting is ', gameWordList);
     // //  remove all elements after 20th
     gameWordList.length = 20;
     gameWordList = gameWordList.filter((item) => item);
-    console.log('gameWordList after removnig all after 20 is ', gameWordList);
     dispatch(setResultPageState(false));
     dispatch(setLevelVisibility(false));
     dispatch(wordListLoaded(gameWordList));
@@ -410,7 +401,6 @@ const DictionaryPage: React.FC = () => {
   }
 
   const handleSettingsButtonClick = () => {
-    console.log('clicked settings butto');
     setModalOpened(true);
   };
 
@@ -419,7 +409,6 @@ const DictionaryPage: React.FC = () => {
   };
 
   const handlePageChange = (data: any) => {
-    console.log('page variable is', data.selected);
     historyCopy.replace({
       pathname: '/ebookpage/dictionary/',
       search: `?group=${getGroup()}&page=${data.selected + 1}&difficulty=${getDifficulty()}`
@@ -449,7 +438,7 @@ const DictionaryPage: React.FC = () => {
       wordsPerPage,
     };
     try {
-      console.log('fetching words inside getwords');
+      console.log('before service with params ', params)
       const response = await service.getAggregatedWordsList(
         params,
         searchString
@@ -459,7 +448,8 @@ const DictionaryPage: React.FC = () => {
       if (!totalCount || totalCount < 1) setPagesCount(1);
       else await setPagesCount(Math.ceil(totalCount / currentWordsPerPage));
       setIsWordListLoaded(true);
-      console.log('inside getWords. words are ', newWords);
+      console.log('fetched words are, ', newWords)
+      console.log('fetched count is ', totalCount)
       return newWords;
     } catch (e) {
       console.log(e);
