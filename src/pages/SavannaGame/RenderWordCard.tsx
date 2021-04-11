@@ -46,7 +46,7 @@ const RenderWordCard: React.FC = () => {
   )
 
   useEffect(() => {
-    dispatch(wordPosition(0));
+    // dispatch(wordPosition(0));
     if (currentWords.length === 0) {
       return;
     }
@@ -58,8 +58,12 @@ const RenderWordCard: React.FC = () => {
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
     if (isAnswer) {
-      timer = setTimeout(() =>
-        playGame()
+      timer = setTimeout(() => {
+        console.log('set')
+        dispatch(wordPosition(0));
+        playGame();
+      }
+
         , 3000);
 
     }
@@ -68,9 +72,13 @@ const RenderWordCard: React.FC = () => {
   }, [isAnswer])
 
   const playGame = () => {
+    for (let i = 0; i < 300; i += 6) {
+      console.log('p', position)
+      dispatch(wordPosition(position + i))
+    }
+    dispatch(isWordMove(true));
     console.log('playgame', position);
     dispatch(isWordFalled(false));
-
     dispatch(isAnswerSelected(false));
     if (wordList === undefined) {
       return;
@@ -100,7 +108,7 @@ const RenderWordCard: React.FC = () => {
     }
     dispatch(isAnswerSelected(true));
     dispatch(isWordMove(false));
-    // dispatch(wordPosition(0));
+
   }
 
   return (

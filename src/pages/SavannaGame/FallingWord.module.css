@@ -20,7 +20,9 @@
   vertical-align: middle;
   margin: 10px;
 
-  transition: 1.5s all;
+  /* transition: 2.5s all; */
+  transition: all 2s ease-in-out;
+  -webkit-transition: all 2s ease-in-out; /** Chrome & Safari **/
   transition-delay: 1s;
 }
 

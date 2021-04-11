@@ -55,46 +55,46 @@ const FallingWord: React.FC = () => {
     Math.floor(Math.random() * (max - min + 1)) + min
   )
 
-  useEffect(() => {
-    if (currentWords.length === 0) {
-      return;
-    }
-    const random = currentWords[getRandomInt(0, currentWords.length - 1)];
-    dispatch(wordRight(random));
+  // useEffect(() => {
+  //   if (currentWords.length === 0) {
+  //     return;
+  //   }
+  //   const random = currentWords[getRandomInt(0, currentWords.length - 1)];
+  //   dispatch(wordRight(random));
 
-  }, [currentWords])
+  // }, [currentWords])
 
-  useEffect(() => {
-    if (isPlaying) {
-      console.log('movestart', position)
-      moveDown();
-    }
-  }, [isPlaying])
+  // useEffect(() => {
+  //   if (isPlaying) {
+  //     console.log('movestart', position)
+  //     moveDown();
+  //   }
+  // }, [isAnswer])
 
   // useEffect(() => {
   //   if (position >= 336) {
   //     showAnswer()
   //   }
   // }, [position])
-  useEffect(() => {
-    for (let i = 0; i < 337; i += 6) {
+  // useEffect(() => {
+  //   console.log('ue pos', position)
+  //   for (let i = 0; i < 337; i += 6) {
+  //     console.log('for', position)
+  //     dispatch(wordPosition(i))
+  //   }
+  // }, [position])
 
-      dispatch(wordPosition(i))
-    }
-  }, [position])
+  // const moveDown = () => {
+  //   console.log('movedown', position)
+  //   // console.log(e.target.offsetTop);
+  //   // console.log(e.target.clientHeight);
+  //   // const offsetTop = e.target;
 
-  const moveDown = () => {
-    console.log('movedown', position)
-    // console.log(e.target.offsetTop);
-    // console.log(e.target.clientHeight);
-    // const offsetTop = e.target;
-    dispatch(isWordMove(true));
-
-    for (let i = 0; i < 337; i += 6) {
-
-      dispatch(wordPosition(i))
-    }
-  }
+  //   for (let i = 0; i < 90; i += 6) {
+  //     console.log('p', position)
+  //     dispatch(wordPosition(position + i))
+  //   }
+  // }
 
   const showAnswer = () => {
     playWrongAnswer();
@@ -110,7 +110,7 @@ const FallingWord: React.FC = () => {
     <button type='button' className={`${styles.falling__word}
      ${(isAnswer && userAnswer.word === rightWord.word) ? styles.word__stop : ''}
      ${(isAnswer && userAnswer.word !== rightWord.word) ? styles.word__stop__wrong : ''}`}
-      style={{ transform: `translateY(${position}px)` }}>
+      style={{ transform: `translateY(${position}%)` }}>
       {rightWord.word}
     </button>
   )

@@ -30,6 +30,8 @@ const StartScreen: React.FC = () => {
   const isLevelVisible = useSelector(
     (state: RootStateType) => state.menuState.isLevelVisible
   );
+  const position = useSelector((state: RootStateType) =>
+    state.savannaGameState.wordPosition);
   const [play] = useSound(`${mainPath.langUrl}${rightWord.audio}`, { interrupt: true });
 
   useEffect(() => {
@@ -43,6 +45,13 @@ const StartScreen: React.FC = () => {
     }
   }
 
+  useEffect(() => {
+    for (let i = 0; i < 300; i += 6) {
+      console.log('p', position)
+      dispatch(wordPosition(position + i))
+    }
+  }, [isPlaying])
+
   const startGame = () => {
     dispatch(isAnswerSelected(false));
     dispatch(wordPosition(0))
@@ -54,6 +63,7 @@ const StartScreen: React.FC = () => {
     }
     const currentPlayList = shuffle(wordList).filter((item: Object, index: number) => index < 4);
     dispatch(currentPlayWords(currentPlayList));
+
   }
 
   return (
