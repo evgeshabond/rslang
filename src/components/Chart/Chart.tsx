@@ -4,6 +4,7 @@ import { Line } from 'react-chartjs-2';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTotalStatistics } from '../../actions/statistic-action';
 import { RootStateType } from '../../reducer/root-reducer';
+import { GameChart } from '../game-chart/Game-chart';
 import styles from './chart.module.css';
 
 export const ChartComponent: React.FC = () => {
@@ -12,7 +13,11 @@ export const ChartComponent: React.FC = () => {
   const totalStatistic = useSelector(
     (state: RootStateType) => state.statisticState.totalStatistic
   );
+  const todayStatistic = useSelector(
+    (state: RootStateType) => state.statisticState.gameToday
+  );
 
+  const { savanna, sprint, audiocall, constructors } = todayStatistic;
   useEffect(() => {
     const param = {
       userId: user.userId,
@@ -54,6 +59,12 @@ export const ChartComponent: React.FC = () => {
         <Line
           data={data}
           options={{
+            title: {
+              display: true,
+              text: 'Изученно всего',
+              fontColor: 'rgba(114, 56, 153, 1)',
+              fontSize: 24,
+            },
             responsive: true,
             maintainAspectRatio: true,
             tooltips: {
@@ -75,13 +86,34 @@ export const ChartComponent: React.FC = () => {
           }}
         />
       </div>
+      <h3 className={styles['header-text']}>Изученно сегодня</h3>
       <div className={styles.stats}>
-        <h3>Stats:</h3>
-        <p>
-          Many stats, many-many stats, many-many stats, many-many stats,
-          many-many stats, many-many stats, many-many stats, many-many stats,
-          many-many stats, and one more stat.
-        </p>
+        <div className={styles['game-charts-container']}>
+          <GameChart
+            game="Саванна"
+            learnedWordCount={savanna ? savanna.learnedWordCount : 0}
+            combo={savanna ? savanna.maxCombo : 0}
+            correctAvg={savanna ? savanna.correctAvg : 0}
+          />
+          <GameChart
+            game="Спринт"
+            learnedWordCount={sprint ? sprint.learnedWordCount : 0}
+            combo={sprint ? sprint.maxCombo : 0}
+            correctAvg={sprint ? sprint.correctAvg : 0}
+          />
+          <GameChart
+            game="Аудио-вызов"
+            learnedWordCount={audiocall ? audiocall.learnedWordCount : 0}
+            combo={audiocall ? audiocall.maxCombo : 0}
+            correctAvg={audiocall ? audiocall.correctAvg : 0}
+          />
+          <GameChart
+            game="Конструктор"
+            learnedWordCount={constructors ? constructors.learnedWordCount : 0}
+            combo={constructors ? constructors.maxCombo : 0}
+            correctAvg={constructors ? constructors.correctAvg : 0}
+          />
+        </div>
       </div>
     </div>
   ) : (

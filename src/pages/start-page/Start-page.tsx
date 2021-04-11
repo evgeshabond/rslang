@@ -15,7 +15,7 @@ export const StartPage: React.FC = () => (
       <h1 className={styles.title}>
         Учите новые слова легко с приложением Smart Cat!
       </h1>
-      <Link className={styles.paw} to={mainPath.main}>
+      <Link className={styles.paw} to={mainPath.dashboardPage}>
         <Paw className={styles.paw__icon} width={30} height={30} />
       </Link>
       <h2 className={styles['sub-title']}>Начать</h2>

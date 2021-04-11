@@ -17,6 +17,7 @@ import ConstructorGame from '../ConstructorGame/ConstructorGame';
 import GitLinks from '../GitLinks/GitLinks';
 import { QuestionPage } from '../../pages/question-page/Question-page';
 import { GameTest } from '../game-statistic-test/Game-statistic-test';
+import { DashboardPage } from '../../pages/dashbord-page/Dashboard-page';
 import { StatisticPage } from '../../pages/statistic-page/Statistic-page';
 import { AboutUs } from '../../pages/about-us/About-us';
 import { StartPage } from '../../pages/start-page/Start-page';
@@ -43,6 +44,7 @@ const App: React.FC = () => (
               component={ConstructorGame}
             />
             <Route path={mainPath.questionPage} component={QuestionPage} />
+            <Route path={mainPath.dashboardPage} component={DashboardPage} />
             <Route path={mainPath.testStatistic} component={GameTest} />
             <Route path={mainPath.statistic} component={StatisticPage} />
             <Route path={mainPath.aboutUs} component={AboutUs} />

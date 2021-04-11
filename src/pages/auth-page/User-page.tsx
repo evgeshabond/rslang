@@ -16,7 +16,7 @@ const UserPage: React.FC<Props> = ({ isLogin, isLoaded }) => {
     return <Auth />;
   };
 
-  return <div className={styles['auth-container']}>{renderContent()}</div>;
+  return renderContent();
 };
 
 const mapStateToProps = (state: RootStateType) => state.userState;
