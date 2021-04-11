@@ -18,13 +18,13 @@ const MainPage: React.FC = () => (
     <div className={styles['main-button-container']}>
       <Link
         to={mainPath.ebookPage}
-        className={`${buttonStyles['main-button']} ${styles['padding-top__10']}`}
+        className={`${buttonStyles['main-button']} ${styles.main__button}`}
       >
         Приступить
       </Link>
       <Link
-        to={mainPath.userStatistic}
-        className={`${buttonStyles['main-button']} ${styles['padding-top__10']}`}
+        to={mainPath.statistic}
+        className={`${buttonStyles['main-button']} ${styles.main__button}`}
       >
         Узнать больше
       </Link>

@@ -1,8 +1,9 @@
 .text {
   font-weight: 500;
-  font-size: 2.4rem;
-  line-height: 2.8rem;
+  font-size: 2.2rem;
+  line-height: 2.4rem;
   text-align: center;
-  color: #733999;
+  color: #5b2467;
+  text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
   margin-top: 10px;
 }

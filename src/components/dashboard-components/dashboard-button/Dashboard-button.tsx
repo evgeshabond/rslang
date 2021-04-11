@@ -9,6 +9,6 @@ type Props = {
 
 export const DashboardButton: React.FC<Props> = ({ link, buttonName }) => (
   <Link to={link} className={styles['link-button']}>
-    {buttonName}
+    <div className={styles['div-button']}>{buttonName}</div>
   </Link>
 );

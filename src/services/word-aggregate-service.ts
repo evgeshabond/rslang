@@ -43,7 +43,7 @@ export default class AggregateService {
     let group = '0';
     let filter = '';
     let wordsPerPage = '';
-        if (params.group) {
+    if (params.group) {
       group = `group=${params.group}&`;
     }
     if (params.wordsPerPage) {

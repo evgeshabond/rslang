@@ -37,51 +37,44 @@ const DashboardProfile: React.FC<Props> = ({ history }) => {
 
   const logOut = () => {
     dispatch(userLogOut());
-    history.push(mainPath.auth);
   };
   return (
     <>
       <DashboardText>Мои данные</DashboardText>
-      {userState.isLogin ? (
-        <>
-          <div className={authStyles['profile-img-wrapper']}>
-            <ImageLoader />
-          </div>
-          <input
-            className={`${styles['user-info']} ${authStyles['login-icon']}`}
-            type="text"
-            value={user.name}
-            readOnly
-          />
 
-          <input
-            className={`${authStyles['auth-input']} ${authStyles['email-icon']}`}
-            type="email"
-            value={user.email}
-            readOnly
+      <div className={authStyles['profile-img-wrapper']}>
+        <ImageLoader />
+      </div>
+      <input
+        className={`${styles['user-info']} ${authStyles['login-icon']}`}
+        type="text"
+        value={user.name}
+        readOnly
+      />
+
+      <input
+        className={`${authStyles['auth-input']} ${authStyles['email-icon']}`}
+        type="email"
+        value={user.email}
+        readOnly
+      />
+
+      {!user.level ? (
+        <div className={styles['margin-top_20']}>
+          <DashboardButton
+            link={mainPath.questionPage}
+            buttonName="Определить уровень"
           />
-          <DashboardText>Мой уровень</DashboardText>
-          {!user.level ? (
-            <div>
-              <DashboardButton
-                link={mainPath.questionPage}
-                buttonName="Определить уровень"
-              />
-            </div>
-          ) : (
-            <DashboardText>{user.level}</DashboardText>
-          )}
-        </>
+        </div>
       ) : (
-        <>
-          <DashboardText>
-            Для сохранения Ваших результатов пожалуиста авторизуйтесь
-          </DashboardText>
-          <div>
-            <DashboardButton link={mainPath.auth} buttonName="Авторизоваться" />
-          </div>
-        </>
+        <DashboardText>Мой уровень {user.level}</DashboardText>
       )}
+      <input
+        type="button"
+        value="Выйти"
+        className={authStyles['auth-button']}
+        onClick={logOut}
+      />
     </>
   );
 };

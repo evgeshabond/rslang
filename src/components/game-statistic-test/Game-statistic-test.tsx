@@ -238,7 +238,7 @@ export const GameTest: React.FC = () => {
       userId: user.userId,
       token: user.token,
       page: 0,
-      group: 0, // не обязательное поле по умолчанию будет 0
+      group: 2, // не обязательное поле по умолчанию будет 0
       wordsPerPage: 20,
     };
     dispatch(getAggregatedWordsList(params, filterQuery.hardWords));

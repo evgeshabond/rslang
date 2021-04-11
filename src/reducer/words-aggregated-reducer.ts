@@ -7,6 +7,7 @@ import {
   USER_DELETED_WORD,
   USER_HARD_WORD,
   USER_LEARNING_WORD,
+  USER_CLEAR_WORD,
 } from '../actions/aggregated-word-action';
 
 export type AggregatedWordsStateType = typeof initialState;
@@ -65,6 +66,13 @@ const aggregatedWordsReducer = (
       return {
         ...state,
         deletedWordCount: action.payload,
+      };
+    case USER_CLEAR_WORD:
+      return {
+        ...state,
+        learningWordCount: 0,
+        hardWordCount: 0,
+        deletedWordCount: 0,
       };
     default:
       return state;

@@ -12,6 +12,7 @@ export const USER_AGGREGATED_WORD = 'USER_AGGREGATED_WORD';
 export const USER_LEARNING_WORD = 'USER_LEARNING_WORD';
 export const USER_HARD_WORD = 'USER_HARD_WORD';
 export const USER_DELETED_WORD = 'USER_DELETED_WORD';
+export const USER_CLEAR_WORD = 'USER_CLEAR_WORD';
 
 export type AggregatedWordListResultType = {
   paginatedResults: Array<CurrentWordListType>;
@@ -83,6 +84,11 @@ export const userDeletedWordCount = (value: number) => ({
   payload: value,
 });
 
+export const clearWordStatistic = () => ({
+  type: USER_CLEAR_WORD,
+  payload: '',
+});
+
 export type UserAggregatedWordActionForReducer =
   | UserAggregatedWordLoadedAType
   | UserAggregatedWordRequestAType
@@ -116,7 +122,11 @@ export const getAggregatedWordsList = (
         dispatch(userHardWordCount(count));
       }
     })
-    .catch((err) => dispatch(userAggregatedWordFetchErr(err.message)));
+    .catch((err) => {
+      console.log(err);
+      dispatch(clearWordStatistic());
+      dispatch(userAggregatedWordFetchErr(err.message));
+    });
 };
 
 export const getAggregatedWord = (params: {

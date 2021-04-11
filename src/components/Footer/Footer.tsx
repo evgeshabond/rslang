@@ -105,7 +105,7 @@ const Footer: React.FC<Props> = ({ bottomMenuIsOpen, bottomMenuOpen }) => {
               classes={{
                 tooltip: classes.customWidth,
               }}
-              title="Учебник"
+              title="Словарь"
               TransitionComponent={Zoom}
             >
               <Link to={mainPath.main}>

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   clearWords,
   constructorGameStart,
+  setFullScreenStatus,
   setResultPageState,
 } from '../../../actions/constructor-game-actions';
 import { setLevelVisibility } from '../../../actions/menu-actions';
@@ -16,6 +17,10 @@ export const TopBlock: React.FC = () => {
   const { amountOfRounds } = gameConstants;
   const dispatch = useDispatch();
 
+  const currentWordList = useSelector(
+    (state: RootStateType) => state.wordState.currentWordList
+  );
+
   const {
     wordObj,
     roundCount,
@@ -28,6 +33,10 @@ export const TopBlock: React.FC = () => {
     dispatch(setResultPageState(false));
     dispatch(setLevelVisibility(true));
     clearWords();
+
+    if (isFullScreen) {
+      dispatch(setFullScreenStatus(false));
+    }
   };
 
   return (
@@ -46,9 +55,9 @@ export const TopBlock: React.FC = () => {
             <p className={styles.description}>Собери слово из букв.</p>
           )}
         </div>
-        <div
-          className={styles.counter}
-        >{`${roundCount}/${amountOfRounds}`}</div>
+        <div className={styles.counter}>{`${roundCount}/${
+          currentWordList.length < 10 ? currentWordList.length : amountOfRounds
+        }`}</div>
       </div>
       <button
         type="button"

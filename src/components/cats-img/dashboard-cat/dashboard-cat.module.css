@@ -1,6 +1,6 @@
 .main-cat__wrapper {
   position: absolute;
-  right: -200px;
+  right: 0;
   bottom: 0;
 
   display: flex;
@@ -73,7 +73,6 @@
   }
 
   .main-cat__wrapper {
-    right: -90px;
   }
 }
 
