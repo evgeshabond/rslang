@@ -13,6 +13,7 @@ export const mainPath = {
   questionPage: '/quiz',
   testStatistic: '/testStatistic',
   statistic: '/statistic',
+  aboutUs: '/aboutUs',
 };
 
 export const authErrorPath = {

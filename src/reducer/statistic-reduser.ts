@@ -57,6 +57,7 @@ const initialState = {
   },
   gameToday: {},
   errorMsg: '',
+  totalStatistic: [],
 };
 
 export const statisticReducer = (
