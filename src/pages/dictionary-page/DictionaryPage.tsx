@@ -287,7 +287,7 @@ const DictionaryPage: React.FC = () => {
   const [difficulty, setDifficulty] = useState(getDifficulty());
   const [currentGroup, setCurrentGroup] = useState(getGroup());
   const [currentPage, setCurrentPage] = useState(getPage());
-  const [currentWordsPerPage, setCurrentWordsPerPage] = useState(5);
+  const [currentWordsPerPage, setCurrentWordsPerPage] = useState(20);
   const [wordsToRender, setWordsToRender] = useState([
     {
       id: '',
