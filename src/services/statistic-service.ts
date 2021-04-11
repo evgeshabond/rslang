@@ -3,6 +3,15 @@ import { serverUrl } from '../utils/constants';
 import { GameStatistic } from '../reducer/statistic-state-types';
 
 export default class StatisticService {
+  checkErr = (status: number) => {
+    if (status === 401) {
+      throw new Error('пожалуйста авторизуйтесь');
+    }
+    if (status === 400) {
+      throw new Error('некорректный запрос');
+    }
+  };
+
   getStatistic = async (params: { userId: string; token: string }) => {
     const res = await fetch(`${serverUrl}users/${params.userId}/statistics`, {
       method: 'GET',
@@ -11,6 +20,7 @@ export default class StatisticService {
         Accept: 'application/json',
       },
     });
+    this.checkErr(res.status);
     const data = await res.json();
     return data;
   };

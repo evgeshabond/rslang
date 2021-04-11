@@ -43,12 +43,18 @@ export const BottomBlock: React.FC = () => {
   } = useSelector((state: RootStateType) => state.constructorGameState);
 
   const user = useSelector((state: RootStateType) => state.userState.user);
+  const userState = useSelector((state: RootStateType) => state.userState);
+
   const isLevelVisible = useSelector(
     (state: RootStateType) => state.menuState.isLevelVisible
   );
 
   useEffect(() => {
     const dontKnow = totalRounds - learned;
+
+    if (!userState.isLogin) {
+      return;
+    }
 
     const param = {
       userId: user.userId,
@@ -78,6 +84,10 @@ export const BottomBlock: React.FC = () => {
   }, [roundCount]);
 
   const nextRoundHandler = () => {
+    if (!userState.isLogin) {
+      return;
+    }
+
     if (roundCount === totalRounds) {
       dispatch(constructorGameStart(false));
       dispatch(setResultPageState(true));

@@ -19,6 +19,7 @@ export const TODAY_AUDIOCALL_STATISTIC = 'TODAY_AUDIOCALL_STATISTIC';
 export const TODAY_CONSTRUCTORS_STATISTIC = 'TODAY_CONSTRUCTORS_STATISTIC';
 export const TODAY_GAME_STATISTIC = 'TODAY_GAME_STATISTIC';
 export const CLEAR_TODAY_STATISTIC = 'CLEAR_TODAY_STATISTIC';
+export const CLEAR_TOTAL_STATISTIC = 'CLEAR_TOTAL_STATISTIC';
 export const TOTAL_STATISTIC = 'TOTAL_STATISTIC';
 
 export type GameStatActionType = {
@@ -60,6 +61,7 @@ export const getTodayStatisticConstructors = (
 
 export const clearAllStatistic = () => ({
   type: CLEAR_ALL_STATISTIC,
+  payload: '',
 });
 
 export const statisticError = (value: string) => ({
@@ -75,6 +77,11 @@ export const clearTodayStatistic = () => ({
 export const totalStatisticAdd = (value: Array<TotalStatisticType>) => ({
   type: TOTAL_STATISTIC,
   payload: value,
+});
+
+export const clearTotalStatistic = () => ({
+  type: CLEAR_TOTAL_STATISTIC,
+  payload: '',
 });
 
 export const todayTotalGameStatistic = (
@@ -146,8 +153,16 @@ export const getTodayStatistic = (params: {
       if (!values) {
         return;
       }
+      if (values.error) {
+        console.log(values);
+        dispatch(
+          statisticError('ваша сессия истекла пожалуйста авторизуйтесь заново')
+        );
+        return;
+      }
       let totalWordCountArr: Array<string> = [];
       const sumCorrectAvg: Array<number> = [];
+      dispatch(clearTodayStatistic());
       values.forEach((data: TodayGameStatisticType) => {
         let wordCount = 0;
         if (data.wordsCountArr) {
@@ -195,9 +210,13 @@ export const getTodayStatistic = (params: {
       });
 
       const learnedWordCount = Array.from(new Set(totalWordCountArr)).length;
-      const correctAvg = Math.round(
-        sumCorrectAvg.reduce((sum, item) => sum + item) / sumCorrectAvg.length
-      );
+      const correctAvg =
+        sumCorrectAvg.length > 0
+          ? Math.round(
+              sumCorrectAvg.reduce((sum, item) => sum + item) /
+                sumCorrectAvg.length
+            )
+          : 0;
       dispatch(todayTotalGameStatistic({ learnedWordCount, correctAvg }));
       dispatch(statisticError(''));
     });
@@ -217,6 +236,7 @@ export const getTotalStatistics = (params: {
         dispatch(
           statisticError('ваша сессия истекла пожалуйста авторизуйтесь заново')
         );
+        dispatch(clearAllStatistic());
       } else {
         let totalWordCount = 0;
         const totalStat = data.map((item: TotalStatisticType) => {

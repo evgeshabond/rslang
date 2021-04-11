@@ -108,24 +108,6 @@ export const getUserWord = (params: {
     .catch((err) => dispatch(userWordFetchErr(err.message)));
 };
 
-// export const updateUserWord = (params: {
-//   userId: string;
-//   wordId: string;
-//   token: string;
-//   body: {
-//     difficulty: string;
-//     optional: {
-//       isDeleted?: boolean;
-//     };
-//   };
-// }) => (dispatch: Dispatch<UserWordActionForReducer>) => {
-//   dispatch(userWordRequested());
-//   service
-//     .updateWord(params)
-//     .then((data) => dispatch(userWordLoaded(data)))
-//     .catch((err) => dispatch(userWordFetchErr(err.message)));
-// };
-
 export const userWordDeleted = (params: {
   userId: string;
   wordId: string;
@@ -185,40 +167,6 @@ export const userWordToEasy = (params: {
     .then((data) => dispatch(userWordLoaded(data)))
     .catch((err) => dispatch(userWordFetchErr(err.message)));
 };
-
-// export const userWordToLearning = (params: {
-//   userId: string;
-//   wordId: string;
-//   token: string;
-// }) => (dispatch: Dispatch<UserWordActionForReducer>) => {
-//   dispatch(userWordRequested());
-//   const body = {
-//     optional: {
-//       learning: true,
-//     },
-//   };
-//   service
-//     .updateWord(params, body)
-//     .then((data) => dispatch(userWordLoaded(data)))
-//     .catch((err) => dispatch(userWordFetchErr(err.message)));
-// };
-
-// export const userWordToUnLearning = (params: {
-//   userId: string;
-//   wordId: string;
-//   token: string;
-// }) => (dispatch: Dispatch<UserWordActionForReducer>) => {
-//   dispatch(userWordRequested());
-//   const body = {
-//     optional: {
-//       learning: false,
-//     },
-//   };
-//   service
-//     .updateWord(params, body)
-//     .then((data) => dispatch(userWordLoaded(data)))
-//     .catch((err) => dispatch(userWordFetchErr(err.message)));
-// };
 
 export const userWordToLearnResult = (
   params: {

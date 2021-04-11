@@ -35,12 +35,6 @@ const Auth: React.FC<Props> = ({ history }) => {
   } = auth;
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (isLogin) {
-      history.goBack();
-    }
-  }, [history, isLogin]);
-
   const handleSubmit = (event: React.SyntheticEvent) => {
     event.preventDefault();
     if (loginPage) {
@@ -139,12 +133,6 @@ const Auth: React.FC<Props> = ({ history }) => {
               value="Войти"
               className={styles['auth-button']}
             />
-            <Link
-              to={mainPath.ebookPage}
-              className={`${styles['auth-button']} ${styles['margin-top__0']}`}
-            >
-              Пропустить
-            </Link>
           </>
         ) : (
           <input

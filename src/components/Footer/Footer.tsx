@@ -9,8 +9,7 @@ import React, { useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as actions from '../../actions/menu-actions';
-import ebookImg from '../../assets/images/e-book.svg';
-import gamesImg from '../../assets/images/games.svg';
+import teamImg from '../../assets/images/team.svg';
 import statisticImg from '../../assets/images/statistic.svg';
 import { MenuState } from '../../reducer/menu-reducer';
 import { RootStateType } from '../../reducer/root-reducer';
@@ -43,6 +42,10 @@ const Footer: React.FC<Props> = ({ bottomMenuIsOpen, bottomMenuOpen }) => {
   const buttonsContainer = useRef(null);
   const classes = useStyles();
 
+  const toggleMenuHandler = () => {
+    bottomMenuIsOpen ? bottomMenuOpen(false) : bottomMenuOpen(true);
+  };
+
   useEffect(() => {
     if (bottomMenu && bottomMenuIsOpen) {
       (bottomMenu.current! as HTMLElement).style.bottom = '-1144px';
@@ -53,6 +56,7 @@ const Footer: React.FC<Props> = ({ bottomMenuIsOpen, bottomMenuOpen }) => {
       (buttonsContainer.current! as HTMLElement).style.opacity = '0';
     }
   }, [bottomMenuIsOpen]);
+
   return (
     <footer className={styles.footer}>
       <div
@@ -65,7 +69,7 @@ const Footer: React.FC<Props> = ({ bottomMenuIsOpen, bottomMenuOpen }) => {
           ref={buttonsContainer}
           className={styles['menu-buttons-container']}
         >
-          <div
+          {/* <div
             className={`${styles['bottom-button']} ${styles['button_margin-small']}`}
           >
             <Tooltip
@@ -80,7 +84,7 @@ const Footer: React.FC<Props> = ({ bottomMenuIsOpen, bottomMenuOpen }) => {
                 <img src={gamesImg} alt="games" />
               </Link>
             </Tooltip>
-          </div>
+          </div> */}
           <div
             className={`${styles['up-button']} ${styles['button_margin-big']}`}
           >
@@ -89,31 +93,29 @@ const Footer: React.FC<Props> = ({ bottomMenuIsOpen, bottomMenuOpen }) => {
               classes={{
                 tooltip: classes.customWidth,
               }}
-              title="Учебник"
+              title="О команде"
               TransitionComponent={Zoom}
             >
-              <Link to={mainPath.ebookPage}>
-                <img src={ebookImg} alt="ebook" />
+              <Link to={mainPath.aboutUs}>
+                <img src={teamImg} alt="ebook" />
               </Link>
             </Tooltip>
           </div>
-          <div
-            className={`${styles['up-button']} ${styles['button_margin-small']}`}
-          >
+          <div className={styles['up-button']}>
             <Tooltip
               placement="top"
               classes={{
                 tooltip: classes.customWidth,
               }}
-              title="Словарь"
+              title="Статистика"
               TransitionComponent={Zoom}
             >
-              <Link to={mainPath.main}>
-                <img src={ebookImg} alt="main" />
+              <Link to={mainPath.statistic}>
+                <img src={statisticImg} alt="stat" />
               </Link>
             </Tooltip>
           </div>
-          <div className={styles['bottom-button']}>
+          {/* <div className={styles['bottom-button']}>
             <Tooltip
               placement="top"
               classes={{
@@ -126,7 +128,7 @@ const Footer: React.FC<Props> = ({ bottomMenuIsOpen, bottomMenuOpen }) => {
                 <img src={statisticImg} alt="statistic" />
               </Link>
             </Tooltip>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className={styles.wrapper}>
@@ -134,7 +136,7 @@ const Footer: React.FC<Props> = ({ bottomMenuIsOpen, bottomMenuOpen }) => {
           type="button"
           aria-label="Bottom-menu"
           className={styles['menu-btn']}
-          onMouseEnter={() => bottomMenuOpen(true)}
+          onClick={toggleMenuHandler}
         >
           <div className={styles['menu-btn__inner']} />
         </button>
