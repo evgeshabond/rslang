@@ -1,5 +1,5 @@
 export const mainPath = {
-  main: '/',
+  main: '/main',
   gamePage: '/gamepage',
   wordList: '/wordlist',
   auth: '/user',
@@ -15,7 +15,7 @@ export const mainPath = {
   testStatistic: '/testStatistic',
   statistic: '/statistic',
   aboutUs: '/aboutUs',
-  startPage: '/startPage',
+  startPage: '/',
 };
 
 export const authErrorPath = {

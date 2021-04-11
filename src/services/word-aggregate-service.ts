@@ -40,7 +40,7 @@ export default class AggregateService {
     params: AggregateParamsType,
     filterType: string
   ) => {
-    let group = '0';
+    let group = 'group=0&';
     let filter = '';
     let wordsPerPage = '';
     if (params.group) {
