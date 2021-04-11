@@ -43,7 +43,7 @@ import {
   wordListLoaded,
 } from '../../actions/word-actions';
 import { mainPath } from '../../utils/constants';
-import { setResultPageState } from '../../actions/constructor-game-actions';
+import { constructorGameStart, setResultPageState } from '../../actions/constructor-game-actions';
 
 // update theme object of material ui
 const primaryColor = '#FDEBFF';
@@ -309,6 +309,8 @@ const LearnPage: React.FC = () => {
 
   const handleGamesButtonClick = () => {
     setDialogOpened(true);
+
+    dispatch(constructorGameStart(false));
   };
 
   const handleGameChoose = async (gamePath: string) => {
@@ -333,13 +335,15 @@ const LearnPage: React.FC = () => {
       });
     }
     //  delete empty default object and deleted
-    gameWordList = gameWordList.filter((item) => item.id !== '' && item.userWord.difficulty !== 'deleted') 
+    gameWordList = gameWordList.filter(
+      (item) => item.id !== '' && item.userWord.difficulty !== 'deleted'
+    );
     //  remove all elements after 20th
-      gameWordList.length = 20
-      dispatch(setResultPageState(false));
-      dispatch(setLevelVisibility(false));
-      dispatch(wordListLoaded(gameWordList));
-      historyCopy.push(gamePath);
+    gameWordList.length = 20;
+    dispatch(setResultPageState(false));
+    dispatch(setLevelVisibility(false));
+    dispatch(wordListLoaded(gameWordList));
+    historyCopy.push(gamePath);
     /* eslint-enable */
   };
 
@@ -413,7 +417,7 @@ const LearnPage: React.FC = () => {
           setIsWordListLoaded(true);
           return;
         }
-        console.log('filtered words',aggregatedWordsPage)
+        console.log('filtered words', aggregatedWordsPage);
         setWordsToRender(
           aggregatedWordsPage.filter(
             (updatedWord: any) => updatedWord.userWord.difficulty !== 'deleted'

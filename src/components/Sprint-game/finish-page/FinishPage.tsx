@@ -2,9 +2,15 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import {
+  clearWords,
+  sprintGameBallsCounter,
+  sprintGameCheckPoints,
+  sprintGameCurrentPoints,
   sprintGameListOfCorrectWords,
   sprintGameListOfIncorrectWords,
   sprintGameStatusChange,
+  sprintGameTotalPoints,
+  sprintGameWordCounter,
 } from '../../../actions/sprint-game-action';
 import { ReactComponent as AudioSvg } from '../../../assets/images/audioOn.svg';
 import { RootStateType } from '../../../reducer/root-reducer';
@@ -77,6 +83,18 @@ const FinishPage: React.FC = () => {
     </ul>
   );
 
+  const repeatHandler=() =>{
+    // dispatch(sprint)
+    dispatch(sprintGameStatusChange('play'))
+    dispatch(sprintGameWordCounter(0));
+    // dispatch(sprintGameStatusChange('start'));
+    dispatch(clearWords());
+    dispatch(sprintGameTotalPoints(0));
+    dispatch(sprintGameBallsCounter(0));
+    dispatch(sprintGameCheckPoints(0));
+    dispatch(sprintGameCurrentPoints(50));
+  };
+
   return (
     <div className={styles['finish-game-wrapper']}>
       <h3>Результаты</h3>
@@ -116,7 +134,7 @@ const FinishPage: React.FC = () => {
           Назад
         </Link>
 
-        <button type="button" className={styles.repeat} onClick={()=>dispatch(sprintGameStatusChange('play'))}>
+        <button type="button" className={styles.repeat} onClick={repeatHandler}>
           Повторить
         </button>
       </div>

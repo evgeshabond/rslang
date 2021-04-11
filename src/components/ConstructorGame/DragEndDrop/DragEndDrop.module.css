@@ -23,6 +23,7 @@
   font-size: 2.4rem;
   line-height: 2.8rem;
   text-decoration: none;
+  cursor: grab;
 }
 
 @media screen and (max-width: 800px) {

@@ -7,7 +7,8 @@
   background-color: #fdebff;
   border-radius: 50px;
   max-width: 1022px;
-  width: 80%;
+  width: 80% !important;
+  height: auto !important;
   min-height: 560px;
   text-align: center;
   padding: 5px;
@@ -15,6 +16,7 @@
 
 .picture {
   width: 250px;
+  cursor: unset;
 }
 
 .audio-button {
