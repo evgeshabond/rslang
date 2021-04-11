@@ -43,6 +43,10 @@ const Footer: React.FC<Props> = ({ bottomMenuIsOpen, bottomMenuOpen }) => {
   const buttonsContainer = useRef(null);
   const classes = useStyles();
 
+  const toggleMenuHandler = () => {
+    bottomMenuIsOpen ? bottomMenuOpen(false) : bottomMenuOpen(true);
+  };
+
   useEffect(() => {
     if (bottomMenu && bottomMenuIsOpen) {
       (bottomMenu.current! as HTMLElement).style.bottom = '-1144px';
@@ -53,6 +57,7 @@ const Footer: React.FC<Props> = ({ bottomMenuIsOpen, bottomMenuOpen }) => {
       (buttonsContainer.current! as HTMLElement).style.opacity = '0';
     }
   }, [bottomMenuIsOpen]);
+
   return (
     <footer className={styles.footer}>
       <div
@@ -134,7 +139,7 @@ const Footer: React.FC<Props> = ({ bottomMenuIsOpen, bottomMenuOpen }) => {
           type="button"
           aria-label="Bottom-menu"
           className={styles['menu-btn']}
-          onMouseEnter={() => bottomMenuOpen(true)}
+          onClick={toggleMenuHandler}
         >
           <div className={styles['menu-btn__inner']} />
         </button>

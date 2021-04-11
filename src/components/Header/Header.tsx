@@ -48,6 +48,10 @@ const Header: React.FC<Props> = ({ topMenuIsOpen, topMenuOpen, isLogin }) => {
     }
   }, [topMenuIsOpen]);
 
+  const toggleMenuHandler = () => {
+    topMenuIsOpen ? topMenuOpen(false) : topMenuOpen(true);
+  };
+
   return (
     <header>
       <div
@@ -130,7 +134,7 @@ const Header: React.FC<Props> = ({ topMenuIsOpen, topMenuOpen, isLogin }) => {
           type="button"
           aria-label="Top-menu"
           className={styles['menu-btn']}
-          onMouseEnter={() => topMenuOpen(true)}
+          onClick={toggleMenuHandler}
         >
           <div className={styles['menu-btn__inner']} />
         </button>
