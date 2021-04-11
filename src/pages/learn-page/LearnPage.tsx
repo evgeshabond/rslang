@@ -29,6 +29,7 @@ import { WordStateType } from '../../reducer/word-reducer';
 //  herlpers and services
 import AggregateService from '../../services/word-aggregate-service';
 
+
 //  icons
 import learningIcon from '../../assets/images/learning.svg';
 import hardIcon from '../../assets/images/hardWord.svg';
@@ -192,7 +193,7 @@ const useStyles = makeStyles({
   },
   pagination: {
     height: '70px',
-    width: '600px',
+    width: '400px',
     margin: '1rem auto',
     marginBottom: '3rem',
     fontSize: '2rem',
@@ -239,6 +240,8 @@ const useStyles = makeStyles({
 
 const LearnPage: React.FC = () => {
   const dispatch = useDispatch();
+  const historyCopy = useHistory();
+  const searchParams = new URLSearchParams(historyCopy.location.search)
   const user = useSelector((state: RootStateType) => state.userState.user);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isWordListLoaded, setIsWordListLoaded] = useState(false);
@@ -246,12 +249,32 @@ const LearnPage: React.FC = () => {
     showTranslate: true,
     showButtons: true,
   });
+  const getGroup = ():number => {
+    const group = searchParams.get('group')
+    let groupNumber = 0;
+    if (typeof group === 'string') {
+      groupNumber = parseFloat(group);
+      if (groupNumber < 0) groupNumber = 0;
+      if (groupNumber > 5) groupNumber = 5;
+    }
+    return groupNumber;
+  }
+  const getPage = ():any => {
+    const page = searchParams.get('page');
+    let pageNumber = 0;
+    if (typeof page === 'string') {
+      pageNumber = parseFloat(page) - 1;  
+      if (pageNumber < 0) pageNumber = 0;  
+      if (pageNumber > 30) pageNumber = 29;  
+    }
+    return pageNumber;
+  }
   const [pageIsDeleted, setPageIsDeleted] = useState(false);
   const [modalOpened, setModalOpened] = useState(false);
   const [dialogOpened, setDialogOpened] = useState(false);
   const [difficulty, setDifficulty] = useState('hard');
-  const [currentGroup, setCurrentGroup] = useState(0);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentGroup, setCurrentGroup] = useState(getGroup());
+  const [currentPage, setCurrentPage] = useState(getPage());
   const [pagesCount, setPagesCount] = useState(30);
   const [currentWordsPerPage, setCurrentWordsPerPage] = useState(20);
   const [wordsToRender, setWordsToRender] = useState([
@@ -277,8 +300,6 @@ const LearnPage: React.FC = () => {
   ]);
   const [reRender, setRerender] = useState(true);
 
-  const service = new AggregateService();
-  const historyCopy = useHistory();
   const classes = useStyles({ group: currentGroup });
 
   const forseRender = () => {
@@ -336,6 +357,11 @@ const LearnPage: React.FC = () => {
 
   const handlePageChange = (data: any) => {
     console.log('page variable is', data.selected);
+    console.log(historyCopy)
+    historyCopy.replace({
+      pathname: '/ebookpage/learn/',
+      search: `?group=${getGroup()}&page=${data.selected + 1}`
+    })
     setCurrentPage(data.selected);
   };
 
@@ -343,26 +369,31 @@ const LearnPage: React.FC = () => {
     e: React.MouseEvent<HTMLSpanElement, MouseEvent>
   ) => {
     const target = e.target as Element;
-    console.log(target.textContent);
+    let newGroup = 0;
     switch (target.textContent) {
       case 'A1':
-        setCurrentGroup(0);
+        newGroup = 0;
         break;
       case 'A2':
-        setCurrentGroup(1);
+        newGroup = 1;
         break;
       case 'A2+':
-        setCurrentGroup(2);
+        newGroup = 2;
         break;
       case 'B1':
-        setCurrentGroup(3);
+        newGroup = 3;
         break;
       case 'B2':
-        setCurrentGroup(4);
+        newGroup = 4;
         break;
       case 'B2+':
-        setCurrentGroup(5);
+        newGroup = 5;
     }
+    historyCopy.replace({
+      pathname: '/ebookpage/learn/',
+      search: `?group=${newGroup}&page=${getPage() + 1}`
+    })
+    setCurrentGroup(newGroup)
   };
 
   type Params = {

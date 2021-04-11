@@ -351,11 +351,11 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
               onClick={() => addItemToHard()}
               aria-hidden={true}
             />
-            <div
+            {word.userWord.difficulty !== 'deleted' && (<div
               className={clsx(classes.button, classes.buttonDelete)}
               onClick={() => deleteItem()}
               aria-hidden={true}
-            />
+            />)}
             <div
               className={clsx(classes.button, classes.buttonReturn)}
               onClick={() => returnItem()}
