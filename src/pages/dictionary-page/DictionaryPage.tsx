@@ -70,16 +70,19 @@ const useStyles = makeStyles({
     position: 'absolute',
     display: 'flex',
     top: 0,
-    left: 0,
+    left: '10px',
   },
   difficultyButton: {
+    height: '4.5rem',
+    width: '4.5rem',
     display: 'block',
     cursor: 'pointer',
-    marginLeft: '2rem',
+    marginLeft: '0.5rem',
     border: '2px solid transparent',
     borderRadius: '1rem',
     overflow: 'hidden',
     marginTop: '0.5rem',
+    paddingBottom: '2px',
   },
   activeButton: {
     border: '2px solid blue',
@@ -195,7 +198,7 @@ const useStyles = makeStyles({
   },
   pagination: {
     height: '70px',
-    width: '600px',
+    width: '400px',
     margin: '1rem auto',
     marginBottom: '3rem',
     fontSize: '2rem',
@@ -242,6 +245,8 @@ const useStyles = makeStyles({
 
 const DictionaryPage: React.FC = () => {
   const dispatch = useDispatch();
+  const historyCopy = useHistory()
+  const searchParams = new URLSearchParams(historyCopy.location.search)
   const user = useSelector((state: RootStateType) => state.userState.user);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isWordListLoaded, setIsWordListLoaded] = useState(false);
@@ -249,12 +254,39 @@ const DictionaryPage: React.FC = () => {
     showTranslate: true,
     showButtons: true,
   });
+  const [pagesCount, setPagesCount] = useState(1);
+  const getGroup = ():number => {
+    const group = searchParams.get('group')
+    let groupNumber = 0;
+    if (typeof group === 'string') {
+      groupNumber = parseFloat(group);
+      if (groupNumber < 0) groupNumber = 0;
+      if (groupNumber > 5) groupNumber = 5;
+    }
+    return groupNumber;
+  }
+  const getPage = ():any => {
+    const page = searchParams.get('page');
+    let pageNumber = 0;
+    if (typeof page === 'string') {
+      pageNumber = parseFloat(page) - 1;  
+      if (pageNumber < 0) pageNumber = 0;  
+      if (pageNumber > 30) pageNumber = 29; 
+      if (pageNumber > pagesCount) pageNumber = pagesCount; 
+    }
+    return pageNumber;
+  }
+  const getDifficulty = ():string => {
+    const difficulty = searchParams.get('difficulty')
+    let newDifficulty = 'hard'
+    if (typeof difficulty === 'string') newDifficulty = difficulty;
+    return newDifficulty
+  }
   const [modalOpened, setModalOpened] = useState(false);
   const [dialogOpened, setDialogOpened] = useState(false);
-  const [difficulty, setDifficulty] = useState('hard');
-  const [currentGroup, setCurrentGroup] = useState(0);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [pagesCount, setPagesCount] = useState(1);
+  const [difficulty, setDifficulty] = useState(getDifficulty());
+  const [currentGroup, setCurrentGroup] = useState(getGroup());
+  const [currentPage, setCurrentPage] = useState(getPage());
   const [currentWordsPerPage, setCurrentWordsPerPage] = useState(20);
   const [wordsToRender, setWordsToRender] = useState([
     {
@@ -280,7 +312,6 @@ const DictionaryPage: React.FC = () => {
   const [reRender, setRerender] = useState(true);
 
   const service = new AggregateService();
-  const historyCopy = useHistory();
   const classes = useStyles({ group: currentGroup });
 
   const forseRender = () => {
@@ -290,17 +321,11 @@ const DictionaryPage: React.FC = () => {
 
   const handleGamesButtonClick = () => {
     setDialogOpened(true);
-    console.log(historyCopy);
-
-    dispatch(constructorGameStart(false));
   };
 
   const handleGameChoose = async (gamePath: string) => {
     /* eslint-disable */
-    console.log('words to rendder are');
-    console.log(wordsToRender);
     let gameWordList = [...wordsToRender];
-    console.log('gamewordlist is ', gameWordList);
     //  add more words
     if (currentPage > 0) {
       //  add words from previous pages of dictinary
@@ -344,7 +369,6 @@ const DictionaryPage: React.FC = () => {
       }
     }
 
-    console.log('gamewordlist after loop is ', gameWordList);
     // //  remove deleted words if called not from deleted difficulty
     if (difficulty !== 'deleted' && !!difficulty) {
       gameWordList = gameWordList.filter((word: any) => {
@@ -358,11 +382,9 @@ const DictionaryPage: React.FC = () => {
         return false;
       });
     }
-    console.log('gamewordlist after deleting is ', gameWordList);
     // //  remove all elements after 20th
     gameWordList.length = 20;
     gameWordList = gameWordList.filter((item) => item);
-    console.log('gameWordList after removnig all after 20 is ', gameWordList);
     dispatch(setResultPageState(false));
     dispatch(setLevelVisibility(false));
     dispatch(wordListLoaded(gameWordList));
@@ -370,8 +392,15 @@ const DictionaryPage: React.FC = () => {
     /* eslint-enable */
   };
 
+  const handleDifficultyChoose = (value:string) => {
+    historyCopy.replace({
+      pathname: '/ebookpage/dictionary/',
+      search: `?group=${getGroup()}&page=${getPage()}&difficulty=${value}`
+    })
+    setDifficulty(value)
+  }
+
   const handleSettingsButtonClick = () => {
-    console.log('clicked settings butto');
     setModalOpened(true);
   };
 
@@ -380,7 +409,10 @@ const DictionaryPage: React.FC = () => {
   };
 
   const handlePageChange = (data: any) => {
-    console.log('page variable is', data.selected);
+    historyCopy.replace({
+      pathname: '/ebookpage/dictionary/',
+      search: `?group=${getGroup()}&page=${data.selected + 1}&difficulty=${getDifficulty()}`
+    })
     setCurrentPage(data.selected);
   };
 
@@ -406,7 +438,7 @@ const DictionaryPage: React.FC = () => {
       wordsPerPage,
     };
     try {
-      console.log('fetching words inside getwords');
+      console.log('before service with params ', params)
       const response = await service.getAggregatedWordsList(
         params,
         searchString
@@ -416,7 +448,8 @@ const DictionaryPage: React.FC = () => {
       if (!totalCount || totalCount < 1) setPagesCount(1);
       else await setPagesCount(Math.ceil(totalCount / currentWordsPerPage));
       setIsWordListLoaded(true);
-      console.log('inside getWords. words are ', newWords);
+      console.log('fetched words are, ', newWords)
+      console.log('fetched count is ', totalCount)
       return newWords;
     } catch (e) {
       console.log(e);
@@ -471,26 +504,31 @@ const DictionaryPage: React.FC = () => {
     e: React.MouseEvent<HTMLSpanElement, MouseEvent>
   ) => {
     const target = e.target as Element;
-    console.log(target.textContent);
+    let newGroup = 0;
     switch (target.textContent) {
       case 'A1':
-        setCurrentGroup(0);
+        newGroup = 0;
         break;
       case 'A2':
-        setCurrentGroup(1);
+        newGroup = 1;
         break;
       case 'A2+':
-        setCurrentGroup(2);
+        newGroup = 2;
         break;
       case 'B1':
-        setCurrentGroup(3);
+        newGroup = 3;
         break;
       case 'B2':
-        setCurrentGroup(4);
+        newGroup = 4;
         break;
       case 'B2+':
-        setCurrentGroup(5);
+        newGroup = 5;
     }
+    historyCopy.replace({
+      pathname: '/ebookpage/dictionary/',
+      search: `?group=${newGroup}&page=${getPage() + 1}&difficulty=${getDifficulty()}`
+    })
+    setCurrentGroup(newGroup)
   };
 
   if (!isLoaded) return <CircularProgress />;
@@ -506,7 +544,7 @@ const DictionaryPage: React.FC = () => {
             [classes.difficultyButton]: true,
             [classes.activeButton]: difficulty === 'learning',
           })}
-          onClick={() => setDifficulty('learning')}
+          onClick={() => handleDifficultyChoose('learning')}
           aria-hidden={true}
         >
           <img
@@ -515,14 +553,14 @@ const DictionaryPage: React.FC = () => {
             alt="Иконка"
             aria-hidden="true"
           />
-          <div className={classes.difficultyText}>Изучаемые слова</div>
+          {/* <div className={classes.difficultyText}>Изучаемые слова</div> */}
         </div>
         <div
           className={clsx({
             [classes.difficultyButton]: true,
             [classes.activeButton]: difficulty === 'hard',
           })}
-          onClick={() => setDifficulty('hard')}
+          onClick={() => handleDifficultyChoose('hard')}
           aria-hidden={true}
         >
           <img
@@ -531,14 +569,14 @@ const DictionaryPage: React.FC = () => {
             alt="Иконка"
             aria-hidden="true"
           />
-          <div className={classes.difficultyText}>Сложные слова</div>
+          {/* <div className={classes.difficultyText}>Сложные слова</div> */}
         </div>
         <div
           className={clsx({
             [classes.difficultyButton]: true,
             [classes.activeButton]: difficulty === 'deleted',
           })}
-          onClick={() => setDifficulty('deleted')}
+          onClick={() => handleDifficultyChoose('deleted')}
           aria-hidden={true}
         >
           <img
@@ -547,7 +585,7 @@ const DictionaryPage: React.FC = () => {
             alt="Иконка"
             aria-hidden="true"
           />
-          <div className={classes.difficultyText}>Удаленные слова</div>
+          {/* <div className={classes.difficultyText}>Удаленные слова</div> */}
         </div>
       </Box>
       <Box className={classes.buttonsContainer}>
