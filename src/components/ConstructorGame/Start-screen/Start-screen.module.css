@@ -49,6 +49,7 @@
   height: 60px;
   background-color: inherit;
   border: none;
+  outline-color: #733999;
 }
 
 .play-button:hover {
