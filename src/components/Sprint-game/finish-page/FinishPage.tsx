@@ -50,12 +50,8 @@ const FinishPage: React.FC = () => {
           >
             <AudioSvg />
           </button>
-          <span className={styles['main-word']}>
-            {wordObject.word}</span>-
-            <span className={styles.translation}>
-              {wordObject.wordTranslate}
-            </span>
-          
+          <span className={styles['main-word']}>{wordObject.word}</span>-
+          <span className={styles.translation}>{wordObject.wordTranslate}</span>
         </li>
       ))}
     </ul>
@@ -72,20 +68,16 @@ const FinishPage: React.FC = () => {
           >
             <AudioSvg />
           </button>
-          <span className={styles['main-word']}>
-            {wordObject.word}</span>-
-            <span className={styles.translation}>
-              {wordObject.wordTranslate}
-            </span>
-
+          <span className={styles['main-word']}>{wordObject.word}</span>-
+          <span className={styles.translation}>{wordObject.wordTranslate}</span>
         </li>
       ))}
     </ul>
   );
 
-  const repeatHandler=() =>{
+  const repeatHandler = () => {
     // dispatch(sprint)
-    dispatch(sprintGameStatusChange('play'))
+    dispatch(sprintGameStatusChange('play'));
     dispatch(sprintGameWordCounter(0));
     // dispatch(sprintGameStatusChange('start'));
     dispatch(clearWords());
@@ -93,6 +85,11 @@ const FinishPage: React.FC = () => {
     dispatch(sprintGameBallsCounter(0));
     dispatch(sprintGameCheckPoints(0));
     dispatch(sprintGameCurrentPoints(50));
+  };
+
+  const goBackHandler = () => {
+    dispatch(sprintGameWordCounter(0));
+    history.goBack();
   };
 
   return (
@@ -126,11 +123,7 @@ const FinishPage: React.FC = () => {
       </div>
 
       <div className={styles['result-buttons']}>
-        <Link
-          to="/"
-          onClick={() => history.goBack()}
-          className={styles['go-back']}
-        >
+        <Link to="/" onClick={goBackHandler} className={styles['go-back']}>
           Назад
         </Link>
 

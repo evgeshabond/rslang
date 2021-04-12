@@ -2,6 +2,10 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAggregatedWordsList } from '../../actions/aggregated-word-action';
 import {
+  clearAllCount,
+  setWorldResult,
+} from '../../actions/game-result-actions';
+import {
   getTodayStatistic,
   getTotalStatistics,
   setStatistics,
@@ -264,6 +268,18 @@ export const GameTest: React.FC = () => {
   const gameStatusChange = () => {
     dispatch(gameStartStatusChange(GameStart.Book));
   };
+
+  const gameResultSend = () => {
+    if (Math.random() < 0.5) {
+      dispatch(setWorldResult(true, '1'));
+    } else {
+      dispatch(setWorldResult(false, '2'));
+    }
+  };
+
+  const gameResultClear = () => {
+    dispatch(clearAllCount());
+  };
   // const renderSavanaStatistic = () => {
   //   if (gameStatistic.savanna) {
   //     return gameStatistic.savanna.total.map((item) => (
@@ -363,6 +379,20 @@ export const GameTest: React.FC = () => {
           type="button"
           value="game status change"
           onClick={gameStatusChange}
+        />
+      </div>
+
+      <h3>game round result send</h3>
+      <div>
+        <input
+          type="button"
+          value="game result send"
+          onClick={gameResultSend}
+        />
+        <input
+          type="button"
+          value="game result clear"
+          onClick={gameResultClear}
         />
       </div>
 

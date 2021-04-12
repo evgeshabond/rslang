@@ -13,8 +13,14 @@
   word-wrap: break-word;
   padding: 5px 10px;
   cursor: pointer;
+
+  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.div-button:hover {
+  background-color: #ffd1fb;
 }
 
 .div-button:active {
-  box-shadow: inset -5px -5px 10px #ffffff, inset 5px 5px 10px #b4c1d5;
+  box-shadow: inset -3px -3px 6px #ffffff, inset 3px 3px 6px #d3a9d8;
 }

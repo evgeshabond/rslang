@@ -137,6 +137,7 @@ const Footer: React.FC<Props> = ({ bottomMenuIsOpen, bottomMenuOpen }) => {
           aria-label="Bottom-menu"
           className={styles['menu-btn']}
           onClick={toggleMenuHandler}
+          onMouseEnter={() => bottomMenuOpen(true)}
         >
           <div className={styles['menu-btn__inner']} />
         </button>

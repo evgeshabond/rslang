@@ -18,6 +18,7 @@ import {
   AggregatedWordsStateType,
 } from './words-aggregated-reducer';
 // import { SavannaGameActionType } from '../actions/savanna-game-actions';
+import { gameResultReducer, GameResultStateType } from './game-result-reducer';
 
 export type RootStateType = {
   wordState: WordStateType;
@@ -31,6 +32,7 @@ export type RootStateType = {
   statisticState: StatisticStateType;
   userWordsState: UserWordsStateType;
   aggregatedWordsState: AggregatedWordsStateType;
+  gameResultState: GameResultStateType;
 };
 
 const rootReducer = combineReducers({
@@ -45,6 +47,7 @@ const rootReducer = combineReducers({
   statisticState: statisticReducer,
   userWordsState: userWordsReducer,
   aggregatedWordsState: aggregatedWordsReducer,
+  gameResultState: gameResultReducer,
 });
 
 export default rootReducer;

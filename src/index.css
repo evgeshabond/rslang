@@ -61,11 +61,11 @@ li.MuiListItem-button {
   color: #733999;
 }
 li.MuiListItem-button:hover {
-  background-color: pink;
+  background-color: #ffd1fb;
 }
 
 li.MuiListItem-root.Mui-selected {
-  background-color: pink;
+  background-color: #ffd1fb;
 }
 
 li.MuiListItem-root.Mui-selected:hover {
@@ -73,7 +73,7 @@ li.MuiListItem-root.Mui-selected:hover {
 }
 
 div.MuiSelect-select:focus {
-  background-color: pink;
+  background-color: #ffd1fb;
 }
 
 div.MuiSelect-select.MuiSelect-select {
