@@ -4,6 +4,7 @@ import {
   sprintGameRandomArray,
   sprintGameShuffledArray,
   sprintGameStatusChange,
+  sprintGameWordCounter,
 } from '../../../actions/sprint-game-action';
 import {
   CurrentWordListType,
@@ -45,6 +46,7 @@ export const TitleGamePage: React.FC = () => {
   );
 
   const startGameHandler = () => {
+    dispatch(sprintGameWordCounter(0));
     dispatch(sprintGameStatusChange('timer'));
     dispatch(
       sprintGameShuffledArray(wordList.slice().sort(() => Math.random() - 0.5))

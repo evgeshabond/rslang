@@ -66,6 +66,16 @@
   border: none;
   outline: none;
   cursor: pointer;
+
+  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.auth-button:hover {
+  background-color: #ffd1fb;
+}
+
+.auth-button:active {
+  box-shadow: inset -3px -3px 6px #ffffff, inset 3px 3px 6px #d3a9d8;
 }
 
 .margin-top__0 {
@@ -73,10 +83,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.auth-button:active {
-  box-shadow: inset -5px -5px 10px #ffffff, inset 5px 5px 10px #b4c1d5;
 }
 
 .auth-text {

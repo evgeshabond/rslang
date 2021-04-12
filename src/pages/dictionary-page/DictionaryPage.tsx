@@ -676,7 +676,7 @@ const DictionaryPage: React.FC = () => {
           </ListItem>
           <ListItem
             button
-            onClick={() => handleGameChoose('/sprint-game')}
+            onClick={() => handleGameChoose('/sprint')}
             key="sprint"
           >
             <Typography align="center" variant="h4" component="p">
