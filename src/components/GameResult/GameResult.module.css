@@ -109,6 +109,7 @@
   border: none;
   transition: 0.2s;
   cursor: pointer;
+  outline-color: #733999;
 
   transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
