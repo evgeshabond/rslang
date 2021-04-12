@@ -1,20 +1,21 @@
 {
   "files": {
-    "main.css": "/rslang/static/css/main.c1b2382b.chunk.css",
-    "main.js": "/rslang/static/js/main.4aea9fe0.chunk.js",
-    "main.js.map": "/rslang/static/js/main.4aea9fe0.chunk.js.map",
+    "main.css": "/rslang/static/css/main.47abee9c.chunk.css",
+    "main.js": "/rslang/static/js/main.edfda499.chunk.js",
+    "main.js.map": "/rslang/static/js/main.edfda499.chunk.js.map",
     "runtime-main.js": "/rslang/static/js/runtime-main.45f0e25d.js",
     "runtime-main.js.map": "/rslang/static/js/runtime-main.45f0e25d.js.map",
-    "static/js/2.e93bf199.chunk.js": "/rslang/static/js/2.e93bf199.chunk.js",
-    "static/js/2.e93bf199.chunk.js.map": "/rslang/static/js/2.e93bf199.chunk.js.map",
+    "static/js/2.62246ec4.chunk.js": "/rslang/static/js/2.62246ec4.chunk.js",
+    "static/js/2.62246ec4.chunk.js.map": "/rslang/static/js/2.62246ec4.chunk.js.map",
     "static/js/3.24cae393.chunk.js": "/rslang/static/js/3.24cae393.chunk.js",
     "static/js/3.24cae393.chunk.js.map": "/rslang/static/js/3.24cae393.chunk.js.map",
     "static/js/4.b842f690.chunk.js": "/rslang/static/js/4.b842f690.chunk.js",
     "static/js/4.b842f690.chunk.js.map": "/rslang/static/js/4.b842f690.chunk.js.map",
     "index.html": "/rslang/index.html",
-    "static/css/main.c1b2382b.chunk.css.map": "/rslang/static/css/main.c1b2382b.chunk.css.map",
-    "static/js/2.e93bf199.chunk.js.LICENSE.txt": "/rslang/static/js/2.e93bf199.chunk.js.LICENSE.txt",
+    "static/css/main.47abee9c.chunk.css.map": "/rslang/static/css/main.47abee9c.chunk.css.map",
+    "static/js/2.62246ec4.chunk.js.LICENSE.txt": "/rslang/static/js/2.62246ec4.chunk.js.LICENSE.txt",
     "static/js/3.24cae393.chunk.js.LICENSE.txt": "/rslang/static/js/3.24cae393.chunk.js.LICENSE.txt",
+    "static/media/Gaziz.25ee7f5f.jpg": "/rslang/static/media/Gaziz.25ee7f5f.jpg",
     "static/media/index.css": "/rslang/static/media/Roboto-Medium.13a29228.ttf",
     "static/media/Roman.91ff0fa3.jpg": "/rslang/static/media/Roman.91ff0fa3.jpg",
     "static/media/audioOn.4c903659.svg": "/rslang/static/media/audioOn.4c903659.svg",
@@ -64,8 +65,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.45f0e25d.js",
-    "static/js/2.e93bf199.chunk.js",
-    "static/css/main.c1b2382b.chunk.css",
-    "static/js/main.4aea9fe0.chunk.js"
+    "static/js/2.62246ec4.chunk.js",
+    "static/css/main.47abee9c.chunk.css",
+    "static/js/main.edfda499.chunk.js"
   ]
 }
