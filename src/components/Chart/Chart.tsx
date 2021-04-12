@@ -2,7 +2,10 @@ import moment from 'moment';
 import React, { useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTotalStatistics } from '../../actions/statistic-action';
+import {
+  getTodayStatistic,
+  getTotalStatistics,
+} from '../../actions/statistic-action';
 import { RootStateType } from '../../reducer/root-reducer';
 import { GameChart } from '../game-chart/Game-chart';
 import styles from './chart.module.css';
@@ -18,6 +21,7 @@ export const ChartComponent: React.FC = () => {
   );
 
   const { savanna, sprint, audiocall, constructors } = todayStatistic;
+  console.log('🚀 ~ file: Chart.tsx ~ line 21 ~ constructors', constructors);
   useEffect(() => {
     const param = {
       userId: user.userId,
@@ -25,6 +29,7 @@ export const ChartComponent: React.FC = () => {
     };
 
     dispatch(getTotalStatistics(param));
+    dispatch(getTodayStatistic(param));
   }, []);
 
   const dates = totalStatistic.map((stats) => moment(stats.date).format('L'));

@@ -28,7 +28,7 @@ const QuizResultPage: React.FC<Props> = ({ history }) => {
   );
 
   const toVoc = () => {
-    history.push(mainPath.wordList);
+    history.push(mainPath.ebookPage);
     dispatch(questionClearAll());
   };
 
