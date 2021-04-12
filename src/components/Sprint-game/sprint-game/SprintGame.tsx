@@ -15,6 +15,7 @@ import { RootStateType } from '../../../reducer/root-reducer';
 import { Timer } from '../timer/Timer';
 import { TitleGamePage } from '../title-page/TitleGamePage';
 import styles from './sprint-game.module.css';
+import { clearAllCount } from '../../../actions/game-result-actions';
 
 const SprintGame: React.FC = () => {
   const dispatch = useDispatch();
@@ -42,6 +43,7 @@ const SprintGame: React.FC = () => {
     dispatch(sprintGameTotalPoints(0));
     dispatch(sprintGameBallsCounter(0));
     dispatch(sprintGameCheckPoints(0));
+    dispatch(clearAllCount());
   }, []);
 
   return (
