@@ -92,8 +92,11 @@ const savannaGameReducer = (state = initialState, action: SavannaGameActionType)
         listWrongWords: [],
         
       };
-    case WORD_POSITION:
-        return { ...state, wordPosition: action.payload };
+    case WORD_POSITION: 
+
+        return {
+           ...state,
+            wordPosition: state.wordPosition + (action.payload as number) };
     case IS_WORD_FALLED:
           return { ...state, isWordFalled: action.payload };
     case IS_WORD_MOVE:

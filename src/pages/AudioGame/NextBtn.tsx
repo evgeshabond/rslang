@@ -9,6 +9,7 @@ import wrongSound from '../../assets/sounds/src_music_wrong.wav';
 import { gameType } from '../../utils/constants';
 import { setStatistics } from '../../actions/statistic-action';
 import { GameStatistic } from '../../reducer/statistic-state-types';
+import { checkAndSaveMaxCombo } from '../../actions/game-result-actions';
 
 
 const NextBtn: React.FC = () => {
@@ -29,39 +30,13 @@ const NextBtn: React.FC = () => {
     state.audioGameState.listLearnWords);
   const isResults = useSelector((state: RootStateType) =>
     state.audioGameState.isShowResults);
-  // const statistic = useSelector(state => state.GameStatistic);
+  const gameResult = useSelector((state: RootStateType) => state.gameResultState);
+
 
   const [playWrongAnswer] = useSound(wrongSound);
 
   const user = useSelector((state: RootStateType) => state.userState.user);
 
-  useEffect(() => {
-
-    const param = {
-      userId: user.userId,
-      token: user.token,
-    };
-    const gameStatistic = {
-      gameType: gameType.audiocall,
-      level: user.level || 1,
-      know: rightWords.length,
-      dont_know: listWrongWords.length,
-      combo: 5,  //     
-      wordsId: listLearnWords,
-    };
-
-    if (roundCounter === 10) {
-      // dispatch(clearWordsIds());
-
-      // if (
-      //   isLevelVisible ||
-      //   currentWordList[0].userWord?.difficulty === 'deleted'
-      // ) {
-      //   return;
-      // }
-      dispatch(setStatistics(param, gameStatistic));
-    }
-  }, [isResults]); // зависимость от конца игры
 
   const playGame = () => {
     if (wordList === undefined) {
@@ -83,6 +58,19 @@ const NextBtn: React.FC = () => {
   }
 
   const showResults = () => {
+    const param = {
+      userId: user.userId,
+      token: user.token,
+    };
+    const body = {
+      gameType: gameType.audiocall,
+      know: gameResult.correctCount,
+      dont_know: gameResult.incorrectCount,
+      combo: gameResult.maxCorrectComboCount,
+      wordsId: gameResult.wordsIdArr,
+    };
+    dispatch(checkAndSaveMaxCombo());
+    dispatch(setStatistics(param, body));
     dispatch(isShowResults(true));
     dispatch(audioGameStart(false))
     dispatch(stepCounter(roundCounter + 1));

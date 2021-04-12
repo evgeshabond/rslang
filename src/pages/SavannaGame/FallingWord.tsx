@@ -1,17 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import useSound from 'use-sound';
-
 import {
-  CurrentWordListType,
   fetchWordsList,
 } from '../../actions/word-actions';
 import { RootStateType } from '../../reducer/root-reducer';
-import Spinner from '../../components/Spinner/Spinner';
-import { WordItem } from '../../components/word-item/word-item-game';
 import styles from './FallingWord.module.css';
-import { mainPath } from '../../utils/constants';
-import { PlayButton } from '../../components/button-icons/playBig-button/playBig-button';
+
 import { audioGameStart, wordUserAnswer, wordRight, isAnswerSelected } from '../../actions/audioGame-actions';
 import { shuffle } from '../../utils/shuffle';
 import { isWordFalled, isWordMove, savannaGameStart, wordPosition } from '../../actions/savanna-game-actions';
@@ -56,51 +51,54 @@ const FallingWord: React.FC = () => {
   );
 
   const refBtn = useRef<HTMLDivElement>();
-
+  let timer: ReturnType<typeof setInterval>;
   // useEffect(() => {
-  //   if (currentWords.length === 0) {
-  //     return;
-  //   }
-  //   const random = currentWords[getRandomInt(0, currentWords.length - 1)];
-  //   dispatch(wordRight(random));
+  //   let timer: ReturnType<typeof setTimeout>;
+  //   if (refBtn.current) {
+  //     if (isMove && !isAnswer) {
+  //       timer = setInterval(() => {
+  //         dispatch(wordPosition(position + 25));
+  //       }
+  //         , 100);
 
-  // }, [currentWords])
-
-  // useEffect(() => {
-  //   if (isPlaying) {
-  //     console.log('movestart', position)
-  //     moveDown();
+  //       refBtn.current.style.transform = `translateY(${position}px)`
+  //       if (position > 323 || isAnswer) {
+  //         dispatch(isWordMove(false));
+  //         clearInterval(timer);
+  //       }
+  //     }
   //   }
-  // }, [isAnswer])
+
+  //   return () => clearInterval(timer);
+
+  // }, [])
+
 
   useEffect(() => {
-    if (!refBtn.current) {
-      return;
+    if (position > 323 || isAnswer) {
+      console.log('clear', timer)
+      dispatch(isWordMove(false));
+      clearInterval(timer);
     }
-    console.log(refBtn.current);
-    if (isMove && !isAnswer) {
-      dispatch(wordPosition(position + 5));
-      refBtn.current.style.transform = `translateY(${position}px)`
-      if (position > 323 || isAnswer) {
-        dispatch(isWordMove(false));
-      }
-
-    }
-
   }, [position])
 
-  // useEffect(() => {
-  //   if (position >= 336) {
-  //     showAnswer()
-  //   }
-  // }, [position])
-  // useEffect(() => {
-  //   console.log('ue pos', position)
-  //   for (let i = 0; i < 337; i += 6) {
-  //     console.log('for', position)
-  //     dispatch(wordPosition(i))
-  //   }
-  // }, [position])
+  const moveWord = () => {
+
+    if (refBtn.current) {
+      if (isMove && !isAnswer) {
+        timer = setInterval(() => {
+
+          dispatch(wordPosition(25));
+        }
+          , 100);
+
+        refBtn.current.style.transform = `translateY(${position}px)`
+
+      }
+    }
+
+    // return () => clearInterval(timer);
+  }
 
   // const moveDown = () => {
   //   console.log('movedown', position)
@@ -126,7 +124,7 @@ const FallingWord: React.FC = () => {
 
   return (
 
-    <div ref={refBtn as React.RefObject<HTMLDivElement>} className={`${styles.falling__word}
+    <div aria-hidden='true' onClick={moveWord} ref={refBtn as React.RefObject<HTMLDivElement>} className={`${styles.falling__word}
      ${(isAnswer && userAnswer.word === rightWord.word) ? styles.word__stop : ''}
      ${(isAnswer && userAnswer.word !== rightWord.word) ? styles.word__stop__wrong : ''}`}
       style={{ transform: `translateY(${position}px)` }}>

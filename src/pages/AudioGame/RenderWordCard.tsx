@@ -7,6 +7,8 @@ import { RootStateType } from '../../reducer/root-reducer';
 import { WordItem } from '../../components/word-item/word-item-game';
 import styles from './AudioGame.module.css';
 import { wordUserAnswer, wordRight, isAnswerSelected, listRightWords, setWrongWords, setLearnWords } from '../../actions/audioGame-actions';
+import { setWorldResult } from '../../actions/game-result-actions';
+import { userWordToLearnResult } from '../../actions/user-words-action';
 
 
 const RenderWordCard: React.FC = () => {
@@ -28,10 +30,18 @@ const RenderWordCard: React.FC = () => {
     state.audioGameState.stepCounter);
   const isResults = useSelector((state: RootStateType) =>
     state.audioGameState.isShowResults);
+  const user = useSelector((state: RootStateType) =>
+    state.userState.user);
 
   const getRandomInt = (min: number, max: number) => (
     Math.floor(Math.random() * (max - min + 1)) + min
   )
+
+  const params = {
+    userId: user.userId,
+    token: user.token,
+    wordId: rightWord.id
+  }
 
   useEffect(() => {
     if (currentWords.length === 0) {
@@ -54,9 +64,13 @@ const RenderWordCard: React.FC = () => {
     }
     if (!isDontknow && userAnswer.word === rightWord.word) {
       dispatch(listRightWords(rightWord));
+      dispatch(setWorldResult(true, rightWord.id));
+      dispatch(userWordToLearnResult(params, { isCorrect: true }))
     }
     else {
-      dispatch(setWrongWords(rightWord))
+      dispatch(setWrongWords(rightWord));
+      dispatch(setWorldResult(false, rightWord.id));
+      dispatch(userWordToLearnResult(params, { isCorrect: false }))
     }
   }, [roundCounter, isResults])
 

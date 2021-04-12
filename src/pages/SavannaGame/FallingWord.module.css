@@ -20,10 +20,9 @@
   vertical-align: middle;
   margin: 10px;
 
-  /* transition: 2.5s all; */
-  transition: all 2s ease-in-out;
+  transition: all 0.05s ease-in-out;
   -webkit-transition: all 2s ease-in-out; /** Chrome & Safari **/
-  transition-delay: 1s;
+  /* transition-delay: 1s; */
 }
 
 .falling__word:focus {

@@ -12,6 +12,7 @@ import { shuffle } from '../../utils/shuffle';
 import { mainPath } from '../../utils/constants';
 import { ReactComponent as CatAudio } from '../../assets/images/cat-audio-game.svg';
 import Results from './Results';
+import { clearAllCount } from '../../actions/game-result-actions';
 
 const StartScreen: React.FC = () => {
   const dispatch = useDispatch();
@@ -47,6 +48,7 @@ const StartScreen: React.FC = () => {
   }
 
   const startGame = () => {
+    dispatch(clearAllCount());
     dispatch(isShowResults(false))
     dispatch(isAnswerSelected(false));
     dispatch(stepCounter(0));
