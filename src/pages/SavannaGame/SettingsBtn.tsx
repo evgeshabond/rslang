@@ -21,22 +21,28 @@ import StartScreen from "./StartScreen";
 import WordInfo from './WordInfo';
 import NextBtn from './NextBtn';
 import { LevelIcon } from "../../components/button-icons/level-icons/level-icons";
-import { savannaGameStart, wordPosition } from '../../actions/savanna-game-actions';
+import { isWordMove, savannaGameStart, wordPosition } from '../../actions/savanna-game-actions';
 import { PauseButton } from '../../components/button-icons/pause-button/pause-button';
 import { AudioOnSizeButton } from '../../components/button-icons/audiOn-button/audioOn-Size';
 
 const SettingsBtn: React.FC = () => {
   const dispatch = useDispatch();
-  const isPlaying = useSelector((state: RootStateType) => state.savannaGameState.savannaGameStart);
-  const wordList = useSelector((state: RootStateType) => state.wordState.currentWordList);
-  const userAnswer = useSelector((state: RootStateType) => state.savannaGameState.wordUserAnswer);
-  const rightWord = useSelector((state: RootStateType) => state.savannaGameState.wordRight);
-  const isAnswer = useSelector((state: RootStateType) => state.savannaGameState.isAnswerSelected);
-  const currentWords = useSelector((state: RootStateType) => state.savannaGameState.currentPlayWords);
-  const stepCounter = useSelector((state: RootStateType) => state.savannaGameState.stepCounter);
+  const isPlaying = useSelector((state: RootStateType) =>
+    state.savannaGameState.savannaGameStart);
+  const wordList = useSelector((state: RootStateType) =>
+    state.wordState.currentWordList);
+  const userAnswer = useSelector((state: RootStateType) =>
+    state.savannaGameState.wordUserAnswer);
+  const rightWord = useSelector((state: RootStateType) =>
+    state.savannaGameState.wordRight);
+  const isAnswer = useSelector((state: RootStateType) =>
+    state.savannaGameState.isAnswerSelected);
+  const currentWords = useSelector((state: RootStateType) =>
+    state.savannaGameState.currentPlayWords);
+  const stepCounter = useSelector((state: RootStateType) =>
+    state.savannaGameState.stepCounter);
   const isMove = useSelector((state: RootStateType) =>
     state.savannaGameState.isWordMove);
-
   const position = useSelector((state: RootStateType) =>
     state.savannaGameState.wordPosition);
 
@@ -44,6 +50,7 @@ const SettingsBtn: React.FC = () => {
     dispatch(savannaGameStart(false));
     dispatch(isAnswerSelected(false));
     dispatch(wordPosition(0));
+    dispatch(isWordMove(false))
   }
 
 

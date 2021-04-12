@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import useSound from 'use-sound';
 
@@ -53,7 +53,9 @@ const FallingWord: React.FC = () => {
 
   const getRandomInt = (min: number, max: number) => (
     Math.floor(Math.random() * (max - min + 1)) + min
-  )
+  );
+
+  const refBtn = useRef<HTMLDivElement>();
 
   // useEffect(() => {
   //   if (currentWords.length === 0) {
@@ -70,6 +72,22 @@ const FallingWord: React.FC = () => {
   //     moveDown();
   //   }
   // }, [isAnswer])
+
+  useEffect(() => {
+    if (!refBtn.current) {
+      return;
+    }
+    console.log(refBtn.current);
+    if (isMove && !isAnswer) {
+      dispatch(wordPosition(position + 5));
+      refBtn.current.style.transform = `translateY(${position}px)`
+      if (position > 323 || isAnswer) {
+        dispatch(isWordMove(false));
+      }
+
+    }
+
+  }, [position])
 
   // useEffect(() => {
   //   if (position >= 336) {
@@ -107,12 +125,13 @@ const FallingWord: React.FC = () => {
 
 
   return (
-    <button type='button' className={`${styles.falling__word}
+
+    <div ref={refBtn as React.RefObject<HTMLDivElement>} className={`${styles.falling__word}
      ${(isAnswer && userAnswer.word === rightWord.word) ? styles.word__stop : ''}
      ${(isAnswer && userAnswer.word !== rightWord.word) ? styles.word__stop__wrong : ''}`}
-      style={{ transform: `translateY(${position}%)` }}>
+      style={{ transform: `translateY(${position}px)` }}>
       {rightWord.word}
-    </button>
+    </div>
   )
 }
 

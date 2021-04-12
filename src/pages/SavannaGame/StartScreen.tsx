@@ -9,7 +9,7 @@ import ControlledSelect from "../../components/ControlledSelect/ControlledSelect
 import { shuffle } from '../../utils/shuffle';
 import { mainPath } from '../../utils/constants';
 import { ReactComponent as CatAudio } from '../../assets/images/cat-audio-game.svg';
-import { clearWords, isWordFalled, savannaGameStart, stepCounter, wordPosition } from '../../actions/savanna-game-actions';
+import { clearWords, isWordFalled, isWordMove, savannaGameStart, stepCounter, wordPosition } from '../../actions/savanna-game-actions';
 
 const StartScreen: React.FC = () => {
   const dispatch = useDispatch();
@@ -32,6 +32,8 @@ const StartScreen: React.FC = () => {
   );
   const position = useSelector((state: RootStateType) =>
     state.savannaGameState.wordPosition);
+  const isMove = useSelector((state: RootStateType) =>
+    state.savannaGameState.isWordMove);
   const [play] = useSound(`${mainPath.langUrl}${rightWord.audio}`, { interrupt: true });
 
   useEffect(() => {
@@ -45,14 +47,15 @@ const StartScreen: React.FC = () => {
     }
   }
 
-  useEffect(() => {
-    for (let i = 0; i < 300; i += 6) {
-      console.log('p', position)
-      dispatch(wordPosition(position + i))
-    }
-  }, [isPlaying])
+  // useEffect(() => {
+  //   for (let i = 0; i < 300; i += 6) {
+  //     console.log('p', position)
+  //     dispatch(wordPosition(position + i))
+  //   }
+  // }, [isPlaying])
 
   const startGame = () => {
+    dispatch(isWordMove(true));
     dispatch(isAnswerSelected(false));
     dispatch(wordPosition(0))
     dispatch(stepCounter(0));
