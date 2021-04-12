@@ -18,7 +18,7 @@ export const StartPage: React.FC = () => (
       <Link className={styles.paw} to={mainPath.dashboardPage}>
         <Paw className={styles.paw__icon} width={30} height={30} />
       </Link>
-      <h2 className={styles['sub-title']}>Начать</h2>
+      <span className={styles['sub-title']}>Начать</span>
       <ul className={styles.list}>
         <li className={styles.list__item}>
           <Base />
