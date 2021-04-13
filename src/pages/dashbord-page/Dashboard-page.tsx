@@ -6,10 +6,7 @@ import styles from './dashboard-page.module.css';
 import { DashboardGame } from '../../components/dashboard-components/dashboard-game/Dashboard-game';
 
 import { RootStateType } from '../../reducer/root-reducer';
-import Auth from '../../components/auth/Auth';
-import Spinner from '../../components/Spinner/Spinner';
 import UserPage from '../auth-page/User-page';
-import { MainCat } from '../../components/cats-img/main-cat/Main-cat';
 import { DashboardCat } from '../../components/cats-img/dashboard-cat/Dashboard-cat';
 
 const DashboardPage: React.FC = () => {

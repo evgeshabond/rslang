@@ -45,6 +45,7 @@ import { mainPath } from '../../utils/constants';
 import { constructorGameStart, setResultPageState } from '../../actions/constructor-game-actions';
 import { audioGameStart } from '../../actions/audioGame-actions';
 import { savannaGameStart } from '../../actions/savanna-game-actions';
+import { sprintGameStatusChange } from '../../actions/sprint-game-action';
 
 // update theme object of material ui
 const primaryColor = '#FDEBFF';
@@ -346,6 +347,7 @@ const LearnPage: React.FC = () => {
     dispatch(wordListLoaded(gameWordList));
     dispatch(audioGameStart(false));
     dispatch(savannaGameStart(false))
+    dispatch(sprintGameStatusChange('start'));
     historyCopy.push(gamePath);
     /* eslint-enable */
   };
