@@ -255,13 +255,13 @@ const useStyles = makeStyles({
     flexDirection: 'row-reverse',
     justifyContent: 'space-between',
     paddingLeft: '2rem',
-    paddingRight: '4.5rem'
+    paddingRight: '4.5rem',
+    // height: '2rem'
   },
-  // statsText: {
-  //   position: 'absolute',
-  //   bottom: '-3rem',
-  //   zIndex: 300,
-  // },
+  statsText: {
+    margin: 0,
+    marginBottom: '0.5rem'
+  },
   // statsTextLeft: {
   //   left: '2rem',
   // },
@@ -866,10 +866,10 @@ const DictionaryPage: React.FC = () => {
           </div>
           <div className={classes.statsTextWrapper}>
           {difficulty === 'learning' && (
-            <div>
+            <div className={classes.statsText}>
               <Typography align="left" variant="h4" component="p">
-                <p>Cлов на странице: {wordsToRender.length}</p>
-                <p>
+                <p className={classes.statsText}>Cлов на странице: {wordsToRender.length}</p>
+                <p className={classes.statsText}>
                   Изучено:{' '}
                   {
                     wordsToRender.filter(
@@ -881,10 +881,10 @@ const DictionaryPage: React.FC = () => {
             </div>
           )}
           {difficulty === 'learning' && (
-            <div>
+            <div className={classes.statsText}>
               <Typography align="left" variant="h4" component="p">
-                <p>Cлов в группе: {allLearningWords.length}</p>
-                <p>
+                <p className={classes.statsText}>Cлов в группе: {allLearningWords.length}</p>
+                <p className={classes.statsText}>
                   Изучено:{' '}
                   {
                     allLearningWords.filter(
