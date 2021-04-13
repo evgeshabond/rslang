@@ -32,6 +32,8 @@ const RenderWordCard: React.FC = () => {
     state.audioGameState.isShowResults);
   const user = useSelector((state: RootStateType) =>
     state.userState.user);
+  const userState = useSelector((state: RootStateType) => state.userState);
+
 
   const getRandomInt = (min: number, max: number) => (
     Math.floor(Math.random() * (max - min + 1)) + min
@@ -65,12 +67,16 @@ const RenderWordCard: React.FC = () => {
     if (!isDontknow && userAnswer.word === rightWord.word) {
       dispatch(listRightWords(rightWord));
       dispatch(setWorldResult(true, rightWord.id));
-      dispatch(userWordToLearnResult(params, { isCorrect: true }))
+      if (userState.isLogin) {
+        dispatch(userWordToLearnResult(params, { isCorrect: true }))
+      }
     }
     else {
       dispatch(setWrongWords(rightWord));
       dispatch(setWorldResult(false, rightWord.id));
-      dispatch(userWordToLearnResult(params, { isCorrect: false }))
+      if (userState.isLogin) {
+        dispatch(userWordToLearnResult(params, { isCorrect: false }))
+      }
     }
   }, [roundCounter, isResults])
 
