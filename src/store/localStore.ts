@@ -1,4 +1,5 @@
-import { RootStateType } from '../reducer/root-reducer';
+import { RootStateType } from "../reducer/root-reducer";
+
 
 export const loadState = () => {
   try {
