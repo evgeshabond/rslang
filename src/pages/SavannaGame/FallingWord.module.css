@@ -20,8 +20,8 @@
   vertical-align: middle;
   margin: 10px;
 
-  transition: all 0.05s ease-in-out;
-  -webkit-transition: all 2s ease-in-out; /** Chrome & Safari **/
+  transition: all 0.01s linear;
+  /* -webkit-transition: all 2s ease-in-out; */
   /* transition-delay: 1s; */
 }
 
@@ -48,8 +48,17 @@
   display: inline-block;
 }
 
-/* color = `hsl(${Math.random() * 50 + 200}, 70%, 50%)`; // Цвет 
-        particle.style.boxShadow = `0 0 ${Math.floor(Math.random() * 10 + 10)}px ${color}`; // Тень
-        particle.style.background = color;
-        particle.style.borderRadius = '50%'; // Радиус
-        width = height = Math.random() * 5 + 4; // Размеры */
+.falling__word.entering {
+  animation: show-loader 0.5s forwards;
+}
+
+.falling__word.entered {
+  animation: rotate-loader 0.5s infinite;
+}
+
+.falling__word.exiting {
+  animation: show-loader 0.5s reverse;
+}
+
+.falling__word.exited {
+}
