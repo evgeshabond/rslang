@@ -13,6 +13,7 @@ img {
   margin: 0 auto;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 .game__wrapper {
   min-height: 560px;

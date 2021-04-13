@@ -1,7 +1,5 @@
 .finish-game-wrapper {
   width: 430px;
-  /* min-height: 390px; */
-  height: 100%;
   background-color: #ffeeff;
   border-radius: 30px;
   padding: 1.5rem;
@@ -12,21 +10,28 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
   width: 150px;
   height: 40px;
-
   font-weight: 900;
   font-size: 1.4rem;
   line-height: 1.6rem;
   text-align: center;
-
   color: #733999;
-
   background: #ffeeff;
   box-shadow: -2px -2px 4px #ffffff, 2px 2px 4px #d3a9d8;
   border-radius: 10px;
   border: none;
+  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.go-back:hover,
+.repeat:hover {
+  background-color: #ffd1fb;
+}
+
+.go-back:active,
+.repeat:hover {
+  box-shadow: inset -3px -3px 6px #ffffff, inset 3px 3px 6px #d3a9d8;
 }
 
 .repeat {
@@ -44,7 +49,9 @@
   font-size: 1.4rem;
   line-height: 1.6rem;
   font-family: 'Roboto';
+  outline-color: #733999;
 }
+
 p {
   margin: 0;
   padding: 0;
@@ -73,8 +80,10 @@ h3 {
   padding: 0.5rem 2rem;
   margin-top: 1.5rem;
   margin-bottom: 1rem;
-  overflow-y: scroll;
+  overflow-y: auto;
   list-style-type: none;
+  max-height: 400px;
+  height: 80%;
 }
 .correct,
 .incorrect {
@@ -93,8 +102,6 @@ h3 {
 .correct-word-details,
 .incorrect-word-details {
   display: flex;
-  /* align-items: flex-start;
-   */
   margin: 0;
   padding: 0;
 }
@@ -130,7 +137,7 @@ h3 {
 }
 .incorrect-word-sound > svg:hover,
 .correct-word-sound > svg:hover {
-  background-color: pink;
+  background-color: #ffd1fb;
 }
 
 .main-word {
@@ -146,12 +153,11 @@ h3 {
 .words-wrapper {
   display: flex;
   flex-direction: row;
-  /* justify-content: center; */
   align-items: center;
   margin-bottom: 0.5rem;
 }
 .words-wrapper:hover {
-  background-color: pink;
+  background-color: #ffd1fb;
   border-radius: 2px;
 }
 .words-separator {
@@ -168,7 +174,7 @@ h3 {
   justify-content: center;
 }
 
-.go-back,
+/* .go-back,
 .repeat {
   transition: 0.2s;
 }
@@ -176,4 +182,4 @@ h3 {
 .repeat:hover {
   background-color: #f7d4f7;
   transition: 0.2s;
-}
+} */

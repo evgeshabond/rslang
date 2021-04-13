@@ -29,7 +29,6 @@ import { WordStateType } from '../../reducer/word-reducer';
 //  herlpers and services
 import AggregateService from '../../services/word-aggregate-service';
 
-
 //  icons
 import learningIcon from '../../assets/images/learning.svg';
 import hardIcon from '../../assets/images/hardWord.svg';
@@ -44,6 +43,8 @@ import {
 } from '../../actions/word-actions';
 import { mainPath } from '../../utils/constants';
 import { constructorGameStart, setResultPageState } from '../../actions/constructor-game-actions';
+import { audioGameStart } from '../../actions/audioGame-actions';
+import { savannaGameStart } from '../../actions/savanna-game-actions';
 
 // update theme object of material ui
 const primaryColor = '#FDEBFF';
@@ -241,7 +242,7 @@ const useStyles = makeStyles({
 const LearnPage: React.FC = () => {
   const dispatch = useDispatch();
   const historyCopy = useHistory();
-  const searchParams = new URLSearchParams(historyCopy.location.search)
+  const searchParams = new URLSearchParams(historyCopy.location.search);
   const user = useSelector((state: RootStateType) => state.userState.user);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isWordListLoaded, setIsWordListLoaded] = useState(false);
@@ -249,8 +250,8 @@ const LearnPage: React.FC = () => {
     showTranslate: true,
     showButtons: true,
   });
-  const getGroup = ():number => {
-    const group = searchParams.get('group')
+  const getGroup = (): number => {
+    const group = searchParams.get('group');
     let groupNumber = 0;
     if (typeof group === 'string') {
       groupNumber = parseFloat(group);
@@ -258,17 +259,17 @@ const LearnPage: React.FC = () => {
       if (groupNumber > 5) groupNumber = 5;
     }
     return groupNumber;
-  }
-  const getPage = ():any => {
+  };
+  const getPage = (): any => {
     const page = searchParams.get('page');
     let pageNumber = 0;
     if (typeof page === 'string') {
-      pageNumber = parseFloat(page) - 1;  
-      if (pageNumber < 0) pageNumber = 0;  
-      if (pageNumber > 30) pageNumber = 29;  
+      pageNumber = parseFloat(page) - 1;
+      if (pageNumber < 0) pageNumber = 0;
+      if (pageNumber > 30) pageNumber = 29;
     }
     return pageNumber;
-  }
+  };
   const [pageIsDeleted, setPageIsDeleted] = useState(false);
   const [modalOpened, setModalOpened] = useState(false);
   const [dialogOpened, setDialogOpened] = useState(false);
@@ -343,6 +344,8 @@ const LearnPage: React.FC = () => {
     dispatch(setResultPageState(false));
     dispatch(setLevelVisibility(false));
     dispatch(wordListLoaded(gameWordList));
+    dispatch(audioGameStart(false));
+    dispatch(savannaGameStart(false))
     historyCopy.push(gamePath);
     /* eslint-enable */
   };
@@ -357,11 +360,11 @@ const LearnPage: React.FC = () => {
 
   const handlePageChange = (data: any) => {
     console.log('page variable is', data.selected);
-    console.log(historyCopy)
+    console.log(historyCopy);
     historyCopy.replace({
       pathname: '/ebookpage/learn/',
-      search: `?group=${getGroup()}&page=${data.selected + 1}`
-    })
+      search: `?group=${getGroup()}&page=${data.selected + 1}`,
+    });
     setCurrentPage(data.selected);
   };
 
@@ -391,9 +394,9 @@ const LearnPage: React.FC = () => {
     }
     historyCopy.replace({
       pathname: '/ebookpage/learn/',
-      search: `?group=${newGroup}&page=${getPage() + 1}`
-    })
-    setCurrentGroup(newGroup)
+      search: `?group=${newGroup}&page=${getPage() + 1}`,
+    });
+    setCurrentGroup(newGroup);
   };
 
   type Params = {
@@ -516,7 +519,7 @@ const LearnPage: React.FC = () => {
           </ListItem>
           <ListItem
             button
-            onClick={() => handleGameChoose('/audiohame')}
+            onClick={() => handleGameChoose('/audiogame')}
             key="audiocall"
           >
             <Typography align="center" variant="h4" component="p">
@@ -525,7 +528,7 @@ const LearnPage: React.FC = () => {
           </ListItem>
           <ListItem
             button
-            onClick={() => handleGameChoose('/sprint-game')}
+            onClick={() => handleGameChoose('/sprint')}
             key="sprint"
           >
             <Typography align="center" variant="h4" component="p">

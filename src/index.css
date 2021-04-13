@@ -7,6 +7,13 @@
 
 @font-face {
   font-family: 'Roboto';
+  font-weight: 700;
+  src: local('Roboto-Bold'),
+    url(./assets/fonts/Roboto-Bold.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto';
   font-weight: 900;
   src: local('Roboto-Black'),
     url(./assets/fonts/Roboto-Black.ttf) format('truetype');
@@ -54,11 +61,11 @@ li.MuiListItem-button {
   color: #733999;
 }
 li.MuiListItem-button:hover {
-  background-color: pink;
+  background-color: #ffd1fb;
 }
 
 li.MuiListItem-root.Mui-selected {
-  background-color: pink;
+  background-color: #ffd1fb;
 }
 
 li.MuiListItem-root.Mui-selected:hover {
@@ -66,7 +73,7 @@ li.MuiListItem-root.Mui-selected:hover {
 }
 
 div.MuiSelect-select:focus {
-  background-color: pink;
+  background-color: #ffd1fb;
 }
 
 div.MuiSelect-select.MuiSelect-select {

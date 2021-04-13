@@ -1,5 +1,5 @@
 export const mainPath = {
-  main: '/',
+  main: '/main',
   gamePage: '/gamepage',
   wordList: '/wordlist',
   auth: '/user',
@@ -8,12 +8,17 @@ export const mainPath = {
   learnPage: '/ebookpage/learn',
   dictionaryPage: '/ebookpage/dictionary',
   profilePAge: '/profile',
+  audioGame: '/audiogame',
+  savannaGame: '/savannagame',
+  serverUrl: 'https://rslang-app.herokuapp.com/',
   constructorGame: '/constructorgame',
   langUrl: 'https://rslang-app.herokuapp.com/',
   questionPage: '/quiz',
+  dashboardPage: '/dashboard',
   testStatistic: '/testStatistic',
   statistic: '/statistic',
   aboutUs: '/aboutUs',
+  startPage: '/',
 };
 
 export const authErrorPath = {

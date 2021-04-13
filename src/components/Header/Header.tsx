@@ -4,10 +4,10 @@ import React, { useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as actions from '../../actions/menu-actions';
-import infoImg from '../../assets/images/info.svg';
-import profileImg from '../../assets/images/profile.svg';
-import settingsImg from '../../assets/images/settings.svg';
-import teamImg from '../../assets/images/team.svg';
+import gameImg from '../../assets/images/games.svg';
+import startImg from '../../assets/images/flag-menu.svg';
+import mainImg from '../../assets/images/home.svg';
+import bookImg from '../../assets/images/open-book.svg';
 import { MenuState } from '../../reducer/menu-reducer';
 import { RootStateType } from '../../reducer/root-reducer';
 import { UserState } from '../../reducer/user-reducer';
@@ -48,6 +48,10 @@ const Header: React.FC<Props> = ({ topMenuIsOpen, topMenuOpen, isLogin }) => {
     }
   }, [topMenuIsOpen]);
 
+  const toggleMenuHandler = () => {
+    topMenuIsOpen ? topMenuOpen(false) : topMenuOpen(true);
+  };
+
   return (
     <header>
       <div
@@ -68,11 +72,11 @@ const Header: React.FC<Props> = ({ topMenuIsOpen, topMenuOpen, isLogin }) => {
                 tooltip: classes.customWidth,
               }}
               placement="bottom"
-              title="Профиль"
+              title="Начало"
               TransitionComponent={Zoom}
             >
-              <Link to={isLogin ? mainPath.profilePAge : mainPath.auth}>
-                <img src={profileImg} alt="profile" />
+              <Link to={mainPath.startPage}>
+                <img src={startImg} alt="start" />
               </Link>
             </Tooltip>
           </div>
@@ -84,11 +88,11 @@ const Header: React.FC<Props> = ({ topMenuIsOpen, topMenuOpen, isLogin }) => {
               classes={{
                 tooltip: classes.customWidth,
               }}
-              title="О команде"
+              title="Главная"
               TransitionComponent={Zoom}
             >
-              <Link to={mainPath.aboutUs}>
-                <img src={teamImg} alt="about team" />
+              <Link to={mainPath.dashboardPage}>
+                <img src={mainImg} alt="about team" />
               </Link>
             </Tooltip>
           </div>
@@ -100,11 +104,11 @@ const Header: React.FC<Props> = ({ topMenuIsOpen, topMenuOpen, isLogin }) => {
               classes={{
                 tooltip: classes.customWidth,
               }}
-              title="Инфо"
+              title="Словарь"
               TransitionComponent={Zoom}
             >
-              <Link to={mainPath.main}>
-                <img src={infoImg} alt="info" />
+              <Link to={mainPath.ebookPage}>
+                <img src={bookImg} alt="info" />
               </Link>
             </Tooltip>
           </div>
@@ -115,11 +119,11 @@ const Header: React.FC<Props> = ({ topMenuIsOpen, topMenuOpen, isLogin }) => {
               classes={{
                 tooltip: classes.customWidth,
               }}
-              title="Статистика"
+              title="Игры"
               TransitionComponent={Zoom}
             >
-              <Link to={mainPath.statistic}>
-                <img src={settingsImg} alt="statistic" />
+              <Link to={mainPath.gamePage}>
+                <img src={gameImg} alt="statistic" />
               </Link>
             </Tooltip>
           </div>
@@ -131,6 +135,7 @@ const Header: React.FC<Props> = ({ topMenuIsOpen, topMenuOpen, isLogin }) => {
           aria-label="Top-menu"
           className={styles['menu-btn']}
           onMouseEnter={() => topMenuOpen(true)}
+          onClick={toggleMenuHandler}
         >
           <div className={styles['menu-btn__inner']} />
         </button>

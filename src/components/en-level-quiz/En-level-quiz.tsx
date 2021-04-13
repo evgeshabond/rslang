@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Field, Form } from 'formik';
 import { RootStateType } from '../../reducer/root-reducer';
@@ -14,16 +14,23 @@ import { serverUrl } from '../../utils/constants';
 import Spinner from '../Spinner/Spinner';
 
 import { CatPaw } from '../cat-paw/Cat-paw';
-import { userLevelUpdate } from '../../actions/user-actions';
+import { updateUser } from '../../actions/user-actions';
 import { QuizStart } from '../../reducer/question-reducer';
 
 const EnLevelQuiz: React.FC = () => {
   const questionState = useSelector(
     (state: RootStateType) => state.questionState
   );
+  const user = useSelector((state: RootStateType) => state.userState.user);
 
   const { questions, currentQ, loading, answersArr } = questionState;
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (answersArr.length === 15) {
+      checkResult();
+    }
+  }, [answersArr]);
 
   const paws: JSX.Element[] = [];
   const renderPaws = () => {
@@ -39,7 +46,7 @@ const EnLevelQuiz: React.FC = () => {
   };
 
   const checkResult = () => {
-    const result = answersArr.reduce((sum, item) => sum + item, 0) / 3;
+    const result = answersArr.reduce((sum, item) => sum + item, 0);
     let level = '';
     if (result < 4) {
       level = 'A1';
@@ -54,7 +61,14 @@ const EnLevelQuiz: React.FC = () => {
     } else {
       level = 'B2+';
     }
-    dispatch(userLevelUpdate(level));
+    const params = {
+      userId: user.userId,
+      token: user.token,
+      body: {
+        level,
+      },
+    };
+    dispatch(updateUser(params));
     dispatch(testStart(QuizStart.Result));
   };
 
@@ -68,11 +82,11 @@ const EnLevelQuiz: React.FC = () => {
 
   const nextQuestion = (value: string) => {
     addAnswerToArr(value);
+
     if (currentQ === questions.length - 1) {
-      checkResult();
-    } else {
-      dispatch(questionNumberInc());
+      return;
     }
+    dispatch(questionNumberInc());
   };
 
   return (

@@ -8,6 +8,7 @@ import {
   setRoundEnd,
   setShuffledWordList,
 } from '../../../actions/constructor-game-actions';
+import { clearAllCount } from '../../../actions/game-result-actions';
 import { fetchWordsList } from '../../../actions/word-actions';
 import { ReactComponent as CatSleeping } from '../../../assets/images/cat-sleeping.svg';
 import { ReactComponent as Play } from '../../../assets/images/video-player-mini.svg';
@@ -45,6 +46,7 @@ export const StartScreen: React.FC = () => {
     dispatch(setRoundCount(1));
     dispatch(setRoundEnd(false));
     dispatch(clearWords());
+    dispatch(clearAllCount());
   };
 
   return (
