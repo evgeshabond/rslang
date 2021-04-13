@@ -24,9 +24,13 @@ export const GameChart: React.FC<Props> = ({
     combo,
     correctAvg,
   };
-  if (localStorage.getItem(gameType) !== null && user.isLogin) {
-    const llocalData = JSON.parse(localStorage.getItem(gameType) as string);
-    console.log(llocalData);
+  if (localStorage.getItem(gameType) !== null && !user.isLogin) {
+    const app = JSON.parse(localStorage.getItem(gameType) as string);
+    localData.learnedWordCount = app.wordsId.length;
+    localData.combo = app.combo;
+    localData.correctAvg = Math.round(
+      (app.know * 100) / (app.know + app.dont_know)
+    );
   }
 
   const data = {

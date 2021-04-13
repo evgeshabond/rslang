@@ -14,6 +14,7 @@ import styles from './chart.module.css';
 export const ChartComponent: React.FC = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootStateType) => state.userState.user);
+  const userState = useSelector((state: RootStateType) => state.userState);
   const totalStatistic = useSelector(
     (state: RootStateType) => state.statisticState.totalStatistic
   );
@@ -28,9 +29,10 @@ export const ChartComponent: React.FC = () => {
       userId: user.userId,
       token: user.token,
     };
-
-    dispatch(getTotalStatistics(param));
-    dispatch(getTodayStatistic(param));
+    if (userState.isLogin) {
+      dispatch(getTotalStatistics(param));
+      dispatch(getTodayStatistic(param));
+    }
   }, []);
 
   const dates = totalStatistic.map((stats) => moment(stats.date).format('L'));
