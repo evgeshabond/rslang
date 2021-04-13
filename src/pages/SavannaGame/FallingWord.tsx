@@ -1,15 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import useSound from 'use-sound';
-import { Transition } from 'react-transition-group';
 import {
   fetchWordsList,
 } from '../../actions/word-actions';
 import { RootStateType } from '../../reducer/root-reducer';
 import styles from './FallingWord.module.css';
-import { audioGameStart, wordUserAnswer, wordRight, isAnswerSelected } from '../../actions/audioGame-actions';
-import { shuffle } from '../../utils/shuffle';
-import { isWordFalled, isWordMove, savannaGameStart, wordPosition } from '../../actions/savanna-game-actions';
+import { isWordFalled, isWordMove, savannaGameStart, wordPosition, wordUserAnswer, wordRight, isAnswerSelected } from '../../actions/savanna-game-actions';
 import successSound from '../../assets/sounds/src_music_correct.mp3';
 import wrongSound from '../../assets/sounds/src_music_wrong.wav';
 
@@ -58,8 +55,7 @@ const FallingWord: React.FC = () => {
 
   useEffect(() => {
     if (!isMove || position > 323) {
-      console.log('clear', timer)
-      // dispatch(isWordMove(false));
+
       clearInterval(timer as ReturnType<typeof setInterval>);
     }
   }, [dispatch, isAnswer, position, timer, isMove]);
@@ -85,7 +81,7 @@ const FallingWord: React.FC = () => {
       }
     }
 
-  }, [isPlaying])
+  }, [isPlaying, isAnswer])
 
   // const moveDown = () => {
   //   console.log('movedown', position)
@@ -111,17 +107,6 @@ const FallingWord: React.FC = () => {
       style={{ transform: `translateY(${position}px)` }}>
       {rightWord.word}
     </div>
-    // <Transition
-    //   in={isMove}
-    //   timeout={1000}
-    // >
-    //   {state =>
-    //     <div ref={refBtn as React.RefObject<HTMLDivElement>} className={`${styles.falling__word} ${state}`} >
-    //       {rightWord.word}
-    //     </div >}
-    // </Transition >
-
-
   )
 }
 

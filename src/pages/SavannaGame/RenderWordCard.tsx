@@ -5,12 +5,13 @@ import {
   fetchWordsList,
 } from '../../actions/word-actions';
 import { RootStateType } from '../../reducer/root-reducer';
-import { WordItem } from '../../components/word-item/word-item-game';
+import { WordItem } from '../../components/word-item/word-item-savanna';
 import styles from './SavannaGame.module.css';
-import { audioGameStart, wordUserAnswer, wordRight, isAnswerSelected } from '../../actions/audioGame-actions';
 import { shuffle } from '../../utils/shuffle';
 import FallingWord from './FallingWord';
-import { currentPlayWords, isWordFalled, isWordMove, stepCounter, wordPosition } from '../../actions/savanna-game-actions';
+import { currentPlayWords, isWordFalled, isWordMove, listRightWords, setLearnWords, setWrongWords, stepCounter, wordPosition, wordUserAnswer, wordRight, isAnswerSelected, startWordPosition } from '../../actions/savanna-game-actions';
+import { setWorldResult } from '../../actions/game-result-actions';
+import { userWordToLearnResult } from '../../actions/user-words-action';
 
 
 const RenderWordCard: React.FC = () => {
@@ -39,20 +40,56 @@ const RenderWordCard: React.FC = () => {
   const startPosition = useSelector((state: RootStateType) =>
     state.savannaGameState.startWordPosition);
 
+  const listLearnWords = useSelector((state: RootStateType) =>
+    state.savannaGameState.listLearnWords);
+  const isResults = useSelector((state: RootStateType) =>
+    state.savannaGameState.isShowResults);
+  const user = useSelector((state: RootStateType) =>
+    state.userState.user);
+
 
   const getRandomInt = (min: number, max: number) => (
     Math.floor(Math.random() * (max - min + 1)) + min
   )
 
+  const params = {
+    userId: user.userId,
+    token: user.token,
+    wordId: rightWord.id
+  }
+
   useEffect(() => {
     if (currentWords.length === 0) {
       return;
     }
+    // let random;
+    // do {
+    //   random = currentWords[getRandomInt(0, currentWords.length - 1)];
+    // }
+    // while (listLearnWords.includes(random.id));
     const random = currentWords[getRandomInt(0, currentWords.length - 1)];
-    dispatch(wordRight(random));
 
+    dispatch(wordRight(random));
+    dispatch(setLearnWords(random.id));
 
   }, [currentWords])
+
+  useEffect(() => {
+    if (Object.keys(userAnswer).length === 0 && !isAnswer) {
+      return
+    }
+    if (userAnswer.word === rightWord.word) {
+      dispatch(listRightWords(rightWord));
+      dispatch(setWorldResult(true, rightWord.id));
+      dispatch(userWordToLearnResult(params, { isCorrect: true }))
+    }
+    else {
+      dispatch(setWrongWords(rightWord));
+      dispatch(setWorldResult(false, rightWord.id));
+      dispatch(userWordToLearnResult(params, { isCorrect: false }))
+    }
+  }, [roundCounter, isResults])
+
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
@@ -68,8 +105,7 @@ const RenderWordCard: React.FC = () => {
   }, [isAnswer])
 
   const playGame = () => {
-
-    dispatch(wordPosition(startPosition));
+    dispatch(startWordPosition(0));
     dispatch(isWordMove(true));
     dispatch(isWordFalled(false));
     dispatch(isAnswerSelected(false));
@@ -96,12 +132,14 @@ const RenderWordCard: React.FC = () => {
 
   const checkUserAnswer = (word: CurrentWordListType) => {
     console.log('check', position);
-    if (Object.keys(userAnswer).length === 0) {
+    if (!isAnswer) {
       dispatch(wordUserAnswer(word));
     }
     dispatch(isAnswerSelected(true));
+    dispatch(isAnswerSelected(true));
     dispatch(isWordMove(false));
   }
+
 
   return (
     <div className={styles.falling__word__container} >

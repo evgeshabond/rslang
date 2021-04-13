@@ -9,18 +9,20 @@ import {
   IS_FULL_SCREEN,
   IS_PRESS_DONTKNOW,
   IS_SHOW_RESULTS,
-  LIST_WRONG_WORDS,
+  UPDATE_WRONG_WORDS,
   LIST_RIGHT_WORDS,
   CLEAR_WORDS,
   IS_WORD_MOVE,
   WORD_POSITION,
   IS_WORD_FALLED,
-  START_WORD_POSITION
+  START_WORD_POSITION,
+  ADD_LEARN_WORDS
 } from '../actions/savanna-game-actions';
 
 import { CurrentWordListType } from '../actions/word-actions';
 
 export type SavannaGameState = {
+  listLearnWords: string [];
   isWordFalled: boolean;
   wordPosition: number;
   startWordPosition: number;
@@ -39,6 +41,7 @@ export type SavannaGameState = {
 };
 
 const initialState: SavannaGameState = {
+  listLearnWords: [],
   isWordFalled: false,
   startWordPosition:0,
   wordPosition: 0,
@@ -96,6 +99,12 @@ const savannaGameReducer = (state = initialState, action: SavannaGameActionType)
         
       };
 
+    case ADD_LEARN_WORDS:     
+      return {
+        ...state,
+        listLearnWords: [...state.listLearnWords, action.payload],
+      };
+
     case START_WORD_POSITION:
         return { ...state, wordPosition: action.payload };
     case WORD_POSITION: 
@@ -111,7 +120,7 @@ const savannaGameReducer = (state = initialState, action: SavannaGameActionType)
         ...state,
         listRightWords: [...state.listRightWords, action.payload],
       };     
-    case LIST_WRONG_WORDS:
+    case UPDATE_WRONG_WORDS:
       return {
         ...state,
         listWrongWords: [...state.listWrongWords, action.payload],

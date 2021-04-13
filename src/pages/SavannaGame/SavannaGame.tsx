@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import useSound from 'use-sound';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -16,6 +16,7 @@ import StartScreen from "./StartScreen";
 import SettingsBtn from './SettingsBtn';
 import LevelInfo from './LevelInfo';
 import LifeInfo from './LifeInfo';
+import { wordRight } from '../../actions/savanna-game-actions';
 
 
 
@@ -39,14 +40,18 @@ const SavannaGame: React.FC = () => {
 
 
   useEffect(() => {
+    console.log('sound1')
+    console.log(rightWord.word);
+    console.log(userAnswer.word)
     if (!isAnswer) {
       return
     }
     if (userAnswer.word === rightWord.word) {
+      console.log('sound')
       playSuccessAnswer();
     }
     playWrongAnswer()
-  }, [userAnswer.word])
+  }, [isAnswer])
 
   return isPlaying ? (
     <div className={styles.game__content}>
