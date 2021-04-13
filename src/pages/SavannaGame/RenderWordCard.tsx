@@ -94,18 +94,18 @@ const RenderWordCard: React.FC = () => {
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
     if (isAnswer) {
-
       timer = setTimeout(() => {
+        dispatch(startWordPosition(0));
         playGame();
       }
-        , 3000);
+        , 2000);
     }
     return () => clearTimeout(timer);
 
   }, [isAnswer])
 
   const playGame = () => {
-    dispatch(startWordPosition(0));
+
     dispatch(isWordMove(true));
     dispatch(isWordFalled(false));
     dispatch(isAnswerSelected(false));
