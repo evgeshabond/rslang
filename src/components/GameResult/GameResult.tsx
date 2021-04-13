@@ -9,6 +9,7 @@ import {
   setRoundEnd,
   setShuffledWordList,
 } from '../../actions/constructor-game-actions';
+import { clearAllCount } from '../../actions/game-result-actions';
 import { ReactComponent as AudioOn } from '../../assets/images/audioOn.svg';
 import { RootStateType } from '../../reducer/root-reducer';
 import { gameConstants, mainPath } from '../../utils/constants';
@@ -35,6 +36,7 @@ export const GameResult: React.FC = () => {
     dispatch(setRoundCount(1));
     dispatch(setRoundEnd(false));
     dispatch(clearWords());
+    dispatch(clearAllCount());
   };
 
   const soundHandler = (soundPath: string) => {
