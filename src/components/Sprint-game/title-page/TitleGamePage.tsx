@@ -29,12 +29,12 @@ export const TitleGamePage: React.FC = () => {
     (state: RootStateType) => state.wordState.currentWordList
   );
 
-  useEffect(() => {
-    if (wordList.length === 0) {
-      console.log('fetching');
-      dispatch(fetchWordsList({ page: 0, group: 0 }));
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (wordList.length === 0) {
+  //     console.log('fetching');
+  //     dispatch(fetchWordsList({ page: 0, group: 0 }));
+  //   }
+  // }, []);
 
   const getRandomNumber = (num: number) => Math.floor(Math.random() * num);
 
