@@ -118,6 +118,7 @@ img.side__buttons {
 
 .point-number {
   margin-right: 0.5rem;
+  font-size: 2.4rem;
 }
 
 .check__points {
@@ -191,7 +192,10 @@ svg.full-screen__icon {
   width: 24px;
   height: 24px;
 }
-
+.the__word,
+.translation{
+  font-size: 2.5rem;
+}
 
 @media (max-width:780px) {
   .game__field{
@@ -202,3 +206,4 @@ svg.full-screen__icon {
     min-width: 400px;
   }
 }
+

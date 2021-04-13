@@ -124,9 +124,9 @@ const FinishPage: React.FC = () => {
 
   return (
     <div className={styles['finish-game-wrapper']}>
-      <h3>Результаты</h3>
+      <h3 className={styles.result__title}>Результаты</h3>
       <div className={styles['result-wrapper']}>
-        <p>
+        <p className={styles['result-subtitle']}>
           {' '}
           Вы набрали{' '}
           <span className={styles['points-number']}> {totalPoints} </span>очков!
