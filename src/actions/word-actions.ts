@@ -27,6 +27,7 @@ export type CurrentWordListType = {
     difficulty?: string;
     optional?: {
       learning?: boolean;
+      learned?: boolean;
     };
   };
 };
