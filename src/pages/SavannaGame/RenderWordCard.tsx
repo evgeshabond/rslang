@@ -36,6 +36,8 @@ const RenderWordCard: React.FC = () => {
     state.savannaGameState.stepCounter);
   const position = useSelector((state: RootStateType) =>
     state.savannaGameState.wordPosition);
+  const startPosition = useSelector((state: RootStateType) =>
+    state.savannaGameState.startWordPosition);
 
 
   const getRandomInt = (min: number, max: number) => (
@@ -67,7 +69,7 @@ const RenderWordCard: React.FC = () => {
 
   const playGame = () => {
 
-    dispatch(wordPosition(0));
+    dispatch(wordPosition(startPosition));
     dispatch(isWordMove(true));
     dispatch(isWordFalled(false));
     dispatch(isAnswerSelected(false));
@@ -93,6 +95,7 @@ const RenderWordCard: React.FC = () => {
   // }, [roundCounter, isResults])
 
   const checkUserAnswer = (word: CurrentWordListType) => {
+    console.log('check', position);
     if (Object.keys(userAnswer).length === 0) {
       dispatch(wordUserAnswer(word));
     }

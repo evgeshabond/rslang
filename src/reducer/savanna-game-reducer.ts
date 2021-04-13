@@ -14,7 +14,8 @@ import {
   CLEAR_WORDS,
   IS_WORD_MOVE,
   WORD_POSITION,
-  IS_WORD_FALLED
+  IS_WORD_FALLED,
+  START_WORD_POSITION
 } from '../actions/savanna-game-actions';
 
 import { CurrentWordListType } from '../actions/word-actions';
@@ -22,6 +23,7 @@ import { CurrentWordListType } from '../actions/word-actions';
 export type SavannaGameState = {
   isWordFalled: boolean;
   wordPosition: number;
+  startWordPosition: number;
   isWordMove: boolean;
   listWrongWords:Array<CurrentWordListType>;
   listRightWords:Array<CurrentWordListType>;
@@ -38,6 +40,7 @@ export type SavannaGameState = {
 
 const initialState: SavannaGameState = {
   isWordFalled: false,
+  startWordPosition:0,
   wordPosition: 0,
   isWordMove:false,
   listWrongWords:[],
@@ -92,8 +95,10 @@ const savannaGameReducer = (state = initialState, action: SavannaGameActionType)
         listWrongWords: [],
         
       };
-    case WORD_POSITION: 
 
+    case START_WORD_POSITION:
+        return { ...state, wordPosition: action.payload };
+    case WORD_POSITION: 
         return {
            ...state,
             wordPosition: state.wordPosition + (action.payload as number) };
