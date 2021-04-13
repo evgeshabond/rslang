@@ -55,10 +55,6 @@ export const BottomBlock: React.FC = () => {
   );
 
   useEffect(() => {
-    if (!userState.isLogin) {
-      return;
-    }
-
     const param = {
       userId: user.userId,
       token: user.token,
