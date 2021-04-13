@@ -126,12 +126,6 @@ export const BottomBlock: React.FC = () => {
   };
 
   const dontKnowHandler = () => {
-    if (
-      isLevelVisible ||
-      currentWordList[0].userWord?.difficulty === 'deleted'
-    ) {
-      return;
-    }
     dispatch(resetComboCounter());
     dispatch(addNotLearnedWord(wordObj));
     dispatch(setRoundEnd(true));
