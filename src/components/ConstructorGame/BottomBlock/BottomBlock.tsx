@@ -39,11 +39,8 @@ export const BottomBlock: React.FC = () => {
     constructorRoundStatus: isRoundEnd,
     wordObj,
     roundCount,
-    learned,
     comboCounter,
-    comboArray,
     isWinning,
-    usedWordsIds,
   } = useSelector((state: RootStateType) => state.constructorGameState);
 
   const user = useSelector((state: RootStateType) => state.userState.user);
