@@ -88,10 +88,6 @@ export const BottomBlock: React.FC = () => {
   }, [roundCount]);
 
   const nextRoundHandler = () => {
-    if (!userState.isLogin) {
-      return;
-    }
-
     if (roundCount === totalRounds) {
       dispatch(constructorGameStart(false));
       dispatch(setResultPageState(true));
@@ -118,7 +114,9 @@ export const BottomBlock: React.FC = () => {
     ) {
       return;
     }
-    dispatch(userWordToLearnResult(params, roundResult));
+    if (userState.isLogin) {
+      dispatch(userWordToLearnResult(params, roundResult));
+    }
     dispatch(setWorldResult(isWinning, wordObj.id));
   };
 
