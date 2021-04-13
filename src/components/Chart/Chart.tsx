@@ -7,6 +7,7 @@ import {
   getTotalStatistics,
 } from '../../actions/statistic-action';
 import { RootStateType } from '../../reducer/root-reducer';
+import { gameType } from '../../utils/constants';
 import { GameChart } from '../game-chart/Game-chart';
 import styles from './chart.module.css';
 
@@ -21,7 +22,7 @@ export const ChartComponent: React.FC = () => {
   );
 
   const { savanna, sprint, audiocall, constructors } = todayStatistic;
-  console.log('🚀 ~ file: Chart.tsx ~ line 21 ~ constructors', constructors);
+
   useEffect(() => {
     const param = {
       userId: user.userId,
@@ -96,24 +97,28 @@ export const ChartComponent: React.FC = () => {
         <div className={styles['game-charts-container']}>
           <GameChart
             game="Саванна"
+            gameType={gameType.savanna}
             learnedWordCount={savanna ? savanna.learnedWordCount : 0}
             combo={savanna ? savanna.maxCombo : 0}
             correctAvg={savanna ? savanna.correctAvg : 0}
           />
           <GameChart
             game="Спринт"
+            gameType={gameType.sprint}
             learnedWordCount={sprint ? sprint.learnedWordCount : 0}
             combo={sprint ? sprint.maxCombo : 0}
             correctAvg={sprint ? sprint.correctAvg : 0}
           />
           <GameChart
             game="Аудио-вызов"
+            gameType={gameType.audiocall}
             learnedWordCount={audiocall ? audiocall.learnedWordCount : 0}
             combo={audiocall ? audiocall.maxCombo : 0}
             correctAvg={audiocall ? audiocall.correctAvg : 0}
           />
           <GameChart
             game="Конструктор"
+            gameType={gameType.constructors}
             learnedWordCount={constructors ? constructors.learnedWordCount : 0}
             combo={constructors ? constructors.maxCombo : 0}
             correctAvg={constructors ? constructors.correctAvg : 0}
