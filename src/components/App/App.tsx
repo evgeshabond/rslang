@@ -13,10 +13,13 @@ import EbookPage from '../../pages/e-book-page/E-book-page';
 import LearnPage from '../../pages/learn-page/LearnPage';
 import DictionaryPage from '../../pages/dictionary-page/DictionaryPage';
 import ProfilePage from '../../pages/profile-page/Profile-page';
+import AudioGame from '../../pages/AudioGame/AudioGame';
+
 import ConstructorGame from '../ConstructorGame/ConstructorGame';
 import GitLinks from '../GitLinks/GitLinks';
 import { QuestionPage } from '../../pages/question-page/Question-page';
 import { GameTest } from '../game-statistic-test/Game-statistic-test';
+import SavannaGame from '../../pages/SavannaGame/SavannaGame';
 import { DashboardPage } from '../../pages/dashbord-page/Dashboard-page';
 import { StatisticPage } from '../../pages/statistic-page/Statistic-page';
 import { AboutUs } from '../../pages/about-us/About-us';
@@ -27,7 +30,9 @@ const App: React.FC = () => (
     <div className={styles.App}>
       <div className={styles.container}>
         <Header />
+
         <main className={styles.main}>
+
           <GitLinks />
           <Switch>
             <Route path={mainPath.main} component={MainPage} exact />
@@ -39,6 +44,9 @@ const App: React.FC = () => (
             <Route path={mainPath.learnPage} component={LearnPage} />
             <Route path={mainPath.dictionaryPage} component={DictionaryPage} />
             <Route path={mainPath.profilePAge} component={ProfilePage} />
+            <Route path={mainPath.audioGame} component={AudioGame} />
+            <Route path={mainPath.savannaGame} component={SavannaGame} />
+
             <Route
               path={mainPath.constructorGame}
               component={ConstructorGame}
@@ -51,6 +59,7 @@ const App: React.FC = () => (
             <Route path={mainPath.startPage} component={StartPage} />
           </Switch>
         </main>
+
         <Footer />
       </div>
     </div>
