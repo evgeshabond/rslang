@@ -11,24 +11,19 @@ const getWordList = async (listProps: { page: number; group: number }) => {
 };
 
 type GetWordsPageProps = {
-  page: number,
-  group: number
-}
+  page: number;
+  group: number;
+};
 //  get words Page
-const getWordsPage = async ({
-  page,
-  group
-}: GetWordsPageProps) => {
+const getWordsPage = async ({ page, group }: GetWordsPageProps) => {
   try {
-    const wordsPage = await getWordList({page, group})
-    console.log('insied getWordsPage. returned words are ', wordsPage)
-    return wordsPage
+    const wordsPage = await getWordList({ page, group });
+    console.log('insied getWordsPage. returned words are ', wordsPage);
+    return wordsPage;
+  } catch (e) {
+    console.log(e);
   }
-  catch(e) {
-    console.log(e)
-  }
-  return []
-}
+  return [];
+};
 
-export default getWordsPage
-
+export default getWordsPage;
