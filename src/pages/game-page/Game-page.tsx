@@ -8,6 +8,7 @@ import {
 } from '../../actions/constructor-game-actions';
 import { setLevelVisibility } from '../../actions/menu-actions';
 import { savannaGameStart } from '../../actions/savanna-game-actions';
+import { sprintGameStatusChange } from '../../actions/sprint-game-action';
 import { gameStartStatusChange } from '../../actions/word-actions';
 import { MainCat } from '../../components/cats-img/main-cat/Main-cat';
 import { LinkButton } from '../../components/link-button/Link-button';
@@ -32,6 +33,10 @@ const GamePage: React.FC = () => {
     dispatch(savannaGameStart(false));
   }
 
+  const openSprintHandler =() =>{
+    dispatch(sprintGameStatusChange('start'));
+  }
+
   useEffect(() => {
     dispatch(gameStartStatusChange(GameStart.Menu));
   }, []);
@@ -44,7 +49,7 @@ const GamePage: React.FC = () => {
         <LinkButton link={mainPath.audioGame} clickHandler={() => openAudioGameHandler()} buttonName="Аудиовызов" />
       </div>
       <div className={rootStyles['ebook-buttons-container']}>
-        <LinkButton link={mainPath.sprint} buttonName="Спринт" />
+        <LinkButton link={mainPath.sprint} buttonName="Спринт" clickHandler={()=> openSprintHandler()}/>
         <button
           className={styles['constructor-button']}
           type="button"
