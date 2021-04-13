@@ -13,6 +13,10 @@ import {
   setUsedWordsIds,
   setWordCorrectness,
 } from '../../../actions/constructor-game-actions';
+import {
+  checkAndSaveMaxCombo,
+  setWorldResult,
+} from '../../../actions/game-result-actions';
 import { setStatistics } from '../../../actions/statistic-action';
 import { userWordToLearnResult } from '../../../actions/user-words-action';
 import { RootStateType } from '../../../reducer/root-reducer';
@@ -35,11 +39,8 @@ export const BottomBlock: React.FC = () => {
     constructorRoundStatus: isRoundEnd,
     wordObj,
     roundCount,
-    learned,
     comboCounter,
-    comboArray,
     isWinning,
-    usedWordsIds,
   } = useSelector((state: RootStateType) => state.constructorGameState);
 
   const user = useSelector((state: RootStateType) => state.userState.user);
@@ -49,9 +50,11 @@ export const BottomBlock: React.FC = () => {
     (state: RootStateType) => state.menuState.isLevelVisible
   );
 
-  useEffect(() => {
-    const dontKnow = totalRounds - learned;
+  const gameResult = useSelector(
+    (state: RootStateType) => state.gameResultState
+  );
 
+  useEffect(() => {
     if (!userState.isLogin) {
       return;
     }
@@ -63,10 +66,10 @@ export const BottomBlock: React.FC = () => {
     const gameStatistic = {
       gameType: gameType.constructors,
       level: user.level || 1,
-      know: learned,
-      dont_know: dontKnow,
-      combo: Math.max(...comboArray),
-      wordsId: usedWordsIds,
+      know: gameResult.correctCount,
+      dont_know: gameResult.incorrectCount,
+      combo: gameResult.maxCorrectComboCount,
+      wordsId: gameResult.wordsIdArr,
     };
 
     if (roundCount === totalRounds) {
@@ -80,6 +83,7 @@ export const BottomBlock: React.FC = () => {
         return;
       }
       dispatch(setStatistics(param, gameStatistic));
+      dispatch(checkAndSaveMaxCombo());
     }
   }, [roundCount]);
 
@@ -115,6 +119,7 @@ export const BottomBlock: React.FC = () => {
       return;
     }
     dispatch(userWordToLearnResult(params, roundResult));
+    dispatch(setWorldResult(isWinning, wordObj.id));
   };
 
   const dontKnowHandler = () => {

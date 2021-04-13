@@ -1,9 +1,15 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { clearAllCount } from '../../../actions/game-result-actions';
 import {
+  clearWords,
+  sprintGameBallsCounter,
+  sprintGameCheckPoints,
+  sprintGameCurrentPoints,
   sprintGameRandomArray,
   sprintGameShuffledArray,
   sprintGameStatusChange,
+  sprintGameTotalPoints,
   sprintGameWordCounter,
 } from '../../../actions/sprint-game-action';
 import {
@@ -23,12 +29,12 @@ export const TitleGamePage: React.FC = () => {
     (state: RootStateType) => state.wordState.currentWordList
   );
 
-  useEffect(() => {
-    if (wordList.length === 0) {
-      console.log('fetching');
-      dispatch(fetchWordsList({ page: 0, group: 0 }));
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (wordList.length === 0) {
+  //     console.log('fetching');
+  //     dispatch(fetchWordsList({ page: 0, group: 0 }));
+  //   }
+  // }, []);
 
   const getRandomNumber = (num: number) => Math.floor(Math.random() * num);
 
@@ -40,6 +46,18 @@ export const TitleGamePage: React.FC = () => {
     console.log(array, 'random');
     return array;
   };
+
+  useEffect(()=>{
+
+    dispatch(sprintGameStatusChange('play'));
+    dispatch(sprintGameWordCounter(0));
+    dispatch(clearWords());
+    dispatch(sprintGameTotalPoints(0));
+    dispatch(sprintGameBallsCounter(0));
+    dispatch(sprintGameCheckPoints(0));
+    dispatch(sprintGameCurrentPoints(50));
+    dispatch(clearAllCount());
+  }, []);
 
   const isLevelVisible = useSelector(
     (state: RootStateType) => state.menuState.isLevelVisible

@@ -122,21 +122,27 @@ export const setStatistics = (
 ) => (dispatch: Dispatch<GameStatActionType>) => {
   const today = moment().startOf('day');
   const todayBody = { ...body, date: moment(today).toDate() };
-  services
-    .setStatistic(params, todayBody)
-    .then((data) => {
-      if (data.error) {
-        dispatch(
-          statisticError('ваша сессия истекла пожалуйста авторизуйтесь заново')
-        );
-      } else {
-        dispatch(gameStatUpdate(data.optional.gameStatistic));
-      }
-    })
-    .catch((err) => {
-      console.error('fetch err action user', err);
-      dispatch(statisticError('проблема с доступом к серверу'));
-    });
+  if (params.userId === '') {
+    localStorage.setItem(body.gameType, JSON.stringify(body));
+  } else {
+    services
+      .setStatistic(params, todayBody)
+      .then((data) => {
+        if (data.error) {
+          dispatch(
+            statisticError(
+              'ваша сессия истекла пожалуйста авторизуйтесь заново'
+            )
+          );
+        } else {
+          dispatch(gameStatUpdate(data.optional.gameStatistic));
+        }
+      })
+      .catch((err) => {
+        console.error('fetch err action user', err);
+        dispatch(statisticError('проблема с доступом к серверу'));
+      });
+  }
 };
 
 export const getTodayStatistic = (params: {

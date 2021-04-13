@@ -5,6 +5,10 @@ import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import { useDispatch, useSelector } from 'react-redux';
 import useSound from 'use-sound';
 import {
+  checkAndSaveMaxCombo,
+  setWorldResult,
+} from '../../../actions/game-result-actions';
+import {
   setCorrectAnswer,
   setFullScreenStatus,
   sprintGameBallsCounter,
@@ -16,6 +20,7 @@ import {
   sprintGameTotalPoints,
   sprintGameWordCounter,
 } from '../../../actions/sprint-game-action';
+import { userWordToLearnResult } from '../../../actions/user-words-action';
 import closeIcon from '../../../assets/images/close.svg';
 import correctImage from '../../../assets/images/correct.svg';
 import inCorrectImage from '../../../assets/images/incorrect.svg';
@@ -57,6 +62,12 @@ const GamePage: React.FC = () => {
   });
   const [playWrongSound] = useSound(wrongSound, { interrupt: true });
   const getRandomNumber = (num: number) => Math.floor(Math.random() * num);
+  const user = useSelector((state: RootStateType) => state.userState.user);
+  const param = {
+    userId: user.userId,
+    token: user.token,
+    wordId: shuffledArray[wordCounter].id,
+  };
 
   useEffect(() => {
     if (shuffledArray) {
@@ -71,6 +82,8 @@ const GamePage: React.FC = () => {
   }, [wordCounter]);
 
   const changeGameStats = () => {
+    dispatch(setWorldResult(true, shuffledArray[wordCounter].id));
+    dispatch(userWordToLearnResult(param, { isCorrect: true }));
     dispatch(sprintGameSetLearntWords(shuffledArray[wordCounter]));
     changeCurrentPoints();
     dispatch(setCorrectAnswer(true));
@@ -87,6 +100,7 @@ const GamePage: React.FC = () => {
 
   const checkTheEndOfTheGame = () => {
     if (wordCounter === shuffledArray.length - 1) {
+      dispatch(checkAndSaveMaxCombo());
       dispatch(sprintGameStatusChange('finish'));
     }
   };
@@ -102,6 +116,8 @@ const GamePage: React.FC = () => {
     handle.enter();
   };
   const cleanCurrentGameStats = () => {
+    dispatch(setWorldResult(false, shuffledArray[wordCounter].id));
+    dispatch(userWordToLearnResult(param, { isCorrect: false }));
     dispatch(sprintGameSetNotLearntWords(shuffledArray[wordCounter]));
     dispatch(setCorrectAnswer(false));
     playWrongSound();
