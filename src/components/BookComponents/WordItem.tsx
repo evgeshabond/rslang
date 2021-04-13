@@ -230,10 +230,9 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
       let correctPercent = 0;
       if (summ > 0) {
         if (correctCount > 0) {
-          correctPercent = correctCount / summ * 100;
+          correctPercent = Math.round(correctCount / summ * 100);
         }
       }
-
 
       setWordStats({
         correctCount,
@@ -245,9 +244,7 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
     // console.log(wordStats)
   }, [])
 
-  React.useEffect(() => {
-      console.log(wordStats)
-  }, [wordStats])
+
 
   const addItemToHard = async () => {
     const params = {

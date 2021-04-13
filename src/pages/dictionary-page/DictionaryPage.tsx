@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import { useHistory } from 'react-router-dom';
@@ -137,6 +138,7 @@ const useStyles = makeStyles({
     fontSize: '1.6rem',
   },
   container: {
+    position: 'relative',
     display: 'flex',
     marginTop: '2rem',
     alignItems: 'center',
@@ -186,15 +188,19 @@ const useStyles = makeStyles({
   activeLevelName: {
     border: '2px solid blue',
   },
+  wordListWrapper: {
+    position: 'relative',
+    width: '90%',
+    marginTop: '1rem',
+    maxWidth: '1150px',
+  },
   wordList: {
     display: 'flex',
     flexDirection: 'column',
     // alignSelf: 'flex-start',
-    marginTop: '1rem',
-    width: '90%',
-    maxWidth: '1150px',
-    maxHeight: '60vh',
+    width: '100%',
     margin: '1rem',
+    maxHeight: '55vh',
     overflowY: 'scroll',
     willChange: 'transform',
   },
@@ -243,12 +249,30 @@ const useStyles = makeStyles({
     width: '100%',
     alignItems: 'center',
   },
+  statsTextWrapper: {
+    display: 'flex',
+    flexDirection: 'row-reverse',
+    justifyContent: 'space-between',
+    paddingLeft: '2rem',
+    paddingRight: '4.5rem'
+  },
+  // statsText: {
+  //   position: 'absolute',
+  //   bottom: '-3rem',
+  //   zIndex: 300,
+  // },
+  // statsTextLeft: {
+  //   left: '2rem',
+  // },
+  // statsTextRight: {
+  //   right: '2rem',
+  // },
 });
 
 const DictionaryPage: React.FC = () => {
   const dispatch = useDispatch();
-  const historyCopy = useHistory()
-  const searchParams = new URLSearchParams(historyCopy.location.search)
+  const historyCopy = useHistory();
+  const searchParams = new URLSearchParams(historyCopy.location.search);
   const user = useSelector((state: RootStateType) => state.userState.user);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isWordListLoaded, setIsWordListLoaded] = useState(false);
@@ -257,8 +281,8 @@ const DictionaryPage: React.FC = () => {
     showButtons: true,
   });
   const [pagesCount, setPagesCount] = useState(1);
-  const getGroup = ():number => {
-    const group = searchParams.get('group')
+  const getGroup = (): number => {
+    const group = searchParams.get('group');
     let groupNumber = 0;
     if (typeof group === 'string') {
       groupNumber = parseFloat(group);
@@ -266,24 +290,24 @@ const DictionaryPage: React.FC = () => {
       if (groupNumber > 5) groupNumber = 5;
     }
     return groupNumber;
-  }
-  const getPage = ():any => {
+  };
+  const getPage = (): any => {
     const page = searchParams.get('page');
     let pageNumber = 0;
     if (typeof page === 'string') {
-      pageNumber = parseFloat(page) - 1;  
-      if (pageNumber < 0) pageNumber = 0;  
-      if (pageNumber > 30) pageNumber = 29; 
-      if (pageNumber > pagesCount) pageNumber = pagesCount; 
+      pageNumber = parseFloat(page) - 1;
+      if (pageNumber < 0) pageNumber = 0;
+      if (pageNumber > 30) pageNumber = 29;
+      if (pageNumber > pagesCount) pageNumber = pagesCount;
     }
     return pageNumber;
-  }
-  const getDifficulty = ():string => {
-    const difficulty = searchParams.get('difficulty')
-    let newDifficulty = 'hard'
+  };
+  const getDifficulty = (): string => {
+    const difficulty = searchParams.get('difficulty');
+    let newDifficulty = 'hard';
     if (typeof difficulty === 'string') newDifficulty = difficulty;
-    return newDifficulty
-  }
+    return newDifficulty;
+  };
   const [modalOpened, setModalOpened] = useState(false);
   const [dialogOpened, setDialogOpened] = useState(false);
   const [difficulty, setDifficulty] = useState(getDifficulty());
@@ -308,6 +332,33 @@ const DictionaryPage: React.FC = () => {
       textExampleTranslate: '',
       userWord: {
         difficulty: '',
+        optional: {
+          learned: false,
+        },
+      },
+    },
+  ]);
+  const [allLearningWords, setAllLearningWords] = useState([
+    {
+      id: '',
+      group: 0,
+      page: 0,
+      word: '',
+      image: '',
+      audio: '',
+      audioMeaning: '',
+      audioExample: '',
+      textMeaning: '',
+      textExample: '',
+      transcription: '',
+      wordTranslate: '',
+      textMeaningTranslate: '',
+      textExampleTranslate: '',
+      userWord: {
+        difficulty: '',
+        optional: {
+          learned: false,
+        },
       },
     },
   ]);
@@ -396,13 +447,13 @@ const DictionaryPage: React.FC = () => {
     /* eslint-enable */
   };
 
-  const handleDifficultyChoose = (value:string) => {
+  const handleDifficultyChoose = (value: string) => {
     historyCopy.replace({
       pathname: '/ebookpage/dictionary/',
-      search: `?group=${getGroup()}&page=${getPage()}&difficulty=${value}`
-    })
-    setDifficulty(value)
-  }
+      search: `?group=${getGroup()}&page=${getPage()}&difficulty=${value}`,
+    });
+    setDifficulty(value);
+  };
 
   const handleSettingsButtonClick = () => {
     setModalOpened(true);
@@ -415,8 +466,10 @@ const DictionaryPage: React.FC = () => {
   const handlePageChange = (data: any) => {
     historyCopy.replace({
       pathname: '/ebookpage/dictionary/',
-      search: `?group=${getGroup()}&page=${data.selected + 1}&difficulty=${getDifficulty()}`
-    })
+      search: `?group=${getGroup()}&page=${
+        data.selected + 1
+      }&difficulty=${getDifficulty()}`,
+    });
     setCurrentPage(data.selected);
   };
 
@@ -442,7 +495,7 @@ const DictionaryPage: React.FC = () => {
       wordsPerPage,
     };
     try {
-      console.log('before service with params ', params)
+      console.log('before service with params ', params);
       const response = await service.getAggregatedWordsList(
         params,
         searchString
@@ -452,8 +505,8 @@ const DictionaryPage: React.FC = () => {
       if (!totalCount || totalCount < 1) setPagesCount(1);
       else await setPagesCount(Math.ceil(totalCount / currentWordsPerPage));
       setIsWordListLoaded(true);
-      console.log('fetched words are, ', newWords)
-      console.log('fetched count is ', totalCount)
+      console.log('fetched words are, ', newWords);
+      console.log('fetched count is ', totalCount);
       return newWords;
     } catch (e) {
       console.log(e);
@@ -504,6 +557,20 @@ const DictionaryPage: React.FC = () => {
       .catch((e) => console.log(e));
   }, [difficulty, currentGroup, currentPage, reRender]);
 
+  //  get all learning words from group for stats if current difficulty is learning
+  useEffect(() => {
+    if (difficulty !== 'learning') return;
+    const wordsPromise = getUpdatedWords({
+      page: 0,
+      group: currentGroup,
+      wordsPerPage: 600,
+      searchString: 'learning',
+    });
+    wordsPromise.then((data) => {
+      setAllLearningWords(data);
+    });
+  }, [currentGroup, reRender, difficulty]);
+
   const handleGroupChange = (
     e: React.MouseEvent<HTMLSpanElement, MouseEvent>
   ) => {
@@ -530,9 +597,11 @@ const DictionaryPage: React.FC = () => {
     }
     historyCopy.replace({
       pathname: '/ebookpage/dictionary/',
-      search: `?group=${newGroup}&page=${getPage() + 1}&difficulty=${getDifficulty()}`
-    })
-    setCurrentGroup(newGroup)
+      search: `?group=${newGroup}&page=${
+        getPage() + 1
+      }&difficulty=${getDifficulty()}`,
+    });
+    setCurrentGroup(newGroup);
   };
 
   if (!isLoaded) return <CircularProgress />;
@@ -779,18 +848,52 @@ const DictionaryPage: React.FC = () => {
             <span className={classes.levelName}>B2+</span>
           </div>
         </Box>
-        <div className={classes.wordList}>
-          {isWordListLoaded &&
-            wordsToRender.length > 0 &&
-            wordsToRender.map((item: any, index) => (
-              <WordItem
-                word={item}
-                group={currentGroup}
-                key={item.word}
-                forseFetch={() => forseRender()}
-                settings={settings}
-              />
-            ))}
+        <div className={classes.wordListWrapper}>
+          <div className={classes.wordList}>
+            {isWordListLoaded &&
+              wordsToRender.length > 0 &&
+              wordsToRender.map((item: any, index) => (
+                <WordItem
+                  word={item}
+                  group={currentGroup}
+                  key={item.word}
+                  forseFetch={() => forseRender()}
+                  settings={settings}
+                />
+              ))}
+          </div>
+          <div className={classes.statsTextWrapper}>
+          {difficulty === 'learning' && (
+            <div>
+              <Typography align="left" variant="h4" component="p">
+                <p>Cлов на странице: {wordsToRender.length}</p>
+                <p>
+                  Изучено:{' '}
+                  {
+                    wordsToRender.filter(
+                      (x) => x.userWord.optional.learned === true
+                    ).length
+                  }
+                </p>
+              </Typography>
+            </div>
+          )}
+          {difficulty === 'learning' && (
+            <div>
+              <Typography align="left" variant="h4" component="p">
+                <p>Cлов в группе: {allLearningWords.length}</p>
+                <p>
+                  Изучено:{' '}
+                  {
+                    allLearningWords.filter(
+                      (x) => x.userWord.optional.learned === true
+                    ).length
+                  }
+                </p>
+              </Typography>
+            </div>
+          )}
+          </div>
         </div>
       </div>
       <ReactPaginate
