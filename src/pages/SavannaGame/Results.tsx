@@ -46,16 +46,6 @@ const Results: React.FC = () => {
     }
   };
 
-  // useEffect(() => {
-  //   playSoundWord();
-  // }, [play])
-
-
-  // const playSoundWord = () => {
-  //   if ((isPlaying && Object.keys(rightWord).length > 0)) {
-  //     play()
-  //   }
-  // }
 
   const startGame = () => {
     dispatch(isWordMove(true));

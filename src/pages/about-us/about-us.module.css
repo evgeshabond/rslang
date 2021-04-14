@@ -70,6 +70,7 @@
 
 .link {
   font-size: 1.4rem;
+  color: inherit;
 }
 
 .link:hover {

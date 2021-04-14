@@ -2,11 +2,12 @@ import React from 'react';
 import styles from './about-us.module.css';
 import roman from '../../assets/images/Roman.jpg';
 import gazizImg from '../../assets/images/Gaziz.jpg';
-import eugenImg from '../../assets/images/Eugen.jpg'
+import eugenImg from '../../assets/images/Eugen.jpg';
+import elenaImg from '../../assets/images/Elena.jpg'
 
 export const AboutUs: React.FC = () => (
   <div className={styles.wrapper}>
-    <h2 className={styles.title}>О команде.</h2>
+    <h2 className={styles.title}>О команде</h2>
     <div className={styles.inner}>
       <div className={styles.person}>
         <img
@@ -77,6 +78,29 @@ export const AboutUs: React.FC = () => (
             href="https://github.com/evgeshabond"
           >
             https://github.com/evgeshabond
+          </a>
+        </div>
+      </div>
+      <div className={styles.person}>
+        <img
+          className={`${styles.image} ${styles.image_lena}`}
+          src={elenaImg}
+          width="100px"
+          height="100px"
+          alt="Elena"
+        />
+        <div className={styles.text__wrapper}>
+          <h3 className={styles.name}>Елена:</h3>
+          <p className={styles.text}>
+            Разработка игр Аудиовызов и Саванна
+          </p>
+          <a
+            className={styles.link}
+            rel="noreferrer"
+            target="_blank"
+            href="https://github.com/general-m"
+          >
+            https://github.com/general-m
           </a>
         </div>
       </div>
