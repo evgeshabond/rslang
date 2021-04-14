@@ -23,7 +23,7 @@ export const StartPage: React.FC = () => (
         <li className={styles.list__item}>
           <Base />
           <span className={styles.list__text}>
-            Большая база слов 3600 разбитых по уровням
+          Большая база слов для разных уровней
           </span>
         </li>
         <li className={styles.list__item}>
