@@ -18,7 +18,7 @@ import AudioGame from '../../pages/AudioGame/AudioGame';
 import ConstructorGame from '../ConstructorGame/ConstructorGame';
 import GitLinks from '../GitLinks/GitLinks';
 import { QuestionPage } from '../../pages/question-page/Question-page';
-import { GameTest } from '../game-statistic-test/Game-statistic-test';
+
 import SavannaGame from '../../pages/SavannaGame/SavannaGame';
 import { DashboardPage } from '../../pages/dashbord-page/Dashboard-page';
 import { StatisticPage } from '../../pages/statistic-page/Statistic-page';
@@ -32,7 +32,6 @@ const App: React.FC = () => (
         <Header />
 
         <main className={styles.main}>
-
           <GitLinks />
           <Switch>
             <Route path={mainPath.main} component={MainPage} exact />
@@ -53,7 +52,7 @@ const App: React.FC = () => (
             />
             <Route path={mainPath.questionPage} component={QuestionPage} />
             <Route path={mainPath.dashboardPage} component={DashboardPage} />
-            <Route path={mainPath.testStatistic} component={GameTest} />
+
             <Route path={mainPath.statistic} component={StatisticPage} />
             <Route path={mainPath.aboutUs} component={AboutUs} />
             <Route path={mainPath.startPage} component={StartPage} />

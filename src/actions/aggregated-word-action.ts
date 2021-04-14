@@ -123,7 +123,6 @@ export const getAggregatedWordsList = (
       }
     })
     .catch((err) => {
-      console.log(err);
       dispatch(clearWordStatistic());
       dispatch(userAggregatedWordFetchErr(err.message));
     });
