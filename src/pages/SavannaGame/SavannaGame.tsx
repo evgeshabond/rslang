@@ -16,7 +16,7 @@ import StartScreen from "./StartScreen";
 import SettingsBtn from './SettingsBtn';
 import LevelInfo from './LevelInfo';
 import LifeInfo from './LifeInfo';
-import { wordRight } from '../../actions/savanna-game-actions';
+import { isShowResults, setLearnWords, wordRight } from '../../actions/savanna-game-actions';
 
 
 
@@ -28,26 +28,27 @@ const SavannaGame: React.FC = () => {
   const isAnswer = useSelector((state: RootStateType) => state.savannaGameState.isAnswerSelected);
   const currentWords = useSelector((state: RootStateType) => state.savannaGameState.currentPlayWords);
   const stepCounter = useSelector((state: RootStateType) => state.savannaGameState.stepCounter);
+  const listLearnWords = useSelector((state: RootStateType) =>
+    state.savannaGameState.listLearnWords);
 
   const [play] = useSound(`${mainPath.langUrl}${rightWord.audio}`, { interrupt: true });
   const [playSuccessAnswer] = useSound(successSound);
   const [playWrongAnswer] = useSound(wrongSound);
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchWordsList({ page: 0, group: 0 }))
+  // useEffect(() => {
+
+  // }, []);
+
+  useEffect(() => () => {
+    dispatch(isShowResults(false));
   }, [])
 
-
   useEffect(() => {
-    console.log('sound1')
-    console.log(rightWord.word);
-    console.log(userAnswer.word)
     if (!isAnswer) {
       return
     }
     if (userAnswer.word === rightWord.word) {
-      console.log('sound')
       playSuccessAnswer();
     }
     playWrongAnswer()

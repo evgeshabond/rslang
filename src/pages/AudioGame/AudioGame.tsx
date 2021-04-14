@@ -18,6 +18,7 @@ import WordInfo from './WordInfo';
 import NextBtn from './NextBtn';
 import { ReactComponent as AudioOnSizeButton } from '../../assets/images/audioOn.svg';
 import SettingsBtn from './SettingsBtn';
+import { isShowResults } from '../../actions/audioGame-actions';
 
 
 const AudioGame: React.FC = () => {
@@ -37,6 +38,8 @@ const AudioGame: React.FC = () => {
     state.audioGameState.isFullScreen);
   const isDontknow = useSelector((state: RootStateType) =>
     state.audioGameState.isPressDontknow);
+  const isResults = useSelector((state: RootStateType) =>
+    state.audioGameState.isShowResults);
 
   const [play] = useSound(`${mainPath.langUrl}${rightWord.audio}`, { interrupt: true });
   const [playSuccessAnswer] = useSound(successSound);
@@ -49,6 +52,10 @@ const AudioGame: React.FC = () => {
       dispatch(fetchWordsList({ page: 0, group: 0 }));
     }
   }, []);
+
+  useEffect(() => () => {
+    dispatch(isShowResults(false));
+  }, [])
 
   useEffect(() => {
     if (isPlaying) {
