@@ -69,9 +69,10 @@ const RenderWordCard: React.FC = () => {
       return;
     }
     let random;
-    if (listLearnWords) {
+    if (listLearnWords.length > 0) {
       do {
         random = currentWords[getRandomInt(0, currentWords.length - 1)];
+        console.log(listLearnWords.includes(random.id));
       }
       while (listLearnWords.includes(random.id));
 

@@ -99,6 +99,7 @@ const savannaGameReducer = (state = initialState, action: SavannaGameActionType)
         ...state,
         listRightWords: [],
         listWrongWords: [],
+        listLearnWords:[]
         
       };
 
