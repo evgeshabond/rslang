@@ -59,6 +59,3 @@
 .falling__word.exiting {
   animation: show-loader 0.5s reverse;
 }
-
-.falling__word.exited {
-}
