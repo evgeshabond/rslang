@@ -12,6 +12,7 @@ import {
   wordUserAnswer,
   wordRight,
   isAnswerSelected,
+  startWordPosition,
 } from '../../actions/savanna-game-actions';
 import successSound from '../../assets/sounds/src_music_correct.mp3';
 import wrongSound from '../../assets/sounds/src_music_wrong.wav';
@@ -66,18 +67,20 @@ const FallingWord: React.FC = () => {
 
   useEffect(
     () => () => {
+      console.log('unmount', timer);
       clearInterval(timer as ReturnType<typeof setInterval>);
     },
-    []
+    [timer]
   );
 
   useEffect(() => {
     if (!isMove) {
+      console.log('ismove', timer);
       clearInterval(timer as ReturnType<typeof setInterval>);
     }
     if (position > 323) {
       showAnswer();
-      console.log('fall down');
+      console.log('fall down', timer);
 
       clearInterval(timer as ReturnType<typeof setInterval>);
     }
@@ -87,7 +90,7 @@ const FallingWord: React.FC = () => {
     if (refBtn.current) {
       if (isMove && !isAnswer) {
         const newTimer = setInterval(() => {
-          dispatch(wordPosition(0.5));
+          dispatch(wordPosition(3));
         }, 5);
         setTimer(newTimer);
         console.log(newTimer);
@@ -115,6 +118,7 @@ const FallingWord: React.FC = () => {
     dispatch(isWordFalled(true));
     dispatch(isWordMove(false));
     // playWrongAnswer();
+    dispatch(startWordPosition(0));
     dispatch(isAnswerSelected(true));
   };
 
