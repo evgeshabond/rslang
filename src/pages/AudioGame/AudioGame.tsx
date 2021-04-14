@@ -47,11 +47,6 @@ const AudioGame: React.FC = () => {
   const handle = useFullScreenHandle();
 
   const dispatch = useDispatch();
-  // useEffect(() => {
-  //   if (wordList.length === 0) {
-  //     dispatch(fetchWordsList({ page: 0, group: 0 }));
-  //   }
-  // }, []);
 
   useEffect(() => () => {
     dispatch(isShowResults(false));
@@ -76,7 +71,11 @@ const AudioGame: React.FC = () => {
     if (userAnswer.word === rightWord.word && !isDontknow) {
       playSuccessAnswer();
     }
-    playWrongAnswer()
+    else {
+
+      playWrongAnswer()
+    }
+
   }, [userAnswer.word])
 
   useEffect(() => {

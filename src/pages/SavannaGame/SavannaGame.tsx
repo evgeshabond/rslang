@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import useSound from 'use-sound';
+import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchWordsList } from '../../actions/word-actions';
 import { RootStateType } from '../../reducer/root-reducer';
@@ -14,6 +15,7 @@ import StartScreen from './StartScreen';
 import SettingsBtn from './SettingsBtn';
 import LevelInfo from './LevelInfo';
 import LifeInfo from './LifeInfo';
+
 import {
   isShowResults,
   setLearnWords,
@@ -46,9 +48,14 @@ const SavannaGame: React.FC = () => {
   const [play] = useSound(`${mainPath.langUrl}${rightWord.audio}`, {
     interrupt: true,
   });
+
+  const fullScreen = useSelector((state: RootStateType) =>
+    state.savannaGameState.isFullScreen);
+
   const [playSuccessAnswer] = useSound(successSound);
   const [playWrongAnswer] = useSound(wrongSound);
 
+  const handle = useFullScreenHandle();
   const dispatch = useDispatch();
 
   useEffect(
@@ -65,17 +72,34 @@ const SavannaGame: React.FC = () => {
     if (userAnswer.word === rightWord.word) {
       playSuccessAnswer();
     }
-    playWrongAnswer();
+    else {
+      playWrongAnswer();
+    }
+
   }, [isAnswer]);
 
+  useEffect(() => {
+    if (fullScreen) {
+      handle.enter();
+      return;
+    }
+    if (isPlaying) {
+      handle.exit();
+    }
+
+  }, [fullScreen])
+
+
   return isPlaying ? (
-    <div className={styles.game__content}>
-      <SettingsBtn />
-      <div className={styles.game__field}>
-        {currentWords.length === 0 ? <Spinner /> : <RenderWordCard />}
+    <FullScreen handle={handle} className={styles.fullScreen__container} >
+      <div className={fullScreen ? styles.game__content__fullScreen : styles.game__content}>
+        <SettingsBtn />
+        <div className={styles.game__field}>
+          {currentWords.length === 0 ? <Spinner /> : <RenderWordCard />}
+        </div>
+        <img className={styles.cat__image} src={CatSavanna} alt="loading..." />
       </div>
-      <img className={styles.cat__image} src={CatSavanna} alt="loading..." />
-    </div>
+    </FullScreen >
   ) : (
     <StartScreen />
   );

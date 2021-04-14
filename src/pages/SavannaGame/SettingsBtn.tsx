@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import useSound from 'use-sound';
 import { useDispatch, useSelector } from 'react-redux';
-
+import FullscreenIcon from '@material-ui/icons/Fullscreen';
+import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
 import { RootStateType } from '../../reducer/root-reducer';
 import styles from './SavannaGame.module.css';
 import { audioGameStart, wordUserAnswer, wordRight, isAnswerSelected, currentPlayWords } from '../../actions/audioGame-actions';
 import { CloseButton } from "../../components/button-icons/close-button/close-button";
 import { QuestionButton } from "../../components/button-icons/question-button/question-button";
-import { clearWords, isWordMove, savannaGameStart, startWordPosition, wordPosition } from '../../actions/savanna-game-actions';
+import { clearWords, isFullScreen, isWordMove, savannaGameStart, startWordPosition, wordPosition } from '../../actions/savanna-game-actions';
 import { AudioOnSizeButton } from '../../components/button-icons/audiOn-button/audioOn-Size';
 
 const SettingsBtn: React.FC = () => {
@@ -30,6 +31,8 @@ const SettingsBtn: React.FC = () => {
     state.savannaGameState.isWordMove);
   const position = useSelector((state: RootStateType) =>
     state.savannaGameState.wordPosition);
+  const fullScreen = useSelector((state: RootStateType) =>
+    state.savannaGameState.isFullScreen);
 
   const getClose = () => {
     dispatch(savannaGameStart(false));
@@ -37,6 +40,17 @@ const SettingsBtn: React.FC = () => {
     dispatch(startWordPosition(0));
     dispatch(isWordMove(false));
     dispatch(clearWords());
+    if (fullScreen) {
+      dispatch(isFullScreen(false));
+    }
+  }
+
+  function fullScreenEnterHandler() {
+    dispatch(isFullScreen(true));
+  }
+
+  function fullScreenExitHandler() {
+    dispatch(isFullScreen(false));
   }
 
 
@@ -46,9 +60,32 @@ const SettingsBtn: React.FC = () => {
       <div className={styles.hint} data-title="Выберите перевод падающего слова">
         <QuestionButton buttonClick={() => console.log('info')} />
       </div>
-      <div>
-        FS
-      </div>
+      {fullScreen ? (
+        <button
+          className={styles['full-screen__button']}
+          type="button"
+          onClick={() => fullScreenExitHandler()}
+        >
+          <FullscreenExitIcon
+            className={styles['full-screen__icon']}
+            width="24px"
+            height="24px"
+          />
+        </button>
+      ) : (
+        <button
+          className={styles['full-screen__button']}
+          type="button"
+          onClick={() => fullScreenEnterHandler()}
+        >
+          <FullscreenIcon
+            className={styles['full-screen__icon']}
+            width="24px"
+            height="24px"
+          />
+        </button>
+      )}
+
       <CloseButton buttonClick={() => getClose()} />
     </div>
 
