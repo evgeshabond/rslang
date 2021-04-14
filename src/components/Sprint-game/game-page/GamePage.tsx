@@ -36,9 +36,6 @@ import styles from './game-page.module.css';
 
 const GamePage: React.FC = () => {
   const dispatch = useDispatch();
-  const wordList = useSelector(
-    (state: RootStateType) => state.wordState.currentWordList
-  );
 
   const gameStatus = useSelector(
     (state: RootStateType) => state.sprintGameState
@@ -85,7 +82,7 @@ const GamePage: React.FC = () => {
   const changeGameStats = () => {
     dispatch(setWorldResult(true, shuffledArray[wordCounter].id));
     if (userState.isLogin) {
-      dispatch(userWordToLearnResult(param, { isCorrect: false }));
+      dispatch(userWordToLearnResult(param, { isCorrect: true }));
     }
     dispatch(sprintGameSetLearntWords(shuffledArray[wordCounter]));
     changeCurrentPoints();
