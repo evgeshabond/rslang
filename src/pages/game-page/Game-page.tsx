@@ -45,11 +45,17 @@ const GamePage: React.FC = () => {
     <div className={rootStyles['ebook-container']}>
       <h2 className={rootStyles.title}>Мини-игры</h2>
       <div className={rootStyles['ebook-buttons-container']}>
-        <LinkButton
-          link={mainPath.savannaGame}
-          clickHandler={() => openSavannaGameHandler()}
-          buttonName="Саванна"
-        />
+        <button
+          className={styles['constructor-button']}
+          type="button"
+          onClick={() => openConstructorGameHandler()}
+        >
+          <LinkButton
+            link={mainPath.constructorGame}
+            buttonName="Конструктор слов"
+          />
+        </button>
+
         <LinkButton
           link={mainPath.audioGame}
           clickHandler={() => openAudioGameHandler()}
@@ -62,16 +68,11 @@ const GamePage: React.FC = () => {
           buttonName="Спринт"
           clickHandler={() => openSprintHandler()}
         />
-        <button
-          className={styles['constructor-button']}
-          type="button"
-          onClick={() => openConstructorGameHandler()}
-        >
-          <LinkButton
-            link={mainPath.constructorGame}
-            buttonName="Конструктор слов"
-          />
-        </button>
+        <LinkButton
+          link={mainPath.savannaGame}
+          clickHandler={() => openSavannaGameHandler()}
+          buttonName="Саванна"
+        />
       </div>
       <MainCat />
     </div>

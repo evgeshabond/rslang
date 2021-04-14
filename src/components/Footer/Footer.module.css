@@ -6,7 +6,6 @@
   margin: 0 auto;
 
   height: 60px;
-  z-index: 10;
 }
 
 .wrapper__circle {
@@ -98,6 +97,8 @@
   margin-bottom: 4px;
 
   list-style-type: none;
+
+  z-index: 10;
 }
 
 .list__link {
