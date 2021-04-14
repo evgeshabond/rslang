@@ -5,7 +5,6 @@ import { useHistory } from 'react-router-dom';
 //  redux
 import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
-
 //  material ui
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -15,7 +14,6 @@ import {
   DialogTitle,
   List,
   ListItem,
-  ListItemText,
   Typography,
 } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
@@ -23,13 +21,10 @@ import Modal from '@material-ui/core/Modal';
 import Switch from '@material-ui/core/Switch';
 //  components
 import WordItem from '../../components/BookComponents/WordItem';
-
 //  types
 import { RootStateType } from '../../reducer/root-reducer';
-import { WordStateType } from '../../reducer/word-reducer';
 //  herlpers and services
 import AggregateService from '../../services/word-aggregate-service';
-
 //  icons
 import learningIcon from '../../assets/images/learning.svg';
 import hardIcon from '../../assets/images/hardWord.svg';
@@ -38,15 +33,9 @@ import gamesIcon from '../../assets/images/games.svg';
 import settingsIcon from '../../assets/images/settings.svg';
 import { setLevelVisibility } from '../../actions/menu-actions';
 import aggregatePage from '../../utils/aggregatePage';
-import {
-  CurrentWordListType,
-  wordListLoaded,
-} from '../../actions/word-actions';
+import { wordListLoaded } from '../../actions/word-actions';
 import { mainPath } from '../../utils/constants';
-import {
-  constructorGameStart,
-  setResultPageState,
-} from '../../actions/constructor-game-actions';
+import { setResultPageState } from '../../actions/constructor-game-actions';
 import { audioGameStart } from '../../actions/audioGame-actions';
 import { savannaGameStart } from '../../actions/savanna-game-actions';
 import { sprintGameStatusChange } from '../../actions/sprint-game-action';
@@ -257,15 +246,13 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     paddingLeft: '2rem',
     paddingRight: '4.5rem',
-    minHeight: '6rem'
-    
+    minHeight: '8rem',
   },
 
   statsText: {
     margin: 0,
     marginBottom: '0.5rem',
-    minHeight: '1.5rem'
-    
+    minHeight: '1.5rem',
   },
   // statsTextLeft: {
   //   left: '2rem',
@@ -297,6 +284,7 @@ const DictionaryPage: React.FC = () => {
     }
     return groupNumber;
   };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getPage = (): any => {
     const page = searchParams.get('page');
     let pageNumber = 0;
@@ -319,7 +307,7 @@ const DictionaryPage: React.FC = () => {
   const [difficulty, setDifficulty] = useState(getDifficulty());
   const [currentGroup, setCurrentGroup] = useState(getGroup());
   const [currentPage, setCurrentPage] = useState(getPage());
-  const [currentWordsPerPage, setCurrentWordsPerPage] = useState(20);
+  const currentWordsPerPage = 20;
   const [wordsToRender, setWordsToRender] = useState([
     {
       id: '',
@@ -374,7 +362,6 @@ const DictionaryPage: React.FC = () => {
   const classes = useStyles({ group: currentGroup });
 
   const forseRender = () => {
-    console.log('rerender ran');
     setRerender(!reRender);
   };
 
@@ -470,6 +457,7 @@ const DictionaryPage: React.FC = () => {
     setModalOpened(false);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handlePageChange = (data: any) => {
     historyCopy.replace({
       pathname: '/ebookpage/dictionary/',
@@ -502,20 +490,19 @@ const DictionaryPage: React.FC = () => {
       wordsPerPage,
     };
     try {
-      console.log('before service with params ', params);
       const response = await service.getAggregatedWordsList(
         params,
         searchString
       );
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const newWords: any = await response[0].paginatedResults.flat();
       const totalCount: number = await response[0]?.totalCount[0]?.count;
       if (!totalCount || totalCount < 1) setPagesCount(1);
       else await setPagesCount(Math.ceil(totalCount / currentWordsPerPage));
       setIsWordListLoaded(true);
-      console.log('fetched words are, ', newWords);
-      console.log('fetched count is ', totalCount);
       return newWords;
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.log(e);
     }
     return [];
@@ -541,6 +528,7 @@ const DictionaryPage: React.FC = () => {
       return updatedWords;
       /* eslint-enable */
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.log(e);
     }
     return [];
@@ -554,6 +542,7 @@ const DictionaryPage: React.FC = () => {
       wordsPerPage: currentWordsPerPage,
       searchString: difficulty,
     })
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then((updatedWords: any) => {
         if (updatedWords.length < 1) {
           setCurrentPage(0);
@@ -561,8 +550,16 @@ const DictionaryPage: React.FC = () => {
         setWordsToRender(updatedWords);
         setIsLoaded(true);
       })
+      // eslint-disable-next-line no-console
       .catch((e) => console.log(e));
-  }, [difficulty, currentGroup, currentPage, reRender]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    difficulty,
+    currentGroup,
+    currentPage,
+    reRender,
+    currentWordsPerPage,
+  ]);
 
   //  get all learning words from group for stats if current difficulty is learning
   useEffect(() => {
@@ -576,6 +573,7 @@ const DictionaryPage: React.FC = () => {
     wordsPromise.then((data) => {
       setAllLearningWords(data);
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentGroup, reRender, difficulty]);
 
   const handleGroupChange = (
@@ -859,6 +857,7 @@ const DictionaryPage: React.FC = () => {
           <div className={classes.wordList}>
             {isWordListLoaded &&
               wordsToRender.length > 0 &&
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               wordsToRender.map((item: any, index) => (
                 <WordItem
                   word={item}
@@ -870,36 +869,40 @@ const DictionaryPage: React.FC = () => {
               ))}
           </div>
           <div className={classes.statsTextWrapper}>
-          {difficulty === 'learning' && (
-            <div>
-              <Typography align="left" variant="h4" component="p">
-                <p className={classes.statsText}>Cлов на странице: {wordsToRender.length}</p>
-                <p className={classes.statsText}>
-                  Изучено:{' '}
-                  {
-                    wordsToRender.filter(
-                      (x) => x.userWord.optional.learned === true
-                    ).length
-                  }
-                </p>
-              </Typography>
-            </div>
-          )}
-          {difficulty === 'learning' && (
-            <div>
-              <Typography align="left" variant="h4" component="p">
-                <p className={classes.statsText}>Cлов в группе: {allLearningWords.length}</p>
-                <p className={classes.statsText}>
-                  Изучено:{' '}
-                  {
-                    allLearningWords.filter(
-                      (x) => x.userWord.optional.learned === true
-                    ).length
-                  }
-                </p>
-              </Typography>
-            </div>
-          )}
+            {difficulty === 'learning' && (
+              <div>
+                <Typography align="left" variant="h4" component="div">
+                  <p className={classes.statsText}>
+                    Cлов на странице: {wordsToRender.length}
+                  </p>
+                  <p className={classes.statsText}>
+                    Изучено:{' '}
+                    {
+                      wordsToRender.filter(
+                        (x) => x.userWord.optional.learned === true
+                      ).length
+                    }
+                  </p>
+                </Typography>
+              </div>
+            )}
+            {difficulty === 'learning' && (
+              <div>
+                <Typography align="left" variant="h4" component="div">
+                  <p className={classes.statsText}>
+                    Cлов в группе: {allLearningWords.length}
+                  </p>
+                  <p className={classes.statsText}>
+                    Изучено:{' '}
+                    {
+                      allLearningWords.filter(
+                        (x) => x.userWord.optional.learned === true
+                      ).length
+                    }
+                  </p>
+                </Typography>
+              </div>
+            )}
           </div>
         </div>
       </div>
