@@ -60,6 +60,7 @@ const GamePage: React.FC = () => {
   const [playCorrectSound] = useSound(correctSound, {
     interrupt: true,
   });
+  const userState = useSelector((state: RootStateType) => state.userState);
   const [playWrongSound] = useSound(wrongSound, { interrupt: true });
   const getRandomNumber = (num: number) => Math.floor(Math.random() * num);
   const user = useSelector((state: RootStateType) => state.userState.user);
@@ -83,7 +84,9 @@ const GamePage: React.FC = () => {
 
   const changeGameStats = () => {
     dispatch(setWorldResult(true, shuffledArray[wordCounter].id));
-    dispatch(userWordToLearnResult(param, { isCorrect: true }));
+    if (userState.isLogin) {
+      dispatch(userWordToLearnResult(param, { isCorrect: false }));
+    }
     dispatch(sprintGameSetLearntWords(shuffledArray[wordCounter]));
     changeCurrentPoints();
     dispatch(setCorrectAnswer(true));
@@ -117,7 +120,9 @@ const GamePage: React.FC = () => {
   };
   const cleanCurrentGameStats = () => {
     dispatch(setWorldResult(false, shuffledArray[wordCounter].id));
-    dispatch(userWordToLearnResult(param, { isCorrect: false }));
+    if (userState.isLogin) {
+      dispatch(userWordToLearnResult(param, { isCorrect: false }));
+    }
     dispatch(sprintGameSetNotLearntWords(shuffledArray[wordCounter]));
     dispatch(setCorrectAnswer(false));
     playWrongSound();

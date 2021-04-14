@@ -1,9 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CurrentWordListType } from '../../actions/word-actions';
-import styles from './word-item-game.module.css';
 import { RootStateType } from '../../reducer/root-reducer';
-
+import styles from './word-item-game.module.css';
 
 type Props = {
   word: CurrentWordListType,
@@ -26,8 +25,6 @@ const WordItem: React.FC<Props> = ({ word, buttonClick }) => {
       { word.wordTranslate}
     </button >
   )
-
 }
-
 
 export { WordItem };
