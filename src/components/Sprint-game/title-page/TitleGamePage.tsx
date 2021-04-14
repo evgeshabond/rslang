@@ -13,7 +13,7 @@ import {
   sprintGameWordCounter
 } from '../../../actions/sprint-game-action';
 import {
-  CurrentWordListType, fetchWordsList
+  CurrentWordListType
 } from '../../../actions/word-actions';
 import { ReactComponent as Cat2 } from '../../../assets/images/cat2.svg';
 import playIcon from '../../../assets/images/play-big.svg';

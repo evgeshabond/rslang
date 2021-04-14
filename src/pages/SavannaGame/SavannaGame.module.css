@@ -122,6 +122,11 @@
   justify-content: center;
 }
 
+.playing__btn {
+  align-self: center;
+  align-content: center;
+}
+
 .playing__btn,
 .add__aswer:focus {
   outline: none;
@@ -209,18 +214,6 @@
 .falling__word__container {
   display: flex;
   flex-direction: column;
+  align-content: center;
   justify-content: space-between;
-  /* position: fixed;
-  left: 0;
-  top: 0;
-  font-size: 48px;
-  line-height: 1;
-  font-weight: 300;
-  white-space: nowrap;
-  color: #fff;
-  letter-spacing: 1px;
-  height: 100%;
-  width: 100%;
-  transform: translate(0);
-  transition: transform 5s ease-in; */
 }
