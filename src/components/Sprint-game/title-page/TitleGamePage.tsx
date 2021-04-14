@@ -10,11 +10,10 @@ import {
   sprintGameShuffledArray,
   sprintGameStatusChange,
   sprintGameTotalPoints,
-  sprintGameWordCounter,
+  sprintGameWordCounter
 } from '../../../actions/sprint-game-action';
 import {
-  CurrentWordListType,
-  fetchWordsList,
+  CurrentWordListType, fetchWordsList
 } from '../../../actions/word-actions';
 import { ReactComponent as Cat2 } from '../../../assets/images/cat2.svg';
 import playIcon from '../../../assets/images/play-big.svg';
@@ -29,13 +28,6 @@ export const TitleGamePage: React.FC = () => {
     (state: RootStateType) => state.wordState.currentWordList
   );
 
-  // useEffect(() => {
-  //   if (wordList.length === 0) {
-  //     console.log('fetching');
-  //     dispatch(fetchWordsList({ page: 0, group: 0 }));
-  //   }
-  // }, []);
-
   const getRandomNumber = (num: number) => Math.floor(Math.random() * num);
 
   const createRandomArray = (wordListArray: CurrentWordListType[]) => {
@@ -43,12 +35,10 @@ export const TitleGamePage: React.FC = () => {
     for (let i = 0; i < wordListArray.length; i++) {
       array.push(getRandomNumber(wordListArray.length));
     }
-    console.log(array, 'random');
     return array;
   };
 
-  useEffect(()=>{
-
+  useEffect(() => {
     dispatch(sprintGameStatusChange('play'));
     dispatch(sprintGameWordCounter(0));
     dispatch(clearWords());
@@ -70,8 +60,6 @@ export const TitleGamePage: React.FC = () => {
       sprintGameShuffledArray(wordList.slice().sort(() => Math.random() - 0.5))
     );
     dispatch(sprintGameRandomArray(createRandomArray(wordList)));
-
-    console.log('shuffledArray !');
   };
 
   return (
