@@ -16,42 +16,45 @@ import {
   WORD_POSITION,
   IS_WORD_FALLED,
   START_WORD_POSITION,
-  ADD_LEARN_WORDS
+  ADD_LEARN_WORDS,
+  IS_LATE_ANSWER,
 } from '../actions/savanna-game-actions';
 
 import { CurrentWordListType } from '../actions/word-actions';
 
 export type SavannaGameState = {
-  listLearnWords: string [];
+  isLateAnswer: boolean;
+  listLearnWords: string[];
   isWordFalled: boolean;
   wordPosition: number;
   startWordPosition: number;
   isWordMove: boolean;
-  listWrongWords:Array<CurrentWordListType>;
-  listRightWords:Array<CurrentWordListType>;
-  isShowResults:boolean;
-  isPressDontknow: boolean;  
+  listWrongWords: Array<CurrentWordListType>;
+  listRightWords: Array<CurrentWordListType>;
+  isShowResults: boolean;
+  isPressDontknow: boolean;
   isFullScreen: boolean;
   savannaGameStart: boolean;
-  wordUserAnswer:CurrentWordListType;
+  wordUserAnswer: CurrentWordListType;
   wordRight: CurrentWordListType;
   isAnswerSelected: boolean;
   currentPlayWords: Array<CurrentWordListType>;
-  stepCounter: number
+  stepCounter: number;
 };
 
 const initialState: SavannaGameState = {
+  isLateAnswer: false,
   listLearnWords: [],
   isWordFalled: false,
-  startWordPosition:0,
+  startWordPosition: 0,
   wordPosition: 0,
-  isWordMove:false,
-  listWrongWords:[],
-  listRightWords:[],
-  isShowResults:false,
+  isWordMove: false,
+  listWrongWords: [],
+  listRightWords: [],
+  isShowResults: false,
   isPressDontknow: false,
-  stepCounter:0,
-  isFullScreen: false,  
+  stepCounter: 0,
+  isFullScreen: false,
   savannaGameStart: false,
   isAnswerSelected: false,
   wordUserAnswer: {
@@ -86,47 +89,53 @@ const initialState: SavannaGameState = {
     wordTranslate: '',
     textMeaningTranslate: '',
     textExampleTranslate: '',
-  }
+  },
 };
 
-const savannaGameReducer = (state = initialState, action: SavannaGameActionType) => {
+const savannaGameReducer = (
+  state = initialState,
+  action: SavannaGameActionType
+) => {
   switch (action.type) {
     case CLEAR_WORDS:
       return {
         ...state,
         listRightWords: [],
         listWrongWords: [],
-        
+        listLearnWords: [],
       };
 
-    case ADD_LEARN_WORDS:     
+    case ADD_LEARN_WORDS:
       return {
         ...state,
         listLearnWords: [...state.listLearnWords, action.payload],
       };
+    case IS_LATE_ANSWER:
+      return { ...state, isLateAnswer: action.payload };
 
     case START_WORD_POSITION:
-        return { ...state, wordPosition: action.payload };
-    case WORD_POSITION: 
-        return {
-           ...state,
-            wordPosition: state.wordPosition + (action.payload as number) };
+      return { ...state, wordPosition: action.payload };
+    case WORD_POSITION:
+      return {
+        ...state,
+        wordPosition: state.wordPosition + (action.payload as number),
+      };
     case IS_WORD_FALLED:
-          return { ...state, isWordFalled: action.payload };
+      return { ...state, isWordFalled: action.payload };
     case IS_WORD_MOVE:
-        return { ...state, isWordMove: action.payload };
+      return { ...state, isWordMove: action.payload };
     case LIST_RIGHT_WORDS:
       return {
         ...state,
         listRightWords: [...state.listRightWords, action.payload],
-      };     
+      };
     case UPDATE_WRONG_WORDS:
       return {
         ...state,
         listWrongWords: [...state.listWrongWords, action.payload],
-      };     
+      };
     case IS_SHOW_RESULTS:
-      return { ...state, isShowResults: action.payload };   
+      return { ...state, isShowResults: action.payload };
     case IS_FULL_SCREEN:
       return { ...state, isFullScreen: action.payload };
     case IS_PRESS_DONTKNOW:
@@ -140,14 +149,12 @@ const savannaGameReducer = (state = initialState, action: SavannaGameActionType)
     case WORD_RIGHT:
       return { ...state, wordRight: action.payload };
     case IS_ANSWER_SELECTED:
-      return { ...state,  isAnswerSelected: action.payload };
+      return { ...state, isAnswerSelected: action.payload };
     case CURRENT_PLAY_WORDS:
-      return { ...state,  currentPlayWords: action.payload };
+      return { ...state, currentPlayWords: action.payload };
     default:
       return state;
   }
 };
 
-
-export { savannaGameReducer }
-
+export { savannaGameReducer };
