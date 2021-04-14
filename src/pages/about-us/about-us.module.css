@@ -57,10 +57,6 @@
   box-shadow: 0 0 6px #3d3fb0;
 }
 
-.image_lena {
-  /* object-fit: cover; */
-}
-
 .text__wrapper {
   padding: 1rem;
   width: 100%;
@@ -74,6 +70,7 @@
 
 .link {
   font-size: 1.4rem;
+  color: inherit;
 }
 
 .link:hover {

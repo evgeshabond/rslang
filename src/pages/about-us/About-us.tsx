@@ -7,7 +7,7 @@ import elenaImg from '../../assets/images/Elena.jpg'
 
 export const AboutUs: React.FC = () => (
   <div className={styles.wrapper}>
-    <h2 className={styles.title}>О команде.</h2>
+    <h2 className={styles.title}>О команде</h2>
     <div className={styles.inner}>
       <div className={styles.person}>
         <img
