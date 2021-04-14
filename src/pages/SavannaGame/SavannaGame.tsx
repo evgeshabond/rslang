@@ -65,7 +65,10 @@ const SavannaGame: React.FC = () => {
     if (userAnswer.word === rightWord.word) {
       playSuccessAnswer();
     }
-    playWrongAnswer();
+    else {
+      playWrongAnswer();
+    }
+
   }, [isAnswer]);
 
   return isPlaying ? (
