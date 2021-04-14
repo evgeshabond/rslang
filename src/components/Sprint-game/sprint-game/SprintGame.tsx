@@ -1,21 +1,21 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearAllCount } from '../../../actions/game-result-actions';
 import {
   clearWords,
   sprintGameBallsCounter,
   sprintGameCheckPoints,
   sprintGameStatusChange,
-  sprintGameTotalPoints
+  sprintGameTotalPoints,
 } from '../../../actions/sprint-game-action';
 import { ReactComponent as Cat } from '../../../assets/images/cat2.svg';
 import { ReactComponent as Timer1 } from '../../../assets/images/timer1.svg';
-import { RootStateType } from '../../../reducer/root-reducer';
-import FinishPage from '../finish-page/FinishPage';
 import GamePage from '../game-page/GamePage';
+import FinishPage from '../finish-page/FinishPage';
+import { RootStateType } from '../../../reducer/root-reducer';
 import { Timer } from '../timer/Timer';
 import { TitleGamePage } from '../title-page/TitleGamePage';
 import styles from './sprint-game.module.css';
+import { clearAllCount } from '../../../actions/game-result-actions';
 
 const SprintGame: React.FC = () => {
   const dispatch = useDispatch();
