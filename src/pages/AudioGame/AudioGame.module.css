@@ -6,13 +6,10 @@
   --btnBackColor: #c6d8e7;
 }
 
-<<<<<<< HEAD
-button {
+.content button {
   outline: var(--mainColor);
 }
 
-=======
->>>>>>> 4d7a7a5eadc9d60288f736ee02a8bb1ec685f471
 .game__wrapper {
   display: flex;
   justify-content: center;
@@ -43,7 +40,7 @@ button {
 }
 
 .game__decription {
-  width: 64.8rem;
+  margin: 2rem 0;
   font-size: 1.8rem;
   font-weight: 500;
   line-height: 2.109rem;
@@ -65,12 +62,10 @@ button {
 
 .word__list {
   display: flex;
-  flex-flow: row wrap;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   align-content: space-around;
-  width: 660px;
-  height: 120px;
 }
 
 .word__list__disable {
@@ -92,12 +87,10 @@ button {
 
 .game__content {
   max-width: 1022px;
-  width: 100%;
+  width: 80%;
   height: auto !important;
   min-height: 560px;
   padding: 0 4rem;
-  /* width: 102.2rem; */
-  height: 44rem;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -197,8 +190,8 @@ button {
 
 .cat__image {
   position: absolute;
-  left: 1135px;
-  top: 290px;
+  right: 34px;
+  top: 430px;
   width: 120px;
   height: 125.29px;
 }
@@ -382,19 +375,35 @@ svg.full-screen__icon {
   border: none;
   transition: 0.2s;
   cursor: pointer;
+
+  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.restart:hover {
+  background-color: #ffd1fb;
+}
+
+.restart:active {
+  box-shadow: inset -3px -3px 6px #ffffff, inset 3px 3px 6px #d3a9d8;
 }
 
 .button__wrapper {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
+  width: 100%;
+  max-width: 360px;
 }
 
 .line {
   margin: 10px 0;
 }
 
-.restart:hover {
-  background-color: #f7d4f7;
-  transition: 0.2s;
+.game__inner {
+  max-height: 560px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

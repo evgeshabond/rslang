@@ -7,20 +7,20 @@
 }
 
 .game__wrapper {
+  max-width: 1022px;
+  width: 80%;
+  height: auto !important;
+  min-height: 560px;
+  padding: 0 4rem;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-evenly;
   align-items: center;
-  margin: auto;
-  margin-top: 3.1rem;
-  width: 102.2rem;
-  height: 44rem;
-  background-color: #fdebff;
   border-radius: 50px;
+  background: #fdebff;
 }
 
 .game__startSreen {
-  width: 64.8rem;
-  height: 20rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -37,7 +37,7 @@
 }
 
 .game__decription {
-  width: 64.8rem;
+  margin: 2rem 0;
   font-size: 1.8rem;
   font-weight: 500;
   line-height: 2.109rem;
@@ -125,6 +125,9 @@
 .playing__btn {
   align-self: center;
   align-content: center;
+
+  width: auto;
+  padding: 1rem;
 }
 
 .playing__btn,
