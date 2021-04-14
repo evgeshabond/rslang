@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { sprintGameStatusChange } from '../../../actions/sprint-game-action';
 import styles from '../sprint-game/sprint-game.module.css';
