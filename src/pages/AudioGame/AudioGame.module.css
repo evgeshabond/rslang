@@ -84,7 +84,12 @@
 }
 
 .game__content {
-  width: 102.2rem;
+  max-width: 1022px;
+  width: 100%;
+  height: auto !important;
+  min-height: 560px;
+  padding: 0 4rem;
+  /* width: 102.2rem; */
   height: 44rem;
   display: flex;
   flex-direction: column;

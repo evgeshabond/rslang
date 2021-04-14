@@ -14,7 +14,11 @@ import StartScreen from './StartScreen';
 import SettingsBtn from './SettingsBtn';
 import LevelInfo from './LevelInfo';
 import LifeInfo from './LifeInfo';
-import { wordRight } from '../../actions/savanna-game-actions';
+import {
+  isShowResults,
+  setLearnWords,
+  wordRight,
+} from '../../actions/savanna-game-actions';
 
 const SavannaGame: React.FC = () => {
   const isPlaying = useSelector(
@@ -46,14 +50,15 @@ const SavannaGame: React.FC = () => {
   const [playWrongAnswer] = useSound(wrongSound);
 
   const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(fetchWordsList({ page: 0, group: 0 }))
-  // }, [])
+
+  useEffect(
+    () => () => {
+      dispatch(isShowResults(false));
+    },
+    []
+  );
 
   useEffect(() => {
-    console.log('sound1');
-    console.log(rightWord.word);
-    console.log(userAnswer.word);
     if (!isAnswer) {
       return;
     }

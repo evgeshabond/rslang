@@ -94,7 +94,7 @@ const RenderWordCard: React.FC = () => {
       return;
     }
     let random;
-    if (listLearnWords) {
+    if (listLearnWords.length > 0) {
       do {
         random = currentWords[getRandomInt(0, currentWords.length - 1)];
       } while (listLearnWords.includes(random.id));
@@ -135,7 +135,7 @@ const RenderWordCard: React.FC = () => {
   }, [isAnswer]);
 
   const playGame = () => {
-    dispatch(stepCounter(roundCounter + 1));
+
     dispatch(isWordMove(true));
     dispatch(isWordFalled(false));
     dispatch(isAnswerSelected(false));
@@ -157,7 +157,8 @@ const RenderWordCard: React.FC = () => {
     dispatch(isAnswerSelected(true));
     dispatch(isAnswerSelected(true));
     dispatch(isWordMove(false));
-  };
+    dispatch(stepCounter(roundCounter + 1));
+  }
 
   const showResults = () => {
     const param = {
@@ -174,9 +175,10 @@ const RenderWordCard: React.FC = () => {
     dispatch(checkAndSaveMaxCombo());
     dispatch(setStatistics(param, body));
     dispatch(isShowResults(true));
-    dispatch(savannaGameStart(false));
-    // dispatch(stepCounter(roundCounter + 1));
-  };
+    dispatch(savannaGameStart(false))
+    dispatch(stepCounter(roundCounter + 1));
+  }
+
 
   return (
     <div className={styles.falling__word__container}>
