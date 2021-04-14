@@ -14,14 +14,14 @@ type GetWordsPageProps = {
   page: number;
   group: number;
 };
-//  get words Page
+
 const getWordsPage = async ({ page, group }: GetWordsPageProps) => {
   try {
     const wordsPage = await getWordList({ page, group });
-    console.log('insied getWordsPage. returned words are ', wordsPage);
+
     return wordsPage;
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
   return [];
 };

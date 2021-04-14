@@ -69,22 +69,6 @@ const Footer: React.FC<Props> = ({ bottomMenuIsOpen, bottomMenuOpen }) => {
           ref={buttonsContainer}
           className={styles['menu-buttons-container']}
         >
-          {/* <div
-            className={`${styles['bottom-button']} ${styles['button_margin-small']}`}
-          >
-            <Tooltip
-              placement="top"
-              classes={{
-                tooltip: classes.customWidth,
-              }}
-              title="Игры"
-              TransitionComponent={Zoom}
-            >
-              <Link to={mainPath.gamePage}>
-                <img src={gamesImg} alt="games" />
-              </Link>
-            </Tooltip>
-          </div> */}
           <div
             className={`${styles['up-button']} ${styles['button_margin-big']}`}
           >
@@ -115,20 +99,6 @@ const Footer: React.FC<Props> = ({ bottomMenuIsOpen, bottomMenuOpen }) => {
               </Link>
             </Tooltip>
           </div>
-          {/* <div className={styles['bottom-button']}>
-            <Tooltip
-              placement="top"
-              classes={{
-                tooltip: classes.customWidth,
-              }}
-              title="Главная"
-              TransitionComponent={Zoom}
-            >
-              <Link to={mainPath.main}>
-                <img src={statisticImg} alt="statistic" />
-              </Link>
-            </Tooltip>
-          </div> */}
         </div>
       </div>
       <div className={styles.wrapper}>
