@@ -6,13 +6,6 @@
   --btnBackColor: #c6d8e7;
 }
 
-<<<<<<< HEAD
-button {
-  outline: var(--mainColor);
-}
-
-=======
->>>>>>> 4d7a7a5eadc9d60288f736ee02a8bb1ec685f471
 .game__wrapper {
   display: flex;
   justify-content: center;

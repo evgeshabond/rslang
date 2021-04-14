@@ -7,7 +7,7 @@ import styles from './SavannaGame.module.css';
 import { audioGameStart, wordUserAnswer, wordRight, isAnswerSelected, currentPlayWords } from '../../actions/audioGame-actions';
 import { CloseButton } from "../../components/button-icons/close-button/close-button";
 import { QuestionButton } from "../../components/button-icons/question-button/question-button";
-import { isWordMove, savannaGameStart, startWordPosition, wordPosition } from '../../actions/savanna-game-actions';
+import { clearWords, isWordMove, savannaGameStart, startWordPosition, wordPosition } from '../../actions/savanna-game-actions';
 import { AudioOnSizeButton } from '../../components/button-icons/audiOn-button/audioOn-Size';
 
 const SettingsBtn: React.FC = () => {
@@ -35,7 +35,8 @@ const SettingsBtn: React.FC = () => {
     dispatch(savannaGameStart(false));
     dispatch(isAnswerSelected(false));
     dispatch(startWordPosition(0));
-    dispatch(isWordMove(false))
+    dispatch(isWordMove(false));
+    dispatch(clearWords());
   }
 
 
