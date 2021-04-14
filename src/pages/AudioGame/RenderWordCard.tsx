@@ -6,7 +6,7 @@ import {
 import { RootStateType } from '../../reducer/root-reducer';
 import { WordItem } from '../../components/word-item/word-item-game';
 import styles from './AudioGame.module.css';
-import { wordUserAnswer, wordRight, isAnswerSelected, listRightWords, setWrongWords, setLearnWords } from '../../actions/audioGame-actions';
+import { wordUserAnswer, wordRight, isAnswerSelected, listRightWords, setWrongWords, setLearnWords, stepCounter } from '../../actions/audioGame-actions';
 import { setWorldResult } from '../../actions/game-result-actions';
 import { userWordToLearnResult } from '../../actions/user-words-action';
 
@@ -65,6 +65,7 @@ const RenderWordCard: React.FC = () => {
       return
     }
     if (!isDontknow && userAnswer.word === rightWord.word) {
+      console.log('right', rightWord)
       dispatch(listRightWords(rightWord));
       dispatch(setWorldResult(true, rightWord.id));
       if (userState.isLogin) {
@@ -72,6 +73,7 @@ const RenderWordCard: React.FC = () => {
       }
     }
     else {
+      console.log('right', rightWord)
       dispatch(setWrongWords(rightWord));
       dispatch(setWorldResult(false, rightWord.id));
       if (userState.isLogin) {
@@ -85,6 +87,7 @@ const RenderWordCard: React.FC = () => {
       dispatch(wordUserAnswer(word));
     }
     dispatch(isAnswerSelected(true));
+    dispatch(stepCounter(roundCounter + 1));
   }
 
   return (

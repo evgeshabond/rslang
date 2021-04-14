@@ -6,6 +6,13 @@
   --btnBackColor: #c6d8e7;
 }
 
+<<<<<<< HEAD
+button {
+  outline: var(--mainColor);
+}
+
+=======
+>>>>>>> 4d7a7a5eadc9d60288f736ee02a8bb1ec685f471
 .game__wrapper {
   display: flex;
   justify-content: center;
@@ -84,7 +91,12 @@
 }
 
 .game__content {
-  width: 102.2rem;
+  max-width: 1022px;
+  width: 100%;
+  height: auto !important;
+  min-height: 560px;
+  padding: 0 4rem;
+  /* width: 102.2rem; */
   height: 44rem;
   display: flex;
   flex-direction: column;

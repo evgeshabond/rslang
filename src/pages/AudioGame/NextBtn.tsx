@@ -47,11 +47,12 @@ const NextBtn: React.FC = () => {
     const currentPlayList = shuffle(wordList)
       .filter((item: Object, index: number) => index < 5);
     dispatch(currentPlayWords(currentPlayList));
-    dispatch(stepCounter(roundCounter + 1));
+
   }
 
   const dontKnowANswer = () => {
     playWrongAnswer();
+    dispatch(stepCounter(roundCounter + 1));
     dispatch(isPressDontknow(true));
     dispatch(wordUserAnswer(rightWord));
     dispatch(isAnswerSelected(true))
@@ -72,13 +73,13 @@ const NextBtn: React.FC = () => {
     dispatch(checkAndSaveMaxCombo());
     dispatch(setStatistics(param, body));
     dispatch(isShowResults(true));
-    dispatch(audioGameStart(false))
-    dispatch(stepCounter(roundCounter + 1));
+    dispatch(audioGameStart(false));
+    // dispatch(stepCounter(roundCounter + 1));
   }
 
   return isAnswer ? (
     <div>
-      {(roundCounter === 9) ? (
+      {(roundCounter === 10) ? (
         <button type="button" onClick={() => showResults()} className={styles.playing__btn}>
           Показать результат
         </button>

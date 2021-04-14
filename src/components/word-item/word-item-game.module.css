@@ -13,12 +13,13 @@
   font-size: 18px;
   font-style: normal;
   font-weight: 900;
-  line-height: 50px;
+  /* line-height: 50px; */
   letter-spacing: 0em;
   text-align: center;
   vertical-align: middle;
   margin: 10px;
   overflow: hidden;
+  padding: 0 15px;
 }
 
 .word__item:hover {
@@ -36,7 +37,7 @@
 
 .word__item__wrong {
   outline: none;
-  background: #f945d1;
+  background: #f899e8;
   background-image: url('../../assets/images/wrong.svg');
   background-repeat: no-repeat;
   background-size: 20px;

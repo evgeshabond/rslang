@@ -63,7 +63,6 @@ const StartScreen: React.FC = () => {
     }
     const currentPlayList = shuffle(wordList).filter((item: Object, index: number) => index < 4);
     dispatch(currentPlayWords(currentPlayList));
-
   }
 
   return (
