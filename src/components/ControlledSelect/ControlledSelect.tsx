@@ -3,7 +3,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { fetchWordsList } from '../../actions/word-actions';
 
@@ -32,6 +32,10 @@ export default function ControlledOpenSelect() {
     dispatch(fetchWordsList({ page: 0, group: chosenLevel }));
   };
 
+  useEffect(() => {
+    dispatch(fetchWordsList({ page: 0, group: 0 }));
+  }, []);
+  
   const handleClose = () => {
     setOpen(false);
   };
