@@ -97,17 +97,16 @@ const RenderWordCard: React.FC = () => {
     wordId: rightWord.id,
   };
 
+
+
   useEffect(() => {
     if (currentWords.length === 0) {
       return;
     }
     let random;
-    if (listLearnWords.length > 0) {
-      do {
-        random = currentWords[getRandomInt(0, currentWords.length - 1)];
-      } while (listLearnWords.includes(random.id));
-    }
-    random = currentWords[getRandomInt(0, currentWords.length - 1)];
+    do {
+      random = currentWords[getRandomInt(0, currentWords.length - 1)];
+    } while (listLearnWords.includes(random.id));
     dispatch(wordRight(random));
     dispatch(setLearnWords(random.id));
   }, [currentWords]);
@@ -154,7 +153,7 @@ const RenderWordCard: React.FC = () => {
       (item: Object, index: number) => index < 4
     );
     dispatch(currentPlayWords(currentPlayList));
-    dispatch(stepCounter(roundCounter + 1));
+    // dispatch(stepCounter(roundCounter + 1));
   };
 
   const checkUserAnswer = (word: CurrentWordListType) => {

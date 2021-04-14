@@ -7,10 +7,8 @@ import styles from './FallingWord.module.css';
 import {
   isWordFalled,
   isWordMove,
-  savannaGameStart,
+  stepCounter,
   wordPosition,
-  wordUserAnswer,
-  wordRight,
   isAnswerSelected,
   startWordPosition,
 } from '../../actions/savanna-game-actions';
@@ -41,9 +39,7 @@ const FallingWord: React.FC = () => {
   const currentWords = useSelector(
     (state: RootStateType) => state.savannaGameState.currentPlayWords
   );
-  const stepCounter = useSelector(
-    (state: RootStateType) => state.savannaGameState.stepCounter
-  );
+
   const startPosition = useSelector(
     (state: RootStateType) => state.savannaGameState.startWordPosition
   );
@@ -54,6 +50,10 @@ const FallingWord: React.FC = () => {
 
   const position = useSelector(
     (state: RootStateType) => state.savannaGameState.wordPosition
+  );
+
+  const roundCounter = useSelector(
+    (state: RootStateType) => state.savannaGameState.stepCounter
   );
 
   const [playSuccessAnswer] = useSound(successSound);
@@ -67,7 +67,6 @@ const FallingWord: React.FC = () => {
 
   useEffect(
     () => () => {
-      console.log('unmount', timer);
       clearInterval(timer as ReturnType<typeof setInterval>);
     },
     [timer]
@@ -75,12 +74,10 @@ const FallingWord: React.FC = () => {
 
   useEffect(() => {
     if (!isMove) {
-      console.log('ismove', timer);
       clearInterval(timer as ReturnType<typeof setInterval>);
     }
     if (position > 323) {
       showAnswer();
-      console.log('fall down', timer);
 
       clearInterval(timer as ReturnType<typeof setInterval>);
     }
@@ -93,7 +90,6 @@ const FallingWord: React.FC = () => {
           dispatch(wordPosition(2));
         }, 15);
         setTimer(newTimer);
-        console.log(newTimer);
         refBtn.current.style.transform = `translateY(${position}px)`;
       }
     }
@@ -108,17 +104,13 @@ const FallingWord: React.FC = () => {
     }
   }, [isPlaying, isAnswer]);
 
-  // const moveDown = () => {
-  //   console.log('movedown', position)
-  //   // console.log(e.target.offsetTop);
-  //   // console.log(e.target.clientHeight);
-  //   // const offsetTop = e.target;
 
   const showAnswer = () => {
     dispatch(isWordFalled(true));
     dispatch(isWordMove(false));
     dispatch(startWordPosition(0));
     dispatch(isAnswerSelected(true));
+    dispatch(stepCounter(roundCounter + 1));
   };
 
   return (
