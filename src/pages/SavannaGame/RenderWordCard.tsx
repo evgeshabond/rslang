@@ -78,6 +78,14 @@ const RenderWordCard: React.FC = () => {
   const gameResult = useSelector(
     (state: RootStateType) => state.gameResultState
   );
+
+  const isLevelVisible = useSelector(
+    (state: RootStateType) => state.menuState.isLevelVisible
+  );
+
+  const currentWordList = useSelector(
+    (state: RootStateType) => state.wordState.currentWordList
+  );
   const userState = useSelector((state: RootStateType) => state.userState);
 
   const getRandomInt = (min: number, max: number) =>
@@ -150,7 +158,6 @@ const RenderWordCard: React.FC = () => {
   };
 
   const checkUserAnswer = (word: CurrentWordListType) => {
-    console.log('check', position);
     if (!isAnswer) {
       dispatch(wordUserAnswer(word));
     }
@@ -173,7 +180,12 @@ const RenderWordCard: React.FC = () => {
       wordsId: gameResult.wordsIdArr,
     };
     dispatch(checkAndSaveMaxCombo());
-    dispatch(setStatistics(param, body));
+    if (
+      isLevelVisible ||
+      currentWordList[0].userWord?.difficulty === 'deleted'
+    ) {
+      dispatch(setStatistics(param, body));
+    }
     dispatch(isShowResults(true));
     dispatch(savannaGameStart(false))
     dispatch(stepCounter(roundCounter + 1));

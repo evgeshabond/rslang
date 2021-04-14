@@ -43,7 +43,6 @@ const SettingsBtn: React.FC = () => {
   return (
     <div className={styles.btn__container}>
       <AudioOnSizeButton size={30} buttonClick={() => console.log('info')} />
-      {/* <PauseButton buttonClick={() => console.log('info')} /> */}
       <div className={styles.hint} data-title="Выберите перевод падающего слова">
         <QuestionButton buttonClick={() => console.log('info')} />
       </div>

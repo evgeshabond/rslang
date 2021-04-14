@@ -63,7 +63,6 @@ const SavannaGame: React.FC = () => {
       return;
     }
     if (userAnswer.word === rightWord.word) {
-      console.log('sound');
       playSuccessAnswer();
     }
     playWrongAnswer();
@@ -73,9 +72,7 @@ const SavannaGame: React.FC = () => {
     <div className={styles.game__content}>
       <SettingsBtn />
       <div className={styles.game__field}>
-        <LevelInfo />
         {currentWords.length === 0 ? <Spinner /> : <RenderWordCard />}
-        <LifeInfo />
       </div>
       <img className={styles.cat__image} src={CatSavanna} alt="loading..." />
     </div>

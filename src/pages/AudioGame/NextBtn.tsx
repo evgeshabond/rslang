@@ -28,9 +28,18 @@ const NextBtn: React.FC = () => {
     state.audioGameState.listWrongWords);
   const listLearnWords = useSelector((state: RootStateType) =>
     state.audioGameState.listLearnWords);
-  const isResults = useSelector((state: RootStateType) =>
-    state.audioGameState.isShowResults);
-  const gameResult = useSelector((state: RootStateType) => state.gameResultState);
+  const isResults = useSelector(
+    (state: RootStateType) => state.audioGameState.isShowResults);
+  const gameResult = useSelector(
+    (state: RootStateType) => state.gameResultState);
+
+  const isLevelVisible = useSelector(
+    (state: RootStateType) => state.menuState.isLevelVisible
+  );
+
+  const currentWordList = useSelector(
+    (state: RootStateType) => state.wordState.currentWordList
+  );
 
 
   const [playWrongAnswer] = useSound(wrongSound);
@@ -71,10 +80,15 @@ const NextBtn: React.FC = () => {
       wordsId: gameResult.wordsIdArr,
     };
     dispatch(checkAndSaveMaxCombo());
-    dispatch(setStatistics(param, body));
+    if (
+      isLevelVisible ||
+      currentWordList[0].userWord?.difficulty === 'deleted'
+    ) {
+      dispatch(setStatistics(param, body));
+    }
+
     dispatch(isShowResults(true));
     dispatch(audioGameStart(false));
-    // dispatch(stepCounter(roundCounter + 1));
   }
 
   return isAnswer ? (
