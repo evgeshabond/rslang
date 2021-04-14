@@ -11,7 +11,7 @@ import {
   sprintGameListOfIncorrectWords,
   sprintGameStatusChange,
   sprintGameTotalPoints,
-  sprintGameWordCounter,
+  sprintGameWordCounter
 } from '../../../actions/sprint-game-action';
 import { setStatistics } from '../../../actions/statistic-action';
 import { ReactComponent as AudioSvg } from '../../../assets/images/audioOn.svg';
