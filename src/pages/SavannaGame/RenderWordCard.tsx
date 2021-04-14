@@ -8,10 +8,12 @@ import { RootStateType } from '../../reducer/root-reducer';
 import { WordItem } from '../../components/word-item/word-item-savanna';
 import styles from './SavannaGame.module.css';
 import { shuffle } from '../../utils/shuffle';
+import { gameType } from '../../utils/constants';
 import FallingWord from './FallingWord';
-import { currentPlayWords, isWordFalled, isWordMove, listRightWords, setLearnWords, setWrongWords, stepCounter, wordPosition, wordUserAnswer, wordRight, isAnswerSelected, startWordPosition } from '../../actions/savanna-game-actions';
-import { setWorldResult } from '../../actions/game-result-actions';
+import { currentPlayWords, isWordFalled, isWordMove, listRightWords, setLearnWords, setWrongWords, stepCounter, wordPosition, wordUserAnswer, wordRight, isAnswerSelected, startWordPosition, savannaGameStart, isShowResults } from '../../actions/savanna-game-actions';
+import { checkAndSaveMaxCombo, setWorldResult } from '../../actions/game-result-actions';
 import { userWordToLearnResult } from '../../actions/user-words-action';
+import { setStatistics } from '../../actions/statistic-action';
 
 
 const RenderWordCard: React.FC = () => {
@@ -46,7 +48,10 @@ const RenderWordCard: React.FC = () => {
     state.savannaGameState.isShowResults);
   const user = useSelector((state: RootStateType) =>
     state.userState.user);
+
+  const gameResult = useSelector((state: RootStateType) => state.gameResultState);
   const userState = useSelector((state: RootStateType) => state.userState);
+
 
 
   const getRandomInt = (min: number, max: number) => (
@@ -112,7 +117,8 @@ const RenderWordCard: React.FC = () => {
   }, [isAnswer])
 
   const playGame = () => {
-
+    console.log(roundCounter);
+    dispatch(stepCounter(roundCounter + 1));
     dispatch(isWordMove(true));
     dispatch(isWordFalled(false));
     dispatch(isAnswerSelected(false));
@@ -147,11 +153,35 @@ const RenderWordCard: React.FC = () => {
     dispatch(isWordMove(false));
   }
 
+  const showResults = () => {
+    const param = {
+      userId: user.userId,
+      token: user.token,
+    };
+    const body = {
+      gameType: gameType.audiocall,
+      know: gameResult.correctCount,
+      dont_know: gameResult.incorrectCount,
+      combo: gameResult.maxCorrectComboCount,
+      wordsId: gameResult.wordsIdArr,
+    };
+    dispatch(checkAndSaveMaxCombo());
+    dispatch(setStatistics(param, body));
+    dispatch(isShowResults(true));
+    dispatch(savannaGameStart(false))
+    dispatch(stepCounter(roundCounter + 1));
+  }
+
 
   return (
     <div className={styles.falling__word__container} >
-      <FallingWord />
-
+      {(roundCounter === 10) ? (
+        <button type="button" onClick={() => showResults()} className={styles.playing__btn}>
+          Показать результат
+        </button>
+      ) : (
+        <FallingWord />
+      )}
       <div className={styles.word__list}>
         {currentWords.map((word: CurrentWordListType, index: number) => (
           <WordItem buttonClick={() => { checkUserAnswer(word); }}
@@ -159,7 +189,7 @@ const RenderWordCard: React.FC = () => {
         ))}
       </div>
 
-    </div>
+    </div >
 
   )
 }
