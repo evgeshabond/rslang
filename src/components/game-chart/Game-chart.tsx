@@ -32,7 +32,7 @@ export const GameChart: React.FC<Props> = ({
       (app.know * 100) / (app.know + app.dont_know)
     );
   }
-
+  console.log('local data', localData);
   const data = {
     labels: ['Неправильно %', 'Правильно %'],
     datasets: [
@@ -66,7 +66,7 @@ export const GameChart: React.FC<Props> = ({
         Макс. серия правильных слов: {localData.combo}
       </h4>
       <h4 className={styles.text}>
-        Cлов изученно: {localData.learnedWordCount}
+        Cлов изучено: {localData.learnedWordCount}
       </h4>
     </div>
   );
