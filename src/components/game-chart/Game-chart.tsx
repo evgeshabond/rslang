@@ -66,7 +66,7 @@ export const GameChart: React.FC<Props> = ({
         Макс. серия правильных слов: {localData.combo}
       </h4>
       <h4 className={styles.text}>
-        Cлов изученно: {localData.learnedWordCount}
+        Cлов изучено: {localData.learnedWordCount}
       </h4>
     </div>
   );
