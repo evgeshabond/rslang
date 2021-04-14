@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { withRouter, RouteComponentProps, Link } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { userLogOut, updateUser } from '../../../actions/user-actions';
 import { RootStateType } from '../../../reducer/root-reducer';
 import authStyles from '../../auth/auth.module.css';
@@ -9,6 +9,7 @@ import { ImageLoader } from '../../image-loader/Image-loader';
 import { DashboardText } from '../dashboard-text/dashboard-text';
 import styles from './dashboard-profile.module.css';
 import { DashboardButton } from '../dashboard-button/Dashboard-button';
+import { clearAllStatistic } from '../../../actions/statistic-action';
 
 type Props = RouteComponentProps;
 
@@ -17,7 +18,7 @@ const DashboardProfile: React.FC<Props> = ({ history }) => {
   const newFoto = useSelector(
     (state: RootStateType) => state.userState.uploadFoto64
   );
-  const userState = useSelector((state: RootStateType) => state.userState);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -33,10 +34,11 @@ const DashboardProfile: React.FC<Props> = ({ history }) => {
         },
       })
     );
-  }, [newFoto]);
+  }, [dispatch, newFoto, user.token, user.userId]);
 
   const logOut = () => {
     dispatch(userLogOut());
+    dispatch(clearAllStatistic());
   };
   return (
     <>

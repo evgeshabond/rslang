@@ -14,16 +14,15 @@ type GetWordsPageProps = {
   page: number;
   group: number;
 };
-//  get words Page
+
 const getWordsPage = async ({ page, group }: GetWordsPageProps) => {
   try {
     const wordsPage = await getWordList({ page, group });
     return wordsPage;
   } catch (e) {
     // eslint-disable-next-line no-console
-    console.log(e);
+    console.error(e);
   }
   return [];
 };
-
 export default getWordsPage;

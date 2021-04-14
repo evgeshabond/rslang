@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import {
   inputEmailChange,
   createUser,
@@ -15,7 +15,7 @@ import {
 import { ImageLoader } from '../image-loader/Image-loader';
 import { RootStateType } from '../../reducer/root-reducer';
 import styles from './auth.module.css';
-import { authErrorPath, mainPath } from '../../utils/constants';
+import { authErrorPath } from '../../utils/constants';
 import { ErrorMessage } from '../error-message/error-message';
 
 type Props = RouteComponentProps;

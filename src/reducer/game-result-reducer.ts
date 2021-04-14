@@ -28,7 +28,6 @@ const gameResultReducer = (
   const maxCombo = state.correctCombo;
   switch (action.type) {
     case INC_CORRECT_COUNT:
-      console.log(state.wordsIdArr);
       return {
         ...state,
         correctCount: state.correctCount + 1,
@@ -38,7 +37,6 @@ const gameResultReducer = (
             : [...state.wordsIdArr, action.payload],
       };
     case INC_INCORRECT_COUNT:
-      console.log(state.wordsIdArr);
       return {
         ...state,
         incorrectCount: state.incorrectCount + 1,
