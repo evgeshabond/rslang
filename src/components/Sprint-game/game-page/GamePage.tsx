@@ -6,9 +6,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import useSound from 'use-sound';
 import {
   checkAndSaveMaxCombo,
+  clearAllCount,
   setWorldResult,
 } from '../../../actions/game-result-actions';
 import {
+  clearWords,
   setCorrectAnswer,
   setFullScreenStatus,
   sprintGameBallsCounter,
@@ -21,6 +23,7 @@ import {
   sprintGameWordCounter,
 } from '../../../actions/sprint-game-action';
 import { userWordToLearnResult } from '../../../actions/user-words-action';
+import { ReactComponent as ExitButton } from '../../../assets/images/exit-button-mini.svg';
 import closeIcon from '../../../assets/images/close.svg';
 import correctImage from '../../../assets/images/correct.svg';
 import inCorrectImage from '../../../assets/images/incorrect.svg';
@@ -159,6 +162,20 @@ const GamePage: React.FC = () => {
       dispatch(sprintGameCurrentPoints(100));
     }
   };
+
+  const endGameHandler = () => {
+    console.log('i worked');
+    dispatch(sprintGameStatusChange('start'));
+    dispatch(sprintGameWordCounter(0));
+    dispatch(clearWords());
+    dispatch(sprintGameTotalPoints(0));
+    dispatch(sprintGameBallsCounter(0));
+    dispatch(sprintGameCheckPoints(0));
+    dispatch(sprintGameCurrentPoints(50));
+    dispatch(clearAllCount());
+    console.log(gameStatus);
+  };
+
   return (
     <FullScreen
       handle={handle}
@@ -250,12 +267,13 @@ const GamePage: React.FC = () => {
             />
           </button>
         )}
+       
         <button
           type="button"
           className={styles.close__button}
-          onClick={() => dispatch(sprintGameStatusChange('start'))}
+          onClick={endGameHandler}
         >
-          <img src={closeIcon} alt="close icon" />
+          <ExitButton />
         </button>
       </div>
     </FullScreen>
