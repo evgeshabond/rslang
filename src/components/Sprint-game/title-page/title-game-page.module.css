@@ -32,6 +32,10 @@ font-weight: 900;
   cursor: pointer;
 }
 
+.play-button img{
+  cursor: pointer;
+}
+
 .start-game-content{
 margin-top: auto;
 margin-bottom: auto;

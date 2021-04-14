@@ -10,11 +10,9 @@ import {
   sprintGameShuffledArray,
   sprintGameStatusChange,
   sprintGameTotalPoints,
-  sprintGameWordCounter
+  sprintGameWordCounter,
 } from '../../../actions/sprint-game-action';
-import {
-  CurrentWordListType
-} from '../../../actions/word-actions';
+import { CurrentWordListType } from '../../../actions/word-actions';
 import { ReactComponent as Cat2 } from '../../../assets/images/cat2.svg';
 import playIcon from '../../../assets/images/play-big.svg';
 import { RootStateType } from '../../../reducer/root-reducer';
@@ -39,7 +37,7 @@ export const TitleGamePage: React.FC = () => {
   };
 
   useEffect(() => {
-    dispatch(sprintGameStatusChange('play'));
+    dispatch(sprintGameStatusChange('start'));
     dispatch(sprintGameWordCounter(0));
     dispatch(clearWords());
     dispatch(sprintGameTotalPoints(0));
