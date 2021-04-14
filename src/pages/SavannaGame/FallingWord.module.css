@@ -20,7 +20,7 @@
   vertical-align: middle;
   margin: 10px;
 
-  transition: all 0.01s linear;
+  transition: all 0.005s linear;
   /* -webkit-transition: all 2s ease-in-out; */
   /* transition-delay: 1s; */
 }

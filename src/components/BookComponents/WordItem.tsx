@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable max-len */
 import { Typography } from '@material-ui/core';
 //  material ui
@@ -16,6 +17,7 @@ import UserWordsService from '../../services/user-words-service';
 import { serverUrl } from '../../utils/constants';
 //  helpers
 import getColor from '../../utils/getColor';
+import { removeTagsFromString } from '../../utils/removeTagsFromString'
 
 type Params = {
   group: number;
@@ -30,6 +32,7 @@ const useStyles = makeStyles({
     margin: 0,
     marginLeft: '1rem',
     marginBottom: '1rem',
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     backgroundColor: (params: any) => getColor(params.group),
   },
   firstContainer: {
@@ -163,38 +166,6 @@ const useStyles = makeStyles({
   },
 });
 
-type UserType = {
-  message: string;
-  token: string;
-  refreshToken: string;
-  userId: string;
-  name: string;
-};
-
-type WordType = {
-  id?: string;
-  _id?: string;
-  group: number;
-  page: number;
-  word: string;
-  image: string;
-  audio: string;
-  audioMeaning: string;
-  audioExample: string;
-  textMeaning: string;
-  textExample: string;
-  transcription: string;
-  wordTranslate: string;
-  textMeaningTranslate: string;
-  textExampleTranslate: string;
-  userWord?: {
-    difficulty: string;
-    optional?: {
-      learning?: boolean | undefined;
-    };
-  };
-};
-
 type Props = {
   word: any;
   group: number;
@@ -242,9 +213,13 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
       })
     }
     // console.log(wordStats)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-
+  const handleClickAudio = () => {
+    const audio = new Audio(`${serverUrl}${word.audioMeaning}`);
+    audio.play();
+  };
 
   const addItemToHard = async () => {
     const params = {
@@ -261,14 +236,14 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
       /* eslint-enable */
     };
     try {
-      const response = await service.updateWord(params, {
+      await service.updateWord(params, {
         difficulty: 'hard',
         optional: {
           learning: true,
         },
       });
-      console.log(response);
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.log(e);
     }
     forseFetch();
@@ -289,14 +264,14 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
       /* eslint-enable */
     };
     try {
-      const response = await service.updateWord(params, {
+      await service.updateWord(params, {
         difficulty: 'deleted',
         optional: {
           learning: false,
         },
       });
-      console.log(response);
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.log(e);
     }
     forseFetch();
@@ -317,14 +292,14 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
       /* eslint-enable */
     };
     try {
-      const response = await service.updateWord(params, {
+      await service.updateWord(params, {
         difficulty: 'easy',
         optional: {
           learning: true,
         },
       });
-      console.log(response);
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.log(e);
     }
     forseFetch();
@@ -339,7 +314,10 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
           )}
         </div>
         <div className={classes.imageContainer} />
-        <div className={classes.playButton} aria-hidden={true} />
+        <div className={classes.playButton}
+          aria-hidden={true}
+          onClick={handleClickAudio}
+        />
       </div>
       <div className={classes.textContainerWrapper}>
         <div className={classes.textContainer}>
@@ -351,15 +329,15 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
               variant="h4"
               component="span"
             >
-              {word.transcription}
+              {removeTagsFromString(word.transcription)}
             </Typography>
           </div>
           <div>
             <Typography align="left" variant="body1" component="p">
-              {word.textMeaning}
+              {removeTagsFromString(word.textMeaning)}
             </Typography>
             <Typography align="left" variant="body1" component="p">
-              {word.textExample}
+              {removeTagsFromString(word.textExample)}
             </Typography>
           </div>
         </div>
@@ -368,15 +346,15 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
             <>
               <div>
                 <Typography align="left" variant="h4" component="span">
-                  {word.wordTranslate}
+                  {removeTagsFromString(word.wordTranslate)}
                 </Typography>
               </div>
               <div>
                 <Typography align="left" variant="body1" component="p">
-                  {word.textMeaningTranslate}
+                  {removeTagsFromString(word.textMeaningTranslate)}
                 </Typography>
                 <Typography align="left" variant="body1" component="p">
-                  {word.textExampleTranslate}
+                  {removeTagsFromString(word.textExampleTranslate)}
                 </Typography>
               </div>
             </>

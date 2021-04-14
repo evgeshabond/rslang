@@ -9,6 +9,7 @@ import ControlledSelect from "../../components/ControlledSelect/ControlledSelect
 import { shuffle } from '../../utils/shuffle';
 import { mainPath } from '../../utils/constants';
 import { clearWords, isWordFalled, isWordMove, savannaGameStart, startWordPosition, stepCounter, wordPosition } from '../../actions/savanna-game-actions';
+import Results from '../AudioGame/Results';
 
 const StartScreen: React.FC = () => {
   const dispatch = useDispatch();
@@ -54,7 +55,7 @@ const StartScreen: React.FC = () => {
     dispatch(isWordMove(true));
     dispatch(isAnswerSelected(false));
     dispatch(startWordPosition(0));
-    dispatch(stepCounter(0));
+    dispatch(stepCounter(1));
     dispatch(clearWords());
     dispatch(isWordFalled(false));
     if (wordList === undefined) {
@@ -67,19 +68,19 @@ const StartScreen: React.FC = () => {
 
   return (
     <div className={styles.game__wrapper}>
-      {isResults ? (
-        <div>
-          Результат
-        </div>
-      ) : (
-        <div className={styles.game__startSreen}>
-          <div className={styles.game__title}>Саванна</div>
-          <div className={styles.game__decription}>Тренировка Саванна развивает
+      {
+        isResults ? (
+          <Results />
+        ) : (
+          <div className={styles.game__startSreen}>
+            <div className={styles.game__title}>Саванна</div>
+            <div className={styles.game__decription}>Тренировка Саванна развивает
         словарный запас. Выберите правильный перeвод слова.</div>
-          < PlayButton buttonClick={() => { dispatch(savannaGameStart(true)); startGame(); }} />
-          {isLevelVisible ? <ControlledSelect /> : null}
-        </div>)}
-    </div>
+            < PlayButton buttonClick={() => { dispatch(savannaGameStart(true)); startGame(); }} />
+            {isLevelVisible ? <ControlledSelect /> : null}
+          </div>)
+      }
+    </div >
   )
 
 }

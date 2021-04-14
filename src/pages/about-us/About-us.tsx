@@ -37,7 +37,7 @@ export const AboutUs: React.FC = () => (
           src={gazizImg}
           width="100px"
           height="100px"
-          alt="Roman"
+          alt="Gaziz"
         />
         <div className={styles.text__wrapper}>
           <h3 className={styles.name}>Газиз:</h3>

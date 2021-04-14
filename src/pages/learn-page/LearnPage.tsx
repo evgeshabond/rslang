@@ -14,7 +14,6 @@ import {
   DialogTitle,
   List,
   ListItem,
-  ListItemText,
   Typography,
 } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
@@ -22,23 +21,16 @@ import Modal from '@material-ui/core/Modal';
 import Switch from '@material-ui/core/Switch';
 //  components
 import WordItem from '../../components/BookComponents/WordItem';
-
 //  types
 import { RootStateType } from '../../reducer/root-reducer';
-import { WordStateType } from '../../reducer/word-reducer';
 //  herlpers and services
-import AggregateService from '../../services/word-aggregate-service';
 
 //  icons
-import learningIcon from '../../assets/images/learning.svg';
-import hardIcon from '../../assets/images/hardWord.svg';
-import deletedIcon from '../../assets/images/delete.svg';
 import gamesIcon from '../../assets/images/games.svg';
 import settingsIcon from '../../assets/images/settings.svg';
 import { setLevelVisibility } from '../../actions/menu-actions';
 import aggregatePage from '../../utils/aggregatePage';
 import {
-  CurrentWordListType,
   wordListLoaded,
 } from '../../actions/word-actions';
 import { mainPath } from '../../utils/constants';
@@ -261,6 +253,7 @@ const LearnPage: React.FC = () => {
     }
     return groupNumber;
   };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getPage = (): any => {
     const page = searchParams.get('page');
     let pageNumber = 0;
@@ -274,11 +267,11 @@ const LearnPage: React.FC = () => {
   const [pageIsDeleted, setPageIsDeleted] = useState(false);
   const [modalOpened, setModalOpened] = useState(false);
   const [dialogOpened, setDialogOpened] = useState(false);
-  const [difficulty, setDifficulty] = useState('hard');
+  // eslint-disable-next-line no-unused-vars
   const [currentGroup, setCurrentGroup] = useState(getGroup());
   const [currentPage, setCurrentPage] = useState(getPage());
-  const [pagesCount, setPagesCount] = useState(30);
-  const [currentWordsPerPage, setCurrentWordsPerPage] = useState(20);
+  // eslint-disable-next-line no-unused-vars
+  const pagesCount = 30
   const [wordsToRender, setWordsToRender] = useState([
     {
       id: '',
@@ -305,7 +298,6 @@ const LearnPage: React.FC = () => {
   const classes = useStyles({ group: currentGroup });
 
   const forseRender = () => {
-    console.log('rerender ran');
     setRerender(!reRender);
   };
 
@@ -360,9 +352,8 @@ const LearnPage: React.FC = () => {
     setModalOpened(false);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handlePageChange = (data: any) => {
-    console.log('page variable is', data.selected);
-    console.log(historyCopy);
     historyCopy.replace({
       pathname: '/ebookpage/learn/',
       search: `?group=${getGroup()}&page=${data.selected + 1}`,
@@ -401,19 +392,13 @@ const LearnPage: React.FC = () => {
     setCurrentGroup(newGroup);
   };
 
-  type Params = {
-    page: number;
-    group: number;
-    wordsPerPage: number;
-    searchString: string;
-  };
-
   //  get words from API depending on difficulty, group, page
   useEffect(() => {
     aggregatePage({ page: currentPage, group: currentGroup, user })
       .then((aggregatedWordsPage) => {
         if (
           aggregatedWordsPage.every(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (updatedWord: any) => updatedWord.userWord.difficulty === 'deleted'
           )
         ) {
@@ -422,9 +407,9 @@ const LearnPage: React.FC = () => {
           setIsWordListLoaded(true);
           return;
         }
-        console.log('filtered words', aggregatedWordsPage);
         setWordsToRender(
           aggregatedWordsPage.filter(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (updatedWord: any) => updatedWord.userWord.difficulty !== 'deleted'
           )
         );
@@ -432,8 +417,9 @@ const LearnPage: React.FC = () => {
         setIsWordListLoaded(true);
         setPageIsDeleted(false);
       })
+      // eslint-disable-next-line no-console
       .catch((e) => console.log(e));
-  }, [difficulty, currentGroup, currentPage, reRender]);
+  }, [user, currentGroup, currentPage, reRender]);
 
   if (!isLoaded) return <CircularProgress />;
   return (
@@ -640,6 +626,7 @@ const LearnPage: React.FC = () => {
           <div className={classes.wordList}>
             {isWordListLoaded &&
               wordsToRender.length > 0 &&
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               wordsToRender.map((item: any, index) => (
                 <WordItem
                   word={item}
