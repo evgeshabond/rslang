@@ -161,6 +161,7 @@ const RenderWordCard: React.FC = () => {
     dispatch(isShowResults(true));
     dispatch(savannaGameStart(false))
     dispatch(stepCounter(roundCounter + 1));
+    dispatch(isWordMove(false));
   }
 
 

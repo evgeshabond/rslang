@@ -6,7 +6,7 @@ import {
 } from '../../actions/word-actions';
 import { RootStateType } from '../../reducer/root-reducer';
 import styles from './FallingWord.module.css';
-import { isWordFalled, isWordMove, savannaGameStart, wordPosition, wordUserAnswer, wordRight, isAnswerSelected } from '../../actions/savanna-game-actions';
+import { isWordFalled, isWordMove, savannaGameStart, wordPosition, wordUserAnswer, wordRight, isAnswerSelected, startWordPosition } from '../../actions/savanna-game-actions';
 import successSound from '../../assets/sounds/src_music_correct.mp3';
 import wrongSound from '../../assets/sounds/src_music_wrong.wav';
 
@@ -34,6 +34,8 @@ const FallingWord: React.FC = () => {
     state.savannaGameState.stepCounter);
   const startPosition = useSelector((state: RootStateType) =>
     state.savannaGameState.startWordPosition);
+  const isResults = useSelector((state: RootStateType) =>
+    state.savannaGameState.isShowResults);
 
 
   const isMove = useSelector((state: RootStateType) =>
@@ -100,7 +102,8 @@ const FallingWord: React.FC = () => {
     dispatch(isWordFalled(true));
     dispatch(isWordMove(false));
     playWrongAnswer();
-    dispatch(isAnswerSelected(true))
+    dispatch(isAnswerSelected(true));
+    dispatch(startWordPosition(0));
   }
 
 
