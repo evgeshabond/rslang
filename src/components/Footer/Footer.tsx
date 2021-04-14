@@ -69,22 +69,6 @@ const Footer: React.FC<Props> = ({ bottomMenuIsOpen, bottomMenuOpen }) => {
           ref={buttonsContainer}
           className={styles['menu-buttons-container']}
         >
-          {/* <div
-            className={`${styles['bottom-button']} ${styles['button_margin-small']}`}
-          >
-            <Tooltip
-              placement="top"
-              classes={{
-                tooltip: classes.customWidth,
-              }}
-              title="Игры"
-              TransitionComponent={Zoom}
-            >
-              <Link to={mainPath.gamePage}>
-                <img src={gamesImg} alt="games" />
-              </Link>
-            </Tooltip>
-          </div> */}
           <div
             className={`${styles['up-button']} ${styles['button_margin-big']}`}
           >
@@ -115,23 +99,33 @@ const Footer: React.FC<Props> = ({ bottomMenuIsOpen, bottomMenuOpen }) => {
               </Link>
             </Tooltip>
           </div>
-          {/* <div className={styles['bottom-button']}>
-            <Tooltip
-              placement="top"
-              classes={{
-                tooltip: classes.customWidth,
-              }}
-              title="Главная"
-              TransitionComponent={Zoom}
-            >
-              <Link to={mainPath.main}>
-                <img src={statisticImg} alt="statistic" />
-              </Link>
-            </Tooltip>
-          </div> */}
         </div>
       </div>
+
       <div className={styles.wrapper}>
+        <ul className={styles.github}>
+          <li>
+            <a
+              href="https://github.com/juliememe"
+              className={styles.list__link}
+            >
+              Juliememe
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://github.com/evgeshabond"
+              className={styles.list__link}
+            >
+              Evgen
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/gaziz666" className={styles.list__link}>
+              Gaziz666
+            </a>
+          </li>
+        </ul>
         <button
           type="button"
           aria-label="Bottom-menu"
@@ -141,6 +135,29 @@ const Footer: React.FC<Props> = ({ bottomMenuIsOpen, bottomMenuOpen }) => {
         >
           <div className={styles['menu-btn__inner']} />
         </button>
+        <ul className={styles.github}>
+          <li>
+            <a
+              href="https://github.com/general-m"
+              className={styles.list__link}
+            >
+              General-m
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/rrroman" className={styles.list__link}>
+              Rrroman
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://rs.school/js/"
+              className={`${styles.list__link} ${styles['link__rs-logo']}`}
+            >
+              Rs School
+            </a>
+          </li>
+        </ul>
       </div>
     </footer>
   );
