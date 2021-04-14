@@ -1,4 +1,4 @@
-const getColor = function(group: number): string{
+function getColor(group: number): string{
   switch(group) {
     case 0: return '#d1f8fe'
     case 1: return '#fed1f6'
