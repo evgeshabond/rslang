@@ -9,12 +9,14 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Fade from '@material-ui/core/Fade';
 import {
   Dialog,
   DialogTitle,
   List,
   ListItem,
   Typography,
+  Tooltip
 } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Modal from '@material-ui/core/Modal';
@@ -230,6 +232,10 @@ const useStyles = makeStyles({
     width: '100%',
     alignItems: 'center',
   },
+  tooltip: {
+    fontSize: '1.4rem',
+    padding: '0.5rem',
+  },
 });
 
 const LearnPage: React.FC = () => {
@@ -429,16 +435,28 @@ const LearnPage: React.FC = () => {
         Электронный учебник
       </Typography>
       <Box className={classes.buttonsContainer}>
-        <div
-          className={clsx(classes.button, classes.buttonGames)}
-          onClick={() => handleGamesButtonClick()}
-          aria-hidden={true}
-        />
-        <div
-          className={clsx(classes.button, classes.buttonSettings)}
-          onClick={() => handleSettingsButtonClick()}
-          aria-hidden={true}
-        />
+        <Tooltip
+          classes={{ tooltip: classes.tooltip }}
+          TransitionComponent={Fade}
+          title="Игры"
+        >
+          <div
+            className={clsx(classes.button, classes.buttonGames)}
+            onClick={() => handleGamesButtonClick()}
+            aria-hidden={true}
+          />
+        </Tooltip>
+        <Tooltip
+          classes={{ tooltip: classes.tooltip }}
+          TransitionComponent={Fade}
+          title="Настройки"
+        >
+          <div
+            className={clsx(classes.button, classes.buttonSettings)}
+            onClick={() => handleSettingsButtonClick()}
+            aria-hidden={true}
+          />
+        </Tooltip>
       </Box>
       <Modal
         open={modalOpened}
@@ -535,85 +553,121 @@ const LearnPage: React.FC = () => {
         </List>
       </Dialog>
       <div className={classes.container}>
-        <Box className={classes.levels} role="menu">
-          <div
-            className={clsx({
-              [classes.level]: true,
-              [classes.levelName__a1]: true,
-              [classes.activeLevelName]: currentGroup === 0,
-            })}
-            role="button"
-            tabIndex={0}
-            onClick={(e) => handleGroupChange(e)}
-            aria-hidden="true"
+      <Box className={classes.levels} role="menu">
+          <Tooltip
+            classes={{ tooltip: classes.tooltip }}
+            TransitionComponent={Fade}
+            title="Изменить раздел учебника"
           >
-            <span className={classes.levelName}>A1</span>
-          </div>
-          <div
-            className={clsx({
-              [classes.level]: true,
-              [classes.levelName__a2]: true,
-              [classes.activeLevelName]: currentGroup === 1,
-            })}
-            role="button"
-            tabIndex={0}
-            onClick={(e) => handleGroupChange(e)}
-            aria-hidden="true"
+            <div
+              className={clsx({
+                [classes.level]: true,
+                [classes.levelName__a1]: true,
+                [classes.activeLevelName]: currentGroup === 0,
+              })}
+              role="button"
+              tabIndex={0}
+              onClick={(e) => handleGroupChange(e)}
+              aria-hidden="true"
+            >
+              <span className={classes.levelName}>A1</span>
+            </div>
+          </Tooltip>
+          <Tooltip
+            classes={{ tooltip: classes.tooltip }}
+            TransitionComponent={Fade}
+            title="Изменить раздел учебника"
           >
-            <span className={classes.levelName}>A2</span>
-          </div>
-          <div
-            className={clsx({
-              [classes.level]: true,
-              [classes.levelName__a2plus]: true,
-              [classes.activeLevelName]: currentGroup === 2,
-            })}
-            role="button"
-            tabIndex={0}
-            onClick={(e) => handleGroupChange(e)}
-            aria-hidden="true"
+            <div
+              className={clsx({
+                [classes.level]: true,
+                [classes.levelName__a2]: true,
+                [classes.activeLevelName]: currentGroup === 1,
+              })}
+              role="button"
+              tabIndex={0}
+              onClick={(e) => handleGroupChange(e)}
+              aria-hidden="true"
+            >
+              <span className={classes.levelName}>A2</span>
+            </div>
+          </Tooltip>
+          <Tooltip
+            classes={{ tooltip: classes.tooltip }}
+            TransitionComponent={Fade}
+            title="Изменить раздел учебника"
           >
-            <span className={classes.levelName}>A2+</span>
-          </div>
-          <div
-            className={clsx({
-              [classes.level]: true,
-              [classes.levelName__b1]: true,
-              [classes.activeLevelName]: currentGroup === 3,
-            })}
-            role="button"
-            tabIndex={0}
-            onClick={(e) => handleGroupChange(e)}
-            aria-hidden="true"
+            <div
+              className={clsx({
+                [classes.level]: true,
+                [classes.levelName__a2plus]: true,
+                [classes.activeLevelName]: currentGroup === 2,
+              })}
+              role="button"
+              tabIndex={0}
+              onClick={(e) => handleGroupChange(e)}
+              aria-hidden="true"
+            >
+              <span className={classes.levelName}>A2+</span>
+            </div>
+          </Tooltip>
+          <Tooltip
+            classes={{ tooltip: classes.tooltip }}
+            TransitionComponent={Fade}
+            title="Изменить раздел учебника"
           >
-            <span className={classes.levelName}>B1</span>
-          </div>
-          <div
-            className={clsx({
-              [classes.level]: true,
-              [classes.levelName__b2]: true,
-              [classes.activeLevelName]: currentGroup === 4,
-            })}
-            role="button"
-            tabIndex={0}
-            onClick={(e) => handleGroupChange(e)}
-            aria-hidden="true"
+            <div
+              className={clsx({
+                [classes.level]: true,
+                [classes.levelName__b1]: true,
+                [classes.activeLevelName]: currentGroup === 3,
+              })}
+              role="button"
+              tabIndex={0}
+              onClick={(e) => handleGroupChange(e)}
+              aria-hidden="true"
+            >
+              <span className={classes.levelName}>B1</span>
+            </div>
+          </Tooltip>
+          <Tooltip
+            classes={{ tooltip: classes.tooltip }}
+            TransitionComponent={Fade}
+            title="Изменить раздел учебника"
           >
-            <span className={classes.levelName}>B2</span>
-          </div>
-          <div
-            className={clsx({
-              [classes.level]: true,
-              [classes.levelName__b2plus]: true,
-              [classes.activeLevelName]: currentGroup === 5,
-            })}
-            role="button"
-            tabIndex={0}
-            onClick={(e) => handleGroupChange(e)}
-            aria-hidden="true"
+            <div
+              className={clsx({
+                [classes.level]: true,
+                [classes.levelName__b2]: true,
+                [classes.activeLevelName]: currentGroup === 4,
+              })}
+              role="button"
+              tabIndex={0}
+              onClick={(e) => handleGroupChange(e)}
+              aria-hidden="true"
+            >
+              <span className={classes.levelName}>B2</span>
+            </div>
+          </Tooltip>
+          <Tooltip
+            classes={{ tooltip: classes.tooltip }}
+            TransitionComponent={Fade}
+            title="Изменить раздел учебника"
           >
-            <span className={classes.levelName}>B2+</span>
-          </div>
+            <div
+              className={clsx({
+                [classes.level]: true,
+                [classes.levelName__b2plus]: true,
+                [classes.activeLevelName]: currentGroup === 5,
+              })}
+              role="button"
+              tabIndex={0}
+              onClick={(e) => handleGroupChange(e)}
+              aria-hidden="true"
+            >
+              <span className={classes.levelName}>B2+</span>
+            </div>
+          </Tooltip>
         </Box>
         {pageIsDeleted && (
           <Box>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import UserWordsService from '../services/user-words-service';
 
 const userWordsService = new UserWordsService();
@@ -11,6 +12,7 @@ const getAllUserWords = async (user: any) => {
     });
     return words;
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.log(e);
   }
   return [];
