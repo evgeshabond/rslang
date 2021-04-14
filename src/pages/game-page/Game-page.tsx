@@ -18,7 +18,7 @@ import styles from './game-page.module.css';
 
 const GamePage: React.FC = () => {
   const dispatch = useDispatch();
-
+  dispatch(setLevelVisibility(true));
   const openConstructorGameHandler = () => {
     dispatch(constructorGameStart(false));
     dispatch(setResultPageState(false));
@@ -28,14 +28,14 @@ const GamePage: React.FC = () => {
 
   const openAudioGameHandler = () => {
     dispatch(audioGameStart(false));
-  }
+  };
   const openSavannaGameHandler = () => {
     dispatch(savannaGameStart(false));
-  }
+  };
 
-  const openSprintHandler =() =>{
+  const openSprintHandler = () => {
     dispatch(sprintGameStatusChange('start'));
-  }
+  };
 
   useEffect(() => {
     dispatch(gameStartStatusChange(GameStart.Menu));
@@ -45,11 +45,23 @@ const GamePage: React.FC = () => {
     <div className={rootStyles['ebook-container']}>
       <h2 className={rootStyles.title}>Мини-игры</h2>
       <div className={rootStyles['ebook-buttons-container']}>
-        <LinkButton link={mainPath.savannaGame} clickHandler={() => openSavannaGameHandler()} buttonName="Саванна" />
-        <LinkButton link={mainPath.audioGame} clickHandler={() => openAudioGameHandler()} buttonName="Аудиовызов" />
+        <LinkButton
+          link={mainPath.savannaGame}
+          clickHandler={() => openSavannaGameHandler()}
+          buttonName="Саванна"
+        />
+        <LinkButton
+          link={mainPath.audioGame}
+          clickHandler={() => openAudioGameHandler()}
+          buttonName="Аудиовызов"
+        />
       </div>
       <div className={rootStyles['ebook-buttons-container']}>
-        <LinkButton link={mainPath.sprint} buttonName="Спринт" clickHandler={()=> openSprintHandler()}/>
+        <LinkButton
+          link={mainPath.sprint}
+          buttonName="Спринт"
+          clickHandler={() => openSprintHandler()}
+        />
         <button
           className={styles['constructor-button']}
           type="button"
