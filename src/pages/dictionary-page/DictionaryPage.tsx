@@ -209,7 +209,7 @@ const useStyles = makeStyles({
     height: '70px',
     width: '400px',
     margin: '1rem auto',
-    marginBottom: '3rem',
+    marginBottom: '1rem',
     fontSize: '2rem',
     listStyle: 'none',
 
@@ -253,14 +253,19 @@ const useStyles = makeStyles({
   statsTextWrapper: {
     display: 'flex',
     flexDirection: 'row-reverse',
+    flexWrap: 'nowrap',
     justifyContent: 'space-between',
     paddingLeft: '2rem',
     paddingRight: '4.5rem',
-    // height: '2rem'
+    minHeight: '6rem'
+    
   },
+
   statsText: {
     margin: 0,
-    marginBottom: '0.5rem'
+    marginBottom: '0.5rem',
+    minHeight: '1.5rem'
+    
   },
   // statsTextLeft: {
   //   left: '2rem',
@@ -866,7 +871,7 @@ const DictionaryPage: React.FC = () => {
           </div>
           <div className={classes.statsTextWrapper}>
           {difficulty === 'learning' && (
-            <div className={classes.statsText}>
+            <div>
               <Typography align="left" variant="h4" component="p">
                 <p className={classes.statsText}>Cлов на странице: {wordsToRender.length}</p>
                 <p className={classes.statsText}>
@@ -881,7 +886,7 @@ const DictionaryPage: React.FC = () => {
             </div>
           )}
           {difficulty === 'learning' && (
-            <div className={classes.statsText}>
+            <div>
               <Typography align="left" variant="h4" component="p">
                 <p className={classes.statsText}>Cлов в группе: {allLearningWords.length}</p>
                 <p className={classes.statsText}>

@@ -16,6 +16,7 @@ import UserWordsService from '../../services/user-words-service';
 import { serverUrl } from '../../utils/constants';
 //  helpers
 import getColor from '../../utils/getColor';
+import {removeTagsFromString} from '../../utils/removeTagsFromString'
 
 type Params = {
   group: number;
@@ -244,7 +245,10 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
     // console.log(wordStats)
   }, [])
 
-
+  const handleClickAudio = () => {
+    const audio = new Audio(`${serverUrl}${word.audioMeaning}`);
+    audio.play();
+  };
 
   const addItemToHard = async () => {
     const params = {
@@ -339,7 +343,10 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
           )}
         </div>
         <div className={classes.imageContainer} />
-        <div className={classes.playButton} aria-hidden={true} />
+        <div className={classes.playButton}
+          aria-hidden={true}
+          onClick={handleClickAudio}
+        />
       </div>
       <div className={classes.textContainerWrapper}>
         <div className={classes.textContainer}>
@@ -351,15 +358,15 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
               variant="h4"
               component="span"
             >
-              {word.transcription}
+              {removeTagsFromString(word.transcription)}
             </Typography>
           </div>
           <div>
             <Typography align="left" variant="body1" component="p">
-              {word.textMeaning}
+              {removeTagsFromString(word.textMeaning)}
             </Typography>
             <Typography align="left" variant="body1" component="p">
-              {word.textExample}
+              {removeTagsFromString(word.textExample)}
             </Typography>
           </div>
         </div>
@@ -368,15 +375,15 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
             <>
               <div>
                 <Typography align="left" variant="h4" component="span">
-                  {word.wordTranslate}
+                  {removeTagsFromString(word.wordTranslate)}
                 </Typography>
               </div>
               <div>
                 <Typography align="left" variant="body1" component="p">
-                  {word.textMeaningTranslate}
+                  {removeTagsFromString(word.textMeaningTranslate)}
                 </Typography>
                 <Typography align="left" variant="body1" component="p">
-                  {word.textExampleTranslate}
+                  {removeTagsFromString(word.textExampleTranslate)}
                 </Typography>
               </div>
             </>
