@@ -54,10 +54,17 @@ const FallingWord: React.FC = () => {
 
 
   useEffect(() => {
-    if (!isMove || position > 323) {
+    if (!isMove) {
 
       clearInterval(timer as ReturnType<typeof setInterval>);
     }
+    if (position > 323) {
+      showAnswer();
+
+      clearInterval(timer as ReturnType<typeof setInterval>);
+    }
+
+
   }, [dispatch, isAnswer, position, timer, isMove]);
 
 
@@ -65,8 +72,8 @@ const FallingWord: React.FC = () => {
     if (refBtn.current) {
       if (isMove && !isAnswer) {
         const newTimer = setInterval(() => {
-          dispatch(wordPosition(3));
-        }, 100);
+          dispatch(wordPosition(0.5));
+        }, 5);
         setTimer(newTimer);
         refBtn.current.style.transform = `translateY(${position}px)`;
       }
@@ -91,10 +98,9 @@ const FallingWord: React.FC = () => {
 
 
   const showAnswer = () => {
-    playWrongAnswer();
     dispatch(isWordFalled(true));
     dispatch(isWordMove(false));
-    dispatch(wordUserAnswer(rightWord));
+    playWrongAnswer();
     dispatch(isAnswerSelected(true))
   }
 
@@ -102,7 +108,7 @@ const FallingWord: React.FC = () => {
   return (
 
     <div aria-hidden='true' ref={refBtn as React.RefObject<HTMLDivElement>} className={`${styles.falling__word}
-     ${(isAnswer && userAnswer.word === rightWord.word) ? styles.word__stop : ''}
+     ${((isAnswer && userAnswer.word === rightWord.word) || isWordFalled) ? styles.word__stop : ''}
      ${(isAnswer && userAnswer.word !== rightWord.word) ? styles.word__stop__wrong : ''}`}
       style={{ transform: `translateY(${position}px)` }}>
       {rightWord.word}
