@@ -23,7 +23,7 @@ export const StartPage: React.FC = () => (
         <li className={styles.list__item}>
           <Base />
           <span className={styles.list__text}>
-          Большая база слов для разных уровней
+            Большая база слов для разных уровней
           </span>
         </li>
         <li className={styles.list__item}>
@@ -50,7 +50,17 @@ export const StartPage: React.FC = () => (
       <h2 className={styles['sub-title']}>
         Ознакомься с возможностями приложения подробнее
       </h2>
-      <div className={styles.video}>Video...</div>
+      <div className={styles.video}>
+        <iframe
+          width="560"
+          height="315"
+          src="https://www.youtube.com/embed/cHl_VFbTBcQ"
+          title="YouTube video player"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
+      </div>
     </div>
   </div>
 );
