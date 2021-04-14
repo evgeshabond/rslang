@@ -30,7 +30,7 @@
 }
 
 .go-back:active,
-.repeat:hover {
+.repeat:active {
   box-shadow: inset -3px -3px 6px #ffffff, inset 3px 3px 6px #d3a9d8;
 }
 
@@ -50,6 +50,8 @@
   line-height: 1.6rem;
   font-family: 'Roboto';
   outline-color: #733999;
+
+  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 .result-subtitle {
@@ -66,7 +68,6 @@
 .points-procents {
   color: #45f9a3;
   font-size: 1.4rem;
-
 }
 
 .result__title {
