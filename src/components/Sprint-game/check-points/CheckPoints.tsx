@@ -1,9 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { RootStateType } from '../../../reducer/root-reducer';
-
-import styles from './check-points.module.css';
 import check from '../../../assets/images/checkpoint.svg';
+import { RootStateType } from '../../../reducer/root-reducer';
+import styles from './check-points.module.css';
 
 const CheckPoints: React.FC = () => {
   const checkpoints = useSelector(

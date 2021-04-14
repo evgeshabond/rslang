@@ -18,9 +18,9 @@ type GetWordsPageProps = {
 const getWordsPage = async ({ page, group }: GetWordsPageProps) => {
   try {
     const wordsPage = await getWordList({ page, group });
-    console.log('insied getWordsPage. returned words are ', wordsPage);
     return wordsPage;
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.log(e);
   }
   return [];

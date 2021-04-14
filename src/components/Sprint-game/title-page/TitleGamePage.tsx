@@ -12,10 +12,7 @@ import {
   sprintGameTotalPoints,
   sprintGameWordCounter,
 } from '../../../actions/sprint-game-action';
-import {
-  CurrentWordListType,
-  fetchWordsList,
-} from '../../../actions/word-actions';
+import { CurrentWordListType } from '../../../actions/word-actions';
 import { ReactComponent as Cat2 } from '../../../assets/images/cat2.svg';
 import playIcon from '../../../assets/images/play-big.svg';
 import { RootStateType } from '../../../reducer/root-reducer';
@@ -29,13 +26,6 @@ export const TitleGamePage: React.FC = () => {
     (state: RootStateType) => state.wordState.currentWordList
   );
 
-  // useEffect(() => {
-  //   if (wordList.length === 0) {
-  //     console.log('fetching');
-  //     dispatch(fetchWordsList({ page: 0, group: 0 }));
-  //   }
-  // }, []);
-
   const getRandomNumber = (num: number) => Math.floor(Math.random() * num);
 
   const createRandomArray = (wordListArray: CurrentWordListType[]) => {
@@ -43,13 +33,11 @@ export const TitleGamePage: React.FC = () => {
     for (let i = 0; i < wordListArray.length; i++) {
       array.push(getRandomNumber(wordListArray.length));
     }
-    console.log(array, 'random');
     return array;
   };
 
-  useEffect(()=>{
-
-    dispatch(sprintGameStatusChange('play'));
+  useEffect(() => {
+    dispatch(sprintGameStatusChange('start'));
     dispatch(sprintGameWordCounter(0));
     dispatch(clearWords());
     dispatch(sprintGameTotalPoints(0));
@@ -70,15 +58,13 @@ export const TitleGamePage: React.FC = () => {
       sprintGameShuffledArray(wordList.slice().sort(() => Math.random() - 0.5))
     );
     dispatch(sprintGameRandomArray(createRandomArray(wordList)));
-
-    console.log('shuffledArray !');
   };
 
   return (
     <div className={styles.game__wrapper}>
       <div className={styles['start-game-content']}>
-        <h2>СПРИНТ</h2>
-        <p>
+        <h2 className={styles['game-title']}>СПРИНТ</h2>
+        <p className={styles.prepare}>
           Это тренировка для повторения заученных слов из вашего словаря.
           Выберите соответствует ли перевод предложенному слову.
         </p>

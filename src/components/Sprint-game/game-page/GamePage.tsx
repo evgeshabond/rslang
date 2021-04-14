@@ -6,9 +6,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import useSound from 'use-sound';
 import {
   checkAndSaveMaxCombo,
+  clearAllCount,
   setWorldResult,
 } from '../../../actions/game-result-actions';
 import {
+  clearWords,
   setCorrectAnswer,
   setFullScreenStatus,
   sprintGameBallsCounter,
@@ -21,6 +23,7 @@ import {
   sprintGameWordCounter,
 } from '../../../actions/sprint-game-action';
 import { userWordToLearnResult } from '../../../actions/user-words-action';
+import { ReactComponent as ExitButton } from '../../../assets/images/exit-button-mini.svg';
 import closeIcon from '../../../assets/images/close.svg';
 import correctImage from '../../../assets/images/correct.svg';
 import inCorrectImage from '../../../assets/images/incorrect.svg';
@@ -36,9 +39,6 @@ import styles from './game-page.module.css';
 
 const GamePage: React.FC = () => {
   const dispatch = useDispatch();
-  const wordList = useSelector(
-    (state: RootStateType) => state.wordState.currentWordList
-  );
 
   const gameStatus = useSelector(
     (state: RootStateType) => state.sprintGameState
@@ -60,6 +60,7 @@ const GamePage: React.FC = () => {
   const [playCorrectSound] = useSound(correctSound, {
     interrupt: true,
   });
+  const userState = useSelector((state: RootStateType) => state.userState);
   const [playWrongSound] = useSound(wrongSound, { interrupt: true });
   const getRandomNumber = (num: number) => Math.floor(Math.random() * num);
   const user = useSelector((state: RootStateType) => state.userState.user);
@@ -83,7 +84,9 @@ const GamePage: React.FC = () => {
 
   const changeGameStats = () => {
     dispatch(setWorldResult(true, shuffledArray[wordCounter].id));
-    dispatch(userWordToLearnResult(param, { isCorrect: true }));
+    if (userState.isLogin) {
+      dispatch(userWordToLearnResult(param, { isCorrect: true }));
+    }
     dispatch(sprintGameSetLearntWords(shuffledArray[wordCounter]));
     changeCurrentPoints();
     dispatch(setCorrectAnswer(true));
@@ -117,7 +120,9 @@ const GamePage: React.FC = () => {
   };
   const cleanCurrentGameStats = () => {
     dispatch(setWorldResult(false, shuffledArray[wordCounter].id));
-    dispatch(userWordToLearnResult(param, { isCorrect: false }));
+    if (userState.isLogin) {
+      dispatch(userWordToLearnResult(param, { isCorrect: false }));
+    }
     dispatch(sprintGameSetNotLearntWords(shuffledArray[wordCounter]));
     dispatch(setCorrectAnswer(false));
     playWrongSound();
@@ -157,6 +162,20 @@ const GamePage: React.FC = () => {
       dispatch(sprintGameCurrentPoints(100));
     }
   };
+
+  const endGameHandler = () => {
+    console.log('i worked');
+    dispatch(sprintGameStatusChange('start'));
+    dispatch(sprintGameWordCounter(0));
+    dispatch(clearWords());
+    dispatch(sprintGameTotalPoints(0));
+    dispatch(sprintGameBallsCounter(0));
+    dispatch(sprintGameCheckPoints(0));
+    dispatch(sprintGameCurrentPoints(50));
+    dispatch(clearAllCount());
+    console.log(gameStatus);
+  };
+
   return (
     <FullScreen
       handle={handle}
@@ -248,12 +267,13 @@ const GamePage: React.FC = () => {
             />
           </button>
         )}
+       
         <button
           type="button"
           className={styles.close__button}
-          onClick={() => dispatch(sprintGameStatusChange('start'))}
+          onClick={endGameHandler}
         >
-          <img src={closeIcon} alt="close icon" />
+          <ExitButton />
         </button>
       </div>
     </FullScreen>

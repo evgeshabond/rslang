@@ -1,11 +1,14 @@
-import { Typography } from '@material-ui/core';
-//  material ui
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable max-len */
+import Fade from '@material-ui/core/Fade';
+import { Typography, Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { CurrentWordListType } from '../../actions/word-actions';
 import deleteIcon from '../../assets/images/delete.svg';
+
 //  icons
 import hardIcon from '../../assets/images/hardWord.svg';
 import playIcon from '../../assets/images/play-big.svg';
@@ -15,6 +18,7 @@ import UserWordsService from '../../services/user-words-service';
 import { serverUrl } from '../../utils/constants';
 //  helpers
 import getColor from '../../utils/getColor';
+import { removeTagsFromString } from '../../utils/removeTagsFromString'
 
 type Params = {
   group: number;
@@ -29,6 +33,7 @@ const useStyles = makeStyles({
     margin: 0,
     marginLeft: '1rem',
     marginBottom: '1rem',
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     backgroundColor: (params: any) => getColor(params.group),
   },
   firstContainer: {
@@ -100,7 +105,7 @@ const useStyles = makeStyles({
   },
   infoContainer: {
     display: 'flex',
-    flexBasis: '40rem',
+    flexBasis: '16rem',
     flexShrink: 10,
     flexWrap: 'wrap',
     marginTop: '1.5rem',
@@ -110,12 +115,16 @@ const useStyles = makeStyles({
   buttonsBox: {
     display: 'flex',
     flexWrap: 'wrap',
-    flexBasis: '20rem',
+    flexBasis: '15rem',
   },
   statsBox: {
-    display: 'flex',
+    display: 'block',
+    paddingRight: '10px',
+    paddingBottom: '10px',
     marginTop: '1.5rem',
-    flexBasis: '20rem',
+    width: '50px',
+    color: 'green',
+    fontSize: '14px'
   },
   button: {
     flexBasis: '2.5rem',
@@ -139,6 +148,10 @@ const useStyles = makeStyles({
   helperMarginLeft: {
     marginLeft: '1rem',
   },
+  tooltip: {
+    fontSize: '1.4rem',
+    padding: '0.5rem',
+  },
   '@media (max-width: 600px)': {
     firstContainer: {
       flexDirection: 'column-reverse',
@@ -156,39 +169,8 @@ const useStyles = makeStyles({
       gap: 0
     }
   },
+
 });
-
-type UserType = {
-  message: string;
-  token: string;
-  refreshToken: string;
-  userId: string;
-  name: string;
-};
-
-type WordType = {
-  id?: string;
-  _id?: string;
-  group: number;
-  page: number;
-  word: string;
-  image: string;
-  audio: string;
-  audioMeaning: string;
-  audioExample: string;
-  textMeaning: string;
-  textExample: string;
-  transcription: string;
-  wordTranslate: string;
-  textMeaningTranslate: string;
-  textExampleTranslate: string;
-  userWord?: {
-    difficulty: string;
-    optional?: {
-      learning?: boolean | undefined;
-    };
-  };
-};
 
 type Props = {
   word: any;
@@ -204,6 +186,46 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
   const service = new UserWordsService();
   const user = useSelector((state: RootStateType) => state.userState.user);
   const classes = useStyles({ group, word });
+  type WordStats = {
+    correctCount: number,
+    inCorrectCount: number,
+    summ: number,
+    correctPercent: number
+  }
+  const [wordStats, setWordStats] = React.useState<WordStats>({
+    correctCount: -1,
+    inCorrectCount: -1,
+    summ: -2,
+    correctPercent: 0,
+  })
+
+  React.useEffect(() => {
+    if (word?.userWord?.optional) {
+      const correctCount = word?.userWord?.optional.correctCount;
+      const inCorrectCount = word?.userWord?.optional.inCorrectCount;
+      const summ = correctCount + inCorrectCount;
+      let correctPercent = 0;
+      if (summ > 0) {
+        if (correctCount > 0) {
+          correctPercent = Math.round(correctCount / summ * 100);
+        }
+      }
+
+      setWordStats({
+        correctCount,
+        inCorrectCount,
+        summ,
+        correctPercent,
+      })
+    }
+    // console.log(wordStats)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const handleClickAudio = () => {
+    const audio = new Audio(`${serverUrl}${word.audioMeaning}`);
+    audio.play();
+  };
 
   const addItemToHard = async () => {
     const params = {
@@ -220,14 +242,14 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
       /* eslint-enable */
     };
     try {
-      const response = await service.updateWord(params, {
+      await service.updateWord(params, {
         difficulty: 'hard',
         optional: {
           learning: true,
         },
       });
-      console.log(response);
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.log(e);
     }
     forseFetch();
@@ -248,14 +270,14 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
       /* eslint-enable */
     };
     try {
-      const response = await service.updateWord(params, {
+      await service.updateWord(params, {
         difficulty: 'deleted',
         optional: {
           learning: false,
         },
       });
-      console.log(response);
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.log(e);
     }
     forseFetch();
@@ -276,14 +298,14 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
       /* eslint-enable */
     };
     try {
-      const response = await service.updateWord(params, {
+      await service.updateWord(params, {
         difficulty: 'easy',
         optional: {
           learning: true,
         },
       });
-      console.log(response);
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.log(e);
     }
     forseFetch();
@@ -298,7 +320,12 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
           )}
         </div>
         <div className={classes.imageContainer} />
-        <div className={classes.playButton} aria-hidden={true} />
+        <Tooltip classes={ { tooltip: classes.tooltip } } TransitionComponent={Fade} title='Воспроизвести'>
+          <div className={classes.playButton}
+            aria-hidden={true}
+            onClick={handleClickAudio}
+          />
+        </Tooltip>
       </div>
       <div className={classes.textContainerWrapper}>
         <div className={classes.textContainer}>
@@ -310,15 +337,15 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
               variant="h4"
               component="span"
             >
-              {word.transcription}
+              {removeTagsFromString(word.transcription)}
             </Typography>
           </div>
           <div>
             <Typography align="left" variant="body1" component="p">
-              {word.textMeaning}
+              {removeTagsFromString(word.textMeaning)}
             </Typography>
             <Typography align="left" variant="body1" component="p">
-              {word.textExample}
+              {removeTagsFromString(word.textExample)}
             </Typography>
           </div>
         </div>
@@ -327,15 +354,15 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
             <>
               <div>
                 <Typography align="left" variant="h4" component="span">
-                  {word.wordTranslate}
+                  {removeTagsFromString(word.wordTranslate)}
                 </Typography>
               </div>
               <div>
                 <Typography align="left" variant="body1" component="p">
-                  {word.textMeaningTranslate}
+                  {removeTagsFromString(word.textMeaningTranslate)}
                 </Typography>
                 <Typography align="left" variant="body1" component="p">
-                  {word.textExampleTranslate}
+                  {removeTagsFromString(word.textExampleTranslate)}
                 </Typography>
               </div>
             </>
@@ -346,25 +373,33 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
       <div className={classes.infoContainer}>
         {settings.showButtons && (
           <div className={classes.buttonsBox}>
+             <Tooltip classes={ { tooltip: classes.tooltip } } TransitionComponent={Fade} title='Добавить в сложные'>
             <div
               className={clsx(classes.button, classes.buttonHard)}
               onClick={() => addItemToHard()}
               aria-hidden={true}
             />
-            {word.userWord.difficulty !== 'deleted' && (<div
+            </Tooltip>
+            {word.userWord.difficulty !== 'deleted' && (
+            <Tooltip classes={ { tooltip: classes.tooltip } } TransitionComponent={Fade} title='Добавить в удаленные'><div
               className={clsx(classes.button, classes.buttonDelete)}
               onClick={() => deleteItem()}
               aria-hidden={true}
-            />)}
+            /></Tooltip>)}
+            <Tooltip classes={{ tooltip: classes.tooltip }} TransitionComponent={Fade} title='Вернуть в простые'>
             <div
               className={clsx(classes.button, classes.buttonReturn)}
               onClick={() => returnItem()}
               aria-hidden={true}
             />
+            </Tooltip>
             {/* className={clsx({[classes.difficultyButton]: true, [classes.activeButton]: difficulty === 'all'})} */}
           </div>
         )}
-        <div className={classes.statsBox}>StatsBox</div>
+        <div className={classes.statsBox}>
+            {wordStats.summ > 0 &&`${wordStats.correctPercent}`}
+        </div>       
+        
       </div>
 
       {/* {item?.word}
