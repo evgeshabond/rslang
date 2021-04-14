@@ -43,6 +43,7 @@ const NextBtn: React.FC = () => {
 
 
   const [playWrongAnswer] = useSound(wrongSound);
+  const wordCount = wordList.length;
 
   const user = useSelector((state: RootStateType) => state.userState.user);
 
@@ -91,9 +92,12 @@ const NextBtn: React.FC = () => {
     dispatch(audioGameStart(false));
   }
 
+
+
+
   return isAnswer ? (
     <div>
-      {(roundCounter === 10) ? (
+      {(roundCounter === 10 || roundCounter === wordCount) ? (
         <button type="button" onClick={() => showResults()} className={styles.playing__btn}>
           Показать результат
         </button>
