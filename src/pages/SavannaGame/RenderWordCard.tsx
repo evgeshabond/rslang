@@ -119,7 +119,7 @@ const RenderWordCard: React.FC = () => {
   }, [isAnswer])
 
   const playGame = () => {
-    dispatch(stepCounter(roundCounter + 1));
+
     dispatch(isWordMove(true));
     dispatch(isWordFalled(false));
     dispatch(isAnswerSelected(false));
@@ -140,6 +140,7 @@ const RenderWordCard: React.FC = () => {
     dispatch(isAnswerSelected(true));
     dispatch(isAnswerSelected(true));
     dispatch(isWordMove(false));
+    dispatch(stepCounter(roundCounter + 1));
   }
 
   const showResults = () => {
@@ -158,7 +159,7 @@ const RenderWordCard: React.FC = () => {
     dispatch(setStatistics(param, body));
     dispatch(isShowResults(true));
     dispatch(savannaGameStart(false))
-    // dispatch(stepCounter(roundCounter + 1));
+    dispatch(stepCounter(roundCounter + 1));
   }
 
 
