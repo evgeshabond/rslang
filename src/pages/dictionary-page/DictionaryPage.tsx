@@ -300,7 +300,7 @@ const DictionaryPage: React.FC = () => {
   };
   const getDifficulty = (): string => {
     const difficulty = searchParams.get('difficulty');
-    let newDifficulty = 'hard';
+    let newDifficulty = 'learning';
     if (typeof difficulty === 'string') newDifficulty = difficulty;
     return newDifficulty;
   };
