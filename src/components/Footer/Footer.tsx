@@ -102,7 +102,7 @@ const Footer: React.FC<Props> = ({ bottomMenuIsOpen, bottomMenuOpen }) => {
         </div>
       </div>
 
-      <div className={styles.wrapper}>
+      <div className={styles.wrapper} onMouseEnter={() => bottomMenuOpen(true)}>
         <ul className={styles.github}>
           <li>
             <a
