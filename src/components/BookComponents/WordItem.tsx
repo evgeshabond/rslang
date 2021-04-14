@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable max-len */
-import { Typography } from '@material-ui/core';
-//  material ui
+import Fade from '@material-ui/core/Fade';
+import { Typography, Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { CurrentWordListType } from '../../actions/word-actions';
 import deleteIcon from '../../assets/images/delete.svg';
+
 //  icons
 import hardIcon from '../../assets/images/hardWord.svg';
 import playIcon from '../../assets/images/play-big.svg';
@@ -147,6 +148,10 @@ const useStyles = makeStyles({
   helperMarginLeft: {
     marginLeft: '1rem',
   },
+  tooltip: {
+    fontSize: '1.4rem',
+    padding: '0.5rem',
+  },
   '@media (max-width: 600px)': {
     firstContainer: {
       flexDirection: 'column-reverse',
@@ -164,6 +169,7 @@ const useStyles = makeStyles({
       gap: 0
     }
   },
+
 });
 
 type Props = {
@@ -314,10 +320,12 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
           )}
         </div>
         <div className={classes.imageContainer} />
-        <div className={classes.playButton}
-          aria-hidden={true}
-          onClick={handleClickAudio}
-        />
+        <Tooltip classes={ { tooltip: classes.tooltip } } TransitionComponent={Fade} title='Воспроизвести'>
+          <div className={classes.playButton}
+            aria-hidden={true}
+            onClick={handleClickAudio}
+          />
+        </Tooltip>
       </div>
       <div className={classes.textContainerWrapper}>
         <div className={classes.textContainer}>
@@ -365,21 +373,26 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
       <div className={classes.infoContainer}>
         {settings.showButtons && (
           <div className={classes.buttonsBox}>
+             <Tooltip classes={ { tooltip: classes.tooltip } } TransitionComponent={Fade} title='Добавить в сложные'>
             <div
               className={clsx(classes.button, classes.buttonHard)}
               onClick={() => addItemToHard()}
               aria-hidden={true}
             />
-            {word.userWord.difficulty !== 'deleted' && (<div
+            </Tooltip>
+            {word.userWord.difficulty !== 'deleted' && (
+            <Tooltip classes={ { tooltip: classes.tooltip } } TransitionComponent={Fade} title='Добавить в удаленные'><div
               className={clsx(classes.button, classes.buttonDelete)}
               onClick={() => deleteItem()}
               aria-hidden={true}
-            />)}
+            /></Tooltip>)}
+            <Tooltip classes={{ tooltip: classes.tooltip }} TransitionComponent={Fade} title='Вернуть в простые'>
             <div
               className={clsx(classes.button, classes.buttonReturn)}
               onClick={() => returnItem()}
               aria-hidden={true}
             />
+            </Tooltip>
             {/* className={clsx({[classes.difficultyButton]: true, [classes.activeButton]: difficulty === 'all'})} */}
           </div>
         )}

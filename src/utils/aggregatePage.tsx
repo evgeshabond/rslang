@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import getAllUserWords from './getAllUserWords';
 import getWordsPage from './getWordsPage';
 
@@ -19,6 +20,7 @@ const aggregatePage = async ({ page, group, user }: Params) => {
     });
     return updatedWordsList;
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.log(e);
     return [];
   }
