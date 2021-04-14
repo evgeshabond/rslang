@@ -1,8 +1,6 @@
 .game__wrapper {
   min-height: 560px;
-  /* height: 80%; */
   max-width: 1022px;
-  /* min-width: 1022px; */
   width: 80%;
   background-color: #fdebff;
   font-family: 'Roboto';
@@ -18,6 +16,11 @@
 
 
 }
+
+.game-title{
+font-size: 4.8rem;
+font-weight: 900;
+}
 .cat__img1 {
   position: absolute;
   right: -100px;
@@ -26,6 +29,7 @@
   background-color: transparent;
   border: none;
   margin-top: 3rem;
+  cursor: pointer;
 }
 
 .start-game-content{

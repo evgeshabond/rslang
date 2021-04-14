@@ -65,8 +65,8 @@ export const TitleGamePage: React.FC = () => {
   return (
     <div className={styles.game__wrapper}>
       <div className={styles['start-game-content']}>
-        <h2>СПРИНТ</h2>
-        <p>
+        <h2 className={styles['game-title']}>СПРИНТ</h2>
+        <p className={styles.prepare}>
           Это тренировка для повторения заученных слов из вашего словаря.
           Выберите соответствует ли перевод предложенному слову.
         </p>
