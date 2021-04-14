@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { Typography } from '@material-ui/core';
 //  material ui
 import { makeStyles } from '@material-ui/core/styles';
@@ -100,7 +101,7 @@ const useStyles = makeStyles({
   },
   infoContainer: {
     display: 'flex',
-    flexBasis: '40rem',
+    flexBasis: '16rem',
     flexShrink: 10,
     flexWrap: 'wrap',
     marginTop: '1.5rem',
@@ -110,12 +111,16 @@ const useStyles = makeStyles({
   buttonsBox: {
     display: 'flex',
     flexWrap: 'wrap',
-    flexBasis: '20rem',
+    flexBasis: '15rem',
   },
   statsBox: {
-    display: 'flex',
+    display: 'block',
+    paddingRight: '10px',
+    paddingBottom: '10px',
     marginTop: '1.5rem',
-    flexBasis: '20rem',
+    width: '50px',
+    color: 'green',
+    fontSize: '14px'
   },
   button: {
     flexBasis: '2.5rem',
@@ -204,6 +209,42 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
   const service = new UserWordsService();
   const user = useSelector((state: RootStateType) => state.userState.user);
   const classes = useStyles({ group, word });
+  type WordStats = {
+    correctCount: number,
+    inCorrectCount: number,
+    summ: number,
+    correctPercent: number
+  }
+  const [wordStats, setWordStats] = React.useState<WordStats>({
+    correctCount: -1,
+    inCorrectCount: -1,
+    summ: -2,
+    correctPercent: 0,
+  })
+
+  React.useEffect(() => {
+    if (word?.userWord?.optional) {
+      const correctCount = word?.userWord?.optional.correctCount;
+      const inCorrectCount = word?.userWord?.optional.inCorrectCount;
+      const summ = correctCount + inCorrectCount;
+      let correctPercent = 0;
+      if (summ > 0) {
+        if (correctCount > 0) {
+          correctPercent = Math.round(correctCount / summ * 100);
+        }
+      }
+
+      setWordStats({
+        correctCount,
+        inCorrectCount,
+        summ,
+        correctPercent,
+      })
+    }
+    // console.log(wordStats)
+  }, [])
+
+
 
   const addItemToHard = async () => {
     const params = {
@@ -364,7 +405,10 @@ const WordItem: React.FC<Props> = ({ word, group, forseFetch, settings }) => {
             {/* className={clsx({[classes.difficultyButton]: true, [classes.activeButton]: difficulty === 'all'})} */}
           </div>
         )}
-        <div className={classes.statsBox}>StatsBox</div>
+        <div className={classes.statsBox}>
+            {wordStats.summ > 0 &&`${wordStats.correctPercent}`}
+        </div>       
+        
       </div>
 
       {/* {item?.word}

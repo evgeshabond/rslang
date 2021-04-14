@@ -13,7 +13,6 @@ import {
   errorMessageClear,
 } from '../../actions/user-actions';
 import { ImageLoader } from '../image-loader/Image-loader';
-import { MainCat } from '../cats-img/main-cat/Main-cat';
 import { RootStateType } from '../../reducer/root-reducer';
 import styles from './auth.module.css';
 import { authErrorPath, mainPath } from '../../utils/constants';
@@ -165,7 +164,6 @@ const Auth: React.FC<Props> = ({ history }) => {
           </span>
         </div>
       )}
-      <MainCat />
     </>
   );
 };

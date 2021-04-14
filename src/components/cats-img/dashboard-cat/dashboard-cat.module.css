@@ -62,9 +62,10 @@
 .main-cat {
   width: 133px;
   height: 185px;
+  object-fit: contain;
 }
 
-@media screen and (max-width: 1218px) {
+/* @media screen and (max-width: 1218px) {
   .main-cat__circle_1,
   .main-cat__circle_2,
   .main-cat__circle_3,
@@ -79,4 +80,4 @@
 @media screen and (max-width: 996px) {
   .main-cat__wrapper {
   }
-}
+} */

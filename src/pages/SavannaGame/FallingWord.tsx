@@ -6,10 +6,7 @@ import {
 } from '../../actions/word-actions';
 import { RootStateType } from '../../reducer/root-reducer';
 import styles from './FallingWord.module.css';
-
-import { audioGameStart, wordUserAnswer, wordRight, isAnswerSelected } from '../../actions/audioGame-actions';
-import { shuffle } from '../../utils/shuffle';
-import { isWordFalled, isWordMove, savannaGameStart, wordPosition } from '../../actions/savanna-game-actions';
+import { isWordFalled, isWordMove, savannaGameStart, wordPosition, wordUserAnswer, wordRight, isAnswerSelected } from '../../actions/savanna-game-actions';
 import successSound from '../../assets/sounds/src_music_correct.mp3';
 import wrongSound from '../../assets/sounds/src_music_wrong.wav';
 
@@ -35,6 +32,8 @@ const FallingWord: React.FC = () => {
     state.savannaGameState.currentPlayWords);
   const stepCounter = useSelector((state: RootStateType) =>
     state.savannaGameState.stepCounter);
+  const startPosition = useSelector((state: RootStateType) =>
+    state.savannaGameState.startWordPosition);
 
 
   const isMove = useSelector((state: RootStateType) =>
@@ -51,54 +50,38 @@ const FallingWord: React.FC = () => {
   );
 
   const refBtn = useRef<HTMLDivElement>();
-  let timer: ReturnType<typeof setInterval>;
-  // useEffect(() => {
-  //   let timer: ReturnType<typeof setTimeout>;
-  //   if (refBtn.current) {
-  //     if (isMove && !isAnswer) {
-  //       timer = setInterval(() => {
-  //         dispatch(wordPosition(position + 25));
-  //       }
-  //         , 100);
-
-  //       refBtn.current.style.transform = `translateY(${position}px)`
-  //       if (position > 323 || isAnswer) {
-  //         dispatch(isWordMove(false));
-  //         clearInterval(timer);
-  //       }
-  //     }
-  //   }
-
-  //   return () => clearInterval(timer);
-
-  // }, [])
+  const [timer, setTimer] = useState<ReturnType<typeof setInterval>>();
 
 
   useEffect(() => {
-    if (position > 323 || isAnswer) {
-      console.log('clear', timer)
-      dispatch(isWordMove(false));
-      clearInterval(timer);
+    if (!isMove || position > 323) {
+
+      clearInterval(timer as ReturnType<typeof setInterval>);
     }
-  }, [position])
+  }, [dispatch, isAnswer, position, timer, isMove]);
+
 
   const moveWord = () => {
-
     if (refBtn.current) {
       if (isMove && !isAnswer) {
-        timer = setInterval(() => {
+        const newTimer = setInterval(() => {
+          dispatch(wordPosition(3));
+        }, 100);
+        setTimer(newTimer);
+        refBtn.current.style.transform = `translateY(${position}px)`;
+      }
+    }
+  };
 
-          dispatch(wordPosition(25));
-        }
-          , 100);
-
-        refBtn.current.style.transform = `translateY(${position}px)`
-
+  useEffect(() => {
+    if (refBtn.current) {
+      if (isPlaying) {
+        moveWord();
+        refBtn.current.style.transform = `translateY(0px)`;
       }
     }
 
-    // return () => clearInterval(timer);
-  }
+  }, [isPlaying, isAnswer])
 
   // const moveDown = () => {
   //   console.log('movedown', position)
@@ -106,11 +89,6 @@ const FallingWord: React.FC = () => {
   //   // console.log(e.target.clientHeight);
   //   // const offsetTop = e.target;
 
-  //   for (let i = 0; i < 90; i += 6) {
-  //     console.log('p', position)
-  //     dispatch(wordPosition(position + i))
-  //   }
-  // }
 
   const showAnswer = () => {
     playWrongAnswer();
@@ -121,10 +99,9 @@ const FallingWord: React.FC = () => {
   }
 
 
-
   return (
 
-    <div aria-hidden='true' onClick={moveWord} ref={refBtn as React.RefObject<HTMLDivElement>} className={`${styles.falling__word}
+    <div aria-hidden='true' ref={refBtn as React.RefObject<HTMLDivElement>} className={`${styles.falling__word}
      ${(isAnswer && userAnswer.word === rightWord.word) ? styles.word__stop : ''}
      ${(isAnswer && userAnswer.word !== rightWord.word) ? styles.word__stop__wrong : ''}`}
       style={{ transform: `translateY(${position}px)` }}>
