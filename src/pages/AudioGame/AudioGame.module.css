@@ -253,6 +253,7 @@ svg.full-screen__icon {
 .audio__btn {
   cursor: pointer;
   fill: var(--mainColor);
+  margin: 67px;
 }
 
 .audio__btn:hover {
