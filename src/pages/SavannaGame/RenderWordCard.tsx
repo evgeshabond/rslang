@@ -68,13 +68,15 @@ const RenderWordCard: React.FC = () => {
     if (currentWords.length === 0) {
       return;
     }
-    // let random;
-    // do {
-    //   random = currentWords[getRandomInt(0, currentWords.length - 1)];
-    // }
-    // while (listLearnWords.includes(random.id));
-    const random = currentWords[getRandomInt(0, currentWords.length - 1)];
+    let random;
+    if (listLearnWords) {
+      do {
+        random = currentWords[getRandomInt(0, currentWords.length - 1)];
+      }
+      while (listLearnWords.includes(random.id));
 
+    }
+    random = currentWords[getRandomInt(0, currentWords.length - 1)];
     dispatch(wordRight(random));
     dispatch(setLearnWords(random.id));
 
@@ -117,7 +119,6 @@ const RenderWordCard: React.FC = () => {
   }, [isAnswer])
 
   const playGame = () => {
-    console.log(roundCounter);
     dispatch(stepCounter(roundCounter + 1));
     dispatch(isWordMove(true));
     dispatch(isWordFalled(false));
@@ -130,18 +131,6 @@ const RenderWordCard: React.FC = () => {
     dispatch(stepCounter(roundCounter + 1));
 
   }
-
-  // useEffect(() => {
-  //   if (Object.keys(userAnswer).length === 0 && !isAnswer) {
-  //     return
-  //   }
-  //   if (!isDontknow && userAnswer.word === rightWord.word) {
-  //     dispatch(listRightWords(rightWord));
-  //   }
-  //   else {
-  //     dispatch(setWrongWords(rightWord))
-  //   }
-  // }, [roundCounter, isResults])
 
   const checkUserAnswer = (word: CurrentWordListType) => {
     console.log('check', position);
@@ -169,7 +158,7 @@ const RenderWordCard: React.FC = () => {
     dispatch(setStatistics(param, body));
     dispatch(isShowResults(true));
     dispatch(savannaGameStart(false))
-    dispatch(stepCounter(roundCounter + 1));
+    // dispatch(stepCounter(roundCounter + 1));
   }
 
 

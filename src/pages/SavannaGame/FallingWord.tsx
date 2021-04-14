@@ -64,7 +64,6 @@ const FallingWord: React.FC = () => {
       clearInterval(timer as ReturnType<typeof setInterval>);
     }
 
-
   }, [dispatch, isAnswer, position, timer, isMove]);
 
 
