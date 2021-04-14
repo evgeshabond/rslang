@@ -47,11 +47,11 @@ const AudioGame: React.FC = () => {
   const handle = useFullScreenHandle();
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    if (wordList.length === 0) {
-      dispatch(fetchWordsList({ page: 0, group: 0 }));
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (wordList.length === 0) {
+  //     dispatch(fetchWordsList({ page: 0, group: 0 }));
+  //   }
+  // }, []);
 
   useEffect(() => () => {
     dispatch(isShowResults(false));
