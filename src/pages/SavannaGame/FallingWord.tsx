@@ -56,6 +56,10 @@ const FallingWord: React.FC = () => {
     (state: RootStateType) => state.savannaGameState.stepCounter
   );
 
+  const border = useSelector(
+    (state: RootStateType) => state.savannaGameState.stopPosition
+  );
+
   const [playSuccessAnswer] = useSound(successSound);
   const [playWrongAnswer] = useSound(wrongSound);
 
@@ -77,11 +81,15 @@ const FallingWord: React.FC = () => {
       clearInterval(timer as ReturnType<typeof setInterval>);
     }
     if (position > 323) {
+      if (refBtn.current) {
+        // console.log(refBtn.current.getBoundingClientRect().y)
+      }
+
       showAnswer();
 
       clearInterval(timer as ReturnType<typeof setInterval>);
     }
-  }, [position, isMove]);
+  }, [position, isMove, border]);
 
   const moveWord = () => {
     if (refBtn.current) {
@@ -121,7 +129,7 @@ const FallingWord: React.FC = () => {
           ? styles.word__stop
           : ''
         }
-     ${isAnswer && userAnswer.word !== rightWord.word
+     ${isAnswer && !isWordFalled && userAnswer.word !== rightWord.word
           ? styles.word__stop__wrong
           : ''
         }`}

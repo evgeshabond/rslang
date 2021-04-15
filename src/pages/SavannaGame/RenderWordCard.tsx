@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   CurrentWordListType,
@@ -25,6 +25,7 @@ import {
   startWordPosition,
   savannaGameStart,
   isShowResults,
+  stopPosition,
 } from '../../actions/savanna-game-actions';
 import {
   checkAndSaveMaxCombo,
@@ -86,7 +87,17 @@ const RenderWordCard: React.FC = () => {
   const currentWordList = useSelector(
     (state: RootStateType) => state.wordState.currentWordList
   );
+
+  const border = useSelector(
+    (state: RootStateType) => state.savannaGameState.stopPosition
+  );
+
+  const fullScreen = useSelector((state: RootStateType) =>
+    state.savannaGameState.isFullScreen);
+
   const userState = useSelector((state: RootStateType) => state.userState);
+
+  const refStop = useRef<HTMLDivElement>();
 
   const getRandomInt = (min: number, max: number) =>
     Math.floor(Math.random() * (max - min + 1)) + min;
@@ -97,6 +108,18 @@ const RenderWordCard: React.FC = () => {
     wordId: rightWord.id,
   };
 
+  useLayoutEffect(() => {
+    const timer: ReturnType<typeof setTimeout> = setTimeout(() => {
+
+      if (refStop.current) {
+        // console.log(refStop.current.getBoundingClientRect().y)
+        dispatch(stopPosition(refStop.current.getBoundingClientRect().y));
+      }
+    }, 1000);
+
+    return () => clearTimeout(timer);
+
+  }, [fullScreen])
 
 
   useEffect(() => {
@@ -141,7 +164,11 @@ const RenderWordCard: React.FC = () => {
     return () => clearTimeout(timer);
   }, [isAnswer]);
 
+
   const playGame = () => {
+    if (refStop.current) {
+      // console.log(refStop.current.getBoundingClientRect().y)
+    }
 
     dispatch(isWordMove(true));
     dispatch(isWordFalled(false));
@@ -172,7 +199,7 @@ const RenderWordCard: React.FC = () => {
       token: user.token,
     };
     const body = {
-      gameType: gameType.audiocall,
+      gameType: gameType.savanna,
       know: gameResult.correctCount,
       dont_know: gameResult.incorrectCount,
       combo: gameResult.maxCorrectComboCount,
@@ -205,7 +232,8 @@ const RenderWordCard: React.FC = () => {
       ) : (
         <FallingWord />
       )}
-      <div className={styles.word__list}>
+
+      <div ref={refStop as React.RefObject<HTMLDivElement>} className={styles.word__list}>
         {currentWords.map((word: CurrentWordListType, index: number) => (
           <WordItem
             buttonClick={() => {

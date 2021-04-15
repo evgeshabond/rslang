@@ -18,6 +18,7 @@ const START_WORD_POSITION='START_WORD_POSITION';
 const IS_WORD_FALLED='IS_WORD_FALLED';
 const ADD_LEARN_WORDS='ADD_LEARN_WORDS';
 const IS_LATE_ANSWER='IS_LATE_ANSWER';
+const STOP_POSITION='STOP_POSITION';
 
 const isLateAnswer= (value: boolean) => ({
   type: IS_LATE_ANSWER,
@@ -29,6 +30,12 @@ const wordPosition= (value: number) => ({
   type: WORD_POSITION,
   payload: value,
 });
+
+const stopPosition= (value: number) => ({
+  type: STOP_POSITION,
+  payload: value,
+});
+
 
 const startWordPosition= (value: number) => ({
   type: START_WORD_POSITION,
@@ -142,5 +149,6 @@ export {
   isWordFalled, IS_WORD_FALLED,
   startWordPosition, START_WORD_POSITION,
   setLearnWords, ADD_LEARN_WORDS,
-  isLateAnswer, IS_LATE_ANSWER
+  isLateAnswer, IS_LATE_ANSWER,
+  stopPosition, STOP_POSITION
  }
