@@ -18,11 +18,13 @@ import {
   START_WORD_POSITION,
   ADD_LEARN_WORDS,
   IS_LATE_ANSWER,
+  STOP_POSITION
 } from '../actions/savanna-game-actions';
 
 import { CurrentWordListType } from '../actions/word-actions';
 
 export type SavannaGameState = {
+  stopPosition: number;
   isLateAnswer: boolean;
   listLearnWords: string[];
   isWordFalled: boolean;
@@ -43,6 +45,7 @@ export type SavannaGameState = {
 };
 
 const initialState: SavannaGameState = {
+  stopPosition: 320,
   isLateAnswer: false,
   listLearnWords: [],
   isWordFalled: false,
