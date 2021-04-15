@@ -105,6 +105,5 @@
   min-width: 260px;
   min-height: 250px;
   border-radius: 20px;
-
-  box-shadow: inset -3px -3px 6px #ffffff, inset 3px 3px 6px #d3a9d8;
+  overflow: hidden;
 }
