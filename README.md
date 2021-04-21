@@ -1,6 +1,5 @@
-# Memory Game
+# Rslang
 
-[LIVE DEMO](https://react-game-bh7vbo394-eugeniybondarenko-gmailcom.vercel.app/) 
 ## About this app
 - an app for learning foreign words, including an electronic textbook with a base of words to learn, mini-games to repeat them, a statistics page to track individual progress.
 
